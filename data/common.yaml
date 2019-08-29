@@ -1,0 +1,1135 @@
+---
+security_baseline::baseline_version: '1.0.0'
+security_baseline::debug: false
+security_baseline::log_info: true
+security_baseline::rules:
+  '1.1.1.1':
+    rulename: 'cramfs'
+    active: true
+    description: 'Support for cramfs removed'
+    enforce: true
+    class: 'sec_cramfs'
+    check:
+      fact_name: 'kmod_cramfs'
+      fact_value: false
+  '1.1.1.2':
+    rulename: 'freevxfs'
+    active: true
+    description: 'Support for freevxfs removed'
+    enforce: true
+    class: 'sec_freevxfs'
+    check:
+      fact_name: 'kmod_freevxfs'
+      fact_value: false
+  '1.1.1.3':
+    rulename: 'jffs2'
+    active: true
+    description: 'Support for jffs2 removed'
+    enforce: true
+    class: '::security_jffs2'
+    check:
+      fact_name: 'kmod_jffs2'
+      fact_value: false
+  '1.1.1.4':
+    rulename: 'hfs'
+    active: true
+    description: 'Support for hfs removed'
+    enforce: true
+    class: '::security_baseline::rules::sec_hfs'
+    check:
+      fact_name: 'kmod_hfs'
+      fact_value: false
+  '1.1.1.5':
+    rulename: 'hfsplus'
+    active: true
+    description: 'Support for hfsplus removed'
+    enforce: true
+    class: '::security_baseline::rules::sec_hfsplus'
+    check:
+      fact_name: 'kmod_hfsplus'
+      fact_value: false
+  '1.1.1.6':
+    rulename: 'squashfs'
+    active: true
+    description: 'Support for squashfs removed'
+    enforce: true
+    class: '::security_baseline::rules::sec_squashfs'
+    check:
+      fact_name: 'kmod_squashfs'
+      fact_value: false
+  '1.1.1.7':
+    rulename: 'udf'
+    active: true
+    description: 'Support for udf removed'
+    enforce: true
+    class: '::security_baseline::rules::sec_udf'
+    check:
+      fact_name: 'kmod_udf'
+      fact_value: false
+  '1.1.1.8':
+    rulename: 'vfat'
+    active: true
+    description: 'Support for vfat removed'
+    enforce: true
+    class: '::security_baseline::rules::sec_vfat'
+    check:
+      fact_name: 'kmod_vfat'
+      fact_value: false
+  '1.1.2':
+    rulename: 'tmp_partition'
+    active: true
+    description: 'The /tmp directory is a world-writable directory used for temporary storage by all users and some applications.'
+    enforce: true
+    class: '::security_baseline::rules::rules::sec_tmp_partition'
+    check:
+      fact_name: 'tmp_partition'
+      fact_value: '/tmp'
+    message: 'Not in compliance with rule 1.1.2. No seperate directory for /tmp.'
+    loglevel: 'warning'
+  '1.1.3':
+    rulename: 'tmp_nodev'
+    active: true
+    description: 'The nodev mount option specifies that the /tmp filesystem cannot contain special devices.'
+    enforce: true
+    class: '::security_baseline::rules::sec_tmp_nodev'
+    check:
+      fact_name: 'tmp_nodev'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.3. /tmp not mounted with nodev option.'
+    loglevel: 'warning'
+  '1.1.4':
+    rulename: 'tmp_nosuid'
+    active: true
+    description: 'The nosuid mount option specifies that the /tmp filesystem cannot contain suid files.'
+    enforce: true
+    class: '::security_baseline::rules::sec_tmp_nosuid'
+    check:
+      fact_name: 'tmp_nosuid'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.4. /tmp not mounted with nosuid option.'
+    loglevel: 'warning'
+  '1.1.5':
+    rulename: 'tmp_noexec'
+    active: true
+    description: 'The noexec mount option specifies that the /tmp filesystem cannot contain executable binaries.'
+    enforce: true
+    class: '::security_baseline::rules::sec_tmp_noexec'
+    check:
+      fact_name: 'tmp_noexec'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.5. /tmp not mounted with noexec option.'
+    loglevel: 'warning'
+  '1.1.6':
+    rulename: 'var_partition'
+    active: true
+    description: 'The /var directory is used by daemons and other system services to temporarily store dynamic data. Some directories created by these processes may be world-writable.'
+    enforce: true
+    class: '::security_baseline::rules::sec_var_partition'
+    check:
+      fact_name: 'var_partition'
+      fact_value: '/var'
+    message: 'Not in compliance with rule 1.1.6. No seperate directory for /var.'
+    loglevel: 'warning'
+  '1.1.7':
+    rulename: 'var_tmp_partition'
+    active: true
+    description: 'The /var/tmp directory is a world-writable directory used for temporary storage by all users and some applications.'
+    enforce: true
+    class: '::security_baseline::rules::sec_var_tmp_partition'
+    check:
+      fact_name: 'var_tmp_partition'
+      fact_value: '/var/tmp'
+    message: 'Not in compliance with rule 1.1.7. No seperate directory for /var/tmp.'
+    loglevel: 'warning'
+  '1.1.8':
+    rulename: 'var_tmp_nodev'
+    active: true
+    description: 'The nodev mount option specifies that the /var/tmp filesystem cannot contain special devices.'
+    enforce: true
+    class: '::security_baseline::rules::sec_var_tmp_nodev'
+    check:
+      fact_name: 'var_tmp_nodev'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.8. /var/tmp not mounted with nodev option.'
+    loglevel: 'warning'
+  '1.1.9':
+    rulename: 'var_tmp_nosuid'
+    active: true
+    description: 'The nosuid mount option specifies that the /var/tmp filesystem cannot contain suid files.'
+    enforce: true
+    class: '::security_baseline::rules::sec_var_tmp_nosuid'
+    check:
+      fact_name: 'var_tmp_nosuid'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.9. /var/tmp not mounted with nosuid option.'
+    loglevel: 'warning'
+  '1.1.10':
+    rulename: 'var_tmp_noexec'
+    active: true
+    description: 'The noexec mount option specifies that the /var/tmp filesystem cannot contain executable binaries.'
+    enforce: true
+    class: '::security_baseline::rules::sec_var_tmp_noexec'
+    check:
+      fact_name: 'var_tmp_noexec'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.10. /var/tmp not mounted with noexec option.'
+    loglevel: 'warning'
+  '1.1.11':
+    rulename: 'var_log_partition'
+    active: true
+    description: 'The /var/log directory is used by system services to store log data.'
+    enforce: true
+    class: '::security_baseline::rules::sec_var_log_partition'
+    check:
+      fact_name: 'var_log_partition'
+      fact_value: '/var/log'
+    message: 'Not in compliance with rule 1.1.11. No seperate directory for /var/log.'
+    loglevel: 'warning'
+  '1.1.12':
+    rulename: 'var_log_audit_partition'
+    active: true
+    description: 'The auditing daemon, auditd , stores log data in the /var/log/audit directory.'
+    enforce: true
+    class: '::security_baseline::rules::sec_var_log_audit_partition'
+    check:
+      fact_name: 'var_log_audit_partition'
+      fact_value: '/var/log/audit'
+    message: 'Not in compliance with rule 1.1.12. No seperate directory for /var/log/audit.'
+    loglevel: 'warning'
+  '1.1.13':
+    rulename: 'home_partition'
+    active: true
+    description: 'The /home directory is used to support disk storage needs of local users.'
+    enforce: true
+    class: '::security_baseline::rules::sec_home_partition'
+    check:
+      fact_name: 'home_partition'
+      fact_value: '/home'
+    message: 'Not in compliance with rule 1.1.13. No seperate directory for /home.'
+    loglevel: 'warning'
+  '1.1.14':
+    rulename: 'home_nodev'
+    active: true
+    description: 'The nodev mount option specifies that the /home filesystem cannot contain special devices.'
+    enforce: true
+    class: '::security_baseline::rules::sec_home_nodev'
+    check:
+      fact_name: 'home_nodev'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.14. /home not mounted with nodev option.'
+    loglevel: 'warning'
+  '1.1.15':
+    rulename: 'dev_shm_nodev'
+    active: true
+    description: 'The nodev mount option specifies that the /dev/shm filesystem cannot contain special devices.'
+    enforce: true
+    class: '::security_baseline::rules::sec_dev_shm_nodev'
+    check:
+      fact_name: 'dev_shm_nodev'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.15. /dev/shm not mounted with nodev option.'
+    loglevel: 'warning'
+  '1.1.16':
+    rulename: 'dev_shm_nosuid'
+    active: true
+    description: 'The nosuid mount option specifies that the /dev/shm filesystem cannot contain suid files.'
+    enforce: true
+    class: '::security_baseline::rules::sec_dev_shm_nosuid'
+    check:
+      fact_name: 'dev_shm_nosuid'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.16. /dev/shm not mounted with nosuid option.'
+    loglevel: 'warning'
+  '1.1.17':
+    rulename: 'dev_shm_noexec'
+    active: true
+    description: 'The noexec mount option specifies that the /dev/shm filesystem cannot contain executable binaries.'
+    enforce: true
+    class: '::security_baseline::rules::sec_dev_shm_noexec'
+    check:
+      fact_name: 'dev_shm_noexec'
+      fact_value: true
+    message: 'Not in compliance with rule 1.1.17. /dev/shm not mounted with noexec option.'
+    loglevel: 'warning'
+  '1.1.21':
+    rulename: 'sticky_ww'
+    active: true
+    description: 'Setting the sticky bit on world writable directories prevents users from deleting or renaming files in that directory that are not owned by them.'
+    enforce: false
+    class: '::security_baseline::rules::sec_sticky_world_writeable'
+    check:
+      fact_name: 'sticky_ww'
+      fact_value: ''
+    message: 'Not in compliance with rule 1.1.21. Not all world writable directories have sticky bit set.'
+    loglevel: 'warning'
+  '1.1.22':
+    rulename: 'automounting'
+    active: true
+    description: 'autofs allows automatic mounting of devices, typically including CD/DVDs and USB drives.'
+    enforce: true
+    class: '::security_baseline::rules::sec_automounting'
+    check:
+      fact_name: 'automounting'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 1.1.22. Automounting is not disabled.'
+    loglevel: 'warning'
+  '1.2.2':
+    rulename: 'yum_gpgcheck'
+    active: true
+    description: 'The gpgcheck option, found in the main section of the /etc/yum.conf and individual /etc/yum/repos.d/* files determines if an RPM packages signature is checked prior to its installation.'
+    enforce: true
+    class: '::security_baseline::rules::sec_yum_gpgcheck'
+    check:
+      fact_name: 'yum_gpgcheck'
+      fact_value: true
+    message: 'Not in compliance with rule 1.2.2. Yum gpgcheck not enabled in /etc/yum.conf.'
+    loglevel: 'warning'
+  '1.2.5':
+    rulename: 'rhnsd'
+    active: true
+    description: 'The rhnsd daemon polls the Red Hat Network web site for scheduled actions and, if there are, executes those actions.'
+    enforce: false
+    class: '::security_baseline::rules::sec_rhnsd'
+    check:
+      fact_name: 'rhnsd'
+      fact_value: disabled
+    message: 'Not in compliance with rule 1.2.5. rhnsd should be disabled.'
+    loglevel: 'info'
+  '1.3.1':
+    rulename: 'aide'
+    active: true
+    description: 'AIDE takes a snapshot of filesystem state including modification times, permissions, and file hashes which can then be used to compare against the current state of the filesystem to detect modifications to the system.'
+    enforce: true
+    class: '::security_baseline::rules::sec_aide'
+    check:
+      fact_name: 'aide'
+      fact_value: enabled
+    message: 'Not in compliance with rule 1.3.1. aide should be disabled.'
+    loglevel: 'warning'
+  '1.3.2':
+    rulename: 'aide-cron'
+    active: true
+    description: 'Periodic checking of the filesystem integrity is needed to detect changes to the filesystem.'
+    enforce: true
+    class: '::security_baseline::rules::sec_aide_cron'
+    check:
+      fact_name: 'aide_cron'
+      fact_value: '0 5 * * * root /usr/sbin/aide --check'
+    message: 'Not in compliance with rule 1.3.2. aide cronjob should be setup.'
+    loglevel: 'warning'
+  '1.4.1':
+    rulename: 'grub2'
+    active: true
+    description: 'The grub configuration file contains information on boot settings and passwords for unlocking boot options. The grub configuration is usually located at /boot/grub2/grub.cfg and linked as /etc/grub2.cfg. Additional settings can be found in the /boot/grub2/user.cfg file.'
+    enforce: true
+    class: '::security_baseline::rules::sec_grub2'
+    check:
+      fact_name: 'grub2'
+      fact_value: ''
+    message: ''
+    loglevel: 'info'
+  '1.4.2':
+    rulename: 'grub_passwd'
+    active: true
+    description: 'Setting the boot loader password will require that anyone rebooting the system must enter a password before being able to set command line boot parameters.'
+    enforce: true
+    class: '::security_baseline::rules::sec_grub_passwd'
+    check:
+      fact_name: 'grub_passwd'
+      fact_value: true
+    message: 'Not in compliance with rule 1.4.2. A Grub password should be set.'
+    loglevel: 'warning'
+  '1.4.3':
+    rulename: 'single_user_mode'
+    active: true
+    description: 'Single user mode (rescue mode) is used for recovery when the system detects an issue during boot or by manual selection from the bootloader.'
+    enforce: true
+    class: '::security_baseline::rules::sec_single_user_mode'
+    check:
+      fact_name: 'single_user_mode'
+      fact_value: true
+    message: 'Not in compliance with rule 1.4.3. /sbin/sulogin not used propperly.'
+    loglevel: 'warning'
+  '1.5.1':
+    rulename: 'core_dumps'
+    active: true
+    description: 'A core dump is the memory of an executable program. It is generally used to determine why a program aborted. It can also be used to glean confidential information from a core file. The system provides the ability to set a soft limit for core dumps, but this can be overridden by the user.'
+    enforce: true
+    class: '::security_baseline::rules::sec_core_dump'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: ''
+    loglevel: 'info'
+  '1.5.3':
+    rulename: 'kernel_aslr'
+    active: true
+    description: 'Address space layout randomization (ASLR) is an exploit mitigation technique which randomly arranges the address space of key data areas of a process.'
+    enforce: true
+    class: '::security_baseline::rules::sec_kernel_aslr'
+    check:
+      fact_name: 'kernel_aslr'
+      fact_value: '2'
+    message: 'Not in compliance with rule 1.5.3. Kernel address space randomization is not enabled.'
+    loglevel: 'warning'
+  '1.5.4':
+    rulename: 'prelink'
+    active: true
+    description: 'prelinkis a program that modifies ELF shared libraries and ELF dynamically linked binaries in such a way that the time needed for the dynamic linker to perform relocations at startup significantly decreases.'
+    enforce: false
+    class: '::security_baseline::rules::sec_prelink'
+    check:
+      fact_name: 'prelink'
+      fact_value: false
+    message: 'Not in compliance with rule 1.5.4. prelink pckage is installed.'
+    loglevel: 'warning'
+  '1.6.1.1':
+    rulename: 'selinux-bootloader'
+    active: true
+    description: 'Configure SELINUX to be enabled at boot time and verify that it has not been overwritten by the grub boot parameters.'
+    enforce: false
+    class: '::security_baseline::rules::sec_selinux_bootloader'
+    check:
+      fact_name: 'bootloader_selinux'
+      fact_value: false
+    message: 'Not in compliance with rule 1.6.1.1. Not all linux bootloader entries enforce selinux.'
+    loglevel: 'warning'
+  '1.6.1.2':
+    rulename: 'selinux'
+    active: true
+    description: 'Set SELinux to enable when the system is booted.'
+    enforce: false
+    class: '::security_baseline::rules::sec_selinux_state'
+    check:
+      fact_name: 'selinux_config_mode'
+      fact_value: 'enforcing'
+    message: 'Not in compliance with rule 1.6.1.2. Selinux should run in enforcing mode.'
+    loglevel: 'warning'
+  '1.6.1.3':
+    rulename: 'selinux-policy'
+    active: true
+    description: 'Configure SELinux to meet or exceed the default targeted policy, which constrains daemons and system software only.'
+    enforce: false
+    class: '::security_baseline::rules::sec_selinux_policy'
+    check:
+      fact_name: 'selinux_config_policy'
+      fact_value: 'targeted'
+    message: 'Not in compliance with rule 1.6.1.3. Selinux policy should be defined.'
+    loglevel: 'warning'
+  '1.6.1.4':
+    rulename: 'setroubleshoot'
+    active: true
+    description: 'The SETroubleshoot service notifies desktop users of SELinux denials through a user- friendly interface. The service provides important information around configuration errors, unauthorized intrusions, and other potential errors.'
+    enforce: true
+    class: '::security_baseline::rules::sec_setroubleshoot'
+    check:
+      fact_name: 'setoubleshoot_pkg'
+      fact_value: false
+    message: 'Not in compliance with rule 1.6.1.4. Setroubleshoot package is installed.'
+    loglevel: 'warning'
+  '1.6.1.5':
+    rulename: 'mcstrans'
+    active: true
+    description: 'The mcstransd daemon provides category label information to client processes requesting information. The label translations are defined in /etc/selinux/targeted/setrans.conf.'
+    enforce: true
+    class: '::security_baseline::rules::sec_mcstrans'
+    check:
+      fact_name: 'mcstrans_pkg'
+      fact_value: false
+    message: 'Not in compliance with rule 1.6.1.5. Mcstrans package is installed.'
+    loglevel: 'warning'
+  '1.6.1.6':
+    rulename: 'unconf-daemons'
+    active: true
+    description: 'Daemons that are not defined in SELinux policy will inherit the security context of their parent process.'
+    enforce: true
+    class: '::security_baseline::rules::sec_unconfigured_daemons'
+    check:
+      fact_name: 'mcstrans_pkg'
+      fact_value: false
+    message: 'Not in compliance with rule 1.6.1.6. Unconfigured daemons running on system.'
+    loglevel: 'warning'
+  '1.6.2':
+    rulename: 'selinux-pkg'
+    active: true
+    description: 'SELinux provides Mandatory Access Controls.'
+    enforce: true
+    class: '::security_baseline::rules::sec_selinux'
+    check:
+      fact_name: 'selinux_pkg'
+      fact_value: true
+    message: 'Not in compliance with rule 1.6.2. SElinux not installed.'
+    loglevel: 'warning'
+  '1.7.1.1':
+    rulename: 'motd'
+    active: true
+    description: 'The contents of the /etc/motd file are displayed to users after login and function as a message of the day for authenticated users.'
+    enforce: true
+    class: '::security_baseline::rules::sec_motd'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 1.7.1.1. /etc/motd contains sensitive information.'
+    loglevel: 'warning'
+  '1.7.1.2':
+    rulename: 'issue'
+    active: true
+    description: 'The contents of the /etc/issue file are displayed to users prior to login for local terminals.'
+    enforce: true
+    class: '::security_baseline::rules::sec_issue'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 1.7.1.2. /etc/issue contains sensitive information.'
+    loglevel: 'warning'
+  '1.7.1.3':
+    rulename: 'issue_net'
+    active: true
+    description: 'The contents of the /etc/issue.net file are displayed to users prior to login for local terminals.'
+    enforce: true
+    class: '::security_baseline::rules::sec_issue_net'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 1.7.1.3. /etc/issue.net contains sensitive information.'
+    loglevel: 'warning'
+  '1.7.1.4':
+    rulename: 'motd_perm'
+    active: true
+    description: 'The contents of the /etc/motd file are displayed to users after login and function as a message of the day for authenticated users'
+    enforce: true
+    class: '::security_baseline::rules::sec_motd_permissions'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: ''
+    loglevel: ''
+  '1.7.1.5':
+    rulename: 'issue_perm'
+    active: true
+    description: 'The contents of the /etc/issue file are displayed to users prior to login for local terminals.'
+    enforce: true
+    class: '::security_baseline::rules::sec_issue_permissions'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: ''
+    loglevel: ''
+  '1.7.1.6':
+    rulename: 'issue_net_perm'
+    active: true
+    description: 'The contents of the /etc/issue.net file are displayed to users prior to login for remote connections from configured services.'
+    enforce: true
+    class: '::security_baseline::rules::sec_issue_net_permissions'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: ''
+    loglevel: ''
+  '1.7.2':
+    rulename: 'gdm'
+    active: true
+    description: 'GDM is the GNOME Display Manager which handles graphical login for GNOME based systems.'
+    enforce: true
+    class: '::security_baseline::rules::sec_gdm'
+    check:
+      fact_name: 'gnome_gdm'
+      fact_value: true
+    message: 'Not in compliance with rule 1.7.2. GDM not propperly configured with warning messages.'
+    loglevel: 'warning'
+  '1.8':
+    rulename: 'security-patches'
+    active: true
+    description: 'Periodically patches are released for included software either due to security flaws or to include additional functionality.'
+    enforce: true
+    class: '::security_baseline::rules::sec_security_patches'
+    check:
+      fact_name: 'security_patches'
+      fact_value: ''
+    message: 'Not in compliance with rule 1.8. There are security patches available.'
+    loglevel: 'warning'
+  '2.1.1':
+    rulename: 'chargen-service'
+    active: true
+    description: 'chargen is a network service that responds with 0 to 512 ASCII characters for each connection it receives. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
+    enforce: true
+    class: '::security_baseline::rules::sec_service_chargen'
+    check:
+      fact_name: 'srv_chargen'
+      fact_value: false
+    message: 'Not in compliance with rule 2.1.1. chargen service not switched off.'
+    loglevel: 'warning'
+  '2.1.2':
+    rulename: 'daytime-service'
+    active: true
+    description: 'daytime is a network service that responds with the servers current date and time. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
+    enforce: true
+    class: '::security_baseline::rules::sec_service_daytime'
+    check:
+      fact_name: 'srv_daytime'
+      fact_value: false
+    message: 'Not in compliance with rule 2.1.2. daytime service not switched off.'
+    loglevel: 'warning'
+  '2.1.3':
+    rulename: 'discard-service'
+    active: true
+    description: 'discard is a network service that simply discards all data it receives. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
+    enforce: true
+    class: '::security_baseline::rules::sec_service_discard'
+    check:
+      fact_name: 'srv_discard'
+      fact_value: false
+    message: 'Not in compliance with rule 2.1.3. discard service not switched off.'
+    loglevel: 'warning'
+  '2.1.4':
+    rulename: 'echo-service'
+    active: true
+    description: 'echo is a network service that responds to clients with the data sent to it by the client. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
+    enforce: true
+    class: '::security_baseline::rules::sec_service_echo'
+    check:
+      fact_name: 'srv_echo'
+      fact_value: false
+    message: 'Not in compliance with rule 2.1.4. echo service not switched off.'
+    loglevel: 'warning'
+  '2.1.5':
+    rulename: 'time-service'
+    active: true
+    description: 'time is a network service that responds with the servers current date and time as a 32 bit integer. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
+    enforce: true
+    class: '::security_baseline::rules::sec_service_time'
+    check:
+      fact_name: 'srv_time'
+      fact_value: false
+    message: 'Not in compliance with rule 2.1.5. time service not switched off.'
+    loglevel: 'warning'
+  '2.1.6':
+    rulename: 'tftp-service'
+    active: true
+    description: 'Trivial File Transfer Protocol (TFTP) is a simple file transfer protocol, typically used to automatically transfer configuration or boot machines from a boot server. The package tftp-server is used to define and support a TFTP server.'
+    enforce: false
+    class: '::security_baseline::rules::sec_service_tftp'
+    check:
+      fact_name: 'srv_tftp'
+      fact_value: false
+    message: 'Not in compliance with rule 2.1.6. tftp service not switched off.'
+    loglevel: 'warning'
+  '2.1.7':
+    rulename: 'xinetd-service'
+    active: true
+    description: 'The eXtended InterNET Daemon ( xinetd ) is an open source super daemon that replaced the original inetd daemon. The xinetd daemon listens for well known services and dispatches the appropriate daemon to properly respond to service requests.'
+    enforce: true
+    class: '::security_baseline::rules::sec_service_xinetd'
+    check:
+      fact_name: 'srv_tftp'
+      fact_value: false
+    message: 'Not in compliance with rule 2.1.6. tftp service not switched off.'
+    loglevel: 'warning'
+  '2.2.2':
+    rulename: 'x11-installed'
+    active: true
+    description: 'The X Window System provides a Graphical User Interface (GUI) where users can have multiple windows in which to run programs and various add on. The X Windows system is typically used on workstations where users login, but not on servers where users typically do not login.'
+    enforce: true
+    class: '::security_baseline::rules::sec_x11_installed'
+    check:
+      fact_name: 'x11_packages'
+      fact_value: false
+    message: 'Not in compliance with rule 2.2.2. There are X11 pckages installed.'
+    loglevel: 'warning'
+  '2.2.3':
+    rulename: 'avahi-daemon'
+    active: true
+    description: 'Avahi is a free zeroconf implementation, including a system for multicast DNS/DNS-SD service discovery. Avahi allows programs to publish and discover services and hosts running on a local network with no specific configuration. For example, a user can plug a computer into a network and Avahi automatically finds printers to print to, files to look at and people to talk to, as well as network services running on the machine.'
+    enforce: true
+    class: '::security_baseline::rules::sec_avahi'
+    check:
+      fact_name: 'srv_avahi'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.3. Avahi daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.4':
+    rulename: 'cups'
+    active: true
+    description: 'The Common Unix Print System (CUPS) provides the ability to print to both local and network printers. A system running CUPS can also accept print jobs from remote systems and print them to local printers. It also provides a web based remote administration capability.'
+    enforce: true
+    class: '::security_baseline::rules::sec_cups'
+    check:
+      fact_name: 'srv_cups'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.4. Cups daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.5':
+    rulename: 'dhcpd'
+    active: true
+    description: 'The Dynamic Host Configuration Protocol (DHCP) is a service that allows machines to be dynamically assigned IP addresses.'
+    enforce: true
+    class: '::security_baseline::rules::sec_dhcpd'
+    check:
+      fact_name: 'srv_dhcpd'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.5. Dhcpd daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.6':
+    rulename: 'slapd'
+    active: true
+    description: 'The Lightweight Directory Access Protocol (LDAP) was introduced as a replacement for NIS/YP. It is a service that provides a method for looking up information from a central database.'
+    enforce: true
+    class: '::security_baseline::rules::sec_ldap'
+    check:
+      fact_name: 'srv_ldap'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.6. Ldap daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.7':
+    rulename: 'nfs-rpcbind'
+    active: true
+    description: 'The Network File System (NFS) is one of the first and most widely distributed file systems in the UNIX environment. It provides the ability for systems to mount file systems of other servers through the network.'
+    enforce: true
+    class: '::security_baseline::rules::sec_nfs_rpcbind'
+    check:
+      fact_name: 'srv_nfs'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.7. Nfs and rpcbind daemons are not disbaled.'
+    loglevel: 'warning'
+  '2.2.8':
+    rulename: 'dns'
+    active: true
+    description: 'The Domain Name System (DNS) is a hierarchical naming system that maps names to IP addresses for computers, services and other resources connected to a network.'
+    enforce: true
+    class: '::security_baseline::rules::sec_dns'
+    check:
+      fact_name: 'srv_dns'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.8. Dns daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.9':
+    rulename: 'vsftpd'
+    active: true
+    description: 'The File Transfer Protocol (FTP) provides networked computers with the ability to transfer files.'
+    enforce: true
+    class: '::security_baseline::rules::sec_vsftpd'
+    check:
+      fact_name: 'srv_vsftpd'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.9. Vsftpd daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.10':
+    rulename: 'httpd'
+    active: true
+    description: 'The File Transfer Protocol (FTP) provides networked computers with the ability to transfer files.'
+    enforce: true
+    class: '::security_baseline::rules::sec_httpd'
+    check:
+      fact_name: 'srv_httpd'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.10. Http daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.11':
+    rulename: 'dovecot'
+    active: true
+    description: 'dovecot is an open source IMAP and POP3 server for Linux based systems.'
+    enforce: true
+    class: '::security_baseline::rules::sec_dovecot'
+    check:
+      fact_name: 'srv_dovecot'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.11. Dovecot daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.12':
+    rulename: 'smb'
+    active: true
+    description: 'The Samba daemon allows system administrators to configure their Linux systems to share file systems and directories with Windows desktops. Samba will advertise the file systems and directories via the Small Message Block (SMB) protocol. Windows desktop users will be able to mount these directories and file systems as letter drives on their systems.'
+    enforce: true
+    class: '::security_baseline::rules::sec_smb'
+    check:
+      fact_name: 'srv_smb'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.12. Smb daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.13':
+    rulename: 'squid'
+    active: true
+    description: 'Squid is a standard proxy server used in many distributions and environments.'
+    enforce: true
+    class: '::security_baseline::rules::sec_squid'
+    check:
+      fact_name: 'srv_squid'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.13. Squid daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.14':
+    rulename: 'snmpd'
+    active: true
+    description: 'The Simple Network Management Protocol (SNMP) server is used to listen for SNMP commands from an SNMP management system, execute the commands or collect the information and then send results back to the requesting system.'
+    enforce: true
+    class: '::security_baseline::rules::sec_snmpd'
+    check:
+      fact_name: 'srv_snmpd'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.14. Snmp daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.15':
+    rulename: 'mta'
+    active: true
+    description: 'Mail Transfer Agents (MTA), such as sendmail and Postfix, are used to listen for incoming mail and transfer the messages to the appropriate user or mail server. If the system is not intended to be a mail server, it is recommended that the MTA be configured to only process local mail.'
+    enforce: true
+    class: '::security_baseline_postfix'
+    check:
+      fact_name: 'srv_mta'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.15. Mta not configured for local mode only.'
+    loglevel: 'warning'
+    config_data:
+      inet_interfaces: 'loopback-only'
+  '2.2.16':
+    rulename: 'ypserv'
+    active: true
+    description: 'The Network Information Service (NIS) (formally known as Yellow Pages) is a client-server directory service protocol for distributing system configuration files. The NIS server is a collection of programs that allow for the distribution of configuration files.'
+    enforce: true
+    class: '::security_baseline::rules::sec_nis'
+    check:
+      fact_name: 'srv_ypserv'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.16. NIS server daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.17':
+    rulename: 'rsh'
+    active: true
+    description: 'The Berkeley rsh-server ( rsh , rlogin , rexec ) package contains legacy services that exchange credentials in clear-text.'
+    enforce: true
+    class: '::security_baseline::rules::sec_rsh'
+    check:
+      fact_name: 'srv_rsh'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.17. RSH server daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.18':
+    rulename: 'ntalk'
+    active: true
+    description: 'The talk software makes it possible for users to send and receive messages across systems through a terminal session. The talk client (allows initiate of talk sessions) is installed by default.'
+    enforce: true
+    class: '::security_baseline::rules::sec_ntalk'
+    check:
+      fact_name: 'srv_ntalk'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.18. Talk server daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.19':
+    rulename: 'telnet'
+    active: true
+    description: 'The telnet-server package contains the telnet daemon, which accepts connections from users from other systems via the telnet protocol.'
+    enforce: true
+    class: '::security_baseline::rules::sec_telnet'
+    check:
+      fact_name: 'srv_telnet'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.19. Telnet server daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.20':
+    rulename: 'tftp'
+    active: true
+    description: 'Trivial File Transfer Protocol (TFTP) is a simple file transfer protocol, typically used to automatically transfer configuration or boot machines from a boot server. The package tftp-server is used to define and support a TFTP server.'
+    enforce: true
+    class: '::security_baseline::rules::sec_tftp'
+    check:
+      fact_name: 'srv_tftp'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.20. Tftp server daemon is not disbaled.'
+    loglevel: 'warning'
+  '2.2.21':
+    rulename: 'rsyncd'
+    active: true
+    description: 'The rsyncd service can be used to synchronize files between systems over network links.'
+    enforce: true
+    class: '::security_baseline::rules::sec_rsyncd'
+    check:
+      fact_name: 'srv_tftp'
+      fact_value: 'disabled'
+    message: 'Not in compliance with rule 2.2.21. Rsync servicve is not disbaled.'
+    loglevel: 'warning'
+  '2.3.1':
+    rulename: 'ypcind'
+    active: true
+    description: 'The Network Information Service (NIS), formerly known as Yellow Pages, is a client-server directory service protocol used to distribute system configuration files. The NIS client ( ypbind ) was used to bind a machine to an NIS server and receive the distributed configuration files.'
+    enforce: true
+    class: '::security_baseline::rules::sec_nis_client'
+    check:
+      fact_name: 'ypbind_pkg'
+      fact_value: ''
+    message: 'Not in compliance with rule 2.3.1. NIS client package is not removed.'
+    loglevel: 'warning'
+  '2.3.2':
+    rulename: 'ypcind'
+    active: true
+    description: 'The rsh package contains the client commands for the rsh services.'
+    enforce: true
+    class: '::security_baseline::rules::sec_rsh_client'
+    check:
+      fact_name: 'rsh_pkg'
+      fact_value: ''
+    message: 'Not in compliance with rule 2.3.2. RSH client package is not removed.'
+    loglevel: 'warning'
+  '2.3.3':
+    rulename: 'talk-client'
+    active: true
+    description: 'The talk software makes it possible for users to send and receive messages across systems through a terminal session. The talk client, which allows initialization of talk sessions, is installed by default.'
+    enforce: true
+    class: '::security_baseline::rules::sec_talk_client'
+    check:
+      fact_name: 'talk_pkg'
+      fact_value: ''
+    message: 'Not in compliance with rule 2.3.3. Talk client package is not removed.'
+    loglevel: 'warning'
+  '2.3.4':
+    rulename: 'telnet-client'
+    active: true
+    description: 'The telnet package contains the telnet client, which allows users to start connections to other systems via the telnet protocol.'
+    enforce: true
+    class: '::security_baseline::rules::sec_telnet_client'
+    check:
+      fact_name: 'telnet_pkg'
+      fact_value: ''
+    message: 'Not in compliance with rule 2.3.4. Telnet client package is not removed.'
+    loglevel: 'warning'
+  '2.3.5':
+    rulename: 'openldap-client'
+    active: true
+    description: 'The Lightweight Directory Access Protocol (LDAP) was introduced as a replacement for NIS/YP. It is a service that provides a method for looking up information from a central database.'
+    enforce: true
+    class: '::security_baseline::rules::sec_openldap_client'
+    check:
+      fact_name: 'openldap_clients_pkg'
+      fact_value: ''
+    message: 'Not in compliance with rule 2.3.5. Openldap client package is not removed.'
+    loglevel: 'warning'
+  '3.1.1':
+    rulename: 'ip-forwarding'
+    active: true
+    description: 'The net.ipv4.ip_forward flag is used to tell the system whether it can forward packets or not.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_ip_forward'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.1.1. IP forwarding is not disabled.'
+    loglevel: 'warning'
+  '3.1.2':
+    rulename: 'package-redirect'
+    active: true
+    description: 'ICMP Redirects are used to send routing information to other hosts. As a host itself does not act as a router (in a host only configuration), there is no need to send redirects.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_packet_redirect'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.1.2. Packet redirect sending is not disabled.'
+    loglevel: 'warning'
+  '3.2.1':
+    rulename: 'source-routes-packet'
+    active: true
+    description: 'In networking, source routing allows a sender to partially or fully specify the route packets take through a network. In contrast, non-source routed packets travel a path determined by routers in the network. In some cases, systems may not be routable or reachable from some locations (e.g. private addresses vs. Internet routable), and so source routed packets would need to be used.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_source_route'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.2.1. Source routes packets should not be accepted.'
+    loglevel: 'warning'
+  '3.2.2':
+    rulename: 'icmp-redirect'
+    active: true
+    description: 'ICMP redirect messages are packets that convey routing information and tell your host (acting as a router) to send packets via an alternate path. It is a way of allowing an outside routing device to update your system routing tables. By setting net.ipv4.conf.all.accept_redirects to 0, the system will not accept any ICMP redirect messages, and therefore, wont allow outsiders to update the systems routing tables.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_icmp_redirect'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.2.2. ICMP redirects should not be accepted.'
+    loglevel: 'warning'
+  '3.2.3':
+    rulename: 'icmp-secure-redirect'
+    active: true
+    description: 'Secure ICMP redirects are the same as ICMP redirects, except they come from gateways listed on the default gateway list. It is assumed that these gateways are known to your system, and that they are likely to be secure.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_secure_icmp_redirect'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.2.2. Secure ICMP redirects should not be accepted.'
+    loglevel: 'warning'
+  '3.2.4':
+    rulename: 'log-suspicious-packets'
+    active: true
+    description: 'When enabled, this feature logs packets with un-routable source addresses to the kernel log.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_log_suspicious_packets'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.2.4. Suspicious packets are not logged.'
+    loglevel: 'warning'
+  '3.2.5':
+    rulename: 'broadcast-icmp-requests'
+    active: true
+    description: 'Setting net.ipv4.icmp_echo_ignore_broadcasts to 1 will cause the system to ignore all ICMP echo and timestamp requests to broadcast and multicast addresses.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_broadcast_icmp_requests'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.2.5. Broadcast ICMP requests are not ignored.'
+    loglevel: 'warning'
+  '3.2.6':
+    rulename: 'bogus-ucmp-responses'
+    active: true
+    description: 'Setting icmp_ignore_bogus_error_responses to 1 prevents the kernel from logging bogus responses (RFC-1122 non-compliant) from broadcast reframes, keeping file systems from filling up with useless log messages.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_bogus_icmp_responses'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.2.6. Bogus ICMP responses are not ignored.'
+    loglevel: 'warning'
+  '3.2.7':
+    rulename: 'reverse-path-filtering'
+    active: true
+    description: 'Setting net.ipv4.conf.all.rp_filter and net.ipv4.conf.default.rp_filter to 1 forces the Linux kernel to utilize reverse path filtering on a received packet to determine if the packet was valid. Essentially, with reverse path filtering, if the return packet does not go out the same interface that the corresponding source packet came from, the packet is dropped (and logged if log_martians is set).'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_reverse_path_filtering'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.2.7. Reversye path filterig is not enabled.'
+    loglevel: 'warning'
+  '3.2.8':
+    rulename: 'tcp-syn-cookoes'
+    active: true
+    description: 'When tcp_syncookies is set, the kernel will handle TCP SYN packets normally until the half-open connection queue is full, at which time, the SYN cookie functionality kicks in. SYN cookies work by not using the SYN queue at all. Instead, the kernel simply replies to the SYN with a SYN|ACK, but will include a specially crafted TCP sequence number that encodes the source and destination IP address and port number and the time the packet was sent. A legitimate connection would send the ACK packet of the three way handshake with the specially crafted sequence number. This allows the system to verify that it has received a valid response to a SYN cookie and allow the connection, even though there is no corresponding SYN in the queue.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_tcp_syn_cookies'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.2.8. TCP SYN cookies are not enabled.'
+    loglevel: 'warning'
+  '3.3.1':
+    rulename: 'ipv6-router-advertisements'
+    active: true
+    description: 'This setting disables the systems ability to accept IPv6 router advertisements.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_ipv6_router_advertisements'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.3.1. IPv6 router advertisements are accepred.'
+    loglevel: 'warning'
+  '3.3.2':
+    rulename: 'ipv6-redirects'
+    active: true
+    description: 'This setting prevents the system from accepting ICMP redirects. ICMP redirects tell the system about alternate routes for sending traffic.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_ipv6_redirects'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.3.2. IPv6 redirects are accepted.'
+    loglevel: 'warning'
+  '3.3.3':
+    rulename: 'ipv6-disabled'
+    active: true
+    description: 'Although IPv6 has many advantages over IPv4, few organizations have implemented IPv6.'
+    enforce: true
+    class: '::security_baseline::rules::sec_network_ipv6_disable'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.3.3. IPv6 is not disabled.'
+    loglevel: 'warning'
+  '3.4.1':
+    rulename: 'tcp-wrappers'
+    active: true
+    description: 'TCP Wrappers provides a simple access list and standardized logging method for services capable of supporting it. In the past, services that were called from inetd and xinetd supported the use of tcp wrappers. As inetd and xinetd have been falling in disuse, any service that can support tcp wrappers will have the libwrap.so library attached to it.'
+    enforce: true
+    class: '::security_baseline::rules::sec_tcp_wrappers'
+    check:
+      fact_name: ''
+      fact_value: ''
+    message: 'Not in compliance with rule 3.4.1. TCP wrappers not installed.'
+    loglevel: 'warning'
+  '3.4.2':
+    rulename: 'hosts-allow'
+    active: true
+    description: 'The /etc/hosts.allow file specifies which IP addresses are permitted to connect to the host. It is intended to be used in conjunction with the /etc/hosts.deny file.'
+    enforce: true
+    class: '::security_baseline::rules::sec_hosts_allow'
+    check:
+      fact_name: 'hosts_allow'
+      fact_value: true
+    message: 'Not in compliance with rule 3.4.2. /etc/hosts.allow is not configured.'
+    loglevel: 'warning'
+  '3.4.3':
+    rulename: 'hosts-deny'
+    active: true
+    description: 'The /etc/hosts.deny file specifies which IP addresses are not permitted to connect to the host. It is intended to be used in conjunction with the /etc/hosts.allow file.'
+    enforce: true
+    class: '::security_baseline::rules::sec_hosts_deny'
+    check:
+      fact_name: 'hosts_deny'
+      fact_value: true
+    message: 'Not in compliance with rule 3.4.3. /etc/hosts.deny is not configured.'
+    loglevel: 'warning'
+  '3.5.1':
+    rulename: 'net-dccp'
+    active: true
+    description: 'The Datagram Congestion Control Protocol (DCCP) is a transport layer protocol that supports streaming media and telephony. DCCP provides a way to gain access to congestion control, without having to do it at the application layer, but does not provide in- sequence delivery.'
+    enforce: true
+    class: '::security_baseline::rules::sec_net_dccp'
+    check:
+      fact_name: 'net_dccp'
+      fact_value: false
+    message: 'Not in compliance with rule 3.5.1. DCCP is not disabled.'
+    loglevel: 'warning'
+  '3.5.2':
+    rulename: 'net-sctp'
+    active: true
+    description: 'The Stream Control Transmission Protocol (SCTP) is a transport layer protocol used to support message oriented communication, with several streams of messages in one connection. It serves a similar function as TCP and UDP, incorporating features of both. It is message-oriented like UDP, and ensures reliable in-sequence transport of messages with congestion control like TCP.'
+    enforce: true
+    class: '::security_baseline::rules::sec_net_sctp'
+    check:
+      fact_name: 'net_sctp'
+      fact_value: false
+    message: 'Not in compliance with rule 3.5.2. SCTP is not disabled.'
+    loglevel: 'warning'
+  '3.5.3':
+    rulename: 'net-rds'
+    active: true
+    description: 'The Reliable Datagram Sockets (RDS) protocol is a transport layer protocol designed to provide low-latency, high-bandwidth communications between cluster nodes. It was developed by the Oracle Corporation.'
+    enforce: true
+    class: '::security_baseline::rules::sec_net_rds'
+    check:
+      fact_name: 'net_rds'
+      fact_value: false
+    message: 'Not in compliance with rule 3.5.3. RDS is not disabled.'
+    loglevel: 'warning'
+  '3.5.4':
+    rulename: 'net-tipc'
+    active: true
+    description: 'The Transparent Inter-Process Communication (TIPC) protocol is designed to provide communication between cluster nodes.'
+    enforce: true
+    class: '::security_baseline::rules::sec_net_tipc'
+    check:
+      fact_name: 'net_tipc'
+      fact_value: false
+    message: 'Not in compliance with rule 3.5.4. TIPC is not disabled.'
+    loglevel: 'warning'
+  '3.6.1':
+    rulename: 'iptables'
+    active: true
+    description: 'iptables allows configuration of the IPv4 tables in the linux kernel and the rules stored within them. Most firewall configuration utilities operate as a front end to iptables.'
+    enforce: true
+    class: '::security_baseline::rules::sec_iptables'
+    check:
+      fact_name: 'iptables_pkg'
+      fact_value: true
+    message: 'Not in compliance with rule 3.6.1. No iptables package installed.'
+    loglevel: 'warning'

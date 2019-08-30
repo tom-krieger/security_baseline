@@ -4,6 +4,11 @@
 # Ensures there are no duplicate GIDs in /etc/group
 Facter.add('duplicate_gid') do
   confine :kernel => 'Linux'
+
+  # Many of these facts are the same, it is actually possible to write
+  # re-usable libraries that facts can share and that is probably what
+  # should be done here. It's pretty advanced though, usually you see these
+  # live under the puppet_x directory
   setcode do
     groups = ''
     if File.exists?('/etc/group')

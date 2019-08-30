@@ -32,7 +32,7 @@ class security_baseline::rules::sec_rsh (
   if($enforce) {
 
     service {
-      'rsh.socket':
+      'rsh.socket': # I don't like this syntax personally, harder to read, harder to refactor and doesn't save many lines
         ensure => 'stopped',
         enable => false;
 

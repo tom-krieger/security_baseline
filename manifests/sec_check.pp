@@ -47,12 +47,12 @@
 #       loglevel => 'warning',
 #   }
 define security_baseline::sec_check (
-  String $rulename,
+  String $rulename, # TODO: Alignment
   String $description,
   Boolean $enforce,
   String $class,
   Hash $check,
-  String $message = '',
+  String $message = '', # TODO: Alignment
   String $loglevel = 'warning',
   Boolean $active = true,
   Optional[Hash] $config_data = {},
@@ -60,9 +60,15 @@ define security_baseline::sec_check (
     if($active) {
 
       if($::security_baseline::debug) {
+        # As before, unless there is a good reason to be doing this I would not
+        # use notifys
         notify{"Applying rule ${rulename}": }
       }
 
+      # What is the idea behind all of this fact checking? Is the idea that for
+      # things that you can't write enforcement code for you could use a fact
+      # instead and this would just return a notify if the thing needs to be
+      # fixed?
       $fact_name = $check['fact_name']
       if($fact_name != '') {
 
@@ -71,15 +77,24 @@ define security_baseline::sec_check (
 
         if($current_value != $fact_value) {
           if($::security_baseline::debug) {
+            # This is a much more useful message than any of the others and
+            # does legitimatey represent a scenario where the server needs
+            # remediation as opposed to just an informational message, for
+            # that reason I'd say it might be valid to use a notify in this
+            # instance. The only problem is that all of the notifys are
+            # enabled and disabled by the debug parameter meaning that you
+            # can't have just the useful ones, you have to have all or nothing.
             notify{"Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'": }
           }
           if($::security_baseline::log_info) {
+            # Same note as before about info()
             info("Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'")
           }
         }
 
       }
 
+      # You don't have to do this. Experiment with "undef"
       if(empty($config_data)) {
 
         class { $class:
@@ -90,6 +105,11 @@ define security_baseline::sec_check (
 
       } else {
 
+        # The only problem that I see with this is the fact that people have to
+        # rewrite all of their modules to use this because it has to use the
+        # known interface. Using functionality like this:
+        # https://puppet.com/docs/puppet/latest/lang_resources.html#setting-attributes-from-a-hash
+        # might mean that you no longer need to have a static interface
         class { $class:
           enforce     => $enforce,
           message     => $message,

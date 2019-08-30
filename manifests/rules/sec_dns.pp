@@ -27,7 +27,7 @@
 # @api private
 class security_baseline::rules::sec_dns (
   Boolean $enforce = true,
-  String $message = '',
+  String $message = '', # TODO: Alignment
   String $loglevel = ''
 ) {
   if($enforce) {
@@ -35,7 +35,7 @@ class security_baseline::rules::sec_dns (
     service {'named':
       ensure => 'stopped',
       enable => false
-      }
+      } # TODO: Alignment
 
   } else {
 

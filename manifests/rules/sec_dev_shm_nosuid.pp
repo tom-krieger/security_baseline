@@ -31,6 +31,7 @@ class security_baseline::rules::sec_dev_shm_nosuid (
 ) {
   if $enforce {
 
+    # COuld we be using a resource for these instead of custom facts?
     if $::dev_shm_partition {
 
       if $::dev_shm_nosuid == false {

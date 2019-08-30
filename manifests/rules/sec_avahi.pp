@@ -28,7 +28,7 @@
 #
 # @api private
 class security_baseline::rules::sec_avahi (
-  Boolean $enforce = true,
+  Boolean $enforce = true, # TODO: Alignment
   String $message = '',
   String $loglevel = ''
 ) {
@@ -37,11 +37,13 @@ class security_baseline::rules::sec_avahi (
     service {'avahi-daemon':
       ensure => 'stopped',
       enable => false
-      }
+      } # TODO: Alignment
 
   } else {
 
     if($::srv_avahi == 'enabled') {
+      # Once again there  is no need for the custom fact here, we could just
+      # have run the service resource in noop mode
       notify { 'avahi-daemon':
         message  => $message,
         loglevel => $loglevel,

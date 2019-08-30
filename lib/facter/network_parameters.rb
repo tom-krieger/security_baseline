@@ -6,6 +6,9 @@
 Facter.add('network_parameters') do
   confine :kernel => 'Linux'
   setcode do
+    # There is lots of trailing whotespace in these files, are you writing them
+    # in Vim? I would recommend VSCode or a plugin to strip exces whitespace
+    # automatically
     ret = {}
     keys = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
       'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',

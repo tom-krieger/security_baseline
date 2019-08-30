@@ -38,6 +38,7 @@ class security_baseline::rules::sec_dhcpd (
 
   } else {
 
+    # Once again we could be using noop here
     if($::srv_dhcpd == 'enabled') {
       notify { 'dhcpd':
         message  => $message,

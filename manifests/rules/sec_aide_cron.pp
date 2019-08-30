@@ -25,12 +25,14 @@
 #
 # @api private
 class security_baseline::rules::sec_aide_cron (
-  Boolean $enforce = true,
+  Boolean $enforce = true, # TODO: Alignment
   String $message = '',
   String $loglevel = ''
 ) {
   if($enforce) {
 
+    # Could all of this logic have been replaced by a cron resource?
+    # https://forge.puppet.com/puppetlabs/cron_core
     if(empty($::aide_cron) and ! empty($::aide_version)) {
 
       file { '/etc/cron.d/aide.cron':
@@ -43,6 +45,7 @@ class security_baseline::rules::sec_aide_cron (
 
     }
 
+  # If we aren't enforcing, why would we use a notify and not jusst use noop?
   } else {
 
     if(empty($::aide_cron)) {

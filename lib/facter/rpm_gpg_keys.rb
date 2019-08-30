@@ -5,6 +5,7 @@
 
 Facter.add('rpm_gpg_keys') do
   confine :osfamily => 'RedHat'
+  # This also doesn't need a do end block
   setcode do
       Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
   end

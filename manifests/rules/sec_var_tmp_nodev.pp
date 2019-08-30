@@ -31,6 +31,8 @@ class security_baseline::rules::sec_var_tmp_nodev (
 ) {
   if $enforce {
 
+    # Many of the options her5e could possibly be managed by a mount resource:
+    # https://forge.puppet.com/puppetlabs/mount_core
     if $::var_tmp_partition {
 
       if $::var_tmp_nodev == false {

@@ -27,7 +27,7 @@
 #
 # @api private
 class security_baseline::rules::sec_cups (
-  Boolean $enforce = true,
+  Boolean $enforce = true, # TODO: Alignment
   String $message = '',
   String $loglevel = ''
 ) {
@@ -36,7 +36,7 @@ class security_baseline::rules::sec_cups (
     service {'cups':
       ensure => 'stopped',
       enable => false
-      }
+      } # TODO: Alignment
 
   } else {
 

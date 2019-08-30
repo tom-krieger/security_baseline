@@ -32,6 +32,8 @@ class security_baseline::rules::sec_hosts_allow (
 ) {
   if($enforce) {
 
+    # Do we actually want to set this? This would mean that it can only be
+    # accessed from within its own network, is this safe?
     file { '/etc/hosts.allow':
       ensure  => file,
       owner   => 'root',

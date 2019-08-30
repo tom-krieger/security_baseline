@@ -27,7 +27,7 @@
 #
 # @api private
 class security_baseline::rules::sec_aide (
-  Boolean $enforce = true,
+  Boolean $enforce = true, # TODO: Alignment
   String $message = '',
   String $loglevel = ''
 ) {

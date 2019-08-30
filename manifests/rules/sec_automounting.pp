@@ -33,6 +33,10 @@ class security_baseline::rules::sec_automounting (
 
     if $::automounting == 'enabled' {
 
+        # Why do we need to use a combination of a fact and a resource for
+        # this? Why couldn't we just disable the service using a service
+        # resource? Even if we were to use an exec, why are we using a fact
+        # to check first? Why not use "onlyif" or "unless"?
         exec {'disable_automount':
           command => 'systemctl disable autofs',
           path    => '/bin/',

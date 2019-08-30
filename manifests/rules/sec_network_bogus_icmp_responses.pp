@@ -27,12 +27,13 @@
 #
 # @api private
 class security_baseline::rules::sec_network_bogus_icmp_responses (
-  Boolean $enforce = true,
+  Boolean $enforce = true, # TODO: Alignment
   String $message = '',
   String $loglevel = ''
 ) {
   if($enforce) {
 
+    # Why the inconsistency with newlines for resource titles?
     sysctl {
       'net.ipv4.icmp_ignore_bogus_error_responses':
         value => 1
@@ -46,6 +47,7 @@ class security_baseline::rules::sec_network_bogus_icmp_responses (
       $fact = ''
     }
     if($fact != '1') {
+      # As before we could be using noop for this which would be much simpler
       notify { 'nnet.ipv4.icmp_ignore_bogus_error_responses':
         message  => $message,
         loglevel => $loglevel,

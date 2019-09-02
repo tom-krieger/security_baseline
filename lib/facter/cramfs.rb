@@ -1,4 +1,4 @@
-equire 'facter/check_skernel_module'
+require 'facter/check_skernel_module'
 
 # frozen_string_literal: true
 

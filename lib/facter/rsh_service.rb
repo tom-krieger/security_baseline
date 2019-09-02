@@ -9,7 +9,7 @@ Facter.add('srv_rsh') do
     confine :osfamily => 'RedHat'
     setcode do
       ret = ''
-      rhs = check_service_is_enabled('rsh.socket')
+      rsh = check_service_is_enabled('rsh.socket')
       rlogin = check_service_is_enabled('rlogin.socket')
       rexec = check_service_is_enabled('recex.socket')
   

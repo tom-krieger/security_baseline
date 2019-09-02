@@ -62,7 +62,10 @@ define security_baseline::sec_check (
     if($active) {
 
       if($::security_baseline::debug) {
-        echo{"Applying rule ${rulename}": }
+        echo{"Applying rule ${rulename}":
+          loglesel => 'debug',
+          withpath => false,
+        }
       }
 
       $fact_name = $check['fact_name']

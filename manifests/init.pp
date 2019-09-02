@@ -49,11 +49,13 @@ class security_baseline (
 
   concat::fragment { 'start':
     content => '{ ',
+    target  => $logfile,
   }
 
   create_resources('::security_baseline::sec_check', $rules)
 
   concat::fragment { 'finish':
     content => ' }',
+    target  => $logfile,
   }
 }

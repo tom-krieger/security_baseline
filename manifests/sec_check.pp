@@ -85,7 +85,8 @@ define security_baseline::sec_check (
               'desc'  => $description,
               'msg'   => $message,
               'level' => $loglevel,
-            })
+            }),
+            target  => $logfile,
           }
         }
 

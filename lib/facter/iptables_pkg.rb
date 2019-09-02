@@ -6,7 +6,7 @@
 Facter.add('iptables_pkg') do
   confine :osfamily => 'RedHat'
   setcode do
-    check_package_installed('iptables'
+    check_package_installed('iptables')
   end
 end
  

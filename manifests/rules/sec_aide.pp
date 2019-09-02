@@ -36,7 +36,7 @@ class security_baseline::rules::sec_aide (
 
     package { 'aide':
       ensure => installed,
-      echo => Exec['aidedb'],
+      notify => Exec['aidedb'],
     }
 
     exec { 'aidedb':

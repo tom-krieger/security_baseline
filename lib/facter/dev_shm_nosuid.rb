@@ -7,10 +7,6 @@ Facter.add('dev_shm_nosuid') do
   confine :kernel => 'Linux'
   setcode do
     mounted = Facter::Core::Execution.exec('mount | grep /dev/shm')
-    if mounted.match?(%r{nosuid})
-      true
-    else
-      false
-    end
+    mounted.match?(%r{nosuid})
   end
 end

@@ -7,10 +7,6 @@ Facter.add('dev_shm_noedxec') do
   confine :kernel => 'Linux'
   setcode do
     mounted = Facter::Core::Execution.exec('mount | grep /dev/shm')
-    if mounted.match?(%r{noexec})
-      true
-    else
-      false
-    end
+    mounted.match?(%r{noexec})
   end
 end

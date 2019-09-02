@@ -7,22 +7,14 @@ Facter.add('srv_nfs') do
   confine :osfamily => 'RedHat'
   setcode do
     ret = 'disabled'
-    nfs = Facter::Core::Execution.exec('systemctl is-enabled nfs')
-    nfsserver = Facter::Core::Execution.exec('systemctl is-enabled nfs-server')
-    rpcbind = Facter::Core::Execution.exec('systemctl is-enabled rpcbind')
-    if (nfs =~ %r{^Failed}) or (nfs.empty?) then
-      nfs = 'disabled'
-    end
-    if (nfsserver =~ %r{^Failed}) or (nfsserver.empty?) then
-      nfsserver = 'disabled'
-    end
-    if (rpcbind =~ %r{^Failed}) or (rpcbind.empty?) then
-      rpcbind = 'disabled'
-    end
+    nfs = check_service_is_enabled('nfs')
+    nfsserver = check_service_is_enabled('nfs-server')
+    rpcbind = check_service_is_enabled('rpcbind')
 
     if (nfs != 'disabled') or (nfsserver != 'disabled') or (rpcbind != 'disabled') then
       ret = 'enabled'
     end
+    
     ret
   end
 end

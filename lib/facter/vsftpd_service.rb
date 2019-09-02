@@ -6,15 +6,7 @@
 Facter.add('srv_vsftpd') do
     confine :osfamily => 'RedHat'
     setcode do
-      ret = ''
-      vsftpd = Facter::Core::Execution.exec('systemctl is-enabled vsftpd')
-      if (vsftpd =~ %r{^Failed}) or (vsftpd.empty?) then
-        ret = 'disabled'
-      else
-        ret = vsftpd
-      end
-  
-      ret
+      check_service_is_enabled('vsftpd')
     end
   end
     

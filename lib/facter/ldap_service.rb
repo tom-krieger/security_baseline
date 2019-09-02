@@ -6,15 +6,7 @@
 Facter.add('srv_slapd') do
   confine :osfamily => 'RedHat'
   setcode do
-    ret = ''
-    slapd = Facter::Core::Execution.exec('systemctl is-enabled slapd')
-    if (slapd =~ %r{^Failed}) or (slapd.empty?) then
-      ret = 'disabled'
-    else
-      ret = slapd
-    end
-
-    ret
+    check_service_is_enabled('ldap')
   end
 end
     

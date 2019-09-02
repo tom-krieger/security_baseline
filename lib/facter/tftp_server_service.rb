@@ -6,15 +6,7 @@
 Facter.add('srv_tftp_server') do
     confine :osfamily => 'RedHat'
     setcode do
-      ret = ''
-      tftp_server = Facter::Core::Execution.exec('systemctl is-enabled tftp.socket')
-      if (tftp_server =~ %r{^Failed}) or (tftp_server.empty?) then
-        ret = 'disabled'
-      else
-        ret = tftp_server
-      end
-  
-      ret
+      check_service_is_enabled('tftp.socket')
     end
   end
       

@@ -6,15 +6,7 @@
 Facter.add('srv_dns') do
   confine :osfamily => 'RedHat'
   setcode do
-    ret = ''
-    named = Facter::Core::Execution.exec('systemctl is-enabled named')
-    if (named =~ %r{^Failed}) or (named.empty?) then
-      ret = 'disabled'
-    else
-      ret = named
-    end
-
-    ret
+    check_service_is_enabled('named')
   end
 end
     

@@ -6,15 +6,7 @@
 Facter.add('srv_snmpd') do
   confine :osfamily => 'RedHat'
   setcode do
-    ret = ''
-    snmp = Facter::Core::Execution.exec('systemctl is-enabled snmpd')
-    if (snmp =~ %r{^Failed}) or (snmp.empty?) then
-      ret = 'disabled'
-    else
-      ret = snmp
-    end
-
-    ret
+    check_service_is_enabled('snmpd')
   end
 end
   

@@ -6,15 +6,7 @@
 Facter.add('srv_telnet') do
   confine :osfamily => 'RedHat'
   setcode do
-    ret = ''
-    telnet = Facter::Core::Execution.exec('systemctl is-enabled telnet.socket')
-    if (telnet =~ %r{^Failed}) or (telnet.empty?) then
-      ret = 'disabled'
-    else
-      ret = telnet
-    end
-
-    ret
+    check_service_is_enabled('telnet.socket')
   end
 end
     

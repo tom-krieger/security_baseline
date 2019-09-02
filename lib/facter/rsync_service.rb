@@ -6,15 +6,7 @@
 Facter.add('srv_rsyncd') do
   confine :osfamily => 'RedHat'
   setcode do
-    ret = ''
-    rsyncd = Facter::Core::Execution.exec('systemctl is-enabled rsyncd')
-    if (rsyncd =~ %r{^Failed}) or (rsyncd.empty?) then
-      ret = 'disabled'
-    else
-      ret = rsyncd
-    end
-
-    ret
+    check_service_is_enabled('rsyncd')
   end
 end
       

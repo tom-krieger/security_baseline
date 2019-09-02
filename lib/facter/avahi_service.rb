@@ -6,15 +6,7 @@
 Facter.add('srv_avahi') do
   confine :osfamily => 'RedHat'
   setcode do
-    ret = ''
-    avahi = Facter::Core::Execution.exec('systemctl is-enabled avahi-daemon')
-    if (avahi =~ %r{^Failed}) or (avahi.empty?) then
-      ret = 'disabled'
-    else
-      ret = avahi
-    end
-
-    ret
+    check_service_is_enabled('avahi-daemon')
   end
 end
   

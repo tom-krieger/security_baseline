@@ -6,15 +6,7 @@
 Facter.add('srv_squid') do
   confine :osfamily => 'RedHat'
   setcode do
-    ret = ''
-    squid = Facter::Core::Execution.exec('systemctl is-enabled squid')
-    if (squid =~ %r{^Failed}) or (squid.empty?) then
-      ret = 'disabled'
-    else
-      ret = squid
-    end
-
-    ret
+    check_service_is_enabled('squid')
   end
 end
   

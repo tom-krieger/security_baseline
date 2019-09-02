@@ -6,15 +6,7 @@
 Facter.add('srv_ypserv') do
   confine :osfamily => 'RedHat'
   setcode do
-    ret = ''
-    ypserv = Facter::Core::Execution.exec('systemctl is-enabled ypserv')
-    if (ypserv =~ %r{^Failed}) or (ypserv.empty?) then
-      ret = 'disabled'
-    else
-      ret = ypserv
-    end
-
-    ret
+    check_service_is_enabled('ypserv')
   end
 end
       

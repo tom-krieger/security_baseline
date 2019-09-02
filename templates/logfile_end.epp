@@ -1,4 +1,9 @@
 
+  ],
+  "report": {
+    "starttime": "<%= $starttime %>",
+    "endtime": "<%= $finish %>"
+  }
 }
 
 #   end of logfile

@@ -1,3 +1,5 @@
+require 'facter/get_sysctl_value'
+
 # frozen_string_literal: true
 
 # network_parameters.rb
@@ -16,13 +18,7 @@ Facter.add('network_parameters') do
       'net.ipv6.conf.default.accept_redirects', 'net.ipv6.conf.all.disable_ipv6', 'net.ipv6.conf.default.disable_ipv6']
 
     keys.each do |key|
-
-      value = Facter::Core::Execution.exec("sysctl #{key}")
-      if ! value.nil? and ! value.empty? 
-        vals = value.split(%r{ = })
-        ret[vals[0]] = vals[1]
-      end
-
+      ret[key] = get_sysctl_value(key)
     end
     
     ret

@@ -1,3 +1,5 @@
+require 'facter/get_sysctl_value'
+
 # frozen_string_literal: true
 
 # rkernel_aslr.rb
@@ -6,8 +8,7 @@
 Facter.add('kernel_aslr') do
   confine :osfamily => 'RedHat'
   setcode do
-      val = Facter::Core::Execution.exec("sysctl kernel.randomize_va_space").split(/=/)
-      val[1].strip()
+    get_sysctl_value('kernel.randomize_va_space')
   end
 end
     

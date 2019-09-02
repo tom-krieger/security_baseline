@@ -40,7 +40,7 @@ class security_baseline (
 
   validate_hash($rules)
 
-  $timestamp = generate("/bin/date +'%Y-%m-%d_%H:%M:%S'")
+  $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
   concat { $logfile:
     ensure => present,
@@ -57,7 +57,7 @@ class security_baseline (
 
   create_resources('::security_baseline::sec_check', $rules)
 
-  $finished = generate("/bin/date +'%Y-%m-%d_%H:%M:%S'")
+  $finished = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
   concat::fragment { 'finish':
     content => epp('security_baseline/logfile_end.epp', {'finish' => $finished}),

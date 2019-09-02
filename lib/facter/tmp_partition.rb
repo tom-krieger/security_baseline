@@ -5,5 +5,5 @@
 
 Facter.add('tmp_partition') do
   confine :kernel => 'Linux'
-  setcode 'mount | grep /tmp'
+  setcode 'mount | grep "/tmp "'
 end

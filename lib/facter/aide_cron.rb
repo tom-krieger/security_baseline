@@ -9,7 +9,7 @@ Facter.add('aide_cron') do
     cronentry = Facter::Core::Execution.exec("crontab -u root -l | grep aide")
     fileentry = Facter::Core::Execution.exec("grep -rh aide /etc/cron.* /etc/crontab")
     if cronentry.empty? and fileentry.empty? then
-      ret = 'n/a'
+      ret = 'undef'
     else
       if ! cronentry.empty? then
         ret = cronentry

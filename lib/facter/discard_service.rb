@@ -1,3 +1,5 @@
+require 'facter/check_service_enabled'
+
 # frozen_string_literal: true
 
 # discard_service.rb

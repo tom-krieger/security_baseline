@@ -79,12 +79,13 @@ define security_baseline::sec_check (
             info("Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'")
           }
 
-          concat::fragment { $rulename:
+          concat::fragment { $title:
             content => epp('security_baseline/logentry.epp', {
-              'rule'  => $rulename,
-              'desc'  => $description,
-              'msg'   => $message,
-              'level' => $loglevel,
+              'rulenr' => $title,
+              'rule'   => $rulename,
+              'desc'   => $description,
+              'msg'    => $message,
+              'level'  => $loglevel,
             }),
             target  => $logfile,
           }

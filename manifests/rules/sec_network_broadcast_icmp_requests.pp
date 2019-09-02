@@ -52,6 +52,7 @@ class security_baseline::rules::sec_network_broadcast_icmp_requests (
       echo { 'net.ipv4.icmp_echo_ignore_broadcasts':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

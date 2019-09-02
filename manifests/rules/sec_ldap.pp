@@ -35,7 +35,7 @@ class security_baseline::rules::sec_ldap (
     service {'slapd':
       ensure => 'stopped',
       enable => false
-      }
+    }
 
   } else {
 
@@ -43,6 +43,7 @@ class security_baseline::rules::sec_ldap (
       echo { 'dhcpd':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

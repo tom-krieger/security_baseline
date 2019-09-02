@@ -42,6 +42,7 @@ class security_baseline::rules::sec_net_sctp (
       echo { 'net-sctp':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

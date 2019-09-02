@@ -37,6 +37,7 @@ class security_baseline::rules::sec_dev_shm_nosuid (
         echo { 'dev-shm-nosuid':
           message  => $message,
           loglevel => $loglevel,
+          withpath => false,
         }
       }
     }

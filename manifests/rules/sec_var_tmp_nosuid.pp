@@ -37,6 +37,7 @@ class security_baseline::rules::sec_var_tmp_nosuid (
         echo { 'var-tmp-noexec':
           message  => $message,
           loglevel => $loglevel,
+          withpath => false,
         }
       }
     }

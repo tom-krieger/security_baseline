@@ -42,6 +42,7 @@ class security_baseline::rules::sec_selinux (
       echo { 'selinux-pkg':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

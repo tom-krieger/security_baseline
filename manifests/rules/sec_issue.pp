@@ -44,6 +44,7 @@ class security_baseline::rules::sec_issue (
       echo { 'issue':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

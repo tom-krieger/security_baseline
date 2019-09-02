@@ -43,6 +43,7 @@ class security_baseline::rules::sec_mcstrans (
       echo { 'mcstrans':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

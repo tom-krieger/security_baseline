@@ -37,6 +37,7 @@ class security_baseline::rules::sec_tmp_noexec (
         echo { 'tmp-noexec':
           message  => $message,
           loglevel => $loglevel,
+          withpath => false,
         }
       }
     }

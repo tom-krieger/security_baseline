@@ -45,6 +45,7 @@ class security_baseline::rules::sec_smb (
       echo { 'smb':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

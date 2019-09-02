@@ -40,6 +40,7 @@ class security_baseline::rules::sec_security_patches (
       echo { 'security-patches':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

@@ -43,6 +43,7 @@ class security_baseline::rules::sec_talk_client (
       echo { 'talk-client':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

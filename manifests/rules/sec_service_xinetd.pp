@@ -44,6 +44,7 @@ class security_baseline::rules::sec_service_xinetd (
       echo { 'xin etd-service':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

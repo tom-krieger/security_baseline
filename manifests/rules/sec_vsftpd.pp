@@ -35,7 +35,7 @@ class security_baseline::rules::sec_vsftpd (
 
     service {'vsftpd':
       ensure => 'stopped',
-      enable => false
+      enable => false,
     }
 
   } else {
@@ -44,6 +44,7 @@ class security_baseline::rules::sec_vsftpd (
       echo { 'vsftpd':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

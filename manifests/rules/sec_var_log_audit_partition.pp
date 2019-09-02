@@ -38,6 +38,7 @@ class security_baseline::rules::sec_var_log_audit_partition (
       echo { 'var-log-audit-partition':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
         }
       }
   }

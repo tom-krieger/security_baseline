@@ -48,6 +48,7 @@ class security_baseline::rules::sec_service_daytime (
       echo { 'daytime-service':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

@@ -42,6 +42,7 @@ class security_baseline::rules::sec_httpd (
       echo { 'httpd':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

@@ -43,6 +43,7 @@ class security_baseline::rules::sec_issue_net (
       echo { 'issue-net':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

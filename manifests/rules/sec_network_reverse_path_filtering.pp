@@ -61,6 +61,7 @@ class security_baseline::rules::sec_network_reverse_path_filtering (
       echo { 'net.ipv4.conf.all.rp_filter':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

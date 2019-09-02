@@ -42,6 +42,7 @@ class security_baseline::rules::sec_selinux_bootloader (
       echo { 'bootloader-selinux':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

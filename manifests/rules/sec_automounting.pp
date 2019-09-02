@@ -44,6 +44,7 @@ class security_baseline::rules::sec_automounting (
     echo { 'sticky-ww':
       message  => $message,
       loglevel => $loglevel,
+      withpath => false,
     }
 
   }

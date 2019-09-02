@@ -37,6 +37,7 @@ class security_baseline::rules::sec_dev_shm_nodev (
         echo { 'dev-shm-nodev':
           message  => $message,
           loglevel => $loglevel,
+          withpath => false,
         }
       }
     }

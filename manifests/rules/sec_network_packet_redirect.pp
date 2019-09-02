@@ -56,6 +56,7 @@ class security_baseline::rules::sec_network_packet_redirect (
       echo { 'net.ipv4.conf.all.send_redirects':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

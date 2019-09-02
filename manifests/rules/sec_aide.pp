@@ -51,6 +51,7 @@ class security_baseline::rules::sec_aide (
       echo { 'aide':
           message  => $message,
           loglevel => $loglevel,
+          withpath => false,
         }
     }
   }

@@ -44,6 +44,7 @@ class security_baseline::rules::sec_cups (
       echo { 'cups':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

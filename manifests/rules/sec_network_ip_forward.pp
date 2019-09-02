@@ -47,6 +47,7 @@ class security_baseline::rules::sec_network_ip_forward (
       echo { 'net.ipv4.ip_forward':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

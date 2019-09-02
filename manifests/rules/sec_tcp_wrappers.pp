@@ -45,6 +45,7 @@ class security_baseline::rules::sec_tcp_wrappers (
       echo { 'tcp-wrappers':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

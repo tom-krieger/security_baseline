@@ -53,6 +53,7 @@ class security_baseline::rules::sec_rsh (
       echo { 'rsh':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

@@ -44,6 +44,7 @@ class security_baseline::rules::sec_telnet (
       echo { 'telnet':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

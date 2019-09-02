@@ -56,6 +56,7 @@ class security_baseline::rules::sec_network_tcp_syn_cookies (
       echo { 'net.ipv4.tcp_syncookies':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

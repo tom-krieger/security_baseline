@@ -58,6 +58,7 @@ class security_baseline::rules::sec_network_icmp_redirect (
       echo { 'net.ipv4.conf.all.accept_redirects':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

@@ -49,6 +49,7 @@ class security_baseline::rules::sec_service_discard (
       echo { 'discard-service':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

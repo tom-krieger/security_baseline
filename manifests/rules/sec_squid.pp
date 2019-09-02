@@ -42,6 +42,7 @@ class security_baseline::rules::sec_squid (
       echo { 'squid':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

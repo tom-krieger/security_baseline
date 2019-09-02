@@ -51,6 +51,7 @@ class security_baseline::rules::sec_single_user_mode (
       echo { 'sticky-ww':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

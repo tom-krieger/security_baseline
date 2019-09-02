@@ -40,6 +40,7 @@ class security_baseline::rules::sec_net_tipc (
       echo { 'net-tipc':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

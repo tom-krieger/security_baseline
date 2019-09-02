@@ -42,6 +42,7 @@ class security_baseline::rules::sec_dhcpd (
       echo { 'dhcpd':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

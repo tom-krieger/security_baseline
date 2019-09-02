@@ -46,6 +46,7 @@ class security_baseline::rules::sec_nis (
       echo { 'ypserv':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

@@ -55,6 +55,7 @@ class security_baseline::rules::sec_network_ipv6_router_advertisements (
       echo { 'net.ipv6.conf.all.accept_ra':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

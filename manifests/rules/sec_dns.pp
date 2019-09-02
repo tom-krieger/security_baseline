@@ -43,6 +43,7 @@ class security_baseline::rules::sec_dns (
       echo { 'dns':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

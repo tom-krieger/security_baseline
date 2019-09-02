@@ -46,6 +46,7 @@ class security_baseline::rules::sec_hosts_deny (
       echo { 'hosts-deny':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

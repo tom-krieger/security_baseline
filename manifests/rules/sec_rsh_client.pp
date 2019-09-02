@@ -45,6 +45,7 @@ class security_baseline::rules::sec_rsh_client (
       echo { 'rsh-client':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

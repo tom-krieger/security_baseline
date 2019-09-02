@@ -37,6 +37,7 @@ class security_baseline::rules::sec_tmp_nosuid (
         echo { 'tmp-nosuid':
           message  => $message,
           loglevel => $loglevel,
+          withpath => false,
         }
       }
     }

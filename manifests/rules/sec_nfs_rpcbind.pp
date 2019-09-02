@@ -52,6 +52,7 @@ class security_baseline::rules::sec_nfs_rpcbind (
       echo { 'nfs':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

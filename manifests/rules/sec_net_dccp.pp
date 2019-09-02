@@ -41,6 +41,7 @@ class security_baseline::rules::sec_net_dccp (
       echo { 'net-dccp':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

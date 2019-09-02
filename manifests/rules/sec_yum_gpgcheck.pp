@@ -46,6 +46,7 @@ class security_baseline::rules::sec_yum_gpgcheck (
       echo { 'yum_gpgcheck':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

@@ -43,6 +43,7 @@ class security_baseline::rules::sec_kernel_aslr (
       echo { 'kernel-aslr':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

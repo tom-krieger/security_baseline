@@ -42,6 +42,7 @@ class security_baseline::rules::sec_iptables (
       echo { 'iptables':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

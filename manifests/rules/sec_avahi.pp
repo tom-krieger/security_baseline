@@ -45,6 +45,7 @@ class security_baseline::rules::sec_avahi (
       echo { 'avahi-daemon':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

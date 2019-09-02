@@ -46,6 +46,7 @@ class security_baseline::rules::sec_rhnsd (
       echo { 'rhnsd':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

@@ -37,6 +37,7 @@ class security_baseline::rules::sec_dev_shm_noexec (
         echo { 'dev-shm-noexec':
           message  => $message,
           loglevel => $loglevel,
+          withpath => false,
         }
       }
     }

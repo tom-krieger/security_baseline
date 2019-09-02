@@ -46,6 +46,7 @@ class security_baseline::rules::sec_snmpd (
       echo { 'snmpd':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

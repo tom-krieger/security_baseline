@@ -53,6 +53,7 @@ class security_baseline::rules::sec_network_ipv6_disable (
       echo { 'net.ipv6.conf.all.disable_ipv6':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

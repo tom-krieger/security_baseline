@@ -44,6 +44,7 @@ class security_baseline::rules::sec_tftp (
       echo { 'tftp-server':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

@@ -41,6 +41,7 @@ class security_baseline::rules::sec_var_tmp_partition (
       echo { 'var-tmp-partition':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
         }
       }
   }

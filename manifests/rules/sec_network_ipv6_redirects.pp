@@ -58,6 +58,7 @@ class security_baseline::rules::sec_network_ipv6_redirects (
       echo { 'net.ipv6.conf.all.accept_redirectss':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

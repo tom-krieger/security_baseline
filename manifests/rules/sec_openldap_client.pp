@@ -43,6 +43,7 @@ class security_baseline::rules::sec_openldap_client (
       echo { 'openldp-clients':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

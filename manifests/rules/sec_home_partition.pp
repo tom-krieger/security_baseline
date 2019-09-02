@@ -36,6 +36,7 @@ class security_baseline::rules::sec_home_partition (
       echo { 'home-partition':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
         }
       }
   }

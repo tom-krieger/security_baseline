@@ -50,6 +50,7 @@ class security_baseline::rules::sec_aide_cron (
       echo { 'aide-cron':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
 

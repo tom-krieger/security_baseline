@@ -57,6 +57,7 @@ class security_baseline::rules::sec_network_log_suspicious_packets (
       echo { 'net.ipv4.conf.all.log_martians':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

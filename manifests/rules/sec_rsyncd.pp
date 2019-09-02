@@ -32,8 +32,8 @@ class security_baseline::rules::sec_rsyncd (
 
     service {'rsyncd':
       ensure => 'stopped',
-      enable => false
-      }
+      enable => false,
+    }
 
   } else {
 
@@ -41,6 +41,7 @@ class security_baseline::rules::sec_rsyncd (
       echo { 'rsyncd':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

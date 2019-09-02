@@ -46,6 +46,7 @@ class security_baseline::rules::sec_nis_client(
       echo { 'nis-client':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

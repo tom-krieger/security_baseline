@@ -44,6 +44,7 @@ class security_baseline::rules::sec_setroubleshoot (
       echo { 'setroubleshoot':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

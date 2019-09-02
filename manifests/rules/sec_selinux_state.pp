@@ -44,6 +44,7 @@ class security_baseline::rules::sec_selinux_state (
       echo { 'selinux':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

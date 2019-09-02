@@ -43,6 +43,7 @@ class security_baseline::rules::sec_sticky_world_writeable (
       echo { 'sticky-ww':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

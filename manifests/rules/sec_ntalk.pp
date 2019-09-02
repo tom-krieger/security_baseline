@@ -34,7 +34,7 @@ class security_baseline::rules::sec_ntalk (
     service {'ntalk':
       ensure => 'stopped',
       enable => false
-      }
+    }
 
   } else {
 
@@ -42,6 +42,7 @@ class security_baseline::rules::sec_ntalk (
       echo { 'ntalk':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
     }
   }

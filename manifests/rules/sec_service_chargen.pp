@@ -49,6 +49,7 @@ class security_baseline::rules::sec_service_chargen (
       echo { 'chargen-service':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

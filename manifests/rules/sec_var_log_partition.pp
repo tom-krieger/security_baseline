@@ -36,8 +36,9 @@ class security_baseline::rules::sec_var_log_partition (
       echo { 'var-log-partition':
         message  => $message,
         loglevel => $loglevel,
-        }
+        withpath => false,
       }
+    }
   }
 
 }

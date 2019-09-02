@@ -51,6 +51,7 @@ class security_baseline::rules::sec_service_tftp (
       echo { 'tftp-service':
         message  => $message,
         loglevel => $loglevel,
+        withpath => false,
       }
 
     }

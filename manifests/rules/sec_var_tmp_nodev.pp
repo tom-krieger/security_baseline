@@ -37,6 +37,7 @@ class security_baseline::rules::sec_var_tmp_nodev (
         echo { 'var-tmp-nodev':
           message  => $message,
           loglevel => $loglevel,
+          withpath => false,
         }
       }
     }

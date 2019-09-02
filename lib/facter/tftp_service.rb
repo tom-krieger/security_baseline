@@ -8,7 +8,7 @@ require 'facter/check_service_enabled'
 Facter.add('srv_tftp') do
     confine :osfamily => 'RedHat'
     setcode do
-      check_xinetd_service(>'tftp')
+      check_xinetd_service('tftp')
     end
   end
   

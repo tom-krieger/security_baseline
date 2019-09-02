@@ -61,7 +61,7 @@ class security_baseline::rules::sec_network_source_route (
       $fact_default = ''
     }
     if(($fact != '0') or ($fact_default != '0')) {
-      notify { 'net.ipv4.conf.all.accept_source_route':
+      echo { 'net.ipv4.conf.all.accept_source_route':
         message  => $message,
         loglevel => $loglevel,
       }

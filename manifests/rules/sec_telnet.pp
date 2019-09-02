@@ -41,7 +41,7 @@ class security_baseline::rules::sec_telnet (
   } else {
 
     if($::srv_telnet == 'enabled') {
-      notify { 'telnet':
+      echo { 'telnet':
         message  => $message,
         loglevel => $loglevel,
       }

@@ -41,7 +41,7 @@ class security_baseline::rules::sec_automounting (
 
   } else {
 
-    notify { 'sticky-ww':
+    echo { 'sticky-ww':
       message  => $message,
       loglevel => $loglevel,
     }

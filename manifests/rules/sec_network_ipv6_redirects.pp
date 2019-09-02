@@ -55,7 +55,7 @@ class security_baseline::rules::sec_network_ipv6_redirects (
       $fact_default = ''
     }
     if(($fact != '0') or ($fact_default != '0')) {
-      notify { 'net.ipv6.conf.all.accept_redirectss':
+      echo { 'net.ipv6.conf.all.accept_redirectss':
         message  => $message,
         loglevel => $loglevel,
       }

@@ -40,7 +40,7 @@ class security_baseline::rules::sec_issue_net (
   if($enforce) {
 
     if($::issue_net) {
-      notify { 'issue-net':
+      echo { 'issue-net':
         message  => $message,
         loglevel => $loglevel,
       }

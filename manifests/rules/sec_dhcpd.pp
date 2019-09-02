@@ -39,7 +39,7 @@ class security_baseline::rules::sec_dhcpd (
   } else {
 
     if($::srv_dhcpd == 'enabled') {
-      notify { 'dhcpd':
+      echo { 'dhcpd':
         message  => $message,
         loglevel => $loglevel,
       }

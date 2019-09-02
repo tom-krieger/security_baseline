@@ -43,7 +43,7 @@ class security_baseline::rules::sec_nis_client(
 
     if($::ypbind_pkg) {
 
-      notify { 'nis-client':
+      echo { 'nis-client':
         message  => $message,
         loglevel => $loglevel,
       }

@@ -34,7 +34,7 @@ class security_baseline::rules::sec_tmp_nodev (
     if $::tmp_partition {
 
       if $::tmp_nodev == false {
-        notify { 'tmp-nodev':
+        echo { 'tmp-nodev':
           message  => $message,
           loglevel => $loglevel,
         }

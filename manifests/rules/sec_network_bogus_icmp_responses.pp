@@ -46,7 +46,7 @@ class security_baseline::rules::sec_network_bogus_icmp_responses (
       $fact = ''
     }
     if($fact != '1') {
-      notify { 'nnet.ipv4.icmp_ignore_bogus_error_responses':
+      echo { 'nnet.ipv4.icmp_ignore_bogus_error_responses':
         message  => $message,
         loglevel => $loglevel,
       }

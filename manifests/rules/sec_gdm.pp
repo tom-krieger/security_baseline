@@ -44,7 +44,7 @@ class security_baseline::rules::sec_gdm (
         path    => '/etc/dconf/db/gdm.d/01-banner-message',
         content => "[org/gnome/login-screen]\nbanner-message-enable=true\nbanner-message-text=\'Authorized uses only. All activity may be monitored and reported.\'", #lint:ignore:140chars
         require => File['gdm'],
-        notify  => Exec['dconf-gdm'],
+        echo  => Exec['dconf-gdm'],
       }
       exec { 'dconf-gdm':
         path        => '/bin/',
@@ -54,7 +54,7 @@ class security_baseline::rules::sec_gdm (
 
     } else {
 
-      notify { 'gdm':
+      echo { 'gdm':
         message  => $message,
         loglevel => $loglevel,
       }

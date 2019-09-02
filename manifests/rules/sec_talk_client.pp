@@ -40,7 +40,7 @@ class security_baseline::rules::sec_talk_client (
 
     if($::mcstrans_pkg) {
 
-      notify { 'talk-client':
+      echo { 'talk-client':
         message  => $message,
         loglevel => $loglevel,
       }

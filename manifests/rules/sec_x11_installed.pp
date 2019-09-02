@@ -40,7 +40,7 @@ class security_baseline::rules::sec_x11_installed (
     }
   } else {
 
-    notify { 'x11-installed':
+    echo { 'x11-installed':
       message  => $message,
       loglevel => $loglevel,
     }

@@ -41,7 +41,7 @@ class security_baseline::rules::sec_vsftpd (
   } else {
 
     if($::srv_vsftpd == 'enabled') {
-      notify { 'vsftpd':
+      echo { 'vsftpd':
         message  => $message,
         loglevel => $loglevel,
       }

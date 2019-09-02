@@ -52,7 +52,7 @@ class security_baseline::rules::sec_network_ipv6_router_advertisements (
       $fact_default = ''
     }
     if(($fact != '0') or ($fact_default != '0')) {
-      notify { 'net.ipv6.conf.all.accept_ra':
+      echo { 'net.ipv6.conf.all.accept_ra':
         message  => $message,
         loglevel => $loglevel,
       }

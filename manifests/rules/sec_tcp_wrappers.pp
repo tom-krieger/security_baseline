@@ -42,7 +42,7 @@ class security_baseline::rules::sec_tcp_wrappers (
 
     if($::tcp_wrappers_pkg) {
 
-      notify { 'tcp-wrappers':
+      echo { 'tcp-wrappers':
         message  => $message,
         loglevel => $loglevel,
       }

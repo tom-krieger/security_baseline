@@ -34,7 +34,7 @@ class security_baseline::rules::sec_dev_shm_nodev (
     if $::dev_shm_partition {
 
       if $::dev_shm_nodev == false {
-        notify { 'dev-shm-nodev':
+        echo { 'dev-shm-nodev':
           message  => $message,
           loglevel => $loglevel,
         }

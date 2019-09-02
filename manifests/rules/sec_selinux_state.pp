@@ -41,7 +41,7 @@ class security_baseline::rules::sec_selinux_state (
 
     if($::selinux_config_mode != 'enforcing') {
 
-      notify { 'selinux':
+      echo { 'selinux':
         message  => $message,
         loglevel => $loglevel,
       }

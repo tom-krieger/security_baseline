@@ -46,7 +46,7 @@ class security_baseline::rules::sec_service_time (
 
     if($::srv_time == true) {
 
-      notify { 'time-service':
+      echo { 'time-service':
         message  => $message,
         loglevel => $loglevel,
       }

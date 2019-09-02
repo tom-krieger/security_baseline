@@ -34,7 +34,7 @@ class security_baseline::rules::sec_home_nodev (
     if $::home_partition {
 
       if $::home_nodev == false {
-        notify { 'home-nodev':
+        echo { 'home-nodev':
           message  => $message,
           loglevel => $loglevel,
         }

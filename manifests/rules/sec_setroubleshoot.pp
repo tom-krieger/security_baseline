@@ -41,7 +41,7 @@ class security_baseline::rules::sec_setroubleshoot (
 
     if($::setroubleshoot_pkg) {
 
-      notify { 'setroubleshoot':
+      echo { 'setroubleshoot':
         message  => $message,
         loglevel => $loglevel,
       }

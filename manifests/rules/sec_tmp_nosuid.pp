@@ -34,7 +34,7 @@ class security_baseline::rules::sec_tmp_nosuid (
     if $::tmp_partition {
 
       if $::tmp_nosuid == false {
-        notify { 'tmp-nosuid':
+        echo { 'tmp-nosuid':
           message  => $message,
           loglevel => $loglevel,
         }

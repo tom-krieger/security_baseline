@@ -41,7 +41,7 @@ class security_baseline::rules::sec_service_xinetd (
 
     if($::srv_xinetd == true) {
 
-      notify { 'xin etd-service':
+      echo { 'xin etd-service':
         message  => $message,
         loglevel => $loglevel,
       }

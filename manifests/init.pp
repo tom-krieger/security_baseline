@@ -31,11 +31,7 @@ class security_baseline (
   String $logfile = '/tmp/security_baseline.json'
 ){
   if($debug) {
-    notify{"Applying security baseline version: ${baseline_version}": }
-  }
-
-  if ($log_info) {
-    info("Applying security baseline version: ${baseline_version}")
+    echo{"Applying security baseline version: ${baseline_version}": }
   }
 
   validate_hash($rules)

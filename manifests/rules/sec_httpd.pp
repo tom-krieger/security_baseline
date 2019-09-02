@@ -39,7 +39,7 @@ class security_baseline::rules::sec_httpd (
   } else {
 
     if($::srv_httpd == 'enabled') {
-      notify { 'httpd':
+      echo { 'httpd':
         message  => $message,
         loglevel => $loglevel,
       }

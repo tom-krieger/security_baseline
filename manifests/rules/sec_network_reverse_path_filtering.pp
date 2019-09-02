@@ -58,7 +58,7 @@ class security_baseline::rules::sec_network_reverse_path_filtering (
       $fact_default = ''
     }
     if(($fact != '1') or ($fact_default != '1')) {
-      notify { 'net.ipv4.conf.all.rp_filter':
+      echo { 'net.ipv4.conf.all.rp_filter':
         message  => $message,
         loglevel => $loglevel,
       }

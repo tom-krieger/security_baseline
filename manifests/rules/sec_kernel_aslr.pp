@@ -40,7 +40,7 @@ class security_baseline::rules::sec_kernel_aslr (
 
     if($::kernel_aslr != 2) {
 
-      notify { 'kernel-aslr':
+      echo { 'kernel-aslr':
         message  => $message,
         loglevel => $loglevel,
       }

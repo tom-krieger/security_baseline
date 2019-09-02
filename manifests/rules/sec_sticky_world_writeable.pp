@@ -40,7 +40,7 @@ class security_baseline::rules::sec_sticky_world_writeable (
 
     } else {
 
-      notify { 'sticky-ww':
+      echo { 'sticky-ww':
         message  => $message,
         loglevel => $loglevel,
       }

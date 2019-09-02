@@ -35,7 +35,7 @@ class security_baseline::rules::sec_grub_passwd (
 
     if($::grub_passwd == false) {
 
-      notify { 'grub-passwd':
+      echo { 'grub-passwd':
         message  => $message,
         loglevel => $loglevel,
       }

@@ -43,7 +43,7 @@ class security_baseline::rules::sec_hosts_deny (
   } else {
 
     if($::sec_hosts_deny == false) {
-      notify { 'hosts-deny':
+      echo { 'hosts-deny':
         message  => $message,
         loglevel => $loglevel,
       }

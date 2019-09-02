@@ -50,7 +50,7 @@ class security_baseline::rules::sec_network_ipv6_disable (
       $fact_default = ''
     }
     if(($fact != '1') or ($fact_default != '1')) {
-      notify { 'net.ipv6.conf.all.disable_ipv6':
+      echo { 'net.ipv6.conf.all.disable_ipv6':
         message  => $message,
         loglevel => $loglevel,
       }

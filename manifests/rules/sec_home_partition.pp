@@ -33,7 +33,7 @@ class security_baseline::rules::sec_home_partition (
   if($enforce) {
     if $::home_partition == undef {
 
-      notify { 'home-partition':
+      echo { 'home-partition':
         message  => $message,
         loglevel => $loglevel,
         }

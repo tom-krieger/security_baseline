@@ -34,7 +34,7 @@ class security_baseline::rules::sec_dev_shm_nosuid (
     if $::dev_shm_partition {
 
       if $::dev_shm_nosuid == false {
-        notify { 'dev-shm-nosuid':
+        echo { 'dev-shm-nosuid':
           message  => $message,
           loglevel => $loglevel,
         }

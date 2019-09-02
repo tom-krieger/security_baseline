@@ -48,7 +48,7 @@ class security_baseline::rules::sec_service_tftp (
 
     if($::srv_tftp == true) {
 
-      notify { 'tftp-service':
+      echo { 'tftp-service':
         message  => $message,
         loglevel => $loglevel,
       }

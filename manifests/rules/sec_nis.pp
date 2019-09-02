@@ -43,7 +43,7 @@ class security_baseline::rules::sec_nis (
   } else {
 
     if($::srv_ypserv == 'enabled') {
-      notify { 'ypserv':
+      echo { 'ypserv':
         message  => $message,
         loglevel => $loglevel,
       }

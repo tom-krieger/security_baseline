@@ -44,7 +44,7 @@ class security_baseline::rules::sec_network_ip_forward (
       $fact = ''
     }
     if($fact != '0') {
-      notify { 'net.ipv4.ip_forward':
+      echo { 'net.ipv4.ip_forward':
         message  => $message,
         loglevel => $loglevel,
       }

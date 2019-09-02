@@ -40,7 +40,7 @@ class security_baseline::rules::sec_openldap_client (
 
     if($::openldap_clients_pkg) {
 
-      notify { 'openldp-clients':
+      echo { 'openldp-clients':
         message  => $message,
         loglevel => $loglevel,
       }

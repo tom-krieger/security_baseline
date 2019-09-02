@@ -39,7 +39,7 @@ class security_baseline::rules::sec_squid (
   } else {
 
     if($::srv_squid == 'enabled') {
-      notify { 'squid':
+      echo { 'squid':
         message  => $message,
         loglevel => $loglevel,
       }

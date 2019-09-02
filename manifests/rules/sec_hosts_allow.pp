@@ -43,7 +43,7 @@ class security_baseline::rules::sec_hosts_allow (
   } else {
 
     if($::hosts_allow == false) {
-      notify { 'hosts-allow':
+      echo { 'hosts-allow':
         message  => $message,
         loglevel => $loglevel,
       }

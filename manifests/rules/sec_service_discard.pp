@@ -46,7 +46,7 @@ class security_baseline::rules::sec_service_discard (
 
     if($::srv_discard == true) {
 
-      notify { 'discard-service':
+      echo { 'discard-service':
         message  => $message,
         loglevel => $loglevel,
       }

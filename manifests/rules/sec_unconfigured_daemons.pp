@@ -33,7 +33,7 @@ class security_baseline::rules::sec_unconfigured_daemons (
 
     if($::unconfigured_daemons) {
 
-      notify { 'unconfigured-daemons':
+      echo { 'unconfigured-daemons':
         message  => $message,
         loglevel => $loglevel,
       }

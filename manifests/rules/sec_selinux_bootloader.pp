@@ -39,7 +39,7 @@ class security_baseline::rules::sec_selinux_bootloader (
 
     if($::bootloader_selinux == false) {
 
-      notify { 'bootloader-selinux':
+      echo { 'bootloader-selinux':
         message  => $message,
         loglevel => $loglevel,
       }

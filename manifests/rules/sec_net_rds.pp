@@ -38,7 +38,7 @@ class security_baseline::rules::sec_net_rds (
   } else {
 
     if($::net_rds) {
-      notify { 'net-rds ':
+      echo { 'net-rds ':
         message  => $message,
         loglevel => $loglevel,
       }

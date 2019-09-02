@@ -39,7 +39,7 @@ class security_baseline::rules::sec_selinux (
 
     if($::selinux_pkg == false) {
 
-      notify { 'selinux-pkg':
+      echo { 'selinux-pkg':
         message  => $message,
         loglevel => $loglevel,
       }

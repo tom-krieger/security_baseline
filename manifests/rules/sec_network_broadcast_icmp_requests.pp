@@ -49,7 +49,7 @@ class security_baseline::rules::sec_network_broadcast_icmp_requests (
       $fact = ''
     }
     if($fact != '1') {
-      notify { 'net.ipv4.icmp_echo_ignore_broadcasts':
+      echo { 'net.ipv4.icmp_echo_ignore_broadcasts':
         message  => $message,
         loglevel => $loglevel,
       }

@@ -55,7 +55,7 @@ class security_baseline::rules::sec_network_icmp_redirect (
       $fact_default = ''
     }
     if(($fact != '0') or ($fact_default != '0')) {
-      notify { 'net.ipv4.conf.all.accept_redirects':
+      echo { 'net.ipv4.conf.all.accept_redirects':
         message  => $message,
         loglevel => $loglevel,
       }

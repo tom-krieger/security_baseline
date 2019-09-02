@@ -50,7 +50,7 @@ class security_baseline::rules::sec_rsh (
   } else {
 
     if($::srv_rsh == 'enabled') {
-      notify { 'rsh':
+      echo { 'rsh':
         message  => $message,
         loglevel => $loglevel,
       }

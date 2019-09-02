@@ -40,7 +40,7 @@ class security_baseline::rules::sec_motd (
     if($enforce) {
 
       if($::motd) {
-        notify { 'prelink':
+        echo { 'prelink':
           message  => $message,
           loglevel => $loglevel,
         }

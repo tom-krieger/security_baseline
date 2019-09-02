@@ -34,7 +34,7 @@ class security_baseline::rules::sec_var_tmp_noexec (
     if $::var_tmp_partition {
 
       if $::var_tmp_noexec == false {
-        notify { 'var-tmp-noexec':
+        echo { 'var-tmp-noexec':
           message  => $message,
           loglevel => $loglevel,
         }

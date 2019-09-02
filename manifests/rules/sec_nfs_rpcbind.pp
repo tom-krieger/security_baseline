@@ -49,7 +49,7 @@ class security_baseline::rules::sec_nfs_rpcbind (
   } else {
 
     if($::srv_nfs == 'enabled') {
-      notify { 'nfs':
+      echo { 'nfs':
         message  => $message,
         loglevel => $loglevel,
       }

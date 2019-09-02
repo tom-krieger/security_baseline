@@ -41,7 +41,7 @@ class security_baseline::rules::sec_tftp (
   } else {
 
     if($::srv_tftp_server == 'enabled') {
-      notify { 'tftp-server':
+      echo { 'tftp-server':
         message  => $message,
         loglevel => $loglevel,
       }

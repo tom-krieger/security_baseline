@@ -38,7 +38,7 @@ class security_baseline::rules::sec_net_dccp (
   } else {
 
     if($::net_dccp) {
-      notify { 'net-dccp':
+      echo { 'net-dccp':
         message  => $message,
         loglevel => $loglevel,
       }

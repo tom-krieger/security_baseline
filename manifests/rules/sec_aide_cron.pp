@@ -47,7 +47,7 @@ class security_baseline::rules::sec_aide_cron (
 
     if(empty($::aide_cron)) {
 
-      notify { 'aide-cron':
+      echo { 'aide-cron':
         message  => $message,
         loglevel => $loglevel,
       }

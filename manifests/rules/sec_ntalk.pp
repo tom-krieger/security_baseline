@@ -39,7 +39,7 @@ class security_baseline::rules::sec_ntalk (
   } else {
 
     if($::srv_ntalk == 'enabled') {
-      notify { 'ntalk':
+      echo { 'ntalk':
         message  => $message,
         loglevel => $loglevel,
       }

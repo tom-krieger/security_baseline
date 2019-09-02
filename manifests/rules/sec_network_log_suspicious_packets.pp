@@ -54,7 +54,7 @@ class security_baseline::rules::sec_network_log_suspicious_packets (
       $fact_default = ''
     }
     if(($fact != '1') or ($fact_default != '1')) {
-      notify { 'net.ipv4.conf.all.log_martians':
+      echo { 'net.ipv4.conf.all.log_martians':
         message  => $message,
         loglevel => $loglevel,
       }

@@ -33,7 +33,7 @@ class security_baseline::rules::sec_var_log_partition (
   if($enforce) {
     if $::var_log_partition == undef {
 
-      notify { 'var-log-partition':
+      echo { 'var-log-partition':
         message  => $message,
         loglevel => $loglevel,
         }

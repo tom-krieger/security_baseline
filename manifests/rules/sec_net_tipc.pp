@@ -37,7 +37,7 @@ class security_baseline::rules::sec_net_tipc (
   } else {
 
     if($::net_tipc) {
-      notify { 'net-tipc':
+      echo { 'net-tipc':
         message  => $message,
         loglevel => $loglevel,
       }

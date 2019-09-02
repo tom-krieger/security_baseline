@@ -40,7 +40,7 @@ class security_baseline::rules::sec_mcstrans (
 
     if($::mcstrans_pkg) {
 
-      notify { 'mcstrans':
+      echo { 'mcstrans':
         message  => $message,
         loglevel => $loglevel,
       }

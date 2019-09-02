@@ -39,7 +39,7 @@ class security_baseline::rules::sec_net_sctp (
   } else {
 
     if($::net_sctp) {
-      notify { 'net-sctp':
+      echo { 'net-sctp':
         message  => $message,
         loglevel => $loglevel,
       }

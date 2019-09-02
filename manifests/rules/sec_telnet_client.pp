@@ -41,7 +41,7 @@ class security_baseline::rules::sec_telnet_client (
 
     if($::telnet_pkg) {
 
-      notify { 'telnet-client':
+      echo { 'telnet-client':
         message  => $message,
         loglevel => $loglevel,
       }

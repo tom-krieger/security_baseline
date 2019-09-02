@@ -40,7 +40,7 @@ class security_baseline::rules::sec_dns (
   } else {
 
     if($::srv_dns == 'enabled') {
-      notify { 'dns':
+      echo { 'dns':
         message  => $message,
         loglevel => $loglevel,
       }

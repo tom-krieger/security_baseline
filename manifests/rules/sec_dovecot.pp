@@ -39,7 +39,7 @@ class security_baseline::rules::sec_dovecot (
   } else {
 
     if($::srv_dovecot == 'enabled') {
-      notify { 'sovecot':
+      echo { 'sovecot':
         message  => $message,
         loglevel => $loglevel,
       }

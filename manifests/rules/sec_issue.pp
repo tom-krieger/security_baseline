@@ -41,7 +41,7 @@ class security_baseline::rules::sec_issue (
   if($enforce) {
 
     if($::issue) {
-      notify { 'issue':
+      echo { 'issue':
         message  => $message,
         loglevel => $loglevel,
       }

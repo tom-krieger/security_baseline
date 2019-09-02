@@ -46,7 +46,7 @@ class security_baseline::rules::sec_service_echo (
 
     if($::srv_echo == true) {
 
-      notify { 'echo-service':
+      echo { 'echo-service':
         message  => $message,
         loglevel => $loglevel,
       }

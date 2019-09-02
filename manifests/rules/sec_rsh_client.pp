@@ -42,7 +42,7 @@ class security_baseline::rules::sec_rsh_client (
 
     if($::rsh_pkg) {
 
-      notify { 'rsh-client':
+      echo { 'rsh-client':
         message  => $message,
         loglevel => $loglevel,
       }

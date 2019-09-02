@@ -62,7 +62,7 @@ define security_baseline::sec_check (
     if($active) {
 
       if($::security_baseline::debug) {
-        notify{"Applying rule ${rulename}": }
+        echo{"Applying rule ${rulename}": }
       }
 
       $fact_name = $check['fact_name']

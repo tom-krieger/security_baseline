@@ -43,7 +43,7 @@ class security_baseline::rules::sec_rhnsd (
 
     if( $::rhnsd != 'disabled') {
 
-      notify { 'rhnsd':
+      echo { 'rhnsd':
         message  => $message,
         loglevel => $loglevel,
       }

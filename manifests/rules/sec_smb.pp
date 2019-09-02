@@ -42,7 +42,7 @@ class security_baseline::rules::sec_smb (
   } else {
 
     if($::srv_smb == 'enabled') {
-      notify { 'smb':
+      echo { 'smb':
         message  => $message,
         loglevel => $loglevel,
       }

@@ -39,7 +39,7 @@ class security_baseline::rules::sec_iptables (
 
     if($::iptables_pkg == false) {
 
-      notify { 'iptables':
+      echo { 'iptables':
         message  => $message,
         loglevel => $loglevel,
       }

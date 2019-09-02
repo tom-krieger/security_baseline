@@ -36,7 +36,7 @@ class security_baseline::rules::sec_aide (
 
     package { 'aide':
       ensure => installed,
-      notify => Exec['aidedb'],
+      echo => Exec['aidedb'],
     }
 
     exec { 'aidedb':
@@ -48,7 +48,7 @@ class security_baseline::rules::sec_aide (
   } else {
 
     if(empty($::aide_version)) {
-      notify { 'aide':
+      echo { 'aide':
           message  => $message,
           loglevel => $loglevel,
         }

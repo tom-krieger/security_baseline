@@ -1,12 +1,12 @@
+# frozen_string_literal: true
+
+# squshfs.rb
+# Check if squashfs module is present
+
 Facter.add('kmod_squashfs') do
   confine :kernel => 'Linux'
   setcode do
-    installed = Facter::Core::Execution.exec('lsmod | grep squashfs')
-    if installed.empty?
-      false
-    else
-      true
-    end
+    check_kernel_module('squashfs')
   end
 end
   

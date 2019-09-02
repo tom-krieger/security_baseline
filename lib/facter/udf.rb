@@ -1,11 +1,11 @@
+# frozen_string_literal: true
+
+# udf.rb
+# Check if udf module is present
+
 Facter.add('kmod_udf') do
   confine :kernel => 'Linux'
   setcode do
-    installed = Facter::Core::Execution.exec('lsmod | grep udf')
-    if installed.empty?
-      false
-    else
-      true
-    end
+    check_kernel_module('udf')
   end
 end

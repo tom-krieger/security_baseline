@@ -1,12 +1,12 @@
+# frozen_string_literal: true
+
+# vfat.rb
+# Check if vfat module is present
+
 Facter.add('kmod_vfat') do
   confine :kernel => 'Linux'
     setcode do
-      installed = Facter::Core::Execution.exec('lsmod | grep vfat')
-      if installed.empty?
-        false
-      else
-        true
-      end
+      check_kernel_module('vfat')
     end
   end
   

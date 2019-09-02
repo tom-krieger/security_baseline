@@ -6,12 +6,7 @@
 Facter.add('net_dccp') do
   confine :kernel => 'Linux'
   setcode do
-    installed = Facter::Core::Execution.exec('lsmod | grep dccp')
-    if installed.empty?
-      false
-    else
-      true
-    end
+    check_kernel_module('dccp')
   end
 end
   

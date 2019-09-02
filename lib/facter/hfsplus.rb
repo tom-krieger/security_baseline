@@ -1,11 +1,11 @@
+# frozen_string_literal: true
+
+# hfsplus.rb
+# Check if hfsplus module is present
+
 Facter.add('kmod_hfsplus') do
   confine :kernel => 'Linux'  
   setcode do
-    installed = Facter::Core::Execution.exec('lsmod | grep hfsplus')
-    if installed.empty?
-      false
-    else
-      true
-    end
+    check_kernel_module('hfsplus')
   end
 end

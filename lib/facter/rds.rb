@@ -6,12 +6,7 @@
 Facter.add('net_rds') do
     confine :kernel => 'Linux'
     setcode do
-      installed = Facter::Core::Execution.exec('lsmod | grep rds')
-      if installed.empty?
-        false
-      else
-        true
-      end
+      check_kernel_module('rds')
     end
   end
     

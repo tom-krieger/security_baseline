@@ -1,4 +1,4 @@
-require './check_service_enabled.rb'
+require 'check_service_enabled.rb'
 
 # frozen_string_literal: true
 

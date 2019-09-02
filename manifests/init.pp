@@ -40,6 +40,8 @@ class security_baseline (
 
   validate_hash($rules)
 
+  $timestamp = generate('/bin/date', '%Y-%m-%dT%H:%M:%S')
+
   concat { $logfile:
     ensure => present,
     owner  => 'root',
@@ -48,14 +50,18 @@ class security_baseline (
   }
 
   concat::fragment { 'start':
-    content => '{ ',
+    content => epp('security_baseline/logfile_start.epp', {'time' => $timestamp}),
     target  => $logfile,
+    order   => 1,
   }
 
   create_resources('::security_baseline::sec_check', $rules)
 
+  $finished = generate('/bin/date', '%Y-%m-%dT%H:%M:%S')
+
   concat::fragment { 'finish':
-    content => ' }',
+    content => epp('security_baseline/logfile_end.epp', {'finish' => $finished}),
     target  => $logfile,
+    order   => 9999,
   }
 }

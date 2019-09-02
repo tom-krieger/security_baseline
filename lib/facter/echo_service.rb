@@ -5,7 +5,7 @@ require 'facter/check_service_enabled'
 # echo_service.rb
 # Check if echo services are switched on
 
-Facter.add('srv_daytime') do
+Facter.add('srv_echo') do
     confine :osfamily => 'RedHat'
     setcode do
       check_xinetd_service('echo')

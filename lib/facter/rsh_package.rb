@@ -6,12 +6,7 @@
 Facter.add('rsh_pkg') do
   confine :osfamily => 'RedHat'
   setcode do
-      val = Facter::Core::Execution.exec("rpm -q rsh")
-      if val.empty? or val =~ %r{not installed} then
-        false
-      else
-        true
-      end
+    check_package_installed('rsh')
   end
 end
   

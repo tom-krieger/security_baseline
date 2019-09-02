@@ -17,6 +17,10 @@
     {
       "name": "camptocamp-augeas",
       "version_requirement": "1.8.0"
+    },
+    {
+      "name": "ipcrm-echo",
+      "version_requirement": "0.1.6"
     }
   ],
   "operatingsystem_support": [

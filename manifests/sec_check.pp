@@ -72,11 +72,10 @@ define security_baseline::sec_check (
         $current_value = $facts[$fact_name]
 
         if($current_value != $fact_value) {
-          if($::security_baseline::debug) {
-            notify{"Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'": }
-          }
-          if($::security_baseline::log_info) {
-            info("Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'")
+          echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
+            message  => "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'",
+            loglevel => 'err',
+            withpath => false,
           }
 
           concat::fragment { $title:

@@ -35,7 +35,7 @@ class security_baseline::rules::sec_dns (
     service {'named':
       ensure => 'stopped',
       enable => false
-      }
+    }
 
   } else {
 

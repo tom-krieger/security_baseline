@@ -28,6 +28,7 @@ class security_baseline (
   Hash $rules,
   Boolean $debug = false,
   Boolean $log_info = false,
+  String $logfile = '/tmp/security_baseline.json'
 ){
   if($debug) {
     notify{"Applying security baseline version: ${baseline_version}": }
@@ -39,5 +40,20 @@ class security_baseline (
 
   validate_hash($rules)
 
+  concat { $logfile:
+    ensure => file,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0600',
+  }
+
+  concat::fragment { 'start':
+    content => '{ ',
+  }
+
   create_resources('::security_baseline::sec_check', $rules)
+
+  concat::fragment { 'finish':
+    content => ' }',
+  }
 }

@@ -1,0 +1,6 @@
+  {
+    "rule": "<%= $rule %>",
+    "description": "<%= $desc %>",
+    "level": "<%= $level %>",
+    "msg": ">%= $msg %>",
+  },

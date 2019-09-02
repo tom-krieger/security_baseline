@@ -57,6 +57,8 @@ define security_baseline::sec_check (
   Boolean $active = true,
   Optional[Hash] $config_data = {},
 ) {
+    $logfile = $::security_baseline::logfile
+
     if($active) {
 
       if($::security_baseline::debug) {
@@ -75,6 +77,15 @@ define security_baseline::sec_check (
           }
           if($::security_baseline::log_info) {
             info("Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'")
+          }
+
+          concat::fragment { $rulename:
+            content => epp('security_baseline/logentry.epp', {
+              'rule'  => $rulename,
+              'desc'  => $description,
+              'msg'   => $message,
+              'level' => $loglevel,
+            })
           }
         }
 

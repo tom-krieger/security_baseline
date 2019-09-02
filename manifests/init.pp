@@ -41,7 +41,7 @@ class security_baseline (
   validate_hash($rules)
 
   concat { $logfile:
-    ensure => file,
+    ensure => present,
     owner  => 'root',
     group  => 'root',
     mode   => '0600',

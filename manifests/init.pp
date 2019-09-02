@@ -50,7 +50,7 @@ class security_baseline (
   }
 
   concat::fragment { 'start':
-    content => epp('security_baseline/logfile_start.epp', {}),
+    content => epp('security_baseline/logfile_start.epp', {'version' => $baseline_version}),
     target  => $logfile,
     order   => 1,
   }

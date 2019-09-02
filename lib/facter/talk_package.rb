@@ -1,3 +1,5 @@
+equire 'facter/helpers/check_package_installed'
+
 # frozen_string_literal: true
 
 # talk_package.rb

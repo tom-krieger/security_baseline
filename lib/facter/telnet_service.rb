@@ -1,4 +1,4 @@
-require 'facter/check_service_enabled'
+require 'facter/helpers/check_service_enabled'
 
 # frozen_string_literal: true
 

@@ -1,4 +1,4 @@
-require 'facter/get_sysctl_value'
+require 'facter/helpers/get_sysctl_value'
 
 # frozen_string_literal: true
 

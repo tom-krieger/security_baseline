@@ -1,4 +1,4 @@
-require 'facter/check_kernel_module'
+require 'facter/helpers/check_kernel_module'
 
 # frozen_string_literal: true
 

@@ -1,3 +1,5 @@
+require 'facter/helpers/check_package_installed'
+
 # frozen_string_literal: true
 
 # ldp_client_package.rb

@@ -1,3 +1,5 @@
+equire 'facter/helpers/check_package_installed'
+
 # frozen_string_literal: true
 
 # tcp_warppers.rb

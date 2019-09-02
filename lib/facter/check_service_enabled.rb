@@ -19,9 +19,9 @@ def check_xinetd_service(service)
   if srv.empty? then
     ret = false
   else
-    srvs = srv.split("\n").strip()
+    srvs = srv.split("\n")
     srvs.each do |line|
-      data = line.split(%r{:}).strip()
+      data = line.strip().split(%r{:})
       if data[1].strip().downcase() != 'off' then
         ret = true
       end
@@ -29,5 +29,4 @@ def check_xinetd_service(service)
   end
 
   ret
-
 end

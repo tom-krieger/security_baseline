@@ -50,7 +50,7 @@ class security_baseline (
   }
 
   concat::fragment { 'start':
-    content => epp('security_baseline/logfile_start.epp', {'time' => $timestamp}),
+    content => epp('security_baseline/logfile_start.epp', {}),
     target  => $logfile,
     order   => 1,
   }
@@ -60,7 +60,7 @@ class security_baseline (
   $finished = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
   concat::fragment { 'finish':
-    content => epp('security_baseline/logfile_end.epp', {'finish' => $finished, 'starttime' => $timestamp}),
+    content => epp('security_baseline/logfile_end.epp', {}),
     target  => $logfile,
     order   => 9999,
   }

@@ -3,4 +3,5 @@
     description: "<%= $desc %>" 
     level: "<%= $level %>"
     msg: "<%= $msg %>"
+    status: "<%= $rulestate %>"
 

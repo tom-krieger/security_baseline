@@ -75,23 +75,40 @@ define security_baseline::sec_check (
         $current_value = $facts[$fact_name]
 
         if($current_value != $fact_value) {
+
           echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
             loglevel => $loglevel,
             withpath => false,
           }
 
-          concat::fragment { $title:
-            content => epp('security_baseline/logentry.epp', {
-              'rulenr' => $title,
-              'rule'   => $rulename,
-              'desc'   => $description,
-              'msg'    => $message,
-              'level'  => $loglevel,
-            }),
-            target  => $logfile,
-          }
+          $my_msg = $message
+          $my_level = $loglevel
+          $my_state = 'not compliant'
+
+        } else {
+
+          $my_msg = ''
+          $my_level = 'ok'
+          $my_state = 'compliant'
         }
 
+      } else {
+
+        $my_msg = ''
+        $my_level = 'ok'
+        $my_state = 'compliant'
+      }
+
+      concat::fragment { $title:
+        content => epp('security_baseline/logentry.epp', {
+          'rulenr'    => $title,
+          'rule'      => $rulename,
+          'desc'      => $description,
+          'msg'       => $my_msg,
+          'level'     => $my_level,
+          'rulestate' => $my_state,
+        }),
+        target  => $logfile,
       }
 
       if(empty($config_data)) {
@@ -111,5 +128,6 @@ define security_baseline::sec_check (
           config_data => $config_data,
         }
       }
-    }
+
+    } # rule active
 }

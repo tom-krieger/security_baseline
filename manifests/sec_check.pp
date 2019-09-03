@@ -52,9 +52,9 @@ define security_baseline::sec_check (
   Boolean $enforce,
   String $class,
   Hash $check,
-  String $message = '',
-  String $loglevel = 'warning',
-  Boolean $active = true,
+  String $message             = '',
+  String $loglevel            = 'warning',
+  Boolean $active             = true,
   Optional[Hash] $config_data = {},
 ) {
 
@@ -62,7 +62,7 @@ define security_baseline::sec_check (
 
       if($::security_baseline::debug) {
         echo{"Applying rule ${rulename}":
-          loglesel => 'debug',
+          loglevel => 'debug',
           withpath => false,
         }
       }
@@ -80,7 +80,7 @@ define security_baseline::sec_check (
             withpath => false,
           }
 
-          $my_msg = $message
+          $my_msg   = $message
           $my_level = $loglevel
           $my_state = 'not compliant'
 
@@ -100,18 +100,6 @@ define security_baseline::sec_check (
         $my_state = 'compliant'
       }
 
-      # concat::fragment { $title:
-      #  content => epp('security_baseline/logentry.epp', {
-      #    'rulenr'    => $title,
-      #    'rule'      => $rulename,
-      #    'desc'      => $description,
-      #    'msg'       => $my_msg,
-      #    'level'     => $my_level,
-      #    'rulestate' => $my_state,
-      #  }),
-      #  target  => $::security_baseline::logfile,
-      #}
-
       ::security_baseline::logging { $title:
         rulenr    => $title,
         rule      => $rulename,
@@ -121,6 +109,8 @@ define security_baseline::sec_check (
         rulestate => $my_state,
       }
 
+      # internal classes are supposed to start with ::security_baseline::rules
+      # logging is done within this resource and no concat target is needed
       if($class =~ /^::security_baseline::rules::/) {
         $data = {
           'enforce' => $enforce,
@@ -136,32 +126,11 @@ define security_baseline::sec_check (
         }
       }
 
-
       $merged_data = merge($data, $config_data)
 
       class { $class:
         * => $merged_data
       }
-
-      #if(empty($config_data)) {
-
-      #  class { $class:
-      #    enforce  => $enforce,
-      #    message  => $message,
-      #    loglevel => $loglevel,
-      #    logfile  => $::security_baseline::logfile,
-      #  }
-
-      # } else {
-
-      #  class { $class:
-      #    enforce     => $enforce,
-      #    message     => $message,
-      #    loglevel    => $loglevel,
-      #    logfile     => $::security_baseline::logfile,
-      #    config_data => $config_data,
-      #  }
-      # }
 
     } # rule active
 }

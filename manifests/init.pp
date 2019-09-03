@@ -21,8 +21,12 @@
 # @param log_info
 #    Switch logging with level info on
 #
+# @param logfile
+#    Logfile to write messages to
+#
 # @example
 #   include security_baseline
+#
 class security_baseline (
   String $baseline_version,
   Hash $rules,

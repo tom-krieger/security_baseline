@@ -34,17 +34,17 @@
 #
 # @example
 #   security_baseline::sec_check { '1.1.2': 
-#       rulename => 'tmp_partition',
-#       active => true,
+#       rulename    => 'tmp_partition',
+#       active      => true,
 #       description => 'The /tmp directory ...',
-#       enforce => true,
-#       class => '::security_baseline::rules::sec_tmp_partition',
-#       check => {
-#         fact_name => 'tmp_partition',
+#       enforce     => true,
+#       class       => '::security_baseline::rules::sec_tmp_partition',
+#       check       => {
+#         fact_name  => 'tmp_partition',
 #         fact_value => '/tmp',
 #       },
-#       message => 'Not in compliance with rule 1.1.2. No seperate directory for /tmp.',
-#       loglevel => 'warning',
+#       message     => 'Not in compliance with rule 1.1.2. No seperate directory for /tmp.',
+#       loglevel    => 'warning',
 #   }
 define security_baseline::sec_check (
   String $rulename,

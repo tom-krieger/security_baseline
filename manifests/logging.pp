@@ -1,9 +1,35 @@
-# @summary A short summary of the purpose of this defined type.
+# @summary 
+#    Write concat fragments to a logfile
 #
-# A description of what this defined type does
+# Logging resource to write parts of the log.
+#
+# @param $rulenr
+#     Number of the rule to be written into the log
+#
+# @param $rule
+#    A name for the rule to be written into the logfile
+#
+# @param $desc
+#    Description of the rule
+#
+# @param $level
+#    Log level for the messyage in the log
+#
+# @param $msg
+#    The log message
+#
+# @param $rulesate 
+#    Status of the rule, e. g. compliant or not compliant 
 #
 # @example
-#   security_baseline::logging { 'namevar': }
+#   security_baseline::logging { '1.1.1.1': 
+#     rulenr    => '1.1.1.1',
+#     rule      => 'Test Rule',
+#     desc      => 'What ever description you like',
+#     level     => 'warning',
+#     msg       => 'A suitable message',
+#     rulestate => 'not compliant'
+#   }
 define security_baseline::logging (
   $rulenr,
   $rule,

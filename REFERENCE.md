@@ -117,6 +117,7 @@ _Private Classes_
 
 **Defined types**
 
+* [`security_baseline::logging`](#security_baselinelogging): Write concat fragments to a logfile
 * [`security_baseline::sec_check`](#security_baselinesec_check): Check a security rule.
 
 ## Classes
@@ -181,6 +182,89 @@ Default value: '/opt/puppetlabs/facter/facts.d/security_baseline.yaml'
 
 ## Defined types
 
+### security_baseline::logging
+
+Logging resource to write parts of the log.
+
+#### Examples
+
+##### 
+
+```puppet
+security_baseline::logging { '1.1.1.1':
+  rulenr    => '1.1.1.1',
+  rule      => 'Test Rule',
+  desc      => 'What ever description you like',
+  level     => 'warning',
+  msg       => 'A suitable message',
+  rulestate => 'not compliant'
+}
+```
+
+#### Parameters
+
+The following parameters are available in the `security_baseline::logging` defined type.
+
+##### `$rulenr`
+
+Number of the rule to be written into the log
+
+##### `$rule`
+
+A name for the rule to be written into the logfile
+
+##### `$desc`
+
+Description of the rule
+
+##### `$level`
+
+Log level for the messyage in the log
+
+##### `$msg`
+
+The log message
+
+##### `$rulesate`
+
+Status of the rule, e. g. compliant or not compliant
+
+##### `rulenr`
+
+Data type: `Any`
+
+
+
+##### `rule`
+
+Data type: `Any`
+
+
+
+##### `desc`
+
+Data type: `Any`
+
+
+
+##### `level`
+
+Data type: `Any`
+
+
+
+##### `msg`
+
+Data type: `Any`
+
+
+
+##### `rulestate`
+
+Data type: `Any`
+
+
+
 ### security_baseline::sec_check
 
 Check a security rule, enforce it or just monitor it and log into the Puppet log files.
@@ -191,17 +275,17 @@ Check a security rule, enforce it or just monitor it and log into the Puppet log
 
 ```puppet
 security_baseline::sec_check { '1.1.2':
-    rulename => 'tmp_partition',
-    active => true,
+    rulename    => 'tmp_partition',
+    active      => true,
     description => 'The /tmp directory ...',
-    enforce => true,
-    class => '::security_baseline::rules::sec_tmp_partition',
-    check => {
-      fact_name => 'tmp_partition',
+    enforce     => true,
+    class       => '::security_baseline::rules::sec_tmp_partition',
+    check       => {
+      fact_name  => 'tmp_partition',
       fact_value => '/tmp',
     },
-    message => 'Not in compliance with rule 1.1.2. No seperate directory for /tmp.',
-    loglevel => 'warning',
+    message     => 'Not in compliance with rule 1.1.2. No seperate directory for /tmp.',
+    loglevel    => 'warning',
 }
 ```
 

@@ -171,6 +171,14 @@ Switch logging with level info on
 
 Default value: `false`
 
+##### `logfile`
+
+Data type: `String`
+
+Logfile to write messages to
+
+Default value: '/opt/puppetlabs/facter/facts.d/security_baseline.yaml'
+
 ## Defined types
 
 ### security_baseline::sec_check

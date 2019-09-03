@@ -31,26 +31,25 @@ class security_baseline::rules::sec_rsh (
 ) {
   if($enforce) {
 
-    service {
-      'rsh.socket':
-        ensure => 'stopped',
-        enable => false;
-
-      'rlogin.socket':
-        ensure => 'stopped',
-        enable => false;
-
-      'rexec.socket':
-        ensure => 'stopped',
-        enable => false;
+    service { 'rsh.socket':
+      ensure => 'stopped',
+      enable => false,
     }
 
+    service { 'rlogin.socket':
+      ensure => 'stopped',
+      enable => false,
+    }
 
+    service { 'rexec.socket':
+      ensure => 'stopped',
+      enable => false,
+    }
 
   } else {
 
     if($::srv_rsh == 'enabled') {
-      echo { 'rsh':
+      echo { 'rsh-service':
         message  => $message,
         loglevel => $loglevel,
         withpath => false,

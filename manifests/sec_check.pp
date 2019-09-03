@@ -57,7 +57,6 @@ define security_baseline::sec_check (
   Boolean $active = true,
   Optional[Hash] $config_data = {},
 ) {
-    $logfile = $::security_baseline::logfile
 
     if($active) {
 
@@ -110,7 +109,7 @@ define security_baseline::sec_check (
           'level'     => $my_level,
           'rulestate' => $my_state,
         }),
-        target  => $logfile,
+        target  => $::security_baseline::logfile,
       }
 
       if(empty($config_data)) {
@@ -119,6 +118,7 @@ define security_baseline::sec_check (
           enforce  => $enforce,
           message  => $message,
           loglevel => $loglevel,
+          logfile  => $::security_baseline::logfile,
         }
 
       } else {
@@ -127,6 +127,7 @@ define security_baseline::sec_check (
           enforce     => $enforce,
           message     => $message,
           loglevel    => $loglevel,
+          logfile     => $::security_baseline::logfile,
           config_data => $config_data,
         }
       }

@@ -28,10 +28,13 @@ class security_baseline (
   Hash $rules,
   Boolean $debug = false,
   Boolean $log_info = false,
-  String $logfile = '/tmp/security_baseline.yaml'
+  String $logfile = '/opt/puppetlabs/facter/facts.d/security_baseline.yaml'
 ){
   if($debug) {
-    echo{"Applying security baseline version: ${baseline_version}": }
+    echo{"Applying security baseline version: ${baseline_version}":
+      loglesel => 'debug',
+      withpath => false,
+    }
   }
 
   validate_hash($rules)
@@ -59,5 +62,12 @@ class security_baseline (
     content => epp('security_baseline/logfile_end.epp', {}),
     target  => $logfile,
     order   => 9999,
+    notify  => Exec['upload-facts'],
+  }
+
+  exec { 'upload-facts':
+    command     => 'puppet facts upload',
+    path        => ['/bin', '/usr/bin', '/usr/local/bin'],
+    refreshonly => true,
   }
 }

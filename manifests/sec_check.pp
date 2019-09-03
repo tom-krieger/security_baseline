@@ -88,7 +88,6 @@ define security_baseline::sec_check (
         } else {
 
           # fact contains expected value
-          s
           $my_msg = ''
           $my_level = 'ok'
           $my_state = 'compliant'

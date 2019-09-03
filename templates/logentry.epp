@@ -1,5 +1,4 @@
-      {
-        "rulenr": "<%= $rulenr %>",
+      "<%= $rulenr %>": {
         "rule": "<%= $rule %>",
         "description": "<%= $desc %>",
         "level": "<%= $level %>",

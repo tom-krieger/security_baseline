@@ -126,7 +126,6 @@ define security_baseline::sec_check (
           'enforce' => $enforce,
           'message' => $message,
           'loglevel' => $loglevel,
-          'logfile' => $::security_baseline::logfile,
         }
       } else {
         $data = {

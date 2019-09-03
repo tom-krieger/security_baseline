@@ -42,7 +42,7 @@ class security_baseline (
     ensure => present,
     owner  => 'root',
     group  => 'root',
-    mode   => '0600',
+    mode   => '0644',
   }
 
   concat::fragment { 'start':

@@ -41,8 +41,6 @@ class security_baseline (
     }
   }
 
-  validate_hash($rules)
-
   $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
   concat { $logfile:

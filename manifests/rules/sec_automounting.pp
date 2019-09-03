@@ -33,18 +33,20 @@ class security_baseline::rules::sec_automounting (
 
     if $::automounting == 'enabled' {
 
-        exec {'disable_automount':
-          command => 'systemctl disable autofs',
-          path    => '/bin/',
+        class { 'autofs':
+          service_ensure => 'stopped',
+          service_enable => false,
         }
       }
 
   } else {
 
-    echo { 'sticky-ww':
-      message  => $message,
-      loglevel => $loglevel,
-      withpath => false,
+    if $::automounting == 'enabled' {
+      echo { 'automount':
+        message  => $message,
+        loglevel => $loglevel,
+        withpath => false,
+      }
     }
 
   }

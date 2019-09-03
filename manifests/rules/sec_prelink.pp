@@ -34,8 +34,10 @@ class security_baseline::rules::sec_prelink (
 ) {
   if($enforce) {
 
-    package { 'prelink':
-      ensure => purged,
+    if($::prelink_pkg and ($::osfamily != 'Suse')) {
+      package { 'prelink':
+        ensure => purged,
+      }
     }
 
   } else {

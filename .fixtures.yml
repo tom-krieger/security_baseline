@@ -14,3 +14,12 @@ fixtures:
     augeas:
       repo: "camptocamp/augeas"
       ref: "1.8.0"
+    sysctl:
+      repo: "herculesteam/augeasproviders_sysctl"
+      ref: "2.3.1"
+    augeasprovider_core:
+      repo: "herculesteam/augeasproviders_core"
+      ref: "2.4.0"
+    autofs:
+      repo: "puppet/autofs"
+      ref: "5.0.1"

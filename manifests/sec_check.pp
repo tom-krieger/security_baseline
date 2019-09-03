@@ -21,7 +21,7 @@
 #
 # @param check
 #    A hash describing the fact for the test and the desired value
-#
+# 
 # @param message
 #    Message to print into the log
 #

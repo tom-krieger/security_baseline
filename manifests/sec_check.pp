@@ -100,37 +100,59 @@ define security_baseline::sec_check (
         $my_state = 'compliant'
       }
 
-      concat::fragment { $title:
-        content => epp('security_baseline/logentry.epp', {
-          'rulenr'    => $title,
-          'rule'      => $rulename,
-          'desc'      => $description,
-          'msg'       => $my_msg,
-          'level'     => $my_level,
-          'rulestate' => $my_state,
-        }),
-        target  => $::security_baseline::logfile,
+      # concat::fragment { $title:
+      #  content => epp('security_baseline/logentry.epp', {
+      #    'rulenr'    => $title,
+      #    'rule'      => $rulename,
+      #    'desc'      => $description,
+      #    'msg'       => $my_msg,
+      #    'level'     => $my_level,
+      #    'rulestate' => $my_state,
+      #  }),
+      #  target  => $::security_baseline::logfile,
+      #}
+
+      ::security_baseline::logging { $title:
+        'rulenr'    => $title,
+        'rule'      => $rulename,
+        'desc'      => $description,
+        'level'     => $my_level,
+        'msg'       => $my_msg,
+        'rulestate' => $my_state,
       }
 
-      if(empty($config_data)) {
-
-        class { $class:
-          enforce  => $enforce,
-          message  => $message,
-          loglevel => $loglevel,
-          logfile  => $::security_baseline::logfile,
-        }
-
-      } else {
-
-        class { $class:
-          enforce     => $enforce,
-          message     => $message,
-          loglevel    => $loglevel,
-          logfile     => $::security_baseline::logfile,
-          config_data => $config_data,
-        }
+      $data = {
+        'enforce' => $enforce,
+        'message' => $message,
+        'loglevel' => $loglevel,
+        'logfile' => $::security_baseline::logfile,
       }
+
+      $merged_data = merge($data, $config_data)
+
+      class { $class:
+        * => $merged_data
+      }
+
+      #if(empty($config_data)) {
+
+      #  class { $class:
+      #    enforce  => $enforce,
+      #    message  => $message,
+      #    loglevel => $loglevel,
+      #    logfile  => $::security_baseline::logfile,
+      #  }
+
+      # } else {
+
+      #  class { $class:
+      #    enforce     => $enforce,
+      #    message     => $message,
+      #    loglevel    => $loglevel,
+      #    logfile     => $::security_baseline::logfile,
+      #    config_data => $config_data,
+      #  }
+      # }
 
     } # rule active
 }

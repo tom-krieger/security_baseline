@@ -1,7 +1,6 @@
-     {
-        "rulenr": "<%= $rulenr %>",
-        "rule": "<%= $rule %>",
-        "description": "<%= $desc %>",
-        "level": "<%= $level %>",
-        "msg": "<%= $msg %>"
-      },
+  '<%= $rulenr %>':
+    rule: '<%= $rule %>'
+    description: '<%= $desc %>' 
+    level: '<%= $level %>'
+    msg: '<%= $msg %>'
+

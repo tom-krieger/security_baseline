@@ -28,7 +28,7 @@ class security_baseline (
   Hash $rules,
   Boolean $debug = false,
   Boolean $log_info = false,
-  String $logfile = '/tmp/security_baseline.json'
+  String $logfile = '/tmp/security_baseline.yaml'
 ){
   if($debug) {
     echo{"Applying security baseline version: ${baseline_version}": }

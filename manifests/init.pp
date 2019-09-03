@@ -33,10 +33,10 @@ class security_baseline (
   Boolean $debug = false,
   Boolean $log_info = false,
   String $logfile = '/opt/puppetlabs/facter/facts.d/security_baseline.yaml'
-){
+) {
   if($debug) {
     echo{"Applying security baseline version: ${baseline_version}":
-      loglesel => 'debug',
+      loglevel => 'debug',
       withpath => false,
     }
   }

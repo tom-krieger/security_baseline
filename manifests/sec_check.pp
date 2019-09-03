@@ -121,12 +121,22 @@ define security_baseline::sec_check (
         rulestate => $my_state,
       }
 
-      $data = {
-        'enforce' => $enforce,
-        'message' => $message,
-        'loglevel' => $loglevel,
-        'logfile' => $::security_baseline::logfile,
+      if($class =~ /^::security_baseline::rules::/) {
+        $data = {
+          'enforce' => $enforce,
+          'message' => $message,
+          'loglevel' => $loglevel,
+          'logfile' => $::security_baseline::logfile,
+        }
+      } else {
+        $data = {
+          'enforce' => $enforce,
+          'message' => $message,
+          'loglevel' => $loglevel,
+          'logfile' => $::security_baseline::logfile,
+        }
       }
+
 
       $merged_data = merge($data, $config_data)
 

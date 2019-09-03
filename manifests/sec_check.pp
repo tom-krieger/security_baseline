@@ -113,12 +113,12 @@ define security_baseline::sec_check (
       #}
 
       ::security_baseline::logging { $title:
-        'rulenr'    => $title,
-        'rule'      => $rulename,
-        'desc'      => $description,
-        'level'     => $my_level,
-        'msg'       => $my_msg,
-        'rulestate' => $my_state,
+        rulenr    => $title,
+        rule      => $rulename,
+        desc      => $description,
+        level     => $my_level,
+        msg       => $my_msg,
+        rulestate => $my_state,
       }
 
       $data = {

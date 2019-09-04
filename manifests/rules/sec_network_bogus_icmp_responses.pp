@@ -15,21 +15,21 @@
 # @param message
 #    Message to print into the log
 #
-# @param loglevel
-#    The loglevel for the above message
+# @param log_level
+#    The log_level for the above message
 #
 # @example
 #   class security_baseline::rules::sec_network_bogus_icmp_responses {
 #       enforce => true,
 #       message => 'Test',
-#       loglevel => 'info'
+#       log_level => 'info'
 #   }
 #
 # @api private
 class security_baseline::rules::sec_network_bogus_icmp_responses (
   Boolean $enforce = true,
   String $message = '',
-  String $loglevel = ''
+  String $log_level = ''
 ) {
   if($enforce) {
 
@@ -47,9 +47,9 @@ class security_baseline::rules::sec_network_bogus_icmp_responses (
     }
     if($fact != '1') {
       echo { 'net.ipv4.icmp_ignore_bogus_error_responses':
-        message  => $message,
-        loglevel => $loglevel,
-        withpath => false,
+        message   => $message,
+        log_level => $log_level,
+        withpath  => false,
       }
     }
   }

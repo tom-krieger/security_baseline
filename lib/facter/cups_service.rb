@@ -6,9 +6,8 @@ require 'facter/helpers/check_service_enabled'
 # Check if cups services is enabled
 
 Facter.add('srv_cups') do
-    confine :osfamily => 'RedHat'
-    setcode do
-      check_service_is_enabled('cups')
-    end
+  confine osfamily: 'RedHat'
+  setcode do
+    check_service_is_enabled('cups')
   end
-    
+end

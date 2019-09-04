@@ -6,9 +6,8 @@ require 'facter/helpers/check_service_enabled'
 # Check if daytime services are switched on
 
 Facter.add('srv_daytime') do
-    confine :osfamily => 'RedHat'
-    setcode do
-      check_xinetd_service('daytime')
-    end
+  confine osfamily: 'RedHat'
+  setcode do
+    check_xinetd_service('daytime')
   end
-  
+end

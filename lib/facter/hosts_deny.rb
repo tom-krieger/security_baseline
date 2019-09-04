@@ -3,7 +3,7 @@
 # hosts_deny.rb
 # Returns true if /etc/hosts.deny file exists
 Facter.add('hosts_deny') do
-  confine :osfamily => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     File.exist?('/etc/hosts.deny')
   end

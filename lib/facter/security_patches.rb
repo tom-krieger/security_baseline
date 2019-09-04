@@ -4,6 +4,6 @@
 # Fact containing all security patches
 
 Facter.add('security_patches') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode 'yum check-update --security -q | grep -v ^$'
 end

@@ -6,9 +6,8 @@ require 'facter/helpers/check_kernel_module'
 # Check if rds module is present
 
 Facter.add('net_rds') do
-    confine :kernel => 'Linux'
-    setcode do
-      check_kernel_module('rds')
-    end
+  confine kernel: 'Linux'
+  setcode do
+    check_kernel_module('rds')
   end
-    
+end

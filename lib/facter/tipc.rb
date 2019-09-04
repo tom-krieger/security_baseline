@@ -6,9 +6,8 @@ require 'facter/helpers/check_kernel_module'
 # Check if tipc module is present
 
 Facter.add('net_tipc') do
-    confine :kernel => 'Linux'
-    setcode do
-      check_kernel_module('tipc')
-    end
+  confine kernel: 'Linux'
+  setcode do
+    check_kernel_module('tipc')
   end
-    
+end

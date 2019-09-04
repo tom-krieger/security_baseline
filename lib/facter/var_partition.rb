@@ -4,6 +4,6 @@
 # Makes sure that /var is mounted
 
 Facter.add('var_partition') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode 'mount | grep "/var "'
 end

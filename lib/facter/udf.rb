@@ -6,7 +6,7 @@ require 'facter/helpers/check_kernel_module'
 # Check if udf module is present
 
 Facter.add('kmod_udf') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     check_kernel_module('udf')
   end

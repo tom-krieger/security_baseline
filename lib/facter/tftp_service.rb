@@ -6,9 +6,8 @@ require 'facter/helpers/check_service_enabled'
 # Check if tftp services are switched on
 
 Facter.add('srv_tftp') do
-    confine :osfamily => 'RedHat'
-    setcode do
-      check_xinetd_service('tftp')
-    end
+  confine osfamily: 'RedHat'
+  setcode do
+    check_xinetd_service('tftp')
   end
-  
+end

@@ -4,17 +4,15 @@
 # checks for gpgcheck in /etc/yum.conf
 
 Facter.add('yum_gpgcheck') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     value = Facter::Core::Execution.exec('grep ^gpgcheck /etc/yum.conf')
-    if value.empty? then
+    if value.empty?
       false
+    elsif value == 'gpgcheck=1'
+      true
     else
-      if value == 'gpgcheck=1' then
-        true
-      else
-        false
-      end
+      false
     end
   end
 end

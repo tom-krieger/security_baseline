@@ -4,7 +4,7 @@
 # Check if /sbin/sulogin is used propperly
 
 Facter.add('single_user_mode_rescue') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     resc = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/rescue.service')
     if resc.empty?
@@ -14,4 +14,3 @@ Facter.add('single_user_mode_rescue') do
     end
   end
 end
-

@@ -6,9 +6,8 @@ require 'facter/helpers/check_service_enabled'
 # Check if smb services is enabled
 
 Facter.add('srv_smb') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_service_is_enabled('smb')
   end
 end
-  

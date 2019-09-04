@@ -6,9 +6,8 @@ require 'facter/helpers/check_package_installed'
 # Check if rsh package is installed
 
 Facter.add('rsh_pkg') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_package_installed('rsh')
   end
 end
-  

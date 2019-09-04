@@ -4,9 +4,8 @@
 # Check if xinetd services are switched on
 
 Facter.add('srv_xinetd') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_service_is_enabled('xinetd')
   end
 end
-  

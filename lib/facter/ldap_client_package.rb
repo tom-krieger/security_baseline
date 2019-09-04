@@ -6,7 +6,7 @@ require 'facter/helpers/check_package_installed'
 # Check if openldqp-clöients package is installed
 
 Facter.add('openldap_clients_pkg') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_package_installed('openldap-clients')
   end

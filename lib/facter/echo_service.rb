@@ -6,9 +6,8 @@ require 'facter/helpers/check_service_enabled'
 # Check if echo services are switched on
 
 Facter.add('srv_echo') do
-    confine :osfamily => 'RedHat'
-    setcode do
-      check_xinetd_service('echo')
-    end
+  confine osfamily: 'RedHat'
+  setcode do
+    check_xinetd_service('echo')
   end
-  
+end

@@ -6,9 +6,8 @@ require 'facter/helpers/check_service_enabled'
 # Check if httpd services is enabled
 
 Facter.add('srv_httpd') do
-    confine :osfamily => 'RedHat'
-    setcode do
-      check_service_is_enabled('httpd')
-    end
+  confine osfamily: 'RedHat'
+  setcode do
+    check_service_is_enabled('httpd')
   end
-  
+end

@@ -14,6 +14,7 @@ describe 'security_baseline::rules::sec_grub2' do
           'message' => 'grub2',
           'loglevel' => 'warning',
         }
+      end
 
       it { is_expected.to compile }
     end

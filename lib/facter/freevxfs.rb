@@ -6,7 +6,7 @@ require 'facter/helpers/check_kernel_module'
 # Check if freevxfs module is present
 
 Facter.add('kmod_freevxfs') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     check_kernel_module('freevxfs')
   end

@@ -8,7 +8,7 @@ describe 'security_baseline::rules::sec_tmp_nodev' do
           'tmp_partition' => '/tmp',
           'tmp_nodev' => false,
           'tmp_noexec' => false,
-          'tmp_nosuid' => false
+          'tmp_nosuid' => false,
         )
       end
       let(:params) do

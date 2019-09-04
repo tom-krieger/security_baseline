@@ -6,9 +6,8 @@ require 'facter/helpers/check_service_enabled'
 # Check if rsyncd services is enabled
 
 Facter.add('srv_rsyncd') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_service_is_enabled('rsyncd')
   end
 end
-      

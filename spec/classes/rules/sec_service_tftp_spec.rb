@@ -15,6 +15,7 @@ describe 'security_baseline::rules::sec_service_tftp' do
           'loglevel' => 'warning',
         }
       end
+
       it { is_expected.to compile }
     end
   end

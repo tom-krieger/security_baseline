@@ -4,17 +4,13 @@
 # Check if dhcpd services is enabled
 
 Facter.add('srv_dhcpd') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
-    ret = ''
     dhcpd = Facter::Core::Execution.exec('systemctl is-enabled dhcpd')
-    if (dhcpd =~ %r{^Failed}) or (dhcpd.empty?) then
-      ret = 'disabled'
+    if (dhcpd =~ %r{^Failed}) || dhcpd.empty?
+      'disabled'
     else
-      ret = dhcpd
+      dhcpd
     end
-
-    ret
   end
 end
-  

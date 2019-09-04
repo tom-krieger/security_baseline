@@ -6,9 +6,8 @@ require 'facter/helpers/check_kernel_module'
 # Check if squashfs module is present
 
 Facter.add('kmod_squashfs') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     check_kernel_module('squashfs')
   end
 end
-  

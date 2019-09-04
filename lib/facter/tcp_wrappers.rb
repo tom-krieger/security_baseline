@@ -6,7 +6,7 @@ require 'facter/helpers/check_package_installed'
 # Check if setroubleshoot package is installed
 
 Facter.add('tcp_wrappers_pkg') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_package_installed('tcp_wrappers')
   end

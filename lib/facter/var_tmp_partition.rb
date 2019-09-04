@@ -4,6 +4,6 @@
 # Makes sure that /var/tmp is mounted
 
 Facter.add('var_tmp_partition') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode 'mount | grep "/var/tmp "'
 end

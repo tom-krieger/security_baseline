@@ -6,7 +6,7 @@ require 'facter/helpers/check_kernel_module'
 # Check for jffs2 kernel module
 
 Facter.add('kmod_jffs2') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     check_kernel_module('jffs2')
   end

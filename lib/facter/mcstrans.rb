@@ -6,7 +6,7 @@ require 'facter/helpers/check_package_installed'
 # Check if mcstrans package is installed
 
 Facter.add('mcstrans_pkg') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_package_installed('mcstrans')
   end

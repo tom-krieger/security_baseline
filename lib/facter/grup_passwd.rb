@@ -4,7 +4,7 @@
 # Check if bootloader password is set
 
 Facter.add('grub_passwd') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     grubpwd = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
     if grubpwd.empty?

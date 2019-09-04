@@ -6,9 +6,8 @@ require 'facter/helpers/check_kernel_module'
 # Check if sctp module is present
 
 Facter.add('net_sctp') do
-    confine :kernel => 'Linux'
-    setcode do
-      check_kernel_module('sctp')
-    end
+  confine kernel: 'Linux'
+  setcode do
+    check_kernel_module('sctp')
   end
-    
+end

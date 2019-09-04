@@ -21,7 +21,7 @@ describe 'security_baseline' do
                 'fact_value' => false,
               },
               'message' => 'Test message unit test',
-              'loglevel' => 'warning,'
+              'loglevel' => 'warning,',
             },
           },
         }

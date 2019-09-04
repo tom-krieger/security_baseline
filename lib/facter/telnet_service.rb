@@ -6,9 +6,8 @@ require 'facter/helpers/check_service_enabled'
 # Check if telnet services is enabled
 
 Facter.add('srv_telnet') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_service_is_enabled('telnet.socket')
   end
 end
-    

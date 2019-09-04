@@ -6,9 +6,8 @@ require 'facter/helpers/check_kernel_module'
 # Check if dccp module is present
 
 Facter.add('net_dccp') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     check_kernel_module('dccp')
   end
 end
-  

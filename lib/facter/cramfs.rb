@@ -5,7 +5,7 @@ require 'facter/helpers/check_kernel_module'
 # cramfs.rb
 # Check if chargen services are switched on
 Facter.add('kmod_cramfs') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     check_kernel_module('cramfs')
   end

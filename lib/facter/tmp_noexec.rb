@@ -4,7 +4,7 @@
 # Contains the parsed values of the /tmp partition, looking for "noexec"
 
 Facter.add('tmp_nodev') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
     mounted = Facter::Core::Execution.exec('mount | grep /tmp')
     if mounted.match?(%r{noexec})

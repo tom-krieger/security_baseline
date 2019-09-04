@@ -6,7 +6,7 @@ require 'facter/helpers/check_package_installed'
 # Check if telnet package is installed
 
 Facter.add('telnet_pkg') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_package_installed('telnet')
   end

@@ -6,9 +6,8 @@ require 'facter/helpers/get_sysctl_value'
 # Contains the available rpm gpg keys
 
 Facter.add('kernel_aslr') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     get_sysctl_value('kernel.randomize_va_space')
   end
 end
-    

@@ -4,6 +4,6 @@
 # Ensures no unconfined daemons exist
 
 Facter.add('unconfigured_daemons') do
-    confine osfamily: 'RedHat'
-    setcode "ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'"
-  end
+  confine osfamily: 'RedHat'
+  setcode "ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'"
+end

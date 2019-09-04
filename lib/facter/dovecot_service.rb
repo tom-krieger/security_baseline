@@ -6,9 +6,8 @@ require 'facter/helpers/check_service_enabled'
 # Check if dovecot services is enabled
 
 Facter.add('srv_dovecot') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_service_is_enabled('dovecot')
   end
 end
-  

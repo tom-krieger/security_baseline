@@ -6,7 +6,7 @@ require 'facter/helpers/check_service_enabled'
 # Check if chargen services are switched on
 
 Facter.add('srv_chargen') do
-  confine :osfamily => 'RedHat'
+  confine osfamily: 'RedHat'
   setcode do
     check_xinetd_service('chargen')
   end

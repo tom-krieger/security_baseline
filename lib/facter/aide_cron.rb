@@ -3,18 +3,18 @@
 # aide_cron.rb
 # Ensures that aide cronjob is setup
 Facter.add('aide_cron') do
-  confine :kernel => 'Linux'
+  confine kernel: 'Linux'
   setcode do
-    ret = 'undef'
-    cronentry = Facter::Core::Execution.exec("crontab -u root -l | grep aide")
-    fileentry = Facter::Core::Execution.exec("grep -rh aide /etc/cron.* /etc/crontab")
-    if cronentry.empty? and fileentry.empty? then
+    cronentry = Facter::Core::Execution.exec('crontab -u root -l | grep aide')
+    fileentry = Facter::Core::Execution.exec('grep -rh aide /etc/cron.* /etc/crontab')
+
+    if cronentry.empty? && fileentry.empty?
       ret = 'undef'
     else
-      if ! cronentry.empty? then
+      unless cronentry.empty?
         ret = cronentry
       end
-      if ! fileentry.empty? then
+      unless fileentry.empty?
         ret = fileentry
       end
     end
@@ -22,4 +22,3 @@ Facter.add('aide_cron') do
     ret
   end
 end
-  

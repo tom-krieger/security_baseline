@@ -41,8 +41,6 @@ class security_baseline (
     }
   }
 
-  $timestamp = generate('/bin/date', '+%Y%d%m_%H%M%S')
-
   concat { $logfile:
     ensure => present,
     owner  => 'root',
@@ -57,8 +55,6 @@ class security_baseline (
   }
 
   create_resources('::security_baseline::sec_check', $rules)
-
-  $finished = generate('/bin/date', '+%Y%d%m_%H%M%S')
 
   concat::fragment { 'finish':
     content => epp('security_baseline/logfile_end.epp', {}),

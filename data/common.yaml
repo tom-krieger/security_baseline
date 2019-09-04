@@ -85,7 +85,7 @@ security_baseline::rules:
       fact_name: 'tmp_partition'
       fact_value: '/tmp'
     message: 'Not in compliance with rule 1.1.2. No seperate directory for /tmp.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.3':
     rulename: 'tmp_nodev'
     active: true
@@ -96,7 +96,7 @@ security_baseline::rules:
       fact_name: 'tmp_nodev'
       fact_value: true
     message: 'Not in compliance with rule 1.1.3. /tmp not mounted with nodev option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.4':
     rulename: 'tmp_nosuid'
     active: true
@@ -107,7 +107,7 @@ security_baseline::rules:
       fact_name: 'tmp_nosuid'
       fact_value: true
     message: 'Not in compliance with rule 1.1.4. /tmp not mounted with nosuid option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.5':
     rulename: 'tmp_noexec'
     active: true
@@ -118,7 +118,7 @@ security_baseline::rules:
       fact_name: 'tmp_noexec'
       fact_value: true
     message: 'Not in compliance with rule 1.1.5. /tmp not mounted with noexec option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.6':
     rulename: 'var_partition'
     active: true
@@ -129,7 +129,7 @@ security_baseline::rules:
       fact_name: 'var_partition'
       fact_value: '/var'
     message: 'Not in compliance with rule 1.1.6. No seperate directory for /var.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.7':
     rulename: 'var_tmp_partition'
     active: true
@@ -140,7 +140,7 @@ security_baseline::rules:
       fact_name: 'var_tmp_partition'
       fact_value: '/var/tmp'
     message: 'Not in compliance with rule 1.1.7. No seperate directory for /var/tmp.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.8':
     rulename: 'var_tmp_nodev'
     active: true
@@ -151,7 +151,7 @@ security_baseline::rules:
       fact_name: 'var_tmp_nodev'
       fact_value: true
     message: 'Not in compliance with rule 1.1.8. /var/tmp not mounted with nodev option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.9':
     rulename: 'var_tmp_nosuid'
     active: true
@@ -162,7 +162,7 @@ security_baseline::rules:
       fact_name: 'var_tmp_nosuid'
       fact_value: true
     message: 'Not in compliance with rule 1.1.9. /var/tmp not mounted with nosuid option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.10':
     rulename: 'var_tmp_noexec'
     active: true
@@ -173,7 +173,7 @@ security_baseline::rules:
       fact_name: 'var_tmp_noexec'
       fact_value: true
     message: 'Not in compliance with rule 1.1.10. /var/tmp not mounted with noexec option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.11':
     rulename: 'var_log_partition'
     active: true
@@ -184,7 +184,7 @@ security_baseline::rules:
       fact_name: 'var_log_partition'
       fact_value: '/var/log'
     message: 'Not in compliance with rule 1.1.11. No seperate directory for /var/log.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.12':
     rulename: 'var_log_audit_partition'
     active: true
@@ -195,7 +195,7 @@ security_baseline::rules:
       fact_name: 'var_log_audit_partition'
       fact_value: '/var/log/audit'
     message: 'Not in compliance with rule 1.1.12. No seperate directory for /var/log/audit.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.13':
     rulename: 'home_partition'
     active: true
@@ -206,7 +206,7 @@ security_baseline::rules:
       fact_name: 'home_partition'
       fact_value: '/home'
     message: 'Not in compliance with rule 1.1.13. No seperate directory for /home.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.14':
     rulename: 'home_nodev'
     active: true
@@ -217,7 +217,7 @@ security_baseline::rules:
       fact_name: 'home_nodev'
       fact_value: true
     message: 'Not in compliance with rule 1.1.14. /home not mounted with nodev option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.15':
     rulename: 'dev_shm_nodev'
     active: true
@@ -228,7 +228,7 @@ security_baseline::rules:
       fact_name: 'dev_shm_nodev'
       fact_value: true
     message: 'Not in compliance with rule 1.1.15. /dev/shm not mounted with nodev option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.16':
     rulename: 'dev_shm_nosuid'
     active: true
@@ -239,7 +239,7 @@ security_baseline::rules:
       fact_name: 'dev_shm_nosuid'
       fact_value: true
     message: 'Not in compliance with rule 1.1.16. /dev/shm not mounted with nosuid option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.17':
     rulename: 'dev_shm_noexec'
     active: true
@@ -250,7 +250,7 @@ security_baseline::rules:
       fact_name: 'dev_shm_noexec'
       fact_value: true
     message: 'Not in compliance with rule 1.1.17. /dev/shm not mounted with noexec option.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.21':
     rulename: 'sticky_ww'
     active: true
@@ -261,7 +261,7 @@ security_baseline::rules:
       fact_name: 'sticky_ww'
       fact_value: ''
     message: 'Not in compliance with rule 1.1.21. Not all world writable directories have sticky bit set.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.1.22':
     rulename: 'automounting'
     active: true
@@ -272,7 +272,7 @@ security_baseline::rules:
       fact_name: 'automounting'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 1.1.22. Automounting is not disabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.2.2':
     rulename: 'yum_gpgcheck'
     active: true
@@ -283,7 +283,7 @@ security_baseline::rules:
       fact_name: 'yum_gpgcheck'
       fact_value: true
     message: 'Not in compliance with rule 1.2.2. Yum gpgcheck not enabled in /etc/yum.conf.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.2.5':
     rulename: 'rhnsd'
     active: true
@@ -294,7 +294,7 @@ security_baseline::rules:
       fact_name: 'rhnsd'
       fact_value: disabled
     message: 'Not in compliance with rule 1.2.5. rhnsd should be disabled.'
-    loglevel: 'info'
+    log_level: 'info'
   '1.3.1':
     rulename: 'aide'
     active: true
@@ -305,7 +305,7 @@ security_baseline::rules:
       fact_name: 'aide'
       fact_value: enabled
     message: 'Not in compliance with rule 1.3.1. aide should be disabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.3.2':
     rulename: 'aide-cron'
     active: true
@@ -316,7 +316,7 @@ security_baseline::rules:
       fact_name: 'aide_cron'
       fact_value: '0 5 * * * root /usr/sbin/aide --check'
     message: 'Not in compliance with rule 1.3.2. aide cronjob should be setup.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.4.1':
     rulename: 'grub2'
     active: true
@@ -327,7 +327,7 @@ security_baseline::rules:
       fact_name: 'grub2'
       fact_value: ''
     message: ''
-    loglevel: 'info'
+    log_level: 'info'
   '1.4.2':
     rulename: 'grub_passwd'
     active: true
@@ -338,7 +338,7 @@ security_baseline::rules:
       fact_name: 'grub_passwd'
       fact_value: true
     message: 'Not in compliance with rule 1.4.2. A Grub password should be set.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.4.3':
     rulename: 'single_user_mode'
     active: true
@@ -349,7 +349,7 @@ security_baseline::rules:
       fact_name: 'single_user_mode'
       fact_value: true
     message: 'Not in compliance with rule 1.4.3. /sbin/sulogin not used propperly.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.5.1':
     rulename: 'core_dumps'
     active: true
@@ -360,7 +360,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: ''
-    loglevel: 'info'
+    log_level: 'info'
   '1.5.3':
     rulename: 'kernel_aslr'
     active: true
@@ -371,7 +371,7 @@ security_baseline::rules:
       fact_name: 'kernel_aslr'
       fact_value: '2'
     message: 'Not in compliance with rule 1.5.3. Kernel address space randomization is not enabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.5.4':
     rulename: 'prelink'
     active: true
@@ -382,7 +382,7 @@ security_baseline::rules:
       fact_name: 'prelink'
       fact_value: false
     message: 'Not in compliance with rule 1.5.4. prelink pckage is installed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.6.1.1':
     rulename: 'selinux-bootloader'
     active: true
@@ -393,7 +393,7 @@ security_baseline::rules:
       fact_name: 'bootloader_selinux'
       fact_value: false
     message: 'Not in compliance with rule 1.6.1.1. Not all linux bootloader entries enforce selinux.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.6.1.2':
     rulename: 'selinux'
     active: true
@@ -404,7 +404,7 @@ security_baseline::rules:
       fact_name: 'selinux_config_mode'
       fact_value: 'enforcing'
     message: 'Not in compliance with rule 1.6.1.2. Selinux should run in enforcing mode.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.6.1.3':
     rulename: 'selinux-policy'
     active: true
@@ -415,7 +415,7 @@ security_baseline::rules:
       fact_name: 'selinux_config_policy'
       fact_value: 'targeted'
     message: 'Not in compliance with rule 1.6.1.3. Selinux policy should be defined.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.6.1.4':
     rulename: 'setroubleshoot'
     active: true
@@ -426,7 +426,7 @@ security_baseline::rules:
       fact_name: 'setoubleshoot_pkg'
       fact_value: false
     message: 'Not in compliance with rule 1.6.1.4. Setroubleshoot package is installed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.6.1.5':
     rulename: 'mcstrans'
     active: true
@@ -437,7 +437,7 @@ security_baseline::rules:
       fact_name: 'mcstrans_pkg'
       fact_value: false
     message: 'Not in compliance with rule 1.6.1.5. Mcstrans package is installed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.6.1.6':
     rulename: 'unconf-daemons'
     active: true
@@ -448,7 +448,7 @@ security_baseline::rules:
       fact_name: 'mcstrans_pkg'
       fact_value: false
     message: 'Not in compliance with rule 1.6.1.6. Unconfigured daemons running on system.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.6.2':
     rulename: 'selinux-pkg'
     active: true
@@ -459,7 +459,7 @@ security_baseline::rules:
       fact_name: 'selinux_pkg'
       fact_value: true
     message: 'Not in compliance with rule 1.6.2. SElinux not installed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.7.1.1':
     rulename: 'motd'
     active: true
@@ -470,7 +470,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 1.7.1.1. /etc/motd contains sensitive information.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.7.1.2':
     rulename: 'issue'
     active: true
@@ -481,7 +481,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 1.7.1.2. /etc/issue contains sensitive information.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.7.1.3':
     rulename: 'issue_net'
     active: true
@@ -492,7 +492,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 1.7.1.3. /etc/issue.net contains sensitive information.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.7.1.4':
     rulename: 'motd_perm'
     active: true
@@ -503,7 +503,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: ''
-    loglevel: ''
+    log_level: ''
   '1.7.1.5':
     rulename: 'issue_perm'
     active: true
@@ -514,7 +514,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: ''
-    loglevel: ''
+    log_level: ''
   '1.7.1.6':
     rulename: 'issue_net_perm'
     active: true
@@ -525,7 +525,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: ''
-    loglevel: ''
+    log_level: ''
   '1.7.2':
     rulename: 'gdm'
     active: true
@@ -536,7 +536,7 @@ security_baseline::rules:
       fact_name: 'gnome_gdm'
       fact_value: true
     message: 'Not in compliance with rule 1.7.2. GDM not propperly configured with warning messages.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '1.8':
     rulename: 'security-patches'
     active: true
@@ -547,7 +547,7 @@ security_baseline::rules:
       fact_name: 'security_patches'
       fact_value: ''
     message: 'Not in compliance with rule 1.8. There are security patches available.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.1.1':
     rulename: 'chargen-service'
     active: true
@@ -558,7 +558,7 @@ security_baseline::rules:
       fact_name: 'srv_chargen'
       fact_value: false
     message: 'Not in compliance with rule 2.1.1. chargen service not switched off.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.1.2':
     rulename: 'daytime-service'
     active: true
@@ -569,7 +569,7 @@ security_baseline::rules:
       fact_name: 'srv_daytime'
       fact_value: false
     message: 'Not in compliance with rule 2.1.2. daytime service not switched off.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.1.3':
     rulename: 'discard-service'
     active: true
@@ -580,7 +580,7 @@ security_baseline::rules:
       fact_name: 'srv_discard'
       fact_value: false
     message: 'Not in compliance with rule 2.1.3. discard service not switched off.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.1.4':
     rulename: 'echo-service'
     active: true
@@ -591,7 +591,7 @@ security_baseline::rules:
       fact_name: 'srv_echo'
       fact_value: false
     message: 'Not in compliance with rule 2.1.4. echo service not switched off.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.1.5':
     rulename: 'time-service'
     active: true
@@ -602,7 +602,7 @@ security_baseline::rules:
       fact_name: 'srv_time'
       fact_value: false
     message: 'Not in compliance with rule 2.1.5. time service not switched off.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.1.6':
     rulename: 'tftp-service'
     active: true
@@ -613,7 +613,7 @@ security_baseline::rules:
       fact_name: 'srv_tftp'
       fact_value: false
     message: 'Not in compliance with rule 2.1.6. tftp service not switched off.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.1.7':
     rulename: 'xinetd-service'
     active: true
@@ -624,7 +624,7 @@ security_baseline::rules:
       fact_name: 'srv_tftp'
       fact_value: false
     message: 'Not in compliance with rule 2.1.6. tftp service not switched off.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.2':
     rulename: 'x11-installed'
     active: true
@@ -635,7 +635,7 @@ security_baseline::rules:
       fact_name: 'x11_packages'
       fact_value: false
     message: 'Not in compliance with rule 2.2.2. There are X11 pckages installed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.3':
     rulename: 'avahi-daemon'
     active: true
@@ -646,7 +646,7 @@ security_baseline::rules:
       fact_name: 'srv_avahi'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.3. Avahi daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.4':
     rulename: 'cups'
     active: true
@@ -657,7 +657,7 @@ security_baseline::rules:
       fact_name: 'srv_cups'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.4. Cups daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.5':
     rulename: 'dhcpd'
     active: true
@@ -668,7 +668,7 @@ security_baseline::rules:
       fact_name: 'srv_dhcpd'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.5. Dhcpd daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.6':
     rulename: 'slapd'
     active: true
@@ -679,7 +679,7 @@ security_baseline::rules:
       fact_name: 'srv_ldap'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.6. Ldap daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.7':
     rulename: 'nfs-rpcbind'
     active: true
@@ -690,7 +690,7 @@ security_baseline::rules:
       fact_name: 'srv_nfs'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.7. Nfs and rpcbind daemons are not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.8':
     rulename: 'dns'
     active: true
@@ -701,7 +701,7 @@ security_baseline::rules:
       fact_name: 'srv_dns'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.8. Dns daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.9':
     rulename: 'vsftpd'
     active: true
@@ -712,7 +712,7 @@ security_baseline::rules:
       fact_name: 'srv_vsftpd'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.9. Vsftpd daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.10':
     rulename: 'httpd'
     active: true
@@ -723,7 +723,7 @@ security_baseline::rules:
       fact_name: 'srv_httpd'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.10. Http daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.11':
     rulename: 'dovecot'
     active: true
@@ -734,7 +734,7 @@ security_baseline::rules:
       fact_name: 'srv_dovecot'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.11. Dovecot daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.12':
     rulename: 'smb'
     active: true
@@ -745,7 +745,7 @@ security_baseline::rules:
       fact_name: 'srv_smb'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.12. Smb daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.13':
     rulename: 'squid'
     active: true
@@ -756,7 +756,7 @@ security_baseline::rules:
       fact_name: 'srv_squid'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.13. Squid daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.14':
     rulename: 'snmpd'
     active: true
@@ -767,7 +767,7 @@ security_baseline::rules:
       fact_name: 'srv_snmpd'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.14. Snmp daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.15':
     rulename: 'mta'
     active: true
@@ -778,7 +778,7 @@ security_baseline::rules:
       fact_name: 'srv_mta'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.15. Mta not configured for local mode only.'
-    loglevel: 'warning'
+    log_level: 'warning'
     config_data:
       inet_interfaces: 'loopback-only'
   '2.2.16':
@@ -791,7 +791,7 @@ security_baseline::rules:
       fact_name: 'srv_ypserv'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.16. NIS server daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.17':
     rulename: 'rsh'
     active: true
@@ -802,7 +802,7 @@ security_baseline::rules:
       fact_name: 'srv_rsh'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.17. RSH server daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.18':
     rulename: 'ntalk'
     active: true
@@ -813,7 +813,7 @@ security_baseline::rules:
       fact_name: 'srv_ntalk'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.18. Talk server daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.19':
     rulename: 'telnet'
     active: true
@@ -824,7 +824,7 @@ security_baseline::rules:
       fact_name: 'srv_telnet'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.19. Telnet server daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.20':
     rulename: 'tftp'
     active: true
@@ -835,7 +835,7 @@ security_baseline::rules:
       fact_name: 'srv_tftp'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.20. Tftp server daemon is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.2.21':
     rulename: 'rsyncd'
     active: true
@@ -846,7 +846,7 @@ security_baseline::rules:
       fact_name: 'srv_tftp'
       fact_value: 'disabled'
     message: 'Not in compliance with rule 2.2.21. Rsync servicve is not disbaled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.3.1':
     rulename: 'ypcind'
     active: true
@@ -857,7 +857,7 @@ security_baseline::rules:
       fact_name: 'ypbind_pkg'
       fact_value: ''
     message: 'Not in compliance with rule 2.3.1. NIS client package is not removed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.3.2':
     rulename: 'ypcind'
     active: true
@@ -868,7 +868,7 @@ security_baseline::rules:
       fact_name: 'rsh_pkg'
       fact_value: ''
     message: 'Not in compliance with rule 2.3.2. RSH client package is not removed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.3.3':
     rulename: 'talk-client'
     active: true
@@ -879,7 +879,7 @@ security_baseline::rules:
       fact_name: 'talk_pkg'
       fact_value: ''
     message: 'Not in compliance with rule 2.3.3. Talk client package is not removed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.3.4':
     rulename: 'telnet-client'
     active: true
@@ -890,7 +890,7 @@ security_baseline::rules:
       fact_name: 'telnet_pkg'
       fact_value: ''
     message: 'Not in compliance with rule 2.3.4. Telnet client package is not removed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '2.3.5':
     rulename: 'openldap-client'
     active: true
@@ -901,7 +901,7 @@ security_baseline::rules:
       fact_name: 'openldap_clients_pkg'
       fact_value: ''
     message: 'Not in compliance with rule 2.3.5. Openldap client package is not removed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.1.1':
     rulename: 'ip-forwarding'
     active: true
@@ -912,7 +912,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.1.1. IP forwarding is not disabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.1.2':
     rulename: 'package-redirect'
     active: true
@@ -923,7 +923,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.1.2. Packet redirect sending is not disabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.2.1':
     rulename: 'source-routes-packet'
     active: true
@@ -934,7 +934,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.2.1. Source routes packets should not be accepted.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.2.2':
     rulename: 'icmp-redirect'
     active: true
@@ -945,7 +945,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.2.2. ICMP redirects should not be accepted.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.2.3':
     rulename: 'icmp-secure-redirect'
     active: true
@@ -956,7 +956,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.2.2. Secure ICMP redirects should not be accepted.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.2.4':
     rulename: 'log-suspicious-packets'
     active: true
@@ -967,7 +967,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.2.4. Suspicious packets are not logged.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.2.5':
     rulename: 'broadcast-icmp-requests'
     active: true
@@ -978,7 +978,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.2.5. Broadcast ICMP requests are not ignored.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.2.6':
     rulename: 'bogus-ucmp-responses'
     active: true
@@ -989,7 +989,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.2.6. Bogus ICMP responses are not ignored.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.2.7':
     rulename: 'reverse-path-filtering'
     active: true
@@ -1000,7 +1000,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.2.7. Reversye path filterig is not enabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.2.8':
     rulename: 'tcp-syn-cookoes'
     active: true
@@ -1011,7 +1011,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.2.8. TCP SYN cookies are not enabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.3.1':
     rulename: 'ipv6-router-advertisements'
     active: true
@@ -1022,7 +1022,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.3.1. IPv6 router advertisements are accepred.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.3.2':
     rulename: 'ipv6-redirects'
     active: true
@@ -1033,7 +1033,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.3.2. IPv6 redirects are accepted.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.3.3':
     rulename: 'ipv6-disabled'
     active: true
@@ -1044,7 +1044,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.3.3. IPv6 is not disabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.4.1':
     rulename: 'tcp-wrappers'
     active: true
@@ -1055,7 +1055,7 @@ security_baseline::rules:
       fact_name: ''
       fact_value: ''
     message: 'Not in compliance with rule 3.4.1. TCP wrappers not installed.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.4.2':
     rulename: 'hosts-allow'
     active: true
@@ -1066,7 +1066,7 @@ security_baseline::rules:
       fact_name: 'hosts_allow'
       fact_value: true
     message: 'Not in compliance with rule 3.4.2. /etc/hosts.allow is not configured.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.4.3':
     rulename: 'hosts-deny'
     active: true
@@ -1077,7 +1077,7 @@ security_baseline::rules:
       fact_name: 'hosts_deny'
       fact_value: true
     message: 'Not in compliance with rule 3.4.3. /etc/hosts.deny is not configured.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.5.1':
     rulename: 'net-dccp'
     active: true
@@ -1088,7 +1088,7 @@ security_baseline::rules:
       fact_name: 'net_dccp'
       fact_value: false
     message: 'Not in compliance with rule 3.5.1. DCCP is not disabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.5.2':
     rulename: 'net-sctp'
     active: true
@@ -1099,7 +1099,7 @@ security_baseline::rules:
       fact_name: 'net_sctp'
       fact_value: false
     message: 'Not in compliance with rule 3.5.2. SCTP is not disabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.5.3':
     rulename: 'net-rds'
     active: true
@@ -1110,7 +1110,7 @@ security_baseline::rules:
       fact_name: 'net_rds'
       fact_value: false
     message: 'Not in compliance with rule 3.5.3. RDS is not disabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.5.4':
     rulename: 'net-tipc'
     active: true
@@ -1121,7 +1121,7 @@ security_baseline::rules:
       fact_name: 'net_tipc'
       fact_value: false
     message: 'Not in compliance with rule 3.5.4. TIPC is not disabled.'
-    loglevel: 'warning'
+    log_level: 'warning'
   '3.6.1':
     rulename: 'iptables'
     active: true
@@ -1132,4 +1132,4 @@ security_baseline::rules:
       fact_name: 'iptables_pkg'
       fact_value: true
     message: 'Not in compliance with rule 3.6.1. No iptables package installed.'
-    loglevel: 'warning'
+    log_level: 'warning'

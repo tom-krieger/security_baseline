@@ -44,7 +44,7 @@
 #         fact_value => '/tmp',
 #       },
 #       message     => 'Not in compliance with rule 1.1.2. No seperate directory for /tmp.',
-#       loglevel    => 'warning',
+#       log_level   => 'warning',
 #   }
 define security_baseline::sec_check (
   String $rulename,
@@ -53,7 +53,7 @@ define security_baseline::sec_check (
   String $class,
   Hash $check,
   String $message             = '',
-  String $loglevel            = 'warning',
+  String $log_level           = 'warning',
   Boolean $active             = true,
   Optional[Hash] $config_data = {},
 ) {
@@ -62,8 +62,8 @@ define security_baseline::sec_check (
 
       if($::security_baseline::debug) {
         echo{"Applying rule ${rulename}":
-          loglevel => 'debug',
-          withpath => false,
+          log_level => 'debug',
+          withpath  => false,
         }
       }
 
@@ -81,7 +81,7 @@ define security_baseline::sec_check (
           }
 
           $my_msg   = $message
-          $my_level = $loglevel
+          $my_level = $log_level
           $my_state = 'not compliant'
 
         } else {
@@ -115,13 +115,13 @@ define security_baseline::sec_check (
         $data = {
           'enforce' => $enforce,
           'message' => $message,
-          'loglevel' => $loglevel,
+          'loglevel' => $log_level,
         }
       } else {
         $data = {
           'enforce' => $enforce,
           'message' => $message,
-          'loglevel' => $loglevel,
+          'loglevel' => $log_level,
           'logfile' => $::security_baseline::logfile,
         }
       }

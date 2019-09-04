@@ -16,21 +16,21 @@
 # @param message
 #    Message to print into the log
 #
-# @param loglevel
-#    The loglevel for the above message
+# @param log_level
+#    The log_level for the above message
 #
 # @example
 #   class security_baseline::rules::sec_network_log_suspicious_packets {
 #       enforce => true,
 #       message => 'Test',
-#       loglevel => 'info'
+#       log_level => 'info'
 #   }
 #
 # @api private
 class security_baseline::rules::sec_network_log_suspicious_packets (
   Boolean $enforce = true,
   String $message = '',
-  String $loglevel = ''
+  String $log_level = ''
 ) {
   if($enforce) {
 
@@ -55,9 +55,9 @@ class security_baseline::rules::sec_network_log_suspicious_packets (
     }
     if(($fact != '1') or ($fact_default != '1')) {
       echo { 'net.ipv4.conf.all.log_martians':
-        message  => $message,
-        loglevel => $loglevel,
-        withpath => false,
+        message   => $message,
+        log_level => $log_level,
+        withpath  => false,
       }
     }
   }

@@ -2,7 +2,7 @@
 
 # bootloader_selinux.rb
 # Check for bootloader entries with disabled selinux. Returns true if no
-#  entry with selinux=0 or enforcing=0 is found
+# entry with selinux=0 or enforcing=0 is found
 
 Facter.add('bootloader_selinux') do
   confine kernel: 'Linux'

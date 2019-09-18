@@ -319,14 +319,19 @@ Facter.add(:security_baseline) do
     tcp_wrapper['host_deny'] = File.exist?('/etc/hosts.deny')
     security_baseline[:tcp_wrapper] = tcp_wrapper
 
-    coredumps ={}
-    coredumps['limits'] = Facter::Core::Execution.exec('grep "hard core" /etc/security/limits.conf /etc/security/limits.d/*')
-    if coredumps['limits'].empty? || security_baseline['sysctl']['fs_dumpable'].empty? || (security_baseline['sysctl']['fs_dumpable'] != 0)
-      coredumps['status'] = false
+    coredumps = {}
+    if security_baseline['sysctl'].key?('fs_dumpable')
+      fsdumpable = security_baseline['sysctl']['fs_dumpable']
     else
-      coredumps['status'] = true
+      undef fsdumpable
     end
-                                             
+    coredumps['limits'] = Facter::Core::Execution.exec('grep "hard core" /etc/security/limits.conf /etc/security/limits.d/*')
+    coredumps['status'] = if coredumps['limits'].empty? || (fsdumpable && (security_baseline['sysctl']['fs_dumpable'] != 0))
+                            false
+                          else
+                            true
+                          end
+
     security_baseline[:coredumps] = coredumps
 
     security_baseline

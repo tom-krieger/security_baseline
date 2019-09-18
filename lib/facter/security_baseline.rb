@@ -26,16 +26,16 @@ Facter.add(:security_baseline) do
 
     packages_installed = {}
     packages = { 'iptables' => '-q',
-                  'openldap-clients' => '-q',
-                  'mcstrans' => '-q',
-                  'prelink' => '-q',
-                  'rsh' => '-q',
-                  'libselinux' => '-q',
-                  'setroubleshoot' => '-q',
-                  'talk' => '-q',
-                  'tcp_wrappers' => '-q',
-                  'telnet' => '-q',
-                  'ypbind' => '-q' }
+                 'openldap-clients' => '-q',
+                 'mcstrans' => '-q',
+                 'prelink' => '-q',
+                 'rsh' => '-q',
+                 'libselinux' => '-q',
+                 'setroubleshoot' => '-q',
+                 'talk' => '-q',
+                 'tcp_wrappers' => '-q',
+                 'telnet' => '-q',
+                 'ypbind' => '-q' }
 
     packages.each do |package, opts|
       packages_installed[package] = check_package_installed(package, opts)
@@ -140,9 +140,9 @@ Facter.add(:security_baseline) do
     shm = {}
     mounted = Facter::Core::Execution.exec('mount | grep /dev/shm')
     shm['nodev'] = if mounted.match?(%r{nodev})
-                      true
-                    else
-                      false
+                     true
+                   else
+                     false
                     end
     shm['noexec'] = if mounted.match?(%r{noexec})
                       true
@@ -171,9 +171,9 @@ Facter.add(:security_baseline) do
     tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/tmp "')
     mounted = Facter::Core::Execution.exec('mount | grep /tmp')
     tmp['nodev'] = if mounted.match?(%r{nodev})
-                      true
-                    else
-                      false
+                     true
+                   else
+                     false
                     end
     tmp['noexec'] = if mounted.match?(%r{noexec})
                       true
@@ -192,9 +192,9 @@ Facter.add(:security_baseline) do
     var_tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/var/tmp "')
     mounted = Facter::Core::Execution.exec('mount | grep /var/tmp')
     var_tmp['nodev'] = if mounted.match?(%r{nodev})
-                          true
-                        else
-                          false
+                         true
+                       else
+                         false
                         end
     var_tmp['noexec'] = if mounted.match?(%r{noexec})
                           true
@@ -256,9 +256,9 @@ Facter.add(:security_baseline) do
 
     resc = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/rescue.service')
     single_user_mode['rescue'] = if resc.empty?
-                                    false
-                                  else
-                                    true
+                                   false
+                                 else
+                                   true
                                   end
 
     emerg = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/emergency.service')
@@ -288,11 +288,11 @@ Facter.add(:security_baseline) do
     security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
 
     grubpwd = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
-    if grubpwd.empty?
-      security_baseline[:grub_passwd] = false
-    else
-      security_baseline[:grub_passwd] = true
-    end
+    security_baseline[:grub_passwd] = if grubpwd.empty?
+                                        false
+                                      else
+                                        true
+                                      end
 
     security_baseline[:rhnsd] = check_service_is_enabled('rhnsd')
 

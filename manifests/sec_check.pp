@@ -78,6 +78,9 @@ define security_baseline::sec_check (
               $values
             }
           }
+          echo { "filtered ${filtered}":
+            loglevel => 'info',
+          }
           $current_value = $filtered[$fact_name]
         } else {
           $current_value = 'undef'

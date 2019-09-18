@@ -321,7 +321,7 @@ Facter.add(:security_baseline) do
 
     coredumps ={}
     coredumps['limits'] = Facter::Core::Execution.exec('grep "hard core" /etc/security/limits.conf /etc/security/limits.d/*')
-    if coredumps['limits'].empty? || (security_baseline['sysctl']['fs_dumpable'] != 0)
+    if coredumps['limits'].empty? || security_baseline['sysctl']['fs_dumpable'].empty? || (security_baseline['sysctl']['fs_dumpable'] != 0)
       coredumps['status'] = false
     else
       coredumps['status'] = true

@@ -10,9 +10,11 @@ require 'facter/helpers/get_sysctl_value'
 # security_baseline.rb
 # collect facts about the security baseline
 
-Facter.add(:security_baseline, type: :aggregate) do
+Facter.add(:security_baseline) do
   confine kernel: 'Linux'
-  chunk(:kernel_modules) do
+  setcode do
+    security_baseline = {}
+
     kernel_modules = {}
     modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat']
 
@@ -20,31 +22,27 @@ Facter.add(:security_baseline, type: :aggregate) do
       kernel_modules[mod] = check_kernel_module(mod)
     end
 
-    kernel_modules
-  end
+    security_baseline[:kernel_modules] = kernel_modules
 
-  chunk(:packages_installed) do
     packages_installed = {}
     packages = { 'iptables' => '-q',
-                 'openldap-clients' => '-q',
-                 'mcstrans' => '-q',
-                 'prelink' => '-q',
-                 'rsh' => '-q',
-                 'libselinux' => '-q',
-                 'setroubleshoot' => '-q',
-                 'talk' => '-q',
-                 'tcp_wrappers' => '-q',
-                 'telnet' => '-q',
-                 'ypbind' => '-q' }
+                  'openldap-clients' => '-q',
+                  'mcstrans' => '-q',
+                  'prelink' => '-q',
+                  'rsh' => '-q',
+                  'libselinux' => '-q',
+                  'setroubleshoot' => '-q',
+                  'talk' => '-q',
+                  'tcp_wrappers' => '-q',
+                  'telnet' => '-q',
+                  'ypbind' => '-q' }
 
     packages.each do |package, opts|
       packages_installed[package] = check_package_installed(package, opts)
     end
 
-    packages_installed
-  end
+    security_baseline[:packages_installed] = packages_installed
 
-  chunk(:services_enabled) do
     services_enabled = {}
     services = ['autofs', 'avahi-daemon', 'cups', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
                 'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd']
@@ -74,10 +72,8 @@ Facter.add(:security_baseline, type: :aggregate) do
                                     'disabled'
                                   end
 
-    services_enabled
-  end
+    security_baseline[:services_enabled] = services_enabled
 
-  chunk(:xinetd_services) do
     xinetd_services = {}
     srvs = ['echo', 'time', 'chargen', 'tftp', 'daytime', 'discard']
 
@@ -86,10 +82,8 @@ Facter.add(:security_baseline, type: :aggregate) do
       xinetd_services[srv_name] = check_xinetd_service(srv)
     end
 
-    xinetd_services
-  end
+    security_baseline[:xinetd_services] = xinetd_services
 
-  chunk(:sysctl) do
     sysctl = {}
     sysctl['kernel_aslr'] = get_sysctl_value('kernel.randomize_va_space')
 
@@ -105,10 +99,8 @@ Facter.add(:security_baseline, type: :aggregate) do
       sysctl[key] = get_sysctl_value(key)
     end
 
-    sysctl
-  end
+    security_baseline[:sysctl] = sysctl
 
-  chunk(:aide) do
     aide = {}
 
     cronentry = Facter::Core::Execution.exec('crontab -u root -l | grep aide')
@@ -132,10 +124,8 @@ Facter.add(:security_baseline, type: :aggregate) do
                         version
                       end
 
-    aide
-  end
+    security_baseline[:aide] = aide
 
-  chunk(:selinux) do
     selinux = {}
     val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
     selinux['bootloader'] = if val.empty?
@@ -144,18 +134,16 @@ Facter.add(:security_baseline, type: :aggregate) do
                               false
                             end
 
-    selinux
-  end
+    security_baseline[:selinux] = selinux
 
-  chunk(:partitions) do
     partitions = {}
     shm = {}
     mounted = Facter::Core::Execution.exec('mount | grep /dev/shm')
     shm['nodev'] = if mounted.match?(%r{nodev})
-                     true
-                   else
-                     false
-                   end
+                      true
+                    else
+                      false
+                    end
     shm['noexec'] = if mounted.match?(%r{noexec})
                       true
                     else
@@ -183,10 +171,10 @@ Facter.add(:security_baseline, type: :aggregate) do
     tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/tmp "')
     mounted = Facter::Core::Execution.exec('mount | grep /tmp')
     tmp['nodev'] = if mounted.match?(%r{nodev})
-                     true
-                   else
-                     false
-                   end
+                      true
+                    else
+                      false
+                    end
     tmp['noexec'] = if mounted.match?(%r{noexec})
                       true
                     else
@@ -204,10 +192,10 @@ Facter.add(:security_baseline, type: :aggregate) do
     var_tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/var/tmp "')
     mounted = Facter::Core::Execution.exec('mount | grep /var/tmp')
     var_tmp['nodev'] = if mounted.match?(%r{nodev})
-                         true
-                       else
-                         false
-                       end
+                          true
+                        else
+                          false
+                        end
     var_tmp['noexec'] = if mounted.match?(%r{noexec})
                           true
                         else
@@ -233,10 +221,8 @@ Facter.add(:security_baseline, type: :aggregate) do
     var_log_audit['partition'] = Facter::Core::Execution.exec('mount | grep "/var/log/audit "')
     partitions['var_log_audit'] = var_log_audit
 
-    partitions
-  end
+    security_baseline[:partitions] = partitions
 
-  chunk(:yum) do
     yum = {}
     yum['repolist'] = Facter::Core::Execution.exec('yum repolist')
     value = Facter::Core::Execution.exec('grep ^gpgcheck /etc/yum.conf')
@@ -248,40 +234,32 @@ Facter.add(:security_baseline, type: :aggregate) do
                         false
                       end
 
-    yum
-  end
+    security_baseline[:yum] = yum
 
-  chunk(:groups) do
     groups = {}
     groups['duplicate_gid'] = get_duplicate_groups('gid')
     groups['duplicate_group'] = get_duplicate_groups('group')
-    groups
-  end
+    security_baseline[:groups] = groups
 
-  chunk(:users) do
     users = {}
     users['duplicate_uid'] = get_duplicate_users('uid')
     users['duplidate_user'] = get_duplicate_users('user')
-    users
-  end
+    security_baseline[:users] = users
 
-  chunk(:x11) do
     x11 = {}
     pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
     x11['installed'] = pkgs.split("\n")
 
-    x11
-  end
+    security_baseline[:x11] = x11
 
-  chunk(:singe_user_mode) do
     single_user_mode = {}
 
     resc = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/rescue.service')
     single_user_mode['rescue'] = if resc.empty?
-                                   false
-                                 else
-                                   true
-                                 end
+                                    false
+                                  else
+                                    true
+                                  end
 
     emerg = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/emergency.service')
     single_user_mode['emergency'] = if emerg.empty?
@@ -290,58 +268,39 @@ Facter.add(:security_baseline, type: :aggregate) do
                                       true
                                     end
 
-    single_user_mode
-  end
+    security_baseline[:singe_user_mode] = single_user_mode
 
-  chunk(:issue) do
     issue = {}
-
     issue['os'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue')
     issue['net'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue.net')
+    security_baseline[:issue] = issue
 
-    issue
-  end
+    security_baseline[:motd] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
 
-  chunk(:motd) do
-    Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
-  end
+    security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
 
-  chunk(:rpm_gpg_keys) do
-    Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
-  end
+    security_baseline[:unconfigured_daemons]] = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
 
-  chunk(:unconfigured_daemons) do
-    Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
-  end
+    security_baseline[:sticky_ww] = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
 
-  chunk(:sticky_ww) do
-    Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
-  end
+    security_baseline[:security_patches] = Facter::Core.Execution.exec('yum check-update --security -q | grep -v ^$')
 
-  chunk(:security_patches) do
-    Facter::Core. < execution.exec('yum check-update --security -q | grep -v ^$')
-  end
+    security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
 
-  chunk(:gnome_gdm) do
-    Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
-  end
-
-  chunk(:grub_passwd) do
     grubpwd = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
     if grubpwd.empty?
-      false
+      security_baseline†[:grub_passwd] = false
     else
-      true
+      security_baseline†[:grub_passwd] = true
     end
-  end
 
-  chunk(:rhnsd) do
-    check_service_is_enabled('rhnsd')
-  end
+    security_baseline[:rhnsd] = check_service_is_enabled('rhnsd')
 
-  chunk(:tcp_wrapper) do
     tcp_wrapper = {}
     tcp_wrapper['host_allow'] = File.exist?('/etc/hosts.allow')
     tcp_wrapper['host_deny'] = File.exist?('/etc/hosts.deny')
+    security_baseline[:tcp_wrapper] = tcp_wrapper
+
+    security_baseline
   end
 end

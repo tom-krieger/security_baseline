@@ -283,7 +283,7 @@ Facter.add(:security_baseline) do
 
     security_baseline[:sticky_ww] = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
 
-    security_baseline[:security_patches] = Facter::Core.Execution.exec('yum check-update --security -q | grep -v ^$')
+    security_baseline[:security_patches] = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
 
     security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
 

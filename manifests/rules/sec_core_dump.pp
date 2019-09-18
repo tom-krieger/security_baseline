@@ -43,6 +43,17 @@ class security_baseline::rules::sec_core_dump (
     sysctl { 'fs.suid_dumpable':
       value => 0,
     }
-
+  } else {
+    if(
+      ($facts['coredumps'].empty) or
+      ($facts['sysctl']['fs_dumpable'].empty) or
+      ($facts['sysctl']['fs_dumpable'] != 0)
+    ) {
+      echo { 'coredumps':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

@@ -33,7 +33,7 @@ class security_baseline::rules::sec_grub_passwd (
 ) {
   if($enforce) {
 
-    if($::grub_passwd == false) {
+    if($facts['grub']['grub_passwd'] == false) {
 
       echo { 'grub-passwd':
         message  => $message,

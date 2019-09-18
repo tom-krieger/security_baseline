@@ -45,7 +45,7 @@ class security_baseline::rules::sec_aide_cron (
 
   } else {
 
-    if(empty($::aide_cron)) {
+    if(empty($facts['aide']['cron'])) {
 
       echo { 'aide-cron':
         message  => $message,

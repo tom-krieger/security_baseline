@@ -47,7 +47,7 @@ class security_baseline::rules::sec_aide (
 
   } else {
 
-    if(empty($::aide_version)) {
+    if(empty($facts['aide']['version']) or ($facts['aide']['version'] == 'not installed')) {
       echo { 'aide':
           message  => $message,
           loglevel => $log_level,

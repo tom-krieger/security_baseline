@@ -49,5 +49,29 @@ class security_baseline::rules::sec_grub2 (
       mode   => '0600',
     }
 
+  } else {
+    if(
+      ($facts['grub']['grub.cfg']['uid'] != 0) or
+      ($facts['grub']['grub.cfg']['gid'] != 0) or
+      ($facts['grub']['grub.cfg']['mode'] != 0600)
+    ) {
+      echo { 'grub-grub-cfg':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
+
+    if(
+      ($facts['grub']['user.cfg']['uid'] != 0) or
+      ($facts['grub']['user.cfg']['gid'] != 0) or
+      ($facts['grub']['user.cfg']['mode'] != 0600)
+    ) {
+      echo { 'grub-user-cfg':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

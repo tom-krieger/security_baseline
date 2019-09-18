@@ -320,11 +320,16 @@ Facter.add(:security_baseline) do
     security_baseline[:tcp_wrapper] = tcp_wrapper
 
     coredumps = {}
-    if security_baseline['sysctl'].key?('fs_dumpable')
-      fsdumpable = security_baseline['sysctl']['fs_dumpable']
+    if secutity_baseline.key?('sysctl')
+      if security_baseline['sysctl'].key?('fs_dumpable')
+        fsdumpable = security_baseline['sysctl']['fs_dumpable']
+      else
+        undef fsdumpable
+      end
     else
       undef fsdumpable
     end
+
     coredumps['limits'] = Facter::Core::Execution.exec('grep "hard core" /etc/security/limits.conf /etc/security/limits.d/*')
     coredumps['status'] = if coredumps['limits'].empty? || (fsdumpable && (security_baseline['sysctl']['fs_dumpable'] != 0))
                             false

@@ -74,31 +74,38 @@ define security_baseline::sec_check (
         if(! $data_hash.empty()) {
           $current_value = dig($data_hash, *$fact_name)
         } else {
-          $current_value = 'undef'
+          $current_value = undef
         }
 
+        if($current_value) {
+          if($current_value != $fact_value) {
 
-        if($current_value != $fact_value) {
+            echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
+              loglevel => $loglevel,
+              withpath => false,
+            }
 
-          echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
-            loglevel => $loglevel,
-            withpath => false,
+            $my_msg   = $message
+            $my_level = $log_level
+            $my_state = 'not compliant'
+
+          } else {
+
+            # fact contains expected value
+            $my_msg   = ''
+            $my_level = 'ok'
+            $my_state = 'compliant'
           }
-
-          $my_msg   = $message
-          $my_level = $log_level
-          $my_state = 'not compliant'
-
         } else {
-
-          # fact contains expected value
+          # if no fact name is available assume test is compliant
           $my_msg   = ''
           $my_level = 'ok'
           $my_state = 'compliant'
+          $fact_key = join($fact_name, '::')
+          warning("No fact for ${fact_key} found")
         }
 
       } else {
-
         # if no fact name is available assume test is compliant
         $my_msg   = ''
         $my_level = 'ok'

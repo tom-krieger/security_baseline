@@ -116,16 +116,16 @@ define security_baseline::sec_check (
       # logging is done within this resource and no concat target is needed
       if($class =~ /^::security_baseline::rules::/) {
         $data = {
-          'enforce' => $enforce,
-          'message' => $message,
-          'loglevel' => $log_level,
+          'enforce'   => $enforce,
+          'message'   => $message,
+          'log_level' => $log_level,
         }
       } else {
         $data = {
-          'enforce' => $enforce,
-          'message' => $message,
-          'loglevel' => $log_level,
-          'logfile' => $::security_baseline::logfile,
+          'enforce'   => $enforce,
+          'message'   => $message,
+          'log_level' => $log_level,
+          'logfile'   => $::security_baseline::logfile,
         }
       }
 

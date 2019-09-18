@@ -289,9 +289,9 @@ Facter.add(:security_baseline) do
 
     grubpwd = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
     if grubpwd.empty?
-      security_baseline†[:grub_passwd] = false
+      security_baseline[:grub_passwd] = false
     else
-      security_baseline†[:grub_passwd] = true
+      security_baseline[:grub_passwd] = true
     end
 
     security_baseline[:rhnsd] = check_service_is_enabled('rhnsd')

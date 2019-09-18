@@ -121,7 +121,7 @@ Facter.add(:security_baseline) do
     aide['version'] = if val.empty? || val =~ %r{not installed}
                         'not installed'
                       else
-                        version
+                        val
                       end
 
     security_baseline[:aide] = aide

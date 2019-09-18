@@ -320,7 +320,7 @@ Facter.add(:security_baseline) do
     security_baseline[:tcp_wrapper] = tcp_wrapper
 
     coredumps = {}
-    if secutity_baseline.key?('sysctl')
+    if security_baseline.key?('sysctl')
       if security_baseline['sysctl'].key?('fs_dumpable')
         fsdumpable = security_baseline['sysctl']['fs_dumpable']
       else

@@ -72,12 +72,12 @@ define security_baseline::sec_check (
         $fact_value = $check['fact_value']
         $data_hash  = $facts[$check['fact_hash']]
         if(! $data_hash.empty()) {
-          if($fact_value.is_a(Array)) {
+          if($fact_name.is_a(Array)) {
             echo {'Array':
               loglevel => warning,
             }
           }
-          $current_value = dig($data_hash, *$fact_value)
+          $current_value = dig($data_hash, *$fact_name)
         } else {
           $current_value = 'undef'
         }

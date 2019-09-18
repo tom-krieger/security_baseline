@@ -86,6 +86,7 @@ Facter.add(:security_baseline) do
 
     sysctl = {}
     sysctl['kernel_aslr'] = get_sysctl_value('kernel.randomize_va_space')
+    sysctl['fs_dumpable'] = get_sysctl_value('fs.suid_dumpable')
 
     network_keys = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
                     'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',
@@ -143,7 +144,7 @@ Facter.add(:security_baseline) do
                      true
                    else
                      false
-                    end
+                   end
     shm['noexec'] = if mounted.match?(%r{noexec})
                       true
                     else
@@ -174,7 +175,7 @@ Facter.add(:security_baseline) do
                      true
                    else
                      false
-                    end
+                   end
     tmp['noexec'] = if mounted.match?(%r{noexec})
                       true
                     else
@@ -195,7 +196,7 @@ Facter.add(:security_baseline) do
                          true
                        else
                          false
-                        end
+                       end
     var_tmp['noexec'] = if mounted.match?(%r{noexec})
                           true
                         else
@@ -259,7 +260,7 @@ Facter.add(:security_baseline) do
                                    false
                                  else
                                    true
-                                  end
+                                 end
 
     emerg = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/emergency.service')
     single_user_mode['emergency'] = if emerg.empty?
@@ -268,7 +269,12 @@ Facter.add(:security_baseline) do
                                       true
                                     end
 
-    security_baseline[:singe_user_mode] = single_user_mode
+    single_user_mode['status'] = if (single_user_mode['emergency'] == false) || (single_user_mode['rescue'] == false)
+                                   false
+                                 else
+                                   true
+                                 end
+    security_baseline[:single_user_mode] = single_user_mode
 
     issue = {}
     issue['os'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue')
@@ -276,30 +282,49 @@ Facter.add(:security_baseline) do
     security_baseline[:issue] = issue
 
     security_baseline[:motd] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
-
     security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
-
     security_baseline[:unconfigured_daemons] = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
-
     security_baseline[:sticky_ww] = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
-
     security_baseline[:security_patches] = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
-
     security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
 
+    grub = {}
     grubpwd = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
-    security_baseline[:grub_passwd] = if grubpwd.empty?
-                                        false
-                                      else
-                                        true
-                                      end
+    grub[:grub_passwd] = if grubpwd.empty?
+                           false
+                         else
+                           true
+                         end
+    uid = File.stat('/boot/grub2/grub.cfg').uid
+    gid = File.stat('/boot/grub2/grub.cfg').gid
+    mode = File.stat('/boot/grub2/grub.cfg').mode
+    grub['grub.cfg'] = {
+      uid: uid,
+      gid: gid,
+      mode: mode,
+    }
 
-    security_baseline[:rhnsd] = check_service_is_enabled('rhnsd')
+    uid = File.stat('/boot/grub2/user.cfg').uid
+    gid = File.stat('/boot/grub2/user.cfg').gid
+    mode = File.stat('/boot/grub2/user.cfg').mode
+    grub['user.cfg'] = {
+      uid: uid,
+      gid: gid,
+      mode: mode,
+    }
+    security_baseline[:grub] = grub
 
     tcp_wrapper = {}
     tcp_wrapper['host_allow'] = File.exist?('/etc/hosts.allow')
     tcp_wrapper['host_deny'] = File.exist?('/etc/hosts.deny')
     security_baseline[:tcp_wrapper] = tcp_wrapper
+
+    security_baseline[:coredumps]['limits'] = Facter::Core::Execution.exec('grep "hard core" /etc/security/limits.conf /etc/security/limits.d/*')
+    security_baseline[:coredumps][:status] = if security_baseline[:coredumps]['limits'].empty? || (security_baseline[:sysctl][:fs_dumpable] != 0)
+                                               false
+                                             else
+                                               true
+                                             end
 
     security_baseline
   end

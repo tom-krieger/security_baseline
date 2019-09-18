@@ -38,9 +38,9 @@ class security_baseline::rules::sec_security_patches (
     if($::security_patches) {
 
       echo { 'security-patches':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

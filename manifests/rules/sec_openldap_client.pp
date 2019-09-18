@@ -41,9 +41,9 @@ class security_baseline::rules::sec_openldap_client (
     if($::openldap_clients_pkg) {
 
       echo { 'openldp-clients':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

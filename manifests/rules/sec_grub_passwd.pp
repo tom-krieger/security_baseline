@@ -36,9 +36,9 @@ class security_baseline::rules::sec_grub_passwd (
     if($::grub_passwd == false) {
 
       echo { 'grub-passwd':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

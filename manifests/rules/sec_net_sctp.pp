@@ -40,9 +40,9 @@ class security_baseline::rules::sec_net_sctp (
 
     if($::net_sctp) {
       echo { 'net-sctp':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

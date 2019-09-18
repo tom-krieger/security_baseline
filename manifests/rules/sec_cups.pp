@@ -42,9 +42,9 @@ class security_baseline::rules::sec_cups (
 
     if($::srv_cups == 'enabled') {
       echo { 'cups':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

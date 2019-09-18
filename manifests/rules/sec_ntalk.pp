@@ -40,9 +40,9 @@ class security_baseline::rules::sec_ntalk (
 
     if($::srv_ntalk == 'enabled') {
       echo { 'ntalk':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

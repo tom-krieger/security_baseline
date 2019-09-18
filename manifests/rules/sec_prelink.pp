@@ -45,9 +45,9 @@ class security_baseline::rules::sec_prelink (
     if($::prelink_pkg) {
 
       echo { 'prelink':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

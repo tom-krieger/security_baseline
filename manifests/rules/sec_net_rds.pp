@@ -39,9 +39,9 @@ class security_baseline::rules::sec_net_rds (
 
     if($::net_rds) {
       echo { 'net-rds ':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

@@ -42,9 +42,9 @@ class security_baseline::rules::sec_telnet_client (
     if($::telnet_pkg) {
 
       echo { 'telnet-client':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

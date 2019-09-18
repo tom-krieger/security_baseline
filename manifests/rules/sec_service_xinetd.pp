@@ -41,10 +41,10 @@ class security_baseline::rules::sec_service_xinetd (
 
     if($::srv_xinetd == true) {
 
-      echo { 'xin etd-service':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+      echo { 'xinetd-service':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

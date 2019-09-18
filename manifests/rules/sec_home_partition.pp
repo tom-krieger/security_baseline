@@ -34,9 +34,9 @@ class security_baseline::rules::sec_home_partition (
     if $::home_partition == undef {
 
       echo { 'home-partition':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
         }
       }
   }

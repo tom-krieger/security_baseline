@@ -50,9 +50,9 @@ class security_baseline::rules::sec_network_broadcast_icmp_requests (
     }
     if($fact != '1') {
       echo { 'net.ipv4.icmp_echo_ignore_broadcasts':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

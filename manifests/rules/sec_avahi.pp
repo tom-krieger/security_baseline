@@ -43,9 +43,9 @@ class security_baseline::rules::sec_avahi (
 
     if($::srv_avahi == 'enabled') {
       echo { 'avahi-daemon':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

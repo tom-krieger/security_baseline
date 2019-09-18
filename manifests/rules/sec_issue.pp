@@ -42,9 +42,9 @@ class security_baseline::rules::sec_issue (
 
     if($::issue) {
       echo { 'issue':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

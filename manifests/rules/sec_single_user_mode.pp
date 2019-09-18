@@ -49,9 +49,9 @@ class security_baseline::rules::sec_single_user_mode (
     if(($::single_user_mode_emergency == false) or ($::single_user_mode_rescue == false)) {
 
       echo { 'sticky-ww':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

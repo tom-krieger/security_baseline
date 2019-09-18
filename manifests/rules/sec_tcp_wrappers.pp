@@ -43,9 +43,9 @@ class security_baseline::rules::sec_tcp_wrappers (
     if($::tcp_wrappers_pkg) {
 
       echo { 'tcp-wrappers':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

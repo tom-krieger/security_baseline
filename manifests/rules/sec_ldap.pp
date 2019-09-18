@@ -41,9 +41,9 @@ class security_baseline::rules::sec_ldap (
 
     if($::srv_ldap == 'enabled') {
       echo { 'dhcpd':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

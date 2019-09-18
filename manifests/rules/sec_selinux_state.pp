@@ -42,9 +42,9 @@ class security_baseline::rules::sec_selinux_state (
     if($::selinux_config_mode != 'enforcing') {
 
       echo { 'selinux':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

@@ -39,9 +39,9 @@ class security_baseline::rules::sec_tmp_partition (
     if $::tmp_partition == undef {
 
       echo { 'tmp-partition':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
         }
       }
   }

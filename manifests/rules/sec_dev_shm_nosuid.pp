@@ -35,9 +35,9 @@ class security_baseline::rules::sec_dev_shm_nosuid (
 
       if $::dev_shm_nosuid == false {
         echo { 'dev-shm-nosuid':
-          message   => $message,
-          log_level => $log_level,
-          withpath  => false,
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
         }
       }
     }

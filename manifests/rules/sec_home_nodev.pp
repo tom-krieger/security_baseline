@@ -35,9 +35,9 @@ class security_baseline::rules::sec_home_nodev (
 
       if $::home_nodev == false {
         echo { 'home-nodev':
-          message   => $message,
-          log_level => $log_level,
-          withpath  => false,
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
         }
       }
     }

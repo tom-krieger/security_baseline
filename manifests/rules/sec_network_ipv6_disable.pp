@@ -51,9 +51,9 @@ class security_baseline::rules::sec_network_ipv6_disable (
     }
     if(($fact != '1') or ($fact_default != '1')) {
       echo { 'net.ipv6.conf.all.disable_ipv6':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

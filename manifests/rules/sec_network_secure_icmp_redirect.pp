@@ -55,9 +55,9 @@ class security_baseline::rules::sec_network_secure_icmp_redirect (
     }
     if(($fact != '0') or ($fact_default != '0')) {
       echo { 'net.ipv4.conf.all.secure_redirects':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

@@ -44,9 +44,9 @@ class security_baseline::rules::sec_rhnsd (
     if( $::rhnsd != 'disabled') {
 
       echo { 'rhnsd':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

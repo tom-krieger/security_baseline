@@ -44,9 +44,9 @@ class security_baseline::rules::sec_nis_client(
     if($::ypbind_pkg) {
 
       echo { 'nis-client':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

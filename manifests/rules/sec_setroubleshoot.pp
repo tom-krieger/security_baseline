@@ -42,9 +42,9 @@ class security_baseline::rules::sec_setroubleshoot (
     if($::setroubleshoot_pkg) {
 
       echo { 'setroubleshoot':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

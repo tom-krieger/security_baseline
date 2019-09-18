@@ -41,9 +41,9 @@ class security_baseline::rules::sec_x11_installed (
   } else {
 
     echo { 'x11-installed':
-      message   => $message,
-      log_level => $log_level,
-      withpath  => false,
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
 
   }

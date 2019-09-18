@@ -42,9 +42,9 @@ class security_baseline::rules::sec_vsftpd (
 
     if($::srv_vsftpd == 'enabled') {
       echo { 'vsftpd':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

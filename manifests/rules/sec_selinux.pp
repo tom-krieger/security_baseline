@@ -40,9 +40,9 @@ class security_baseline::rules::sec_selinux (
     if($::selinux_pkg == false) {
 
       echo { 'selinux-pkg':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

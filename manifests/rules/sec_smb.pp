@@ -43,9 +43,9 @@ class security_baseline::rules::sec_smb (
 
     if($::srv_smb == 'enabled') {
       echo { 'smb':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

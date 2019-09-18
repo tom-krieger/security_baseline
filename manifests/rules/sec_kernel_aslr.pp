@@ -41,9 +41,9 @@ class security_baseline::rules::sec_kernel_aslr (
     if($::kernel_aslr != 2) {
 
       echo { 'kernel-aslr':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

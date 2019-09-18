@@ -41,9 +41,9 @@ class security_baseline::rules::sec_dns (
 
     if($::srv_dns == 'enabled') {
       echo { 'dns':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

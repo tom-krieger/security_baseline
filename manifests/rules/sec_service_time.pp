@@ -47,9 +47,9 @@ class security_baseline::rules::sec_service_time (
     if($::srv_time == true) {
 
       echo { 'time-service':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

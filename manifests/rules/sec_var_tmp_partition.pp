@@ -39,9 +39,9 @@ class security_baseline::rules::sec_var_tmp_partition (
     if $::var_tmp_partition == undef {
 
       echo { 'var-tmp-partition':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
         }
       }
   }

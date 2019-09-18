@@ -44,9 +44,9 @@ class security_baseline::rules::sec_nis (
 
     if($::srv_ypserv == 'enabled') {
       echo { 'ypserv':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

@@ -45,9 +45,9 @@ class security_baseline::rules::sec_network_ip_forward (
     }
     if($fact != '0') {
       echo { 'net.ipv4.ip_forward':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

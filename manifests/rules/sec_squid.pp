@@ -40,9 +40,9 @@ class security_baseline::rules::sec_squid (
 
     if($::srv_squid == 'enabled') {
       echo { 'squid':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

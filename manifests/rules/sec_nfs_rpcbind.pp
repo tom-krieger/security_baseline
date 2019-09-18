@@ -50,9 +50,9 @@ class security_baseline::rules::sec_nfs_rpcbind (
 
     if($::srv_nfs == 'enabled') {
       echo { 'nfs':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

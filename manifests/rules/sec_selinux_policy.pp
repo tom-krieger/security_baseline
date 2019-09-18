@@ -43,9 +43,9 @@ class security_baseline::rules::sec_selinux_policy (
     if(($::selinux_config_policy != 'targeted') and ($::selinux_config_policy != 'mls')) {
 
       echo { 'selinux':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

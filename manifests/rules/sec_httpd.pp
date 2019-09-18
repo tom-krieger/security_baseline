@@ -40,9 +40,9 @@ class security_baseline::rules::sec_httpd (
 
     if($::srv_httpd == 'enabled') {
       echo { 'httpd':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

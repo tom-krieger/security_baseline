@@ -44,9 +44,9 @@ class security_baseline::rules::sec_hosts_allow (
 
     if($::hosts_allow == false) {
       echo { 'hosts-allow':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

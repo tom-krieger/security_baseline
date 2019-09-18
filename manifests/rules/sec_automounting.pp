@@ -43,9 +43,9 @@ class security_baseline::rules::sec_automounting (
 
     if $::automounting == 'enabled' {
       echo { 'automount':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
 

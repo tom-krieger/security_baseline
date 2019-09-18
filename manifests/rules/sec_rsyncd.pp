@@ -39,9 +39,9 @@ class security_baseline::rules::sec_rsyncd (
 
     if($::srv_rsyncd == 'enabled') {
       echo { 'rsyncd':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

@@ -41,9 +41,9 @@ class security_baseline::rules::sec_talk_client (
     if($::mcstrans_pkg) {
 
       echo { 'talk-client':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

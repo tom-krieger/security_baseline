@@ -40,9 +40,9 @@ class security_baseline::rules::sec_selinux_bootloader (
     if($::bootloader_selinux == false) {
 
       echo { 'bootloader-selinux':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
 
     }

@@ -62,8 +62,8 @@ define security_baseline::sec_check (
 
       if($::security_baseline::debug) {
         echo{"Applying rule ${rulename}":
-          log_level => 'debug',
-          withpath  => false,
+          loglevel => 'debug',
+          withpath => false,
         }
       }
 

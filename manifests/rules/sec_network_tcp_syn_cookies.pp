@@ -54,9 +54,9 @@ class security_baseline::rules::sec_network_tcp_syn_cookies (
     }
     if($fact != '1') {
       echo { 'net.ipv4.tcp_syncookies':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

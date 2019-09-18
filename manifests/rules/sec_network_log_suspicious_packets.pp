@@ -55,9 +55,9 @@ class security_baseline::rules::sec_network_log_suspicious_packets (
     }
     if(($fact != '1') or ($fact_default != '1')) {
       echo { 'net.ipv4.conf.all.log_martians':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

@@ -34,9 +34,9 @@ class security_baseline::rules::sec_var_log_partition (
     if $::var_log_partition == undef {
 
       echo { 'var-log-partition':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

@@ -34,9 +34,9 @@ class security_baseline::rules::sec_unconfigured_daemons (
     if($::unconfigured_daemons) {
 
       echo { 'unconfigured-daemons':
-        message   => $message,
-        log_level => $log_level,
-        withpath  => false,
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
 

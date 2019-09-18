@@ -72,19 +72,8 @@ define security_baseline::sec_check (
         $fact_value = $check['fact_value']
         $data_hash  = $facts[$check['fact_hash']]
         if(! $data_hash.empty()) {
-          $filtered = $data_hash.filter |$items| {
-            $rand = fqdn_rand(100000)
-            echo { "${items[0]}-${rand}":
-              loglevel => 'warning'
-            }
-            if($items[0] == $fact_name) {
-              echo {"item key ${items[0]}: ${items[1]}":
-                loglevel => 'info',
-              }
-              $items[1]
-            }
-          }
-          $current_value = $filtered[$fact_name]
+          $parts = $fact_name.split(/::/)
+          $current_value = $data_hash.dig($parts)
         } else {
           $current_value = 'undef'
         }

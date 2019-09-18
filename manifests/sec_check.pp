@@ -70,10 +70,8 @@ define security_baseline::sec_check (
       $fact_name = $check['fact_name']
       if($fact_name != '') {
 
-        $parts = split($fact_name, /::/)
-        $parts.each |$n| {
-          $current_value = $facts[$n]
-        }
+        $fact_hash = $check['fact_hash']
+        $current_value = $facts[$fact_hash].filter |$n| { $n == $fact_name }
         $fact_value = $check['fact_value']
 
         if($current_value != $fact_value) {

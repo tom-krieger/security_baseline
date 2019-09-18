@@ -38,8 +38,7 @@ class security_baseline::rules::sec_mcstrans (
 
   } else {
 
-    if($::mcstrans_pkg) {
-
+    if($facts['packages_installed']['mcstrans_pkg']) {
       echo { 'mcstrans':
         message   => $message,
         log_level => $log_level,

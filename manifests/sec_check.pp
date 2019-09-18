@@ -71,10 +71,14 @@ define security_baseline::sec_check (
       if($fact_name != '') {
 
         $fact_value = $check['fact_value']
-        $fact_hash = $check['fact_hash']
-        $data_hash = $facts[$fact_hash]
-        $filtered = $data_hash.filter |$n| { $n[0] == $fact_name }
-        $current_value = $filtered[$fact_name]
+        $data_hash  = $facts[$check['fact_hash']]
+        if(! $data_hash.empty()) {
+          $filtered = $data_hash.filter |$n| { $n[0] == $fact_name }
+          $current_value = $filtered[$fact_name]
+        } else {
+          $current_value = 'undef'
+        }
+
 
         if($current_value != $fact_value) {
 
@@ -90,7 +94,7 @@ define security_baseline::sec_check (
         } else {
 
           # fact contains expected value
-          $my_msg = ''
+          $my_msg   = ''
           $my_level = 'ok'
           $my_state = 'compliant'
         }
@@ -98,7 +102,7 @@ define security_baseline::sec_check (
       } else {
 
         # if no fact name is available assume test is compliant
-        $my_msg = ''
+        $my_msg   = ''
         $my_level = 'ok'
         $my_state = 'compliant'
       }

@@ -73,7 +73,8 @@ define security_baseline::sec_check (
         $data_hash  = $facts[$check['fact_hash']]
         if(! $data_hash.empty()) {
           $filtered = $data_hash.filter |$items| {
-            echo { $items[0]:
+            $rand = fqdn_rand(100000)
+            echo { "${items[0]}-${rand}":
               loglevel => 'warning'
             }
             if($items[0] == $fact_name) {

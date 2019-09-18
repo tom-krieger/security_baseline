@@ -1,5 +1,5 @@
 require 'facter/helpers/check_service_enabled'
-require 'facter/helpers/cpackage_installed'
+require 'facter/helpers/check_package_installed'
 require 'facter/helpers/check_kernel_module'
 require 'facter/helpers/get_duplicate_groups'
 require 'facter/helpers/get_duplicate_users'

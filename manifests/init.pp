@@ -32,7 +32,7 @@ class security_baseline (
   Hash $rules,
   Boolean $debug = false,
   Boolean $log_info = false,
-  String $logfile = '/opt/puppetlabs/facter/facts.d/security_baseline.yaml'
+  String $logfile = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml'
 ) {
   if($debug) {
     echo{"Applying security baseline version: ${baseline_version}":

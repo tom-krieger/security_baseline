@@ -69,17 +69,16 @@ define security_baseline::sec_check (
 
       $fact_name = $check['fact_name']
       if($fact_name != '') {
-
+        echo { "fact name ${fact_name}":
+          loglevel => 'info',
+        }
         $fact_value = $check['fact_value']
         $data_hash  = $facts[$check['fact_hash']]
         if(! $data_hash.empty()) {
-          $filtered = $data_hash.filter |$keys, $values| {
-            if($keys == $fact_name) {
-              $values
+          $filtered = $data_hash.filter |$key, $value| {
+            if($key == $fact_name) {
+              $value
             }
-          }
-          echo { "filtered ${filtered}":
-            loglevel => 'info',
           }
           $current_value = $filtered[$fact_name]
         } else {

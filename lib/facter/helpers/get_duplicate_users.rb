@@ -3,7 +3,7 @@
 # mykey = uid gets duplicate uids
 # mykey = user gets duplicate usernames
 
-def get_dupliate_users(mykey)
+def get_duplicate_users(mykey)
   users = ''
   if File.exist?('/etc/passwd')
     userdata = {}

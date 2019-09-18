@@ -11,6 +11,7 @@ require 'facter/helpers/get_sysctl_value'
 # collect facts about the security baseline
 
 Facter.add(:security_baseline, type: :aggregate) do
+  confine kernel: 'Linux'
   chunk(:kernel_modules) do
     kernel_modules = {}
     modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat']

@@ -35,7 +35,7 @@ class security_baseline::rules::sec_security_patches (
 ) {
   if($enforce) {
 
-    if($facts['security_baseline']['security_patches']) {
+    if($facts['security_baseline']['security_patches'] != 'none') {
 
       echo { 'security-patches':
         message  => $message,

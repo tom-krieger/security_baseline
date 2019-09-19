@@ -31,7 +31,7 @@ class security_baseline::rules::sec_unconfigured_daemons (
 ) {
   if($enforce) {
 
-    if($facts['security_baseline']['unconfigured_daemons']) {
+    if($facts['security_baseline']['unconfigured_daemons'] != 'none') {
 
       echo { 'unconfigured-daemons':
         message  => $message,

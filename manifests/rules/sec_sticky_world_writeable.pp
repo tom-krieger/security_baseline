@@ -31,7 +31,7 @@ class security_baseline::rules::sec_sticky_world_writeable (
   String $log_level = ''
 ) {
 
-  if $facts['security_baseline']['sticky_ww'] {
+  if $facts['security_baseline']['sticky_ww'] != 'none' {
 
     if $enforce {
       exec { "df --local -P | awk {'if (NR!=1) print \$6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null | xargs chmod a+t":

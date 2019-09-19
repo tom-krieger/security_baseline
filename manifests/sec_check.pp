@@ -101,7 +101,12 @@ define security_baseline::sec_check (
           $my_msg   = ''
           $my_level = 'ok'
           $my_state = 'compliant'
-          $fact_key = join($fact_name, '::')
+          if($fact_name.is_a(Array)) {
+            $fact_key = join($fact_name, '::')
+          } else {
+            $fact_key = $fact_name
+          }
+
           warning("No fact for ${fact_key} found")
         }
 

@@ -282,29 +282,29 @@ Facter.add(:security_baseline) do
     issue['os']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue')
     issue['os']['uid'] = File.stat('/etc/issue').uid
     issue['os']['gid'] = File.stat('/etc/issue').gid
-    issue['os']['mode'] = File.stat('/etc/issue').mode & 07777
+    issue['os']['mode'] = File.stat('/etc/issue').mode & 0o7777
 
     issue['net'] = {}
     issue['net']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue.net')
     issue['net']['uid'] = File.stat('/etc/issue.net').uid
     issue['net']['gid'] = File.stat('/etc/issue.net').gid
-    issue['net']['mode'] = File.stat('/etc/issue.net').mode & 07777
+    issue['net']['mode'] = File.stat('/etc/issue.net').mode & 0o7777
     security_baseline[:issue] = issue
 
     motd = {}
     motd['content'] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
     motd['uid'] = File.stat('/etc/motd').uid
     motd['gid'] = File.stat('/etc/motd').gid
-    motd['mode'] = File.stat('/etc/motd').mode & 07777
+    motd['mode'] = File.stat('/etc/motd').mode & 0o7777
     security_baseline[:motd] = motd
 
     security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
     val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
-    if val.empty? or val.nil?
-      security_baseline[:unconfigured_daemons] = 'none'
-    else
-      security_baseline[:unconfigured_daemons] = val
-    end
+    security_baseline[:unconfigured_daemons] = if val.empty? || val.nil?
+                                                 'none'
+                                               else
+                                                 val
+                                               end
     security_baseline[:sticky_ww] = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
     security_baseline[:security_patches] = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
     security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
@@ -318,7 +318,7 @@ Facter.add(:security_baseline) do
                          end
     uid = File.stat('/boot/grub2/grub.cfg').uid
     gid = File.stat('/boot/grub2/grub.cfg').gid
-    mode = File.stat('/boot/grub2/grub.cfg').mode & 07777
+    mode = File.stat('/boot/grub2/grub.cfg').mode & 0o7777
     grub['grub.cfg'] = {
       uid: uid,
       gid: gid,
@@ -327,7 +327,7 @@ Facter.add(:security_baseline) do
 
     uid = File.stat('/boot/grub2/user.cfg').uid
     gid = File.stat('/boot/grub2/user.cfg').gid
-    mode = File.stat('/boot/grub2/user.cfg').mode & 07777
+    mode = File.stat('/boot/grub2/user.cfg').mode & 0o7777
     grub['user.cfg'] = {
       uid: uid,
       gid: gid,
@@ -341,15 +341,15 @@ Facter.add(:security_baseline) do
     security_baseline[:tcp_wrapper] = tcp_wrapper
 
     coredumps = {}
-    if security_baseline.key?('sysctl')
-      if security_baseline['sysctl'].key?('fs_dumpable')
-        fsdumpable = security_baseline['sysctl']['fs_dumpable']
-      else
-        fsdumpable = nil
-      end
-    else
-      fsdumpable = nil
-    end
+    fsdumpable = if security_baseline.key?('sysctl')
+                   if security_baseline['sysctl'].key?('fs_dumpable')
+                     security_baseline['sysctl']['fs_dumpable']
+                   else
+                     nil
+                   end
+                 else
+                   nil
+                 end
 
     coredumps['limits'] = Facter::Core::Execution.exec('grep "hard core" /etc/security/limits.conf /etc/security/limits.d/*')
     coredumps['status'] = if coredumps['limits'].empty? || (!fsdumpable.nil? && (security_baseline['sysctl']['fs_dumpable'] != 0))

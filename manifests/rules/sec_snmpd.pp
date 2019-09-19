@@ -42,7 +42,7 @@ class security_baseline::rules::sec_snmpd (
 
   } else {
 
-    if($::srv_snmpd == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_snmpd'] == 'enabled') {
       echo { 'snmpd':
         message  => $message,
         loglevel => $log_level,

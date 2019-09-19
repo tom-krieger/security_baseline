@@ -31,7 +31,7 @@ class security_baseline::rules::sec_home_partition (
 ) {
 
   if($enforce) {
-    if $::home_partition == undef {
+    if $facts['security_baseline']['partitions']['home']['partition'] == undef {
 
       echo { 'home-partition':
         message  => $message,

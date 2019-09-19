@@ -33,7 +33,7 @@ class security_baseline::rules::sec_var_log_audit_partition (
 ) {
 
   if($enforce) {
-    if $::var_log_audit_partition == undef {
+    if $facts['security_baseline']['partitions']['var_log_audit']['partition'] == undef {
 
       echo { 'var-log-audit-partition':
         message  => $message,

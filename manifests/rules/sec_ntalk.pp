@@ -38,7 +38,7 @@ class security_baseline::rules::sec_ntalk (
 
   } else {
 
-    if($::srv_ntalk == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_ntalk'] == 'enabled') {
       echo { 'ntalk':
         message  => $message,
         loglevel => $log_level,

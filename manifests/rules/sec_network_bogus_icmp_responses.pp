@@ -40,8 +40,8 @@ class security_baseline::rules::sec_network_bogus_icmp_responses (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.icmp_ignore_bogus_error_responses')) {
-      $fact = $::network_parameters['net.ipv4.icmp_ignore_bogus_error_responses']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.icmp_ignore_bogus_error_responses')) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.icmp_ignore_bogus_error_responses']
     } else {
       $fact = ''
     }

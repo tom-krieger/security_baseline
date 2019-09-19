@@ -43,13 +43,13 @@ class security_baseline::rules::sec_network_log_suspicious_packets (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.conf.all.log_martians' )) {
-      $fact = $::network_parameters['net.ipv4.conf.all.log_martians']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.all.log_martians' )) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.conf.all.log_martians']
     } else {
       $fact = ''
     }
-    if(has_key($::network_parameters, 'net.ipv4.conf.default.log_martians')) {
-      $fact_default = $::network_parameters['net.ipv4.conf.default.log_martians']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.default.log_martians')) {
+      $fact_default = $facts['security_baseline']['sysctl']['net.ipv4.conf.default.log_martians']
     } else {
       $fact_default = ''
     }

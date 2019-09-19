@@ -33,18 +33,19 @@ class security_baseline::rules::sec_x11_installed (
 ) {
   if($enforce) {
 
-    if($::x11_packages) {
-      package { $::x11_packages:
+    if($facts['security_baseline']['x11-packages']) {
+      package { $facts['security_baseline']['x11-packages']:
         ensure => purged,
       }
     }
   } else {
 
-    echo { 'x11-installed':
-      message  => $message,
-      loglevel => $log_level,
-      withpath => false,
+    if($facts['security_baseline']['x11-packages']) {
+      echo { 'x11-installed':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
     }
-
   }
 }

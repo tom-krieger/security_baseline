@@ -46,7 +46,7 @@ class security_baseline::rules::sec_service_tftp (
 
   } else {
 
-    if($::srv_tftp == true) {
+    if($facts['security_baseline']['xinetd_services']['srv_tftp'] == true) {
 
       echo { 'tftp-service':
         message  => $message,

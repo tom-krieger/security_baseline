@@ -44,13 +44,13 @@ class security_baseline::rules::sec_network_icmp_redirect (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.conf.all.accept_redirects' )) {
-      $fact = $::network_parameters['net.ipv4.conf.all.accept_redirects']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.all.accept_redirects' )) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.conf.all.accept_redirects']
     } else {
       $fact = ''
     }
-    if(has_key($::network_parameters, 'net.ipv4.conf.default.accept_redirects')) {
-      $fact_default = $::network_parameters['net.ipv4.conf.default.accept_redirects']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.default.accept_redirects')) {
+      $fact_default = $facts['security_baseline']['sysctl']['net.ipv4.conf.default.accept_redirects']
     } else {
       $fact_default = ''
     }

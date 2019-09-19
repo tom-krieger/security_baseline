@@ -39,7 +39,7 @@ class security_baseline::rules::sec_motd (
 ) {
     if($enforce) {
 
-      if($::motd) {
+      if($facts['security_baseline']['motd']) {
         echo { 'motd':
           message  => $message,
           loglevel => $log_level,

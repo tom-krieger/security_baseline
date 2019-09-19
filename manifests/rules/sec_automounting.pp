@@ -41,7 +41,7 @@ class security_baseline::rules::sec_automounting (
 
   } else {
 
-    if $::automounting == 'enabled' {
+    if($facts['security_baseline']['services_enabled']['srv_autofs'] == 'enabled') {
       echo { 'automount':
         message  => $message,
         loglevel => $log_level,

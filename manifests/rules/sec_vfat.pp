@@ -35,5 +35,13 @@ class security_baseline::rules::sec_vfat (
     kmod::install { 'vfat':
       command => '/bin/true',
     }
+  } else {
+    if($facts['security_baseline']['kernel_modules']['vfat']) {
+      echo { 'vfat':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

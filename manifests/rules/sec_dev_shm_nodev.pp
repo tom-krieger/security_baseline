@@ -33,7 +33,7 @@ class security_baseline::rules::sec_dev_shm_nodev (
 
     if $::dev_shm_partition {
 
-      if $::dev_shm_nodev == false {
+      if $facts['security_baseline']['partitions']['shm']['nodev'] == false {
         echo { 'dev-shm-nodev':
           message  => $message,
           loglevel => $log_level,

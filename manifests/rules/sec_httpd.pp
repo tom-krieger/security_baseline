@@ -38,7 +38,7 @@ class security_baseline::rules::sec_httpd (
 
   } else {
 
-    if($::srv_httpd == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_httpd'] == 'enabled') {
       echo { 'httpd':
         message  => $message,
         loglevel => $log_level,

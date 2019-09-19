@@ -41,7 +41,7 @@ class security_baseline::rules::sec_nis_client(
 
   } else {
 
-    if($::ypbind_pkg) {
+    if($facts['security_baseline']['packages_installed']['ypbind']) {
 
       echo { 'nis-client':
         message  => $message,

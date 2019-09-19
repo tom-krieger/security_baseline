@@ -36,7 +36,7 @@ class security_baseline::rules::sec_net_tipc (
     }
   } else {
 
-    if($::net_tipc) {
+    if($facts['security_baseline']['kernel_modules']['tipc']) {
       echo { 'net-tipc':
         message  => $message,
         loglevel => $log_level,

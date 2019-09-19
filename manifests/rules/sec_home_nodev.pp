@@ -31,9 +31,9 @@ class security_baseline::rules::sec_home_nodev (
 ) {
   if $enforce {
 
-    if $::home_partition {
+    if $facts['security_baseline']['partitions']['home']['partition'] {
 
-      if $::home_nodev == false {
+      if $facts['security_baseline']['partitions']['home']['nodev'] == false {
         echo { 'home-nodev':
           message  => $message,
           loglevel => $log_level,

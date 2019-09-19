@@ -48,7 +48,7 @@ class security_baseline::rules::sec_nfs_rpcbind (
 
   } else {
 
-    if($::srv_nfs == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_nfs'] == 'enabled') {
       echo { 'nfs':
         message  => $message,
         loglevel => $log_level,

@@ -43,7 +43,7 @@ class security_baseline::rules::sec_service_daytime (
 
   } else {
 
-    if($::srv_daytime == true) {
+    if($facts['security_baseline']['xinetd_services']['srv_daytime'] == true) {
 
       echo { 'daytime-service':
         message  => $message,

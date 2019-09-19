@@ -39,7 +39,7 @@ class security_baseline::rules::sec_service_xinetd (
 
   } else {
 
-    if($::srv_xinetd == true) {
+    if($facts['security_baseline']['services_enabled']['srv_xinetd'] == true) {
 
       echo { 'xinetd-service':
         message  => $message,

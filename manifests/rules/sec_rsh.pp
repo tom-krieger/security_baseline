@@ -48,7 +48,7 @@ class security_baseline::rules::sec_rsh (
 
   } else {
 
-    if($::srv_rsh == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_rsh'] == 'enabled') {
       echo { 'rsh-service':
         message  => $message,
         loglevel => $log_level,

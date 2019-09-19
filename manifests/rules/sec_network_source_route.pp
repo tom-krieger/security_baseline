@@ -50,13 +50,13 @@ class security_baseline::rules::sec_network_source_route (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.conf.all.accept_source_route' )) {
-      $fact = $::network_parameters['net.ipv4.conf.all.accept_source_route']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.all.accept_source_route' )) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.conf.all.accept_source_route']
     } else {
       $fact = ''
     }
-    if(has_key($::network_parameters, 'net.ipv4.conf.default.accept_source_route')) {
-      $fact_default = $::network_parameters['net.ipv4.conf.default.accept_source_route']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.default.accept_source_route')) {
+      $fact_default = $facts['security_baseline']['sysctl']['net.ipv4.conf.default.accept_source_route']
     } else {
       $fact_default = ''
     }

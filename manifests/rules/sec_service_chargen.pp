@@ -44,7 +44,7 @@ class security_baseline::rules::sec_service_chargen (
 
   } else {
 
-    if($::srv_chargen == true) {
+    if($facts['security_baseline']['xinetd_services']['srv_chargen'] == true) {
 
       echo { 'chargen-service':
         message  => $message,

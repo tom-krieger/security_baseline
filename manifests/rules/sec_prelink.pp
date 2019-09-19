@@ -34,7 +34,7 @@ class security_baseline::rules::sec_prelink (
 ) {
   if($enforce) {
 
-    if($::prelink_pkg and ($::osfamily != 'Suse')) {
+    if($facts['security_baseline']['packages_installed']['prelink'] and ($::osfamily != 'Suse')) {
       package { 'prelink':
         ensure => purged,
       }
@@ -42,7 +42,7 @@ class security_baseline::rules::sec_prelink (
 
   } else {
 
-    if($::prelink_pkg) {
+    if($facts['security_baseline']['packages_installed']['prelink']) {
 
       echo { 'prelink':
         message  => $message,

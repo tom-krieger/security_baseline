@@ -74,7 +74,7 @@ define security_baseline::sec_check (
         if(! $data_hash.empty()) {
           $current_value = dig($data_hash, *$fact_name)
         } else {
-          $current_value = undef
+          $current_value = $facts[$fact_name]
         }
 
         if($current_value) {

@@ -39,7 +39,7 @@ class security_baseline::rules::sec_setroubleshoot (
 
   } else {
 
-    if($::setroubleshoot_pkg) {
+    if($facts['security_baseline']['packages_installed']['setroubleshoot']) {
 
       echo { 'setroubleshoot':
         message  => $message,

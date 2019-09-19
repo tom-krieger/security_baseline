@@ -38,7 +38,7 @@ class security_baseline::rules::sec_kernel_aslr (
 
   } else {
 
-    if($::kernel_aslr != 2) {
+    if($facts['security_baseline']['sysctl']['kernel_aslr'] != 2) {
 
       echo { 'kernel-aslr':
         message  => $message,

@@ -41,7 +41,7 @@ class security_baseline::rules::sec_yum_gpgcheck (
 
   } else {
 
-    if( $::yum_gpgcheck == false) {
+    if( $facts['security_baseline']['yum']['gpgcheck'] == false) {
 
       echo { 'yum_gpgcheck':
         message  => $message,

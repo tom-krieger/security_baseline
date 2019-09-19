@@ -36,5 +36,13 @@ class security_baseline::rules::sec_udf (
     kmod::install { 'udf':
       command => '/bin/true',
     }
+  } else {
+    if($facts['security_baseline']['kernel_modules']['udf']) {
+      echo { 'udf':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

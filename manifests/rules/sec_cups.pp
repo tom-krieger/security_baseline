@@ -40,7 +40,7 @@ class security_baseline::rules::sec_cups (
 
   } else {
 
-    if($::srv_cups == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_cups'] == 'enabled') {
       echo { 'cups':
         message  => $message,
         loglevel => $log_level,

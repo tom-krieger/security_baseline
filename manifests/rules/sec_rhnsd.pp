@@ -41,7 +41,7 @@ class security_baseline::rules::sec_rhnsd (
 
   } else {
 
-    if( $::rhnsd != 'disabled') {
+    if($facts['security_baseline']['services_enabled']['srv_rhnsd'] != 'disabled') {
 
       echo { 'rhnsd':
         message  => $message,

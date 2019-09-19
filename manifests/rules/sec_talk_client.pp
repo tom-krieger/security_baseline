@@ -38,7 +38,7 @@ class security_baseline::rules::sec_talk_client (
 
   } else {
 
-    if($::mcstrans_pkg) {
+    if($facts['security_baseline']['packages_installed']['talk']) {
 
       echo { 'talk-client':
         message  => $message,

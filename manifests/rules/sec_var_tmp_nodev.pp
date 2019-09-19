@@ -31,9 +31,9 @@ class security_baseline::rules::sec_var_tmp_nodev (
 ) {
   if $enforce {
 
-    if $::var_tmp_partition {
+    if $facts['security_baseline']['partitions']['var_tmp']['partition'] {
 
-      if $::var_tmp_nodev == false {
+      if $facts['security_baseline']['partitions']['var_tmp']['nodev'] == false {
         echo { 'var-tmp-nodev':
           message  => $message,
           loglevel => $log_level,

@@ -40,7 +40,7 @@ class security_baseline::rules::sec_rsh_client (
 
   } else {
 
-    if($::rsh_pkg) {
+    if($facts['security_baseline']['packages_installed']['rsh']) {
 
       echo { 'rsh-client':
         message  => $message,

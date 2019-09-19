@@ -44,7 +44,7 @@ class security_baseline::rules::sec_service_echo (
 
   } else {
 
-    if($::srv_echo == true) {
+    if($facts['security_baseline']['xinetd_services']['srv_echo'] == true) {
 
       echo { 'echo-service':
         message  => $message,

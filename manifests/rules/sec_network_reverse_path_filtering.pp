@@ -47,13 +47,13 @@ class security_baseline::rules::sec_network_reverse_path_filtering (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.conf.all.rp_filter' )) {
-      $fact = $::network_parameters['net.ipv4.conf.all.rp_filter']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.all.rp_filter' )) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.conf.all.rp_filter']
     } else {
       $fact = ''
     }
-    if(has_key($::network_parameters, 'net.ipv4.conf.default.rp_filter')) {
-      $fact_default = $::network_parameters['net.ipv4.conf.default.rp_filter']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.default.rp_filter')) {
+      $fact_default = $facts['security_baseline']['sysctl']['net.ipv4.conf.default.rp_filter']
     } else {
       $fact_default = ''
     }

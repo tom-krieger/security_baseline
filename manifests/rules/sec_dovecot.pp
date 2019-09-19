@@ -38,7 +38,7 @@ class security_baseline::rules::sec_dovecot (
 
   } else {
 
-    if($::srv_dovecot == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_dovecot'] == 'enabled') {
       echo { 'sovecot':
         message  => $message,
         loglevel => $log_level,

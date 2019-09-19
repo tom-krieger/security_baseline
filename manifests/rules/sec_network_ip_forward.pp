@@ -38,8 +38,8 @@ class security_baseline::rules::sec_network_ip_forward (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.ip_forward')) {
-      $fact = $::network_parameters['net.ipv4.ip_forward']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.ip_forward')) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.ip_forward']
     } else {
       $fact = ''
     }

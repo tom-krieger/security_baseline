@@ -41,7 +41,7 @@ class security_baseline::rules::sec_smb (
 
   } else {
 
-    if($::srv_smb == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_smb'] == 'enabled') {
       echo { 'smb':
         message  => $message,
         loglevel => $log_level,

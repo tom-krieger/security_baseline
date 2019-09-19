@@ -33,7 +33,7 @@ class security_baseline::rules::sec_dev_shm_noexec (
 
     if $::dev_shm_partition {
 
-      if $::dev_shm_noexec == false {
+      if $facts['security_baseline']['partitions']['shm']['noexec'] == false {
         echo { 'dev-shm-noexec':
           message  => $message,
           loglevel => $log_level,

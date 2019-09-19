@@ -38,7 +38,7 @@ class security_baseline::rules::sec_squid (
 
   } else {
 
-    if($::srv_squid == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_squid'] == 'enabled') {
       echo { 'squid':
         message  => $message,
         loglevel => $log_level,

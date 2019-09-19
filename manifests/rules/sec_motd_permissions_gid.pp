@@ -12,14 +12,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_motd_permissions {
+#   class security_baseline::rules::sec_motd_permissions_gid {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_motd_permissions (
+class security_baseline::rules::sec_motd_permissions_gid (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''
@@ -33,5 +33,13 @@ class security_baseline::rules::sec_motd_permissions (
       mode   => '0644',
     }
 
+  } else {
+    if($facts['security_baseline']['motd']['gid'] != 0) {
+      echo { 'issue-os-gid':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

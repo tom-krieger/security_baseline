@@ -43,8 +43,8 @@ class security_baseline::rules::sec_network_broadcast_icmp_requests (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.icmp_echo_ignore_broadcasts')) {
-      $fact = $::network_parameters['net.ipv4.icmp_echo_ignore_broadcasts']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.icmp_echo_ignore_broadcasts')) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.icmp_echo_ignore_broadcasts']
     } else {
       $fact = ''
     }

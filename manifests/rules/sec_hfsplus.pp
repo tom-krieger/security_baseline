@@ -34,5 +34,13 @@ class security_baseline::rules::sec_hfsplus (
     kmod::install { 'hfsplus':
       command => '/bin/true',
     }
+  } else {
+    if($facts['security_baseline']['kernel_modules']['hfsplus']) {
+      echo { 'hfsplus':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

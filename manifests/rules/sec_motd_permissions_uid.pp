@@ -1,11 +1,6 @@
-# @summary
-#    Ensure SELinux is installed (Scored)
+# @summary A short summary of the purpose of this class
 #
-# SELinux provides Mandatory Access Controls.
-#
-# Rationale:
-# Without a Mandatory Access Control system installed only the default Discretionary Access Control system 
-# will be available.
+# A description of what this class does
 #
 # @param enforce
 #    Enforce the rule or just test and log
@@ -17,34 +12,34 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_selinux_state {
+#   class security_baseline::rules::sec_motd_permissions_uid {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_selinux (
+class security_baseline::rules::sec_motd_permissions_uid (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''
 ) {
   if($enforce) {
 
-    package { 'libselinux':
+    file { '/etc/motd':
       ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
     }
 
   } else {
-
-    if($facts['security_baseline']['packages_installed']['libselinux'] == false) {
-
-      echo { 'selinux-pkg':
+    if($facts['security_baseline']['motd']['uid'] != 0) {
+      echo { 'issue-os-uid':
         message  => $message,
         loglevel => $log_level,
         withpath => false,
       }
-
     }
   }
 }

@@ -31,9 +31,9 @@ class security_baseline::rules::sec_tmp_noexec (
 ) {
   if $enforce {
 
-    if $::tmp_partition {
+    if $facts['security_baseline']['partitions']['tmp']['partition'] {
 
-      if $::tmp_noexec == false {
+      if $facts['security_baseline']['partitions']['tmp']['noexec'] == false {
         echo { 'tmp-noexec':
           message  => $message,
           loglevel => $log_level,

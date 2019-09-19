@@ -37,7 +37,7 @@ class security_baseline::rules::sec_selinux_bootloader (
 
   } else {
 
-    if($::bootloader_selinux == false) {
+    if($facts['security_baseline']['selinux']['bootloader'] == false) {
 
       echo { 'bootloader-selinux':
         message  => $message,

@@ -42,13 +42,13 @@ class security_baseline::rules::sec_network_packet_redirect (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.conf.all.send_redirects' )) {
-      $fact = $::network_parameters['net.ipv4.conf.all.send_redirects']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.all.send_redirects' )) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.conf.all.send_redirects']
     } else {
       $fact = ''
     }
-    if(has_key($::network_parameters, 'net.ipv4.conf.default.send_redirects')) {
-      $fact_default = $::network_parameters['net.ipv4.conf.default.send_redirects']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.default.send_redirects')) {
+      $fact_default = $facts['security_baseline']['sysctl']['net.ipv4.conf.default.send_redirects']
     } else {
       $fact_default = ''
     }

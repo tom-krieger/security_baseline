@@ -44,18 +44,18 @@ class security_baseline::rules::sec_network_ipv6_redirects (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv6.conf.all.accept_redirects' )) {
-      $fact = $::network_parameters['net.ipv6.conf.all.accept_redirects']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv6.conf.all.accept_redirects' )) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv6.conf.all.accept_redirects']
     } else {
       $fact = ''
     }
-    if(has_key($::network_parameters, 'net.ipv6.conf.default.accept_redirects')) {
-      $fact_default = $::network_parameters['net.ipv6.conf.default.accept_redirects']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv6.conf.default.accept_redirects')) {
+      $fact_default = $facts['security_baseline']['sysctl']['net.ipv6.conf.default.accept_redirects']
     } else {
       $fact_default = ''
     }
     if(($fact != '0') or ($fact_default != '0')) {
-      echo { 'net.ipv6.conf.all.accept_redirectss':
+      echo { 'net.ipv6.conf.all.accept_redirects':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

@@ -39,7 +39,7 @@ class security_baseline::rules::sec_dns (
 
   } else {
 
-    if($::srv_dns == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_named'] == 'enabled') {
       echo { 'dns':
         message  => $message,
         loglevel => $log_level,

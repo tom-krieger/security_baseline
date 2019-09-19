@@ -44,7 +44,7 @@ class security_baseline::rules::sec_service_discard (
 
   } else {
 
-    if($::srv_discard == true) {
+    if($facts['security_baseline']['xinetd_services']['srv_discard'] == true) {
 
       echo { 'discard-service':
         message  => $message,

@@ -35,5 +35,13 @@ class security_baseline::rules::sec_jffs2 (
     kmod::install { 'jffs2':
       command => '/bin/true',
     }
+  } else {
+    if($facts['security_baseline']['kernel_modules']['jffs2']) {
+      echo { 'jffs2':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

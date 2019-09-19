@@ -1,11 +1,6 @@
-# @summary 
-#    Ensure permissions on /etc/issue are configured (Scored)
+# @summary A short summary of the purpose of this class
 #
-# The contents of the /etc/issue file are displayed to users prior to login for local terminals.
-#
-# Rationale:
-# If the /etc/issue file does not have the correct ownership it could be modified by unauthorized 
-# users with incorrect or misleading information.
+# A description of what this class does
 #
 # @param enforce
 #    Enforce the rule or just test and log
@@ -17,26 +12,34 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_issue_permissions {
+#   class security_baseline::rules::sec_motd_permissions_mode {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_issue_permissions (
+class security_baseline::rules::sec_motd_permissions_mode (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''
 ) {
   if($enforce) {
 
-    file { '/etc/issue':
+    file { '/etc/motd':
       ensure => present,
       owner  => 'root',
       group  => 'root',
       mode   => '0644',
     }
 
+  } else {
+    if($facts['security_baseline']['motd']['mode'] != 0644) {
+      echo { 'motd-mode':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

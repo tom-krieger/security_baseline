@@ -39,13 +39,13 @@ class security_baseline::rules::sec_network_ipv6_disable (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv6.conf.all.disable_ipv6' )) {
-      $fact = $::network_parameters['net.ipv6.conf.all.disable_ipv6']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv6.conf.all.disable_ipv6' )) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv6.conf.all.disable_ipv6']
     } else {
       $fact = ''
     }
-    if(has_key($::network_parameters, 'net.ipv6.conf.default.disable_ipv6')) {
-      $fact_default = $::network_parameters['net.ipv6.conf.default.disable_ipv6']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv6.conf.default.disable_ipv6')) {
+      $fact_default = $facts['security_baseline']['sysctl']['net.ipv6.conf.default.disable_ipv6']
     } else {
       $fact_default = ''
     }

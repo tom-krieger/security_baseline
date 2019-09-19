@@ -37,7 +37,7 @@ class security_baseline::rules::sec_iptables (
 
   } else {
 
-    if($::iptables_pkg == false) {
+    if($facts['security_baseline']['packages_installed']['iptables'] == false) {
 
       echo { 'iptables':
         message  => $message,

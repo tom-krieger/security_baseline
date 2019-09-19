@@ -41,13 +41,13 @@ class security_baseline::rules::sec_network_ipv6_router_advertisements (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv6.conf.all.accept_ra' )) {
-      $fact = $::network_parameters['net.ipv6.conf.all.accept_ra']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv6.conf.all.accept_ra' )) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv6.conf.all.accept_ra']
     } else {
       $fact = ''
     }
-    if(has_key($::network_parameters, 'nenet.ipv6.conf.default.accept_ra')) {
-      $fact_default = $::network_parameters['net.ipv6.conf.default.accept_ra']
+    if(has_key($facts['security_baseline']['sysctl'], 'nenet.ipv6.conf.default.accept_ra')) {
+      $fact_default = $facts['security_baseline']['sysctl']['net.ipv6.conf.default.accept_ra']
     } else {
       $fact_default = ''
     }

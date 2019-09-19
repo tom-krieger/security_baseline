@@ -41,7 +41,7 @@ class security_baseline::rules::sec_avahi (
 
   } else {
 
-    if($::srv_avahi == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_avahi-daemon'] == 'enabled') {
       echo { 'avahi-daemon':
         message  => $message,
         loglevel => $log_level,

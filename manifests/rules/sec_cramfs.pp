@@ -34,5 +34,13 @@ class security_baseline::rules::sec_cramfs (
     kmod::install { 'cframfs':
       command => '/bin/true',
     }
+  } else {
+    if($facts['security_baseline']['kernel_modules']['cramfs']) {
+      echo { 'cramfs':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

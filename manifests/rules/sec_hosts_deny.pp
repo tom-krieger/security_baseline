@@ -42,7 +42,7 @@ class security_baseline::rules::sec_hosts_deny (
 
   } else {
 
-    if($::sec_hosts_deny == false) {
+    if($facts['secutitry_baseline']['hosts_deny'] == false) {
       echo { 'hosts-deny':
         message  => $message,
         loglevel => $log_level,

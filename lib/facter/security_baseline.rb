@@ -44,7 +44,7 @@ Facter.add(:security_baseline) do
     security_baseline[:packages_installed] = packages_installed
 
     services_enabled = {}
-    services = ['autofs', 'avahi-daemon', 'cups', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
+    services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
                 'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd']
 
     services.each do |srv|
@@ -277,11 +277,24 @@ Facter.add(:security_baseline) do
     security_baseline[:single_user_mode] = single_user_mode
 
     issue = {}
-    issue['os'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue')
-    issue['net'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue.net')
+    issue['os']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue')
+    issue['os']['uid'] = File.stat('/etc/issue').uid
+    issue['os']['gid'] = File.stat('/etc/issue').gid
+    issue['os']['mode'] = File.stat('/etc/issue').mode
+
+    issue['net']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue.net')
+    issue['net']['uid'] = File.stat('/etc/issue.net').uid
+    issue['net']['gid'] = File.stat('/etc/issue.net').gid
+    issue['net']['mode'] = File.stat('/etc/issue.net').mode
     security_baseline[:issue] = issue
 
-    security_baseline[:motd] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
+    motd = {}
+    motd['content'] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
+    motd['uid'] = File.stat('/etc/motd').uid
+    motd['gid'] = File.stat('/etc/motd').gid
+    motd['mode'] = File.stat('/etc/motd').mode
+    security_baseline[:motd] = motd
+    
     security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
     security_baseline[:unconfigured_daemons] = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
     security_baseline[:sticky_ww] = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
@@ -338,6 +351,9 @@ Facter.add(:security_baseline) do
                           end
 
     security_baseline[:coredumps] = coredumps
+
+    pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+    security_baseline['x11-packages'] = pkgs.split("\n")
 
     security_baseline
   end

@@ -39,7 +39,7 @@ class security_baseline::rules::sec_telnet_client (
 
   } else {
 
-    if($::telnet_pkg) {
+    if($facts['security_baseline']['packages_installed']['telnet']) {
 
       echo { 'telnet-client':
         message  => $message,

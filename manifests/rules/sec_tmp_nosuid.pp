@@ -31,9 +31,9 @@ class security_baseline::rules::sec_tmp_nosuid (
 ) {
   if $enforce {
 
-    if $::tmp_partition {
+    if $facts['security_baseline']['partitions']['tmp']['partition'] {
 
-      if $::tmp_nosuid == false {
+      if $facts['security_baseline']['partitions']['tmp']['nosuid'] == false {
         echo { 'tmp-nosuid':
           message  => $message,
           loglevel => $log_level,

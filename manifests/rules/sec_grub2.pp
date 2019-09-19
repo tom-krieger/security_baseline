@@ -51,9 +51,9 @@ class security_baseline::rules::sec_grub2 (
 
   } else {
     if(
-      ($facts['grub']['grub.cfg']['uid'] != 0) or
-      ($facts['grub']['grub.cfg']['gid'] != 0) or
-      ($facts['grub']['grub.cfg']['mode'] != 0600)
+      ($facts['security_baseline']['grub']['grub.cfg']['uid'] != 0) or
+      ($facts['security_baseline']['grub']['grub.cfg']['gid'] != 0) or
+      ($facts['security_baseline']['grub']['grub.cfg']['mode'] != 0600)
     ) {
       echo { 'grub-grub-cfg':
         message  => $message,
@@ -63,9 +63,9 @@ class security_baseline::rules::sec_grub2 (
     }
 
     if(
-      ($facts['grub']['user.cfg']['uid'] != 0) or
-      ($facts['grub']['user.cfg']['gid'] != 0) or
-      ($facts['grub']['user.cfg']['mode'] != 0600)
+      ($facts['security_baseline']['grub']['user.cfg']['uid'] != 0) or
+      ($facts['security_baseline']['grub']['user.cfg']['gid'] != 0) or
+      ($facts['security_baseline']['grub']['user.cfg']['mode'] != 0600)
     ) {
       echo { 'grub-user-cfg':
         message  => $message,

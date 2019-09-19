@@ -43,13 +43,13 @@ class security_baseline::rules::sec_network_secure_icmp_redirect (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.conf.all.secure_redirects' )) {
-      $fact = $::network_parameters['net.ipv4.conf.all.secure_redirects']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.all.secure_redirects' )) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.conf.all.secure_redirects']
     } else {
       $fact = ''
     }
-    if(has_key($::network_parameters, 'net.ipv4.conf.default.secure_redirects')) {
-      $fact_default = $::network_parameters['net.ipv4.conf.default.secure_redirects']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.conf.default.secure_redirects')) {
+      $fact_default = $facts['security_baseline']['sysctl']['net.ipv4.conf.default.secure_redirects']
     } else {
       $fact_default = ''
     }

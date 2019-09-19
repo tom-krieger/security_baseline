@@ -42,7 +42,7 @@ class security_baseline::rules::sec_nis (
 
   } else {
 
-    if($::srv_ypserv == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_ypserv'] == 'enabled') {
       echo { 'ypserv':
         message  => $message,
         loglevel => $log_level,

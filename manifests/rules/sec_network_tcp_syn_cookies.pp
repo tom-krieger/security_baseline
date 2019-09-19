@@ -47,8 +47,8 @@ class security_baseline::rules::sec_network_tcp_syn_cookies (
 
   } else {
 
-    if(has_key($::network_parameters, 'net.ipv4.tcp_syncookies')) {
-      $fact = $::network_parameters['net.ipv4.tcp_syncookies']
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv4.tcp_syncookies')) {
+      $fact = $facts['security_baseline']['sysctl']['net.ipv4.tcp_syncookies']
     } else {
       $fact = ''
     }

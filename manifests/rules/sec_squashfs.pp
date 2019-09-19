@@ -35,5 +35,13 @@ class security_baseline::rules::sec_squashfs (
     kmod::install { 'squashfs':
       command => '/bin/true',
     }
+  } else {
+    if($facts['security_baseline']['kernel_modules']['squashfs']) {
+      echo { 'squashfs':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

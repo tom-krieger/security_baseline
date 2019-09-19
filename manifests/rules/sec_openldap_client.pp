@@ -38,7 +38,7 @@ class security_baseline::rules::sec_openldap_client (
 
   } else {
 
-    if($::openldap_clients_pkg) {
+    if($facts['security_baseline']['packages_installed']['openldap_clients']) {
 
       echo { 'openldp-clients':
         message  => $message,

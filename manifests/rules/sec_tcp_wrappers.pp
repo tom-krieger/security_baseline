@@ -40,7 +40,7 @@ class security_baseline::rules::sec_tcp_wrappers (
 
   } else {
 
-    if($::tcp_wrappers_pkg) {
+    if($facts['security_baseline']['packages_installed']['tcp_wrappers']) {
 
       echo { 'tcp-wrappers':
         message  => $message,

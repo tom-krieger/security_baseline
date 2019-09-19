@@ -39,7 +39,7 @@ class security_baseline::rules::sec_issue_net (
 ) {
   if($enforce) {
 
-    if($::issue_net) {
+    if($facts['security_baseline']['issue']['net']) {
       echo { 'issue-net':
         message  => $message,
         loglevel => $log_level,

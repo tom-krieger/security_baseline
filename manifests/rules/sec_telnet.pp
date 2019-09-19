@@ -40,7 +40,7 @@ class security_baseline::rules::sec_telnet (
 
   } else {
 
-    if($::srv_telnet == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_telnet.socket'] == 'enabled') {
       echo { 'telnet':
         message  => $message,
         loglevel => $log_level,

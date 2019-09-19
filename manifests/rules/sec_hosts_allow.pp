@@ -42,7 +42,7 @@ class security_baseline::rules::sec_hosts_allow (
 
   } else {
 
-    if($::hosts_allow == false) {
+    if($facts['secutitry_baseline']['hosts_allow'] == false) {
       echo { 'hosts-allow':
         message  => $message,
         loglevel => $log_level,

@@ -31,9 +31,9 @@ class security_baseline::rules::sec_var_tmp_nosuid (
 ) {
   if $enforce {
 
-    if $::var_partition {
+    if $facts['security_baseline']['partitions']['var_tmp']['partition'] {
 
-      if $::var_tmp_noexec == false {
+      if $facts['security_baseline']['partitions']['var_tmp']['nosuid'] == false {
         echo { 'var-tmp-noexec':
           message  => $message,
           loglevel => $log_level,

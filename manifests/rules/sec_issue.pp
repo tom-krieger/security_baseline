@@ -40,7 +40,7 @@ class security_baseline::rules::sec_issue (
 ) {
   if($enforce) {
 
-    if($::issue) {
+    if($facts['security_baseline']['issue']['os']) {
       echo { 'issue':
         message  => $message,
         loglevel => $log_level,

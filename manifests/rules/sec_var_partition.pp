@@ -32,7 +32,7 @@ class security_baseline::rules::sec_var_partition (
 ) {
 
   if($enforce) {
-    if $::var_partition == undef {
+    if $facts['security_baseline']['partitions']['var']['partition'] == undef {
 
       echo { 'var-partition':
         message  => $message,

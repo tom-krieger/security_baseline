@@ -30,22 +30,11 @@ class security_baseline::rules::sec_issue_net_permissions_mode (
   String $message = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-    file { '/etc/issue.net':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
-    }
-
-  } else {
-    if($facts['security_baseline']['issue']['net']['mode'] != 0644) {
-      echo { 'issue-os-mode':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if(!$enforce) and ($facts['security_baseline']['issue']['net']['mode'] != 0644) {
+    echo { 'issue-os-mode':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

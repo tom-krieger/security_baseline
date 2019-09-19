@@ -29,22 +29,11 @@ class security_baseline::rules::sec_issue_permissions_gid (
   String $message = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-    file { '/etc/issue':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
-    }
-
-  } else {
-    if($facts['security_baseline']['issue']['os']['gid'] != 0) {
-      echo { 'issue-os-gid':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if(!$enforce) and ($facts['security_baseline']['issue']['os']['gid'] != 0) {
+    echo { 'issue-os-gid':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

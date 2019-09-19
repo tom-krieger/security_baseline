@@ -24,22 +24,13 @@ class security_baseline::rules::sec_motd_permissions_mode (
   String $message = '',
   String $log_level = ''
 ) {
-  if($enforce) {
+  if(!$enforce) and ($facts['security_baseline']['motd']['mode'] != 0644) {
 
-    file { '/etc/motd':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+    echo { 'motd-mode':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
 
-  } else {
-    if($facts['security_baseline']['motd']['mode'] != 0644) {
-      echo { 'motd-mode':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
-    }
   }
 }

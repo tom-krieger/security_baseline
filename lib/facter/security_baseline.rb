@@ -103,7 +103,6 @@ Facter.add(:security_baseline) do
     security_baseline[:sysctl] = sysctl
 
     aide = {}
-
     cronentry = Facter::Core::Execution.exec('crontab -u root -l | grep aide')
     fileentry = Facter::Core::Execution.exec('grep -rh aide /etc/cron.* /etc/crontab')
 
@@ -119,11 +118,13 @@ Facter.add(:security_baseline) do
     end
 
     val = Facter::Core::Execution.exec("rpm -q --queryformat '%{version}' aide")
-    aide['version'] = if val.empty? || val =~ %r{not installed}
-                        'not installed'
-                      else
-                        val
-                      end
+    if val.empty? || val =~ %r{not installed}
+      aide['version'] = ''
+      aide['status'] = 'not installed'
+    else
+      aide['version'] = val
+      aide['status'] = 'installed'
+    end
 
     security_baseline[:aide] = aide
 

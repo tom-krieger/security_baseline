@@ -281,20 +281,20 @@ Facter.add(:security_baseline) do
     issue['os']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue')
     issue['os']['uid'] = File.stat('/etc/issue').uid
     issue['os']['gid'] = File.stat('/etc/issue').gid
-    issue['os']['mode'] = File.stat('/etc/issue').mode
+    issue['os']['mode'] = File.stat('/etc/issue').mode & 07777
 
     issue['net'] = {}
     issue['net']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue.net')
     issue['net']['uid'] = File.stat('/etc/issue.net').uid
     issue['net']['gid'] = File.stat('/etc/issue.net').gid
-    issue['net']['mode'] = File.stat('/etc/issue.net').mode
+    issue['net']['mode'] = File.stat('/etc/issue.net').mode & 07777
     security_baseline[:issue] = issue
 
     motd = {}
     motd['content'] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
     motd['uid'] = File.stat('/etc/motd').uid
     motd['gid'] = File.stat('/etc/motd').gid
-    motd['mode'] = File.stat('/etc/motd').mode
+    motd['mode'] = File.stat('/etc/motd').mode & 07777
     security_baseline[:motd] = motd
 
     security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
@@ -312,7 +312,7 @@ Facter.add(:security_baseline) do
                          end
     uid = File.stat('/boot/grub2/grub.cfg').uid
     gid = File.stat('/boot/grub2/grub.cfg').gid
-    mode = File.stat('/boot/grub2/grub.cfg').mode
+    mode = File.stat('/boot/grub2/grub.cfg').mode & 07777
     grub['grub.cfg'] = {
       uid: uid,
       gid: gid,
@@ -321,7 +321,7 @@ Facter.add(:security_baseline) do
 
     uid = File.stat('/boot/grub2/user.cfg').uid
     gid = File.stat('/boot/grub2/user.cfg').gid
-    mode = File.stat('/boot/grub2/user.cfg').mode
+    mode = File.stat('/boot/grub2/user.cfg').mode & 07777
     grub['user.cfg'] = {
       uid: uid,
       gid: gid,

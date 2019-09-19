@@ -277,11 +277,13 @@ Facter.add(:security_baseline) do
     security_baseline[:single_user_mode] = single_user_mode
 
     issue = {}
+    issue['os'] = {}
     issue['os']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue')
     issue['os']['uid'] = File.stat('/etc/issue').uid
     issue['os']['gid'] = File.stat('/etc/issue').gid
     issue['os']['mode'] = File.stat('/etc/issue').mode
 
+    issue['net'] = {}
     issue['net']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue.net')
     issue['net']['uid'] = File.stat('/etc/issue.net').uid
     issue['net']['gid'] = File.stat('/etc/issue.net').gid
@@ -294,7 +296,7 @@ Facter.add(:security_baseline) do
     motd['gid'] = File.stat('/etc/motd').gid
     motd['mode'] = File.stat('/etc/motd').mode
     security_baseline[:motd] = motd
-    
+
     security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
     security_baseline[:unconfigured_daemons] = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
     security_baseline[:sticky_ww] = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")

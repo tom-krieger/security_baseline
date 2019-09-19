@@ -97,12 +97,12 @@ define security_baseline::sec_check (
             $my_state = 'compliant'
           }
         } else {
-          # if no fact name is available assume test is compliant
+          # if no current value is available assume test is compliant
           $my_msg   = ''
           $my_level = 'ok'
           $my_state = 'compliant'
           if($fact_name.is_a(Array)) {
-            $fact_key = join($fact_name, '::')
+            $fact_key = join($fact_name, ' => ')
           } else {
             $fact_key = $fact_name
           }

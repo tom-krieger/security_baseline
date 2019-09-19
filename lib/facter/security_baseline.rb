@@ -299,7 +299,12 @@ Facter.add(:security_baseline) do
     security_baseline[:motd] = motd
 
     security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
-    security_baseline[:unconfigured_daemons] = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
+    val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
+    if val.empty? or val.nil?
+      security_baseline[:unconfigured_daemons] = 'none'
+    else
+      security_baseline[:unconfigured_daemons] = val
+    end
     security_baseline[:sticky_ww] = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
     security_baseline[:security_patches] = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
     security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''

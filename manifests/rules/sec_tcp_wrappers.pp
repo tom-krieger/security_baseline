@@ -34,7 +34,12 @@ class security_baseline::rules::sec_tcp_wrappers (
 ) {
   if($enforce) {
 
-    package { 'tcp_wrappers':
+    if $facts['os']['name'].downcase() != 'sles' {
+      $pkg = 'tcp_wrappers'
+    } else {
+      $pkg = 'tcpd'
+    }
+    package { $pkg:
       ensure => installed,
     }
 

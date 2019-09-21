@@ -33,8 +33,13 @@ class security_baseline::rules::sec_setroubleshoot (
 
   if($enforce) {
 
+    if $facts['os']['name'].downcase() == 'sles' {
+      $action = 'absent'
+    } else {
+      $action = 'purged'
+    }
     package { 'setroubleshoot':
-      ensure => purged,
+      ensure => $action,
     }
 
   } else {

@@ -32,8 +32,13 @@ class security_baseline::rules::sec_talk_client (
 ) {
   if($enforce) {
 
+    if $facts['os']['name'].downcase() == 'sles' {
+      $action = 'absent'
+    } else {
+      $action = 'purged'
+    }
     package { 'talk':
-      ensure => purged,
+      ensure => $action,
     }
 
   } else {

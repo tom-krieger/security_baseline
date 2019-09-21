@@ -34,8 +34,13 @@ class security_baseline::rules::sec_x11_installed (
   if($enforce) {
 
     if($facts['security_baseline']['x11-packages']) {
+      if $facts['os']['name'].downcase() == 'sles' {
+        $action = 'absent'
+      } else {
+        $action = 'purged'
+      }
       package { $facts['security_baseline']['x11-packages']:
-        ensure => purged,
+        ensure => $action,
       }
     }
   } else {

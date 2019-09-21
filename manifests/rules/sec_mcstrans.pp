@@ -32,8 +32,13 @@ class security_baseline::rules::sec_mcstrans (
 ) {
   if($enforce) {
 
+    if $facts['os']['name'].downcase() == 'sles' {
+      $action = 'absent'
+    } else {
+      $action = 'purged'
+    }
     package { 'mcstrans':
-      ensure => purged,
+      ensure => $action,
     }
 
   } else {

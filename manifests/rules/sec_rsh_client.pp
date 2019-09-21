@@ -34,8 +34,13 @@ class security_baseline::rules::sec_rsh_client (
 ) {
   if($enforce) {
 
+    if $facts['os']['name'].downcase() == 'sles' {
+      $action = 'absent'
+    } else {
+      $action = 'purged'
+    }
     package { 'rsh':
-      ensure => purged,
+      ensure => $action,
     }
 
   } else {

@@ -35,8 +35,13 @@ class security_baseline::rules::sec_prelink (
   if($enforce) {
 
     if($facts['security_baseline']['packages_installed']['prelink'] and ($::osfamily != 'Suse')) {
+      if $facts['os']['name'].downcase() == 'sles' {
+        $action = 'absent'
+      } else {
+        $action = 'purged'
+      }
       package { 'prelink':
-        ensure => purged,
+        ensure => $action,
       }
     }
 

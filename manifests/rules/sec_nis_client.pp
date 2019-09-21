@@ -35,8 +35,13 @@ class security_baseline::rules::sec_nis_client(
 ) {
   if($enforce) {
 
+    if $facts['os']['name'].downcase() == 'sles' {
+      $action = 'absent'
+    } else {
+      $action = 'purged'
+    }
     package { 'ypbind':
-      ensure => purged,
+      ensure => $action,
     }
 
   } else {

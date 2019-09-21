@@ -33,8 +33,13 @@ class security_baseline::rules::sec_telnet_client (
 ) {
   if($enforce) {
 
+    if $facts['os']['name'].downcase() == 'sles' {
+      $action = 'absent'
+    } else {
+      $action = 'purged'
+    }
     package { 'telnet':
-      ensure => purged,
+      ensure => $action,
     }
 
   } else {

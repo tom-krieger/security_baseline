@@ -337,14 +337,16 @@ Facter.add(:security_baseline) do
       mode: mode,
     }
 
-    uid = File.stat('/boot/grub2/user.cfg').uid
-    gid = File.stat('/boot/grub2/user.cfg').gid
-    mode = File.stat('/boot/grub2/user.cfg').mode & 0o7777
-    grub['user.cfg'] = {
-      uid: uid,
-      gid: gid,
-      mode: mode,
-    }
+    if File.exist?('/boot/grub2/user.cfg')
+      uid = File.stat('/boot/grub2/user.cfg').uid
+      gid = File.stat('/boot/grub2/user.cfg').gid
+      mode = File.stat('/boot/grub2/user.cfg').mode & 0o7777
+      grub['user.cfg'] = {
+        uid: uid,
+        gid: gid,
+        mode: mode,
+      }
+    end
     security_baseline[:grub] = grub
 
     tcp_wrapper = {}
@@ -374,6 +376,16 @@ Facter.add(:security_baseline) do
 
     pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
     security_baseline['x11-packages'] = pkgs.split("\n")
+
+    auditd = {}
+    size = Facter::Core::Execution.exec('grep max_log_file /etc/audit/auditd.conf')
+    auditd['storage_size'] = if size.empty? || size.nil?
+                               'none'
+                             else
+                               size
+                             end
+
+    security_baseline[:auditd] = auditd
 
     security_baseline
   end

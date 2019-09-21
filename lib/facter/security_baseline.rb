@@ -4,6 +4,8 @@ require 'facter/helpers/check_kernel_module'
 require 'facter/helpers/get_duplicate_groups'
 require 'facter/helpers/get_duplicate_users'
 require 'facter/helpers/get_sysctl_value'
+require 'facter/helpers/get_facts_kernel_modules'
+require 'facter/helpers/get_facts_packages_installed'
 
 # frozen_string_literal: true
 
@@ -16,33 +18,8 @@ Facter.add(:security_baseline) do
     distid = Facter.value(:lsbdistid)
     security_baseline = {}
 
-    kernel_modules = {}
-    modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat']
-
-    modules.each do |mod|
-      kernel_modules[mod] = check_kernel_module(mod)
-    end
-
-    security_baseline[:kernel_modules] = kernel_modules
-
-    packages_installed = {}
-    packages = { 'iptables' => '-q',
-                 'openldap-clients' => '-q',
-                 'mcstrans' => '-q',
-                 'prelink' => '-q',
-                 'rsh' => '-q',
-                 'libselinux' => '-q',
-                 'setroubleshoot' => '-q',
-                 'talk' => '-q',
-                 'tcp_wrappers' => '-q',
-                 'telnet' => '-q',
-                 'ypbind' => '-q' }
-
-    packages.each do |package, opts|
-      packages_installed[package] = check_package_installed(package, opts)
-    end
-
-    security_baseline[:packages_installed] = packages_installed
+    security_baseline[:kernel_modules] = get_facts_kernel_modules
+    security_baseline[:packages_installed] = get_facts_packages_installed
 
     services_enabled = {}
     services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',

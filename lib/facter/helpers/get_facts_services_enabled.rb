@@ -1,6 +1,6 @@
 # get facts about enabled services
 
-def get_fatcs_services_enabled
+def get_facts_services_enabled
   services_enabled = {}
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
               'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd']

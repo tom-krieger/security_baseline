@@ -6,7 +6,7 @@ require 'facter/helpers/get_duplicate_users'
 require 'facter/helpers/get_sysctl_value'
 require 'facter/helpers/get_facts_kernel_modules'
 require 'facter/helpers/get_facts_packages_installed'
-require 'facter/helpers/get_fatcs_services_enabled'
+require 'facter/helpers/get_facts_services_enabled'
 require 'facter/helpers/get_facts_xinetd_services'
 require 'facter/helpers/get_facts_sysctl'
 require 'facter/helpers/get_facts_aide'
@@ -24,7 +24,7 @@ Facter.add(:security_baseline) do
 
     security_baseline[:kernel_modules] = get_facts_kernel_modules
     security_baseline[:packages_installed] = get_facts_packages_installed
-    security_baseline[:services_enabled] = get_fatcs_services_enabled
+    security_baseline[:services_enabled] = get_facts_services_enabled
     security_baseline[:xinetd_services] = get_facts_xinetd_services
     security_baseline[:sysctl] = get_facts_sysctl
     security_baseline[:aide] = get_facts_aide(distid)

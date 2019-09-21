@@ -6,6 +6,10 @@ require 'facter/helpers/get_duplicate_users'
 require 'facter/helpers/get_sysctl_value'
 require 'facter/helpers/get_facts_kernel_modules'
 require 'facter/helpers/get_facts_packages_installed'
+require 'facter/helpers/get_fatcs_services_enabled'
+require 'facter/helpers/get_facts_xinetd_services'
+require 'facter/helpers/get_facts_sysctl'
+require 'facter/helpers/get_facts_aide'
 
 # frozen_string_literal: true
 
@@ -20,92 +24,10 @@ Facter.add(:security_baseline) do
 
     security_baseline[:kernel_modules] = get_facts_kernel_modules
     security_baseline[:packages_installed] = get_facts_packages_installed
-
-    services_enabled = {}
-    services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
-                'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd']
-
-    services.each do |srv|
-      srv_name = "srv_#{srv}"
-      services_enabled[srv_name] = check_service_is_enabled(srv)
-    end
-
-    rsh = check_service_is_enabled('rsh.socket')
-    rlogin = check_service_is_enabled('rlogin.socket')
-    rexec = check_service_is_enabled('recex.socket')
-
-    services_enabled['srv_rsh'] = if (rsh == 'enbaled') || (rlogin == 'enabled') || (rexec == 'enabled')
-                                    'enabled'
-                                  else
-                                    'disabled'
-                                  end
-
-    nfs = check_service_is_enabled('nfs')
-    nfsserver = check_service_is_enabled('nfs-server')
-    rpcbind = check_service_is_enabled('rpcbind')
-
-    services_enabled['srv_nfs'] = if (nfs != 'disabled') || (nfsserver != 'disabled') || (rpcbind != 'disabled')
-                                    'enabled'
-                                  else
-                                    'disabled'
-                                  end
-
-    security_baseline[:services_enabled] = services_enabled
-
-    xinetd_services = {}
-    srvs = ['echo', 'time', 'chargen', 'tftp', 'daytime', 'discard']
-
-    srvs.each do |srv|
-      srv_name = "srv_#{srv}"
-      xinetd_services[srv_name] = check_xinetd_service(srv)
-    end
-
-    security_baseline[:xinetd_services] = xinetd_services
-
-    sysctl = {}
-    sysctl['kernel_aslr'] = get_sysctl_value('kernel.randomize_va_space')
-    sysctl['fs_dumpable'] = get_sysctl_value('fs.suid_dumpable')
-
-    network_keys = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
-                    'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',
-                    'net.ipv4.conf.default.accept_redirects', 'net.ipv4.conf.all.secure_redirects', 'net.ipv4.conf.all.log_martians',
-                    'net.ipv4.conf.default.log_martians', 'net.ipv4.icmp_echo_ignore_broadcasts', 'net.ipv4.icmp_ignore_bogus_error_responses',
-                    'net.ipv4.conf.all.rp_filter', 'net.ipv4.conf.default.rp_filter', 'net.ipv4.tcp_syncookies',
-                    'net.ipv6.conf.all.accept_ra', 'net.ipv6.conf.default.accept_ra', 'net.ipv6.conf.all.accept_redirects',
-                    'net.ipv6.conf.default.accept_redirects', 'net.ipv6.conf.all.disable_ipv6', 'net.ipv6.conf.default.disable_ipv6']
-
-    network_keys.each do |key|
-      sysctl[key] = get_sysctl_value(key)
-    end
-
-    security_baseline[:sysctl] = sysctl
-
-    aide = {}
-    cronentry = Facter::Core::Execution.exec('crontab -u root -l | grep aide')
-    fileentry = Facter::Core::Execution.exec('grep -rh aide /etc/cron.* /etc/crontab')
-
-    if cronentry.empty? && fileentry.empty?
-      aide['cron'] = 'undef'
-    else
-      unless cronentry.empty?
-        aide['cron'] = cronentry
-      end
-      unless fileentry.empty?
-        aide['cron'] = fileentry
-      end
-    end
-
-    if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
-      val = Facter::Core::Execution.exec("rpm -q --queryformat '%{version}' aide")
-      if val.empty? || val =~ %r{not installed}
-        aide['version'] = ''
-        aide['status'] = 'not installed'
-      else
-        aide['version'] = val
-        aide['status'] = 'installed'
-      end
-      security_baseline[:aide] = aide
-    end
+    security_baseline[:services_enabled] = get_fatcs_services_enabled
+    security_baseline[:xinetd_services] = get_facts_xinetd_services
+    security_baseline[:sysctl] = get_facts_sysctl
+    security_baseline[:aide] = get_facts_aide(distid)
 
     selinux = {}
     val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')

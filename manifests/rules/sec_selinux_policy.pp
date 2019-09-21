@@ -30,24 +30,27 @@ class security_baseline::rules::sec_selinux_policy (
   String $message = '',
   String $log_level = ''
 ) {
-  if($enforce) {
+  if $facts['os']['name'].downcase() != 'sles' {
 
-    file_line { 'selinux_targeted':
-      path  => '/etc/selinux/config',
-      line  => 'SELINUXTYPE=targeted',
-      match => '^SELINUXTYPE=',
-    }
+    if($enforce) {
 
-  } else {
-
-    if(($::selinux_config_policy != 'targeted') and ($::selinux_config_policy != 'mls')) {
-
-      echo { 'selinux':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+      file_line { 'selinux_targeted':
+        path  => '/etc/selinux/config',
+        line  => 'SELINUXTYPE=targeted',
+        match => '^SELINUXTYPE=',
       }
 
+    } else {
+
+      if(($::selinux_config_policy != 'targeted') and ($::selinux_config_policy != 'mls')) {
+
+        echo { 'selinux':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
+
+      }
     }
   }
 }

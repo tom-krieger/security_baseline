@@ -30,25 +30,29 @@ class security_baseline::rules::sec_yum_gpgcheck (
   String $message = '',
   String $log_level = ''
 ) {
-  if($enforce) {
 
-    file_line { 'yum_gpgcheck':
-      ensure => present,
-      path   => '/etc/yum.conf',
-      line   => 'gpgcheck=1',
-      match  => '^gpgcheck',
-    }
+  if $facts['os']['name'].downcase() != 'sles' {
 
-  } else {
+    if($enforce) {
 
-    if( $facts['security_baseline']['yum']['gpgcheck'] == false) {
-
-      echo { 'yum_gpgcheck':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+      file_line { 'yum_gpgcheck':
+        ensure => present,
+        path   => '/etc/yum.conf',
+        line   => 'gpgcheck=1',
+        match  => '^gpgcheck',
       }
 
+    } else {
+
+      if( $facts['security_baseline']['yum']['gpgcheck'] == false) {
+
+        echo { 'yum_gpgcheck':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
+
+      }
     }
   }
 }

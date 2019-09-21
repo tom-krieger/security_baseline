@@ -29,22 +29,25 @@ class security_baseline::rules::sec_selinux (
   String $message = '',
   String $log_level = ''
 ) {
-  if($enforce) {
+  if $facts['os']['name'].downcase() != 'sles' {
 
-    package { 'libselinux':
-      ensure => present,
-    }
+    if($enforce) {
 
-  } else {
-
-    if($facts['security_baseline']['packages_installed']['libselinux'] == false) {
-
-      echo { 'selinux-pkg':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+      package { 'libselinux':
+        ensure => present,
       }
 
+    } else {
+
+      if($facts['security_baseline']['packages_installed']['libselinux'] == false) {
+
+        echo { 'selinux-pkg':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
+
+      }
     }
   }
 }

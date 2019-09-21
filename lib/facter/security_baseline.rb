@@ -13,6 +13,7 @@ require 'facter/helpers/get_sysctl_value'
 Facter.add(:security_baseline) do
   confine kernel: 'Linux'
   setcode do
+    distid = Facter.value(:lsbdistid)
     security_baseline = {}
 
     kernel_modules = {}
@@ -117,16 +118,17 @@ Facter.add(:security_baseline) do
       end
     end
 
-    val = Facter::Core::Execution.exec("rpm -q --queryformat '%{version}' aide")
-    if val.empty? || val =~ %r{not installed}
-      aide['version'] = ''
-      aide['status'] = 'not installed'
-    else
-      aide['version'] = val
-      aide['status'] = 'installed'
+    if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
+      val = Facter::Core::Execution.exec("rpm -q --queryformat '%{version}' aide")
+      if val.empty? || val =~ %r{not installed}
+        aide['version'] = ''
+        aide['status'] = 'not installed'
+      else
+        aide['version'] = val
+        aide['status'] = 'installed'
+      end
+      security_baseline[:aide] = aide
     end
-
-    security_baseline[:aide] = aide
 
     selinux = {}
     val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
@@ -225,18 +227,20 @@ Facter.add(:security_baseline) do
 
     security_baseline[:partitions] = partitions
 
-    yum = {}
-    yum['repolist'] = Facter::Core::Execution.exec('yum repolist')
-    value = Facter::Core::Execution.exec('grep ^gpgcheck /etc/yum.conf')
-    yum['gpgcheck'] = if value.empty?
-                        false
-                      elsif value == 'gpgcheck=1'
-                        true
-                      else
-                        false
-                      end
+    if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
+      yum = {}
+      yum['repolist'] = Facter::Core::Execution.exec('yum repolist')
+      value = Facter::Core::Execution.exec('grep ^gpgcheck /etc/yum.conf')
+      yum['gpgcheck'] = if value.empty?
+                          false
+                        elsif value == 'gpgcheck=1'
+                          true
+                        else
+                          false
+                        end
 
-    security_baseline[:yum] = yum
+      security_baseline[:yum] = yum
+    end
 
     groups = {}
     groups['duplicate_gid'] = get_duplicate_groups('gid')
@@ -248,11 +252,13 @@ Facter.add(:security_baseline) do
     users['duplidate_user'] = get_duplicate_users('user')
     security_baseline[:users] = users
 
-    x11 = {}
-    pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
-    x11['installed'] = pkgs.split("\n")
+    if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
+      x11 = {}
+      pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+      x11['installed'] = pkgs.split("\n")
 
-    security_baseline[:x11] = x11
+      security_baseline[:x11] = x11
+    end
 
     single_user_mode = {}
 
@@ -298,13 +304,15 @@ Facter.add(:security_baseline) do
     motd['mode'] = File.stat('/etc/motd').mode & 0o7777
     security_baseline[:motd] = motd
 
-    security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
-    val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
-    security_baseline[:unconfigured_daemons] = if val.empty? || val.nil?
-                                                 'none'
-                                               else
-                                                 val
-                                               end
+    if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
+      security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
+      val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
+      security_baseline[:unconfigured_daemons] = if val.empty? || val.nil?
+                                                  'none'
+                                                else
+                                                  val
+                                                end
+    end
 
     val = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
     security_baseline[:sticky_ww] = if val.empty? || val.nil?
@@ -313,13 +321,18 @@ Facter.add(:security_baseline) do
                                       val
                                     end
 
-    val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
-    security_baseline[:security_patches] = if val.empty? || val.nil?
-                                             'none'
-                                           else
-                                             val
-                                           end
-    security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
+    if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
+      val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
+      security_baseline[:security_patches] = if val.empty? || val.nil?
+                                              'none'
+                                            else
+                                              val
+                                            end
+    end
+
+    if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
+      security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
+    end
 
     grub = {}
     grubpwd = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
@@ -374,18 +387,10 @@ Facter.add(:security_baseline) do
 
     security_baseline[:coredumps] = coredumps
 
-    pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
-    security_baseline['x11-packages'] = pkgs.split("\n")
-
-    auditd = {}
-    size = Facter::Core::Execution.exec('grep max_log_file /etc/audit/auditd.conf')
-    auditd['storage_size'] = if size.empty? || size.nil?
-                               'none'
-                             else
-                               size
-                             end
-
-    security_baseline[:auditd] = auditd
+    if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
+      pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+      security_baseline['x11-packages'] = pkgs.split("\n")
+    end
 
     security_baseline
   end

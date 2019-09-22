@@ -61,6 +61,7 @@ class security_baseline (
     target  => $logfile,
     order   => 9999,
     notify  => Exec['upload-facts'],
+    before  => Exec['upload-facts'],
   }
 
   exec { 'upload-facts':

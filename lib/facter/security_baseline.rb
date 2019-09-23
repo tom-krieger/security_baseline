@@ -17,7 +17,7 @@ require 'facter/helpers/get_facts_aide'
 # collect facts about the security baseline
 
 Facter.add(:security_baseline) do
-  confine (:osfamily == 'RedHat') or (:osfamily == 'Suse')
+  confine (Facter.value(:os)['family'] => 'RedHat') || (Facter.value(:os)['family'] => 'Suse') 
   setcode do
     distid = Facter.value(:lsbdistid)
     security_baseline = {}

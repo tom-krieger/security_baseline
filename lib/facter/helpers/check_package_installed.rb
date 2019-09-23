@@ -5,7 +5,7 @@
 
 def check_package_installed(pkg, opts = '-q')
   os = Facter.value(:osfamily)
-  if (os == 'RedHat') || (os = 'Suse')
+  if (os == 'RedHat') || (os == 'Suse')
     val = Facter::Core::Execution.exec("rpm #{opts} #{pkg}")
   elsif os == 'Debian'
     val = Facter::Core::Execution.exec("dpkg -s #{pkg}")

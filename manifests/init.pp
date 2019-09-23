@@ -3,7 +3,7 @@
 #
 # Define a complete security baseline and monitor the rules. The definition of the baseline can be done in Hiera. 
 # The purpose of the module is to give the ability to setup complete security baseline which not necessarily have to stick 
-# to an industry security guide like the CIS benchmarks.
+# to an industry security guide like the CIS benchmarks.  
 # One main purpose is to ensure the module can be extended by further security settings and monitorings without changing the code of
 # this module.
 #

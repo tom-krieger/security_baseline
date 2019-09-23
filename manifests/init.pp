@@ -60,13 +60,12 @@ class security_baseline (
     content => epp('security_baseline/logfile_end.epp', {}),
     target  => $logfile,
     order   => 9999,
-    notify  => Exec['upload-facts'],
     before  => Exec['upload-facts'],
   }
 
   exec { 'upload-facts':
     command     => 'puppet facts upload',
     path        => ['/bin', '/usr/bin', '/usr/local/bin'],
-    refreshonly => true,
+    refreshonly => false,
   }
 }

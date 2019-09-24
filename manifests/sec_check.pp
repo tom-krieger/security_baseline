@@ -60,6 +60,12 @@ define security_baseline::sec_check (
 
     if($active) {
 
+      $logentry_default = {
+        rulenr    => $title,
+        rule      => $rulename,
+        desc      => $description,
+      }
+
       if($::security_baseline::debug) {
         echo{"Applying rule ${rulename}":
           loglevel => 'debug',
@@ -71,6 +77,7 @@ define security_baseline::sec_check (
       if($fact_name != '') {
         $fact_value = $check['fact_value']
         $data_hash  = $facts[$check['fact_hash']]
+
         if(! $data_hash.empty()) {
           $current_value = dig($data_hash, *$fact_name)
         } else {
@@ -85,16 +92,20 @@ define security_baseline::sec_check (
               withpath => false,
             }
 
-            $my_msg   = $message
-            $my_level = $log_level
-            $my_state = 'not compliant'
+            $logentry_data = {
+              level      => $log_level,
+              msg       => $message,
+              rulestate => 'not compliant',
+            }
 
           } else {
 
             # fact contains expected value
-            $my_msg   = ''
-            $my_level = 'ok'
-            $my_state = 'compliant'
+            $logentry_data = {
+              level     => 'ok',
+              msg       => $message,
+              rulestate => 'compliant',
+            }
           }
         } else {
           # if no current value is available assume test is compliant
@@ -112,18 +123,11 @@ define security_baseline::sec_check (
 
       } else {
         # if no fact name is available assume test is compliant
-        $my_msg   = ''
-        $my_level = 'ok'
-        $my_state = 'compliant'
-      }
-
-      ::security_baseline::logging { $title:
-        rulenr    => $title,
-        rule      => $rulename,
-        desc      => $description,
-        level     => $my_level,
-        msg       => $my_msg,
-        rulestate => $my_state,
+        $logentry_data = {
+          level     => 'ok',
+          msg       => $message,
+          rulestate => 'compliant',
+        }
       }
 
       # internal classes are supposed to start with ::security_baseline::rules
@@ -141,6 +145,11 @@ define security_baseline::sec_check (
           'log_level' => $log_level,
           'logfile'   => $::security_baseline::logfile,
         }
+      }
+
+      $logentry = $logentry_default + $logentry_data
+      ::security_baseline::logging { $title:
+        * => $logentry,
       }
 
       $merged_data = merge($data, $config_data)

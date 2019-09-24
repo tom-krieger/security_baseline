@@ -85,8 +85,8 @@ define security_baseline::sec_check (
         }
 
         if($current_value) {
-          if($current_value != $fact_value) {
 
+          if($current_value != $fact_value) {
             echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
               loglevel => $loglevel,
               withpath => false,
@@ -107,11 +107,16 @@ define security_baseline::sec_check (
               rulestate => 'compliant',
             }
           }
+
         } else {
+
           # if no current value is available assume test is compliant
-          $my_msg   = ''
-          $my_level = 'ok'
-          $my_state = 'compliant'
+          $logentry_data = {
+            level     => 'ok',
+            msg       => $message,
+            rulestate => 'compliant',
+          }
+
           if($fact_name.is_a(Array)) {
             $fact_key = join($fact_name, ' => ')
           } else {
@@ -122,6 +127,7 @@ define security_baseline::sec_check (
         }
 
       } else {
+
         # if no fact name is available assume test is compliant
         $logentry_data = {
           level     => 'ok',
@@ -133,18 +139,22 @@ define security_baseline::sec_check (
       # internal classes are supposed to start with ::security_baseline::rules
       # logging is done within this resource and no concat target is needed
       if($class =~ /^::security_baseline::rules::/) {
+
         $data = {
           'enforce'   => $enforce,
           'message'   => $message,
           'log_level' => $log_level,
         }
+
       } else {
+
         $data = {
           'enforce'   => $enforce,
           'message'   => $message,
           'log_level' => $log_level,
           'logfile'   => $::security_baseline::logfile,
         }
+
       }
 
       $logentry = $logentry_default + $logentry_data
@@ -153,7 +163,6 @@ define security_baseline::sec_check (
       }
 
       $merged_data = merge($data, $config_data)
-
       class { $class:
         * => $merged_data
       }

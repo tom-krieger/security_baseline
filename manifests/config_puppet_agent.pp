@@ -7,8 +7,12 @@
 #   include security_baseline::config_puppet_agent
 class security_baseline::config_puppet_agent {
   if($facts['security_baseline']['puppet_agent_postrun'] != 'postrun_command = /usr/local/bin/puppet facts upload') {
-    exec { 'set puppet agent postrun':
+    exec { 'set puppet agent postrun agent':
       command => 'puppet config --section agent set postrun_command "/usr/local/bin/puppet facts upload"',
+      path    => ['/bin', '/usr/bin', '/usr/local/bin'],
+    }
+    exec { 'set puppet agent postrun main':
+      command => 'puppet config --section main set postrun_command "/usr/local/bin/puppet facts upload"',
       path    => ['/bin', '/usr/bin', '/usr/local/bin'],
     }
   }

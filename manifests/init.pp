@@ -68,6 +68,5 @@ class security_baseline (
     content => epp('security_baseline/logfile_end.epp', {}),
     target  => $logfile,
     order   => 9999,
-    before  => Exec['upload-facts'],
   }
 }

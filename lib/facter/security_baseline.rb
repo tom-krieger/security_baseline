@@ -22,6 +22,13 @@ Facter.add(:security_baseline) do
     distid = Facter.value(:lsbdistid)
     security_baseline = {}
 
+    val = Facter::Core::Execution.exec('puppet config print | grep postrun_command')
+    security_baseline['puppet_agent_postrun'] = if val.empty? || val.nil?
+                                                  'none'
+                                                else
+                                                  val
+                                                end
+
     security_baseline[:kernel_modules] = get_facts_kernel_modules
     security_baseline[:packages_installed] = get_facts_packages_installed
     security_baseline[:services_enabled] = get_facts_services_enabled

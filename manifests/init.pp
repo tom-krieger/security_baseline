@@ -24,21 +24,29 @@
 # @param logfile
 #    Logfile to write messages to
 #
+# @param set_postrun
+#    Set postrun_command in pupet agent
+#
 # @example
 #   include security_baseline
 #
 class security_baseline (
   String $baseline_version,
   Hash $rules,
-  Boolean $debug = false,
-  Boolean $log_info = false,
-  String $logfile = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml'
+  Boolean $debug            = false,
+  Boolean $log_info         = false,
+  String $logfile           = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
+  Boolean $set_postrun      = true,
 ) {
   if($debug) {
     echo{"Applying security baseline version: ${baseline_version}":
       loglevel => 'debug',
       withpath => false,
     }
+  }
+
+  class { '::security_baseline::config_puppet_agent':
+    before => Concat[$logfile],
   }
 
   concat { $logfile:
@@ -61,11 +69,5 @@ class security_baseline (
     target  => $logfile,
     order   => 9999,
     before  => Exec['upload-facts'],
-  }
-
-  exec { 'upload-facts':
-    command     => 'puppet facts upload',
-    path        => ['/bin', '/usr/bin', '/usr/local/bin'],
-    refreshonly => false,
   }
 }

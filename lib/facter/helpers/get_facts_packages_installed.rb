@@ -12,8 +12,7 @@ def get_facts_packages_installed
                'talk' => '-q',
                'tcp_wrappers' => '-q',
                'telnet' => '-q',
-               'ypbind' => '-q',
-               'rsyslog' => '-q' }
+               'ypbind' => '-q' }
 
   packages.each do |package, opts|
     packages_installed[package] = check_package_installed(package, opts)

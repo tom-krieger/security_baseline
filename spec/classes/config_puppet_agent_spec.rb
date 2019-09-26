@@ -5,6 +5,12 @@ describe 'security_baseline::config_puppet_agent' do
     context "on #{os}" do
       let(:facts) { os_facts }
 
+      os_facts.merge(
+        'security_baseline' => {
+          'puppet_agent_postrun' => '',
+        },
+      )
+
       it { is_expected.to compile }
     end
   end

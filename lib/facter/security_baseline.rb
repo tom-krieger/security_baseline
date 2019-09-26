@@ -10,6 +10,8 @@ require 'facter/helpers/get_facts_services_enabled'
 require 'facter/helpers/get_facts_xinetd_services'
 require 'facter/helpers/get_facts_sysctl'
 require 'facter/helpers/get_facts_aide'
+require 'facter/helpers/check_value_string'
+require 'facter/helpers/check_value_boolean'
 
 # frozen_string_literal: true
 
@@ -17,7 +19,7 @@ require 'facter/helpers/get_facts_aide'
 # collect facts about the security baseline
 
 Facter.add(:security_baseline) do
-  confine :osfamily => ['RedHat', 'Suse']
+  confine osfamily: ['RedHat', 'Suse']
   setcode do
     distid = Facter.value(:lsbdistid)
     security_baseline = {}
@@ -38,85 +40,38 @@ Facter.add(:security_baseline) do
 
     selinux = {}
     val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
-    selinux['bootloader'] = if val.empty?
-                              true
-                            else
-                              false
-                            end
-
+    selinux['bootloader'] = check_value_boolean(val, true)
     security_baseline[:selinux] = selinux
 
     partitions = {}
     shm = {}
     mounted = Facter::Core::Execution.exec('mount | grep /dev/shm')
-    shm['nodev'] = if mounted.match?(%r{nodev})
-                     true
-                   else
-                     false
-                   end
-    shm['noexec'] = if mounted.match?(%r{noexec})
-                      true
-                    else
-                      false
-                    end
-    shm['nosuid'] = if mounted.match?(%r{nosuid})
-                      true
-                    else
-                      false
-                    end
+    shm['nodev'] = check_value_regex(mounted, 'nodev')
+    shm['noexec'] = check_value_regex(mounted, 'noexec')
+    shm['nosuid'] = check_value_regex(mounted, 'nosuid')
     shm['partition'] = Facter::Core::Execution.exec('mount | grep /dev/shm')
     partitions['shm'] = shm
 
     home = {}
     home['partition'] = Facter::Core::Execution.exec('mount | grep /home')
     mounted = Facter::Core::Execution.exec('mount | grep /home')
-    home['nodev'] = if mounted.match?(%r{nodev})
-                      true
-                    else
-                      false
-                    end
+    home['nodev'] = check_value_regex(mounted, 'nodev')
     partitions['home'] = home
 
     tmp = {}
     tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/tmp "')
     mounted = Facter::Core::Execution.exec('mount | grep /tmp')
-    tmp['nodev'] = if mounted.match?(%r{nodev})
-                     true
-                   else
-                     false
-                   end
-    tmp['noexec'] = if mounted.match?(%r{noexec})
-                      true
-                    else
-                      false
-                    end
-    tmp['nosuid'] = if mounted.match?(%r{nosuid})
-                      true
-                    else
-                      false
-                    end
-
+    tmp['nodev'] = check_value_regex(mounted, 'nodev')
+    tmp['noexec'] = check_value_regex(mounted, 'noexec')
+    tmp['nosuid'] = check_value_regex(mounted, 'nosuid')
     partitions['tmp'] = tmp
 
     var_tmp = {}
     var_tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/var/tmp "')
     mounted = Facter::Core::Execution.exec('mount | grep /var/tmp')
-    var_tmp['nodev'] = if mounted.match?(%r{nodev})
-                         true
-                       else
-                         false
-                       end
-    var_tmp['noexec'] = if mounted.match?(%r{noexec})
-                          true
-                        else
-                          false
-                        end
-    var_tmp['nosuid'] = if mounted.match?(%r{nosuid})
-                          true
-                        else
-                          false
-                        end
-
+    var_tmp['nodev'] = check_value_regex(mounted, 'nodev')
+    var_tmp['noexec'] = check_value_regex(mounted, 'noexec')
+    var_tmp['nosuid'] = check_value_regex(mounted, 'nosuid')
     partitions['var_tmp'] = var_tmp
 
     var = {}
@@ -144,7 +99,6 @@ Facter.add(:security_baseline) do
                         else
                           false
                         end
-
       security_baseline[:yum] = yum
     end
 
@@ -169,18 +123,10 @@ Facter.add(:security_baseline) do
     single_user_mode = {}
 
     resc = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/rescue.service')
-    single_user_mode['rescue'] = if resc.empty?
-                                   false
-                                 else
-                                   true
-                                 end
+    single_user_mode['rescue'] = check_value_boolean(resc, false)
 
     emerg = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/emergency.service')
-    single_user_mode['emergency'] = if emerg.empty?
-                                      false
-                                    else
-                                      true
-                                    end
+    single_user_mode['emergency'] = check_value_boolean(emerg, false)
 
     single_user_mode['status'] = if (single_user_mode['emergency'] == false) || (single_user_mode['rescue'] == false)
                                    false
@@ -213,27 +159,15 @@ Facter.add(:security_baseline) do
     if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
       security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
       val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
-      security_baseline[:unconfigured_daemons] = if val.empty? || val.nil?
-                                                  'none'
-                                                else
-                                                  val
-                                                end
+      security_baseline[:unconfigured_daemons] = check_value_string(val, 'none')
     end
 
     val = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
-    security_baseline[:sticky_ww] = if val.empty? || val.nil?
-                                      'none'
-                                    else
-                                      val
-                                    end
+    security_baseline[:sticky_ww] = check_value_string(val, 'none')
 
     if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
       val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
-      security_baseline[:security_patches] = if val.empty? || val.nil?
-                                              'none'
-                                            else
-                                              val
-                                            end
+      security_baseline[:security_patches] = check_value_string(val, 'none')
     end
 
     if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
@@ -241,12 +175,9 @@ Facter.add(:security_baseline) do
     end
 
     grub = {}
-    grubpwd = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
-    grub[:grub_passwd] = if grubpwd.empty?
-                           false
-                         else
-                           true
-                         end
+    val = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
+    grub[:grub_passwd] = check_value_boolean(val, false)
+
     uid = File.stat('/boot/grub2/grub.cfg').uid
     gid = File.stat('/boot/grub2/grub.cfg').gid
     mode = File.stat('/boot/grub2/grub.cfg').mode & 0o7777

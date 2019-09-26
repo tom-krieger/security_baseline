@@ -12,6 +12,7 @@ require 'facter/helpers/get_facts_sysctl'
 require 'facter/helpers/get_facts_aide'
 require 'facter/helpers/check_value_string'
 require 'facter/helpers/check_value_boolean'
+require 'facter/helpers/check_value_regex'
 
 # frozen_string_literal: true
 

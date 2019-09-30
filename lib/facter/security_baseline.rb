@@ -138,19 +138,10 @@ Facter.add(:security_baseline) do
     security_baseline[:single_user_mode] = single_user_mode
 
     issue = {}
-    issue['os'] = {}
+    issue['os'] = read_file_stats('/etc/issue')
     issue['os']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue')
-    val = read_file_stats('/etc/issue')
-    issue['os']['uid'] = val['uid']
-    issue['os']['gid'] = val['gid']
-    issue['os']['mode'] = val['mode']
-
-    issue['net'] = {}
+    issue['net'] = read_file_stats('/etc/issue.net')
     issue['net']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue.net')
-    val = read_file_stats('/etc/issue.net')
-    issue['os']['uid'] = val['uid']
-    issue['os']['gid'] = val['gid']
-    issue['os']['mode'] = val['mode']
     security_baseline[:issue] = issue
 
     motd = {}
@@ -181,23 +172,9 @@ Facter.add(:security_baseline) do
 
     grub = {}
     val = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
-    grub[:grub_passwd] = check_value_boolean(val, false)
-
-    val = read_file_stats('/boot/grub2/grub.cfg')
-    grub['grub.cfg'] = {
-      uid: val['uid'],
-      gid: val['gid'],
-      mode: val['mode'],
-    }
-
-    if File.exist?('/boot/grub2/user.cfg')
-      val = read_file_stats('/boot/grub2/user.cfg')
-      grub['user.cfg'] = {
-        uid: val['uid'],
-        gid: val['gid'],
-        mode: val['mode'],
-      }
-    end
+    grub['grub_passwd'] = check_value_boolean(val, false)
+    grub['grub.cfg'] = read_file_stats('/boot/grub2/grub.cfg')
+    grub['user.cfg'] = read_file_stats('/boot/grub2/user.cfg')
     security_baseline[:grub] = grub
 
     tcp_wrapper = {}
@@ -231,42 +208,33 @@ Facter.add(:security_baseline) do
     end
 
     cron = {}
-    val = read_file_stats('/etc/crontab')
-    cron['/etc/crontab'] = {
-      'uid' => val['uid'],
-      'gid' => val['gid'],
-      'mode' => val['mode'],
-    }
-    val = read_file_stats('/etc/cron.hourly')
-    cron['/etc/cron.hourly'] = {
-      'uid' => val['uid'],
-      'gid' => val['gid'],
-      'mode' => val['mode'],
-    }
-    val = read_file_stats('/etc/cron.daily')
-    cron['/etc/cron.daily'] = {
-      'uid' => val['uid'],
-      'gid' => val['gid'],
-      'mode' => val['mode'],
-    }
-    val = read_file_stats('/etc/cron.weekly')
-    cron['/etc/cron.weekly'] = {
-      'uid' => val['uid'],
-      'gid' => val['gid'],
-      'mode' => val['mode'],
-    }
-    val = read_file_stats('/etc/cron.monthly')
-    cron['/etc</cron.monthly'] = {
-      'uid' => val['uid'],
-      'gid' => val['gid'],
-      'mode' => val['mode'],
-    }
-    val = read_file_stats('/etc/cron.d')
-    cron['/etc/cron.d'] = {
-      'uid' => val['uid'],
-      'gid' => val['gid'],
-      'mode' => val['mode'],
-    }
+    cron['/etc/crontab'] = read_file_stats('/etc/crontab')
+    cron['/etc/cron.hourly'] = read_file_stats('/etc/cron.hourly')
+    cron['/etc/cron.daily'] = read_file_stats('/etc/cron.daily')
+    cron['/etc/cron.weekly'] = read_file_stats('/etc/cron.weekly')
+    cron['/etc</cron.monthly'] = read_file_stats('/etc/cron.monthly')
+    cron['/etc/cron.d'] = read_file_stats('/etc/cron.d')
+    cron['/etc/cron.allow'] = read_file_stats('/etc/cron.allow')
+    cron['/etc/cron.deny'] = read_file_stats('/etc/cron.deny')
+    cron['/etc/at.allow'] = read_file_stats('/etc/at.allow')
+    cron['/etc/at.deny'] = read_file_stats('/etc/at.deny')
+
+    if (cron['/etc/cron.allow']['uid'] != 0) ||
+       (cron['/etc/cron.allow']['gid'] != 0) ||
+       (cron['/etc/cron.allow']['mode'] != 0600) ||
+       (cron['/etc/cron.deny']['uid'] != 0) ||
+       (cron['/etc/cron.deny']['gid'] != 0) ||
+       (cron['/etc/cron.deny']['mode'] != 0600) ||
+       (cron['/etc/at.allow']['uid'] != 0) ||
+       (cron['/etc/at.allow']['gid'] != 0) ||
+       (cron['/etc/at.allow']['mode'] != 0600) ||
+       (cron['/etc/at.deny']['uid'] != 0) ||
+       (cron['/etc/at.deny']['gid'] != 0) ||
+       (cron['/etc/at.deny']['mode'] != 0600)
+      cron['restrict'] = false
+    else
+      cron['restrict'] = true
+    end
 
     security_baseline['cron'] = cron
     security_baseline

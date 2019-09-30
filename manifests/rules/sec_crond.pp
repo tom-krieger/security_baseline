@@ -31,7 +31,7 @@ class security_baseline::rules::sec_crond (
 ) {
   if($enforce) {
     if($facts['osfamily'] == 'RedHat') {
-      $serv = 'crond'
+      $srv = 'crond'
     } else {
       $srv = 'cron'
     }

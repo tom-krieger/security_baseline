@@ -30,8 +30,13 @@ class security_baseline::rules::sec_crond (
   String $log_level = ''
 ) {
   if($enforce) {
+    if($facts['osfamily'] == 'RedHat') {
+      $serv = 'crond'
+    } else {
+      $srv = 'cron'
+    }
 
-    service {'crond':
+    service { $srv:
       ensure => 'running',
       enable => true
       }

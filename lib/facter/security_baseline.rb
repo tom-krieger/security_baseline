@@ -219,22 +219,22 @@ Facter.add(:security_baseline) do
     cron['/etc/at.allow'] = read_file_stats('/etc/at.allow')
     cron['/etc/at.deny'] = read_file_stats('/etc/at.deny')
 
-    if (cron['/etc/cron.allow']['uid'] != 0) ||
-       (cron['/etc/cron.allow']['gid'] != 0) ||
-       (cron['/etc/cron.allow']['mode'] != 0600) ||
-       (cron['/etc/cron.deny']['uid'] != 0) ||
-       (cron['/etc/cron.deny']['gid'] != 0) ||
-       (cron['/etc/cron.deny']['mode'] != 0600) ||
-       (cron['/etc/at.allow']['uid'] != 0) ||
-       (cron['/etc/at.allow']['gid'] != 0) ||
-       (cron['/etc/at.allow']['mode'] != 0600) ||
-       (cron['/etc/at.deny']['uid'] != 0) ||
-       (cron['/etc/at.deny']['gid'] != 0) ||
-       (cron['/etc/at.deny']['mode'] != 0600)
-      cron['restrict'] = false
-    else
-      cron['restrict'] = true
-    end
+    cron['restrict'] = if (cron['/etc/cron.allow']['uid'] != 0) ||
+                          (cron['/etc/cron.allow']['gid'] != 0) ||
+                          (cron['/etc/cron.allow']['mode'] != 0o0600) ||
+                          (cron['/etc/cron.deny']['uid'] != 0) ||
+                          (cron['/etc/cron.deny']['gid'] != 0) ||
+                          (cron['/etc/cron.deny']['mode'] != 0o0600) ||
+                          (cron['/etc/at.allow']['uid'] != 0) ||
+                          (cron['/etc/at.allow']['gid'] != 0) ||
+                          (cron['/etc/at.allow']['mode'] != 0o0600) ||
+                          (cron['/etc/at.deny']['uid'] != 0) ||
+                          (cron['/etc/at.deny']['gid'] != 0) ||
+                          (cron['/etc/at.deny']['mode'] != 0o0600)
+                         false
+                       else
+                         true
+                       end
 
     security_baseline['cron'] = cron
     security_baseline

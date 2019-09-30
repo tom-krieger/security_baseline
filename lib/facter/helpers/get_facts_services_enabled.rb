@@ -3,7 +3,13 @@
 def get_facts_services_enabled
   services_enabled = {}
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
-              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'crond']
+              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd']
+
+  if Facter.value(:osfamily) == 'Suse'
+    services.push('cron')
+  else
+    services.push('crond')
+  end
 
   services.each do |srv|
     srv_name = "srv_#{srv}"

@@ -268,7 +268,7 @@ Facter.add(:security_baseline) do
       'mode' => val['mode'],
     }
 
-    security_baseline['cron'] = crom
+    security_baseline['cron'] = cron
     security_baseline
   end
 end

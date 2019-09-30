@@ -36,10 +36,10 @@ class security_baseline::rules::sec_cron_hourly (
   if($enforce) {
 
     file { '/etc/cron.hourly':
-      ensure => file,
+      ensure => directory,
       owner  => 'root',
       group  => 'root',
-      mode   => '0600',
+      mode   => '0700',
       }
 
   } else {
@@ -47,7 +47,7 @@ class security_baseline::rules::sec_cron_hourly (
     if(
       ($facts['security_baseline']['cron']['/etc/cron.hourly']['uid'] != 0) or
       ($facts['security_baseline']['cron']['/etc/cron.hourly']['gid'] != 0) or
-      ($facts['security_baseline']['cron']['/etc/cron.hourly']['mode'] != 0600)
+      ($facts['security_baseline']['cron']['/etc/cron.hourly']['mode'] != 0700)
     ) {
       echo { 'etc-cron-hourly':
         message  => $message,

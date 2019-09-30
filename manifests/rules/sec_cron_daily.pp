@@ -36,10 +36,10 @@ class security_baseline::rules::sec_cron_daily (
   if($enforce) {
 
     file { '/etc/cron.daily':
-      ensure => file,
+      ensure => directory,
       owner  => 'root',
       group  => 'root',
-      mode   => '0600',
+      mode   => '0700',
       }
 
   } else {
@@ -47,7 +47,7 @@ class security_baseline::rules::sec_cron_daily (
     if(
       ($facts['security_baseline']['cron']['/etc/cron.daily']['uid'] != 0) or
       ($facts['security_baseline']['cron']['/etc/cron.daily']['gid'] != 0) or
-      ($facts['security_baseline']['cron']['/etc/cron.daily']['mode'] != 0600)
+      ($facts['security_baseline']['cron']['/etc/cron.daily']['mode'] != 0700)
     ) {
       echo { 'etc-cron-daily':
         message  => $message,

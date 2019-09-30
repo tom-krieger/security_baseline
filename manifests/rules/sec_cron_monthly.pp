@@ -36,10 +36,10 @@ class security_baseline::rules::sec_cron_monthly (
   if($enforce) {
 
     file { '/etc/cron.monthly':
-      ensure => file,
+      ensure => directory,
       owner  => 'root',
       group  => 'root',
-      mode   => '0600',
+      mode   => '0700',
       }
 
   } else {
@@ -47,7 +47,7 @@ class security_baseline::rules::sec_cron_monthly (
     if(
       ($facts['security_baseline']['cron']['/etc/cron.monthly']['uid'] != 0) or
       ($facts['security_baseline']['cron']['/etc/cron.monthly']['gid'] != 0) or
-      ($facts['security_baseline']['cron']['/etc/cron.monthly']['mode'] != 0600)
+      ($facts['security_baseline']['cron']['/etc/cron.monthly']['mode'] != 0700)
     ) {
       echo { 'etc-cron-monthly':
         message  => $message,

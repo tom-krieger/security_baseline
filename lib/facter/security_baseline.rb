@@ -156,9 +156,9 @@ Facter.add(:security_baseline) do
     motd = {}
     motd['content'] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
     val = read_file_stats('/etc/motd')
-    motd['os']['uid'] = val['uid']
-    motd['os']['gid'] = val['gid']
-    motd['os']['mode'] = val['mode']
+    motd['uid'] = val['uid']
+    motd['gid'] = val['gid']
+    motd['mode'] = val['mode']
     security_baseline[:motd] = motd
 
     if distid =~ %r{RedHatEnterprise|CentOS|Fedora}

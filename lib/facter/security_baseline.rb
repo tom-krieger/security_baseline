@@ -13,6 +13,7 @@ require 'facter/helpers/get_facts_aide'
 require 'facter/helpers/check_value_string'
 require 'facter/helpers/check_value_boolean'
 require 'facter/helpers/check_value_regex'
+require 'facter/helpers/read_file_stats'
 
 # frozen_string_literal: true
 
@@ -139,22 +140,25 @@ Facter.add(:security_baseline) do
     issue = {}
     issue['os'] = {}
     issue['os']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue')
-    issue['os']['uid'] = File.stat('/etc/issue').uid
-    issue['os']['gid'] = File.stat('/etc/issue').gid
-    issue['os']['mode'] = File.stat('/etc/issue').mode & 0o7777
+    val = read_file_stats('/etc/issue')
+    issue['os']['uid'] = val['uid']
+    issue['os']['gid'] = val['gid']
+    issue['os']['mode'] = val['mode']
 
     issue['net'] = {}
     issue['net']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue.net')
-    issue['net']['uid'] = File.stat('/etc/issue.net').uid
-    issue['net']['gid'] = File.stat('/etc/issue.net').gid
-    issue['net']['mode'] = File.stat('/etc/issue.net').mode & 0o7777
+    val = read_file_stats('/etc/issue.net')
+    issue['os']['uid'] = val['uid']
+    issue['os']['gid'] = val['gid']
+    issue['os']['mode'] = val['mode']
     security_baseline[:issue] = issue
 
     motd = {}
     motd['content'] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
-    motd['uid'] = File.stat('/etc/motd').uid
-    motd['gid'] = File.stat('/etc/motd').gid
-    motd['mode'] = File.stat('/etc/motd').mode & 0o7777
+    val = read_file_stats('/etc/motd')
+    motd['os']['uid'] = val['uid']
+    motd['os']['gid'] = val['gid']
+    motd['os']['mode'] = val['mode']
     security_baseline[:motd] = motd
 
     if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
@@ -179,23 +183,19 @@ Facter.add(:security_baseline) do
     val = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
     grub[:grub_passwd] = check_value_boolean(val, false)
 
-    uid = File.stat('/boot/grub2/grub.cfg').uid
-    gid = File.stat('/boot/grub2/grub.cfg').gid
-    mode = File.stat('/boot/grub2/grub.cfg').mode & 0o7777
+    val = read_file_stats('/boot/grub2/grub.cfg')
     grub['grub.cfg'] = {
-      uid: uid,
-      gid: gid,
-      mode: mode,
+      uid: val['uid'],
+      gid: val['gid'],
+      mode: val['mode'],
     }
 
     if File.exist?('/boot/grub2/user.cfg')
-      uid = File.stat('/boot/grub2/user.cfg').uid
-      gid = File.stat('/boot/grub2/user.cfg').gid
-      mode = File.stat('/boot/grub2/user.cfg').mode & 0o7777
+      val = read_file_stats('/boot/grub2/user.cfg')
       grub['user.cfg'] = {
-        uid: uid,
-        gid: gid,
-        mode: mode,
+        uid: val['uid'],
+        gid: val['gid'],
+        mode: val['mode'],
       }
     end
     security_baseline[:grub] = grub
@@ -230,6 +230,45 @@ Facter.add(:security_baseline) do
       security_baseline['x11-packages'] = pkgs.split("\n")
     end
 
+    cron = {}
+    val = read_file_stats('/etc/crontab')
+    cron['/etc/crontab'] = {
+      'uid' => val['uid'],
+      'gid' => val['gid'],
+      'mode' => val['mode'],
+    }
+    val = read_file_stats('/etc/cron.hourly')
+    cron['/etc/cron.hourly'] = {
+      'uid' => val['uid'],
+      'gid' => val['gid'],
+      'mode' => val['mode'],
+    }
+    val = read_file_stats('/etc/cron.daily')
+    cron['/etc/cron.daily'] = {
+      'uid' => val['uid'],
+      'gid' => val['gid'],
+      'mode' => val['mode'],
+    }
+    val = read_file_stats('/etc/cron.weekly')
+    cron['/etc/cron.weekly'] = {
+      'uid' => val['uid'],
+      'gid' => val['gid'],
+      'mode' => val['mode'],
+    }
+    val = read_file_stats('/etc/cron.monthly')
+    cron['/etc</cron.monthly'] = {
+      'uid' => val['uid'],
+      'gid' => val['gid'],
+      'mode' => val['mode'],
+    }
+    val = read_file_stats('/etc/cron.d')
+    cron['/etc/cron.d'] = {
+      'uid' => val['uid'],
+      'gid' => val['gid'],
+      'mode' => val['mode'],
+    }
+
+    security_baseline['cron'] = crom
     security_baseline
   end
 end

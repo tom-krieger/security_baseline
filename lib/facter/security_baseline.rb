@@ -241,7 +241,7 @@ Facter.add(:security_baseline) do
     sshd = {}
     sshd['/etc/ssh/sshd_config'] = read_file_stats('/etc/ssh/sshd_config')
 
-    val = Facter::Core::Execution('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    val = Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
     sshd['protocol'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep "^LogLevel" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
     sshd['loglevel'] = check_value_string(val, 'none')

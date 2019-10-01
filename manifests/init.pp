@@ -38,7 +38,7 @@ class security_baseline (
   String $logfile           = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
   Boolean $set_postrun      = true,
 ) {
-  include ::secutity_baseline::services
+  include ::security_baseline::services
 
   if($debug) {
     echo{"Applying security baseline version: ${baseline_version}":

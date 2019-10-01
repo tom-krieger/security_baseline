@@ -239,8 +239,12 @@ Facter.add(:security_baseline) do
     security_baseline['cron'] = cron
 
     sshd = {}
+    sshd['package'] = if Facter.value(:osfamily) == 'Suse'
+                        check_package_installed('openssh')
+                      else
+                        check_package_installed('openssh-server')
+                      end
     sshd['/etc/ssh/sshd_config'] = read_file_stats('/etc/ssh/sshd_config')
-
     val = Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
     sshd['protocol'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep "^LogLevel" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip

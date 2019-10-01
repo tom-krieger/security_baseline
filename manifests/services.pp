@@ -1,6 +1,7 @@
-# @summary A short summary of the purpose of this class
+# @summary 
+#    Additional services
 #
-# A description of what this class does
+# Services e. g. reload sshd
 #
 # @example
 #   include security_baseline::services

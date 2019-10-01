@@ -237,6 +237,48 @@ Facter.add(:security_baseline) do
                        end
 
     security_baseline['cron'] = cron
+
+    sshd = {}
+    sshd['/etc/ssh/sshd_config'] = read_file_stats('/etc/ssh/sshd_config')
+
+    val = Facter::Core::Execution('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['protocol'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^LogLevel" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['loglevel'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^X11Forwarding" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['x11forwading'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^MaxAuthTries" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['maxauthtries'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^IgnoreRhosts" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['ignorerhosts'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^HostbasedAuthentication" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['hostbasedauthentication'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^PermitRootLogin" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['permitrootlogin'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^PermitEmptyPasswords" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['permitemptypasswords'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^PermitUserEnvironment" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['permituserenvironment'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^MACs" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split(%r{\,})
+    sshd['macs'] = val
+    val = Facter::Core::Execution.exec('grep "^ClientAliveInterval" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['clientaliveinterval'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^ClientAliveCountMax" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['vlientalivecountmax'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^LoginGraceTime" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['logingracetime'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^AllowUsers" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['allowusers'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^AllowGroups" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['allowgroups'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^DenyUsers" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['denyusers'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^DenyGroups" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['denygroups'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^Banner" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
+    sshd['banner'] = check_value_string(val, 'none')
+    security_baseline['sshd'] = sshd
+
     security_baseline
   end
 end

@@ -264,7 +264,7 @@ Facter.add(:security_baseline) do
     val = Facter::Core::Execution.exec('grep "^ClientAliveInterval" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
     sshd['clientaliveinterval'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep "^ClientAliveCountMax" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-    sshd['vlientalivecountmax'] = check_value_string(val, 'none')
+    sshd['clientalivecountmax'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep "^LoginGraceTime" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
     sshd['logingracetime'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep "^AllowUsers" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip

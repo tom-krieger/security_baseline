@@ -60,6 +60,7 @@ class security_baseline::special_rules::sec_sshd_limit_access (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',
+  String $logfile             = '',
   Array[String] $allow_users  = [],
   Array[String] $allow_groups = [],
   Array[String] $deny_users   = [],

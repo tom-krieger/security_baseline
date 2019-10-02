@@ -32,11 +32,13 @@ class security_baseline::rules::sec_issue_net_permissions_uid (
 ) {
   if($enforce) {
 
-    file { '/etc/issue.net':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+    unless(defined(File['/etc/issue.net'])) {
+      file { '/etc/issue.net':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
     }
 
   } else {

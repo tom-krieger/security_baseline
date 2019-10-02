@@ -31,11 +31,13 @@ class security_baseline::rules::sec_issue_permissions_uid (
 ) {
   if($enforce) {
 
-    file { '/etc/issue':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+    unless(defined(File['/etc/issue'])) {
+      file { '/etc/issue':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
     }
 
   } else {

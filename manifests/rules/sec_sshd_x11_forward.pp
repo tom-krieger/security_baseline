@@ -36,8 +36,8 @@ class security_baseline::rules::sec_sshd_x11_forward (
       file_line { 'ssh-x11-forward':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
-        line   => 'X11Forward no',
-        match  => '^X11Forward.*',
+        line   => 'X11Forwarding no',
+        match  => '^X11Forwarding.*',
         notify => Exec['reload-sshd'],
       }
     } else {

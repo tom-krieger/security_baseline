@@ -7,7 +7,7 @@
 #   include security_baseline::services
 class security_baseline::services {
   exec { 'reload-sshd':
-    command     => 'systemctl reloadf sshd',
+    command     => 'systemctl reload sshd',
     path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
     refreshonly => true,
   }

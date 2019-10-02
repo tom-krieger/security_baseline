@@ -26,11 +26,13 @@ class security_baseline::rules::sec_motd_permissions_uid (
 ) {
   if($enforce) {
 
-    file { '/etc/motd':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+    unless(defined(File['/etc/motd'])) {
+      file { '/etc/motd':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
     }
 
   } else {

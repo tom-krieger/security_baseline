@@ -76,6 +76,7 @@ class security_baseline::special_rules::sec_sshd_limit_access (
           line   => "AllowUsers ${users}",
           match  => '^#?AllowUsers',
           notify => Exec['reload-sshd'],
+        }
       }
 
       unless(empty($allow_groups)) {

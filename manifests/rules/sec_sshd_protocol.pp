@@ -39,7 +39,7 @@ class security_baseline::rules::sec_sshd_protocol (
         notify => Exec['reload-sshd'],
       }
     } else {
-      if($facts['security_baseline']['sshd']['protocol'] != 2) {
+      if($facts['security_baseline']['sshd']['protocol'] != '2') {
         echo { 'sshd-protocol':
           message  => $message,
           loglevel => $log_level,

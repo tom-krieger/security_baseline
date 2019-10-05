@@ -55,13 +55,13 @@ Facter.add(:security_baseline) do
     partitions['shm'] = shm
 
     home = {}
-    home['partition'] = Facter::Core::Execution.exec('mount | grep /home')
+    home['partition'] = Facter::Core::Execution.exec('mount | grep "/home "|awk \'{print $3;}\'')
     mounted = Facter::Core::Execution.exec('mount | grep /home')
     home['nodev'] = check_value_regex(mounted, 'nodev')
     partitions['home'] = home
 
     tmp = {}
-    tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/tmp "')
+    tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/tmp "|awk \'{print $3;}\'')
     mounted = Facter::Core::Execution.exec('mount | grep /tmp')
     tmp['nodev'] = check_value_regex(mounted, 'nodev')
     tmp['noexec'] = check_value_regex(mounted, 'noexec')
@@ -69,7 +69,7 @@ Facter.add(:security_baseline) do
     partitions['tmp'] = tmp
 
     var_tmp = {}
-    var_tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/var/tmp "')
+    var_tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/var/tmp "|awk \'{print $3;}\'')
     mounted = Facter::Core::Execution.exec('mount | grep /var/tmp')
     var_tmp['nodev'] = check_value_regex(mounted, 'nodev')
     var_tmp['noexec'] = check_value_regex(mounted, 'noexec')
@@ -77,15 +77,15 @@ Facter.add(:security_baseline) do
     partitions['var_tmp'] = var_tmp
 
     var = {}
-    var['partition'] = Facter::Core::Execution.exec('mount | grep "/var "')
+    var['partition'] = Facter::Core::Execution.exec('mount | grep "/var "|awk \'{print $3;}\'')
     partitions['var'] = var
 
     var_log = {}
-    var_log['partition'] = Facter::Core::Execution.exec('mount | grep "/var/log "')
+    var_log['partition'] = Facter::Core::Execution.exec('mount | grep "/var/log "|awk \'{print $3;}\'')
     partitions['var_log'] = var_log
 
     var_log_audit = {}
-    var_log_audit['partition'] = Facter::Core::Execution.exec('mount | grep "/var/log/audit "')
+    var_log_audit['partition'] = Facter::Core::Execution.exec('mount | grep "/var/log/audit "|awk \'{print $3;}\'')
     partitions['var_log_audit'] = var_log_audit
 
     security_baseline[:partitions] = partitions
@@ -212,7 +212,7 @@ Facter.add(:security_baseline) do
     cron['/etc/cron.hourly'] = read_file_stats('/etc/cron.hourly')
     cron['/etc/cron.daily'] = read_file_stats('/etc/cron.daily')
     cron['/etc/cron.weekly'] = read_file_stats('/etc/cron.weekly')
-    cron['/etc</cron.monthly'] = read_file_stats('/etc/cron.monthly')
+    cron['/etc/cron.monthly'] = read_file_stats('/etc/cron.monthly')
     cron['/etc/cron.d'] = read_file_stats('/etc/cron.d')
     cron['/etc/cron.allow'] = read_file_stats('/etc/cron.allow')
     cron['/etc/cron.deny'] = read_file_stats('/etc/cron.deny')

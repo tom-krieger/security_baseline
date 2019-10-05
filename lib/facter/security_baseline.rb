@@ -62,7 +62,7 @@ Facter.add(:security_baseline) do
 
     tmp = {}
     tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/tmp "|awk \'{print $3;}\'')
-    mounted = Facter::Core::Execution.exec('mount | grep /tmp')
+    mounted = Facter::Core::Execution.exec('mount | grep "/tmp "|awk \'{print $3;}\'')
     tmp['nodev'] = check_value_regex(mounted, 'nodev')
     tmp['noexec'] = check_value_regex(mounted, 'noexec')
     tmp['nosuid'] = check_value_regex(mounted, 'nosuid')

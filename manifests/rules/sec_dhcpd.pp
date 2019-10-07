@@ -31,11 +31,12 @@ class security_baseline::rules::sec_dhcpd (
 ) {
   if($enforce) {
 
-    service {'dhcpd':
-      ensure => 'stopped',
-      enable => false
+    unless(defined(Service['dhcpd'])) {
+      service {'dhcpd':
+        ensure => 'stopped',
+        enable => false
+      }
     }
-
   } else {
 
     if($facts['security_baseline']['services_enabled']['srv_dhcpd'] == 'enabled') {

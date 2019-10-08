@@ -21,6 +21,10 @@
     {
       "name": "ipcrm-echo",
       "version_requirement": "0.1.6"
+    },
+    {
+      "name": "herculesteam-augeasproviders_pam",
+      "version_requirement": "2.2.1"
     }
   ],
   "operatingsystem_support": [

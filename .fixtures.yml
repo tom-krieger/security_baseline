@@ -23,3 +23,6 @@ fixtures:
     autofs:
       repo: "puppet/autofs"
       ref: "5.0.1"
+    augeasprovider_pam:
+      repo: "'herculesteam/augeasproviders_pam"
+      ref: "2.2.1"

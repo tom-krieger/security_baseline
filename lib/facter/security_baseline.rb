@@ -285,9 +285,9 @@ Facter.add(:security_baseline) do
 
     pam = {}
     pwquality = {}
-    val = Facter::Cor::Execution.exec('grep pam_pwquality.so /etc/pam.d/password-auth')
+    val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/password-auth')
     pwquality['password-auth'] = check_value_string(val, 'none')
-    val = Facter::Cor::Execution.exec('grep pam_pwquality.so /etc/pam.d/system-auth')
+    val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/system-auth')
     pwquality['system-auth'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep ^minlen /etc/security/pwquality.conf')
     pwquality['minlen'] = check_value_string(val, 'none')

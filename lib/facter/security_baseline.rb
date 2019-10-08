@@ -55,13 +55,13 @@ Facter.add(:security_baseline) do
     partitions['shm'] = shm
 
     home = {}
-    home['partition'] = Facter::Core::Execution.exec('mount | grep "/home "|awk \'{print $3;}\'')
+    home['partition'] = Facter::Core::Execution.exec('mount | grep "on /home "|awk \'{print $3;}\'')
     mounted = Facter::Core::Execution.exec('mount | grep /home')
     home['nodev'] = check_value_regex(mounted, 'nodev')
     partitions['home'] = home
 
     tmp = {}
-    tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/tmp "|awk \'{print $3;}\'')
+    tmp['partition'] = Facter::Core::Execution.exec('mount | grep "on /tmp "|awk \'{print $3;}\'')
     mounted = Facter::Core::Execution.exec('mount | grep "/tmp "|awk \'{print $3;}\'')
     tmp['nodev'] = check_value_regex(mounted, 'nodev')
     tmp['noexec'] = check_value_regex(mounted, 'noexec')
@@ -69,7 +69,7 @@ Facter.add(:security_baseline) do
     partitions['tmp'] = tmp
 
     var_tmp = {}
-    var_tmp['partition'] = Facter::Core::Execution.exec('mount | grep "/var/tmp "|awk \'{print $3;}\'')
+    var_tmp['partition'] = Facter::Core::Execution.exec('mount | grep " on /var/tmp "|awk \'{print $3;}\'')
     mounted = Facter::Core::Execution.exec('mount | grep /var/tmp')
     var_tmp['nodev'] = check_value_regex(mounted, 'nodev')
     var_tmp['noexec'] = check_value_regex(mounted, 'noexec')
@@ -77,11 +77,11 @@ Facter.add(:security_baseline) do
     partitions['var_tmp'] = var_tmp
 
     var = {}
-    var['partition'] = Facter::Core::Execution.exec('mount | grep "/var "|awk \'{print $3;}\'')
+    var['partition'] = Facter::Core::Execution.exec('mount | grep " on /var "|awk \'{print $3;}\'')
     partitions['var'] = var
 
     var_log = {}
-    var_log['partition'] = Facter::Core::Execution.exec('mount | grep "/var/log "|awk \'{print $3;}\'')
+    var_log['partition'] = Facter::Core::Execution.exec('mount | grep " on /var/log "|awk \'{print $3;}\'')
     partitions['var_log'] = var_log
 
     var_log_audit = {}
@@ -282,6 +282,85 @@ Facter.add(:security_baseline) do
     val = Facter::Core::Execution.exec('grep "^Banner" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
     sshd['banner'] = check_value_string(val, 'none')
     security_baseline['sshd'] = sshd
+
+    pam = {}
+    pwquality = {}
+    val = Facter::Cor::Execution.exec('grep pam_pwquality.so /etc/pam.d/password-auth')
+    pwquality['password-auth'] = check_value_string(val, 'none')
+    val = Facter::Cor::Execution.exec('grep pam_pwquality.so /etc/pam.d/system-auth')
+    pwquality['system-auth'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep ^minlen /etc/security/pwquality.conf')
+    pwquality['minlen'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep ^dcredit /etc/security/pwquality.conf')
+    pwquality['dcredit'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep ^lcredit /etc/security/pwquality.conf')
+    pwquality['lcredit'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep ^ocredit /etc/security/pwquality.conf')
+    pwquality['ocredit'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep ^ucredit /etc/security/pwquality.conf')
+    pwquality['ucredit'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^auth.*required.*pam_faillock.so" /etc/pam.d/password-auth')
+    valreq = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^auth.*[success=1.*default=bad].*pam_unix.so" /etc/pam.d/password-auth')
+    valsuc = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^auth.*[default=die].*pam_faillock.so" /etc/pam.d/password-auth')
+    valdef = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^auth.*sufficient.*pam_faillock.so" /etc/pam.d/password-auth')
+    valsuf = check_value_string(val, 'none')
+    pwquality['password-auth-config'] = if (valreq == 'none') || (valsuc == 'none') || (valdef == 'none') || (valsuf == 'none')
+                                          false
+                                        else
+                                          true
+                                        end
+    val = Facter::Core::Execution.exec('grep "^auth.*required.*pam_faillock.so" /etc/pam.d/system-auth')
+    valreq = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^auth.*[success=1.*default=bad].*pam_unix.so" /etc/pam.d/system-auth')
+    valsuc = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^auth.*[default=die].*pam_faillock.so" /etc/pam.d/system-auth')
+    valdef = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep "^auth.*sufficient.*pam_faillock.so" /etc/pam.d/system-auth')
+    valsuf = check_value_string(val, 'none')
+    pwquality['password-auth-config'] = if (valreq == 'none') || (valsuc == 'none') || (valdef == 'none') || (valsuf == 'none')
+                                          false
+                                        else
+                                          true
+                                        end
+    pam['pwquality'] = pwquality
+    opasswd = {}
+    val1 = Facter::Core::Execution.exec("egrep '^password\s+sufficient\s+pam_unix.so' /etc/pam.d/password-auth")[%r{remember=(\d+)}, 0]
+    if val1.nil? || val1.empty?
+      val1 = 0
+    end
+    val2 = Facter::Core::Execution.exec("egrep '^password\s+required\s+pam_pwhistory.so' /etc/pam.d/password-auth")[%r{remember=(\d+)}, 0]
+    if val2.nil? || val2.empty?
+      val2 = 0
+    end
+    opasswd['password-auth'] = if (val1 < 5) && (val2 < 5)
+                                 false
+                               else
+                                 true
+                               end
+    val1 = Facter::Core::Execution.exec("egrep '^password\s+sufficient\s+pam_unix.so' /etc/pam.d/system-auth")[%r{remember=(\d+)}, 0]
+    if val1.nil? || val1.empty?
+      val1 = 0
+    end
+    val2 = Facter::Core::Execution.exec("egrep '^password\s+required\s+pam_pwhistory.so' /etc/pam.d/system-auth")[%r{remember=(\d+)}, 0]
+    if val2.nil? || val2.empty?
+      val2 = 0
+    end
+    opasswd['system-auth'] = if (val1 < 5) && (val2 < 5)
+                               false
+                             else
+                               true
+                             end
+    pam['opasswd'] = opasswd
+    sha = {}
+    val = Facter::Core::Execution.exec("egrep '^password\s+sufficient\s+pam_unix.so' /etc/pam.d/password-auth")
+    sha['password-auth'] = check_value_regex(val, 'sha512')
+    val = Facter::Core::Execution.exec("egrep '^password\s+sufficient\s+pam_unix.so' /etc/pam.d/system-auth")
+    sha['system-auth'] = check_value_regex(val, 'sha512')
+    pam['sha512'] = sha
+    security_baseline['pam'] = pam
 
     security_baseline
   end

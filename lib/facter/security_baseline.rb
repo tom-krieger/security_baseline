@@ -299,11 +299,11 @@ Facter.add(:security_baseline) do
     pwquality['ocredit'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep ^ucredit /etc/security/pwquality.conf')
     pwquality['ucredit'] = check_value_string(val, 'none')
-    if (pwquality['minlen'] == 'none') || (pwquality['minlen'] < 14) ||
-       (pwquality['dcredit'] == 'none') || (pwquality['dcredit'] != -1) ||
-       (pwquality['lcredit'] == 'none') || (pwquality['lcredit'] != -1) ||
-       (pwquality['ocredit'] == 'none') || (pwquality['ocredit'] != -1) ||
-       (pwquality['ucredit'] == 'none') || (pwquality['ucredit'] != -1)
+    if (pwquality['minlen'] == 'none') || (pwquality['minlen'] < '14') ||
+       (pwquality['dcredit'] == 'none') || (pwquality['dcredit'] != '-1') ||
+       (pwquality['lcredit'] == 'none') || (pwquality['lcredit'] != '-1') ||
+       (pwquality['ocredit'] == 'none') || (pwquality['ocredit'] != '-1') ||
+       (pwquality['ucredit'] == 'none') || (pwquality['ucredit'] != '-1')
       pwquality['status'] = false
     else
       pwquality['status'] = true

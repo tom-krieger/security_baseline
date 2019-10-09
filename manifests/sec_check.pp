@@ -86,28 +86,42 @@ define security_baseline::sec_check (
 
         if($current_value) {
 
-          if($current_value != $fact_value) {
-            echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
-              loglevel => $loglevel,
-              withpath => false,
-            }
+          if(validate_array($current_value) and validate_array($fact_value)) {
+            unless(member($current_value, $fact_value)) {
+              echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
+                loglevel => $loglevel,
+                withpath => false,
+              }
 
-            $logentry_data = {
-              level      => $log_level,
-              msg       => $message,
-              rulestate => 'not compliant',
+              $logentry_data = {
+                level      => $log_level,
+                msg       => $message,
+                rulestate => 'not compliant',
+              }
             }
-
           } else {
+              if($current_value != $fact_value) {
+              echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
+                loglevel => $loglevel,
+                withpath => false,
+              }
 
-            # fact contains expected value
-            $logentry_data = {
-              level     => 'ok',
-              msg       => $message,
-              rulestate => 'compliant',
+              $logentry_data = {
+                level      => $log_level,
+                msg       => $message,
+                rulestate => 'not compliant',
+              }
+
+            } else {
+
+              # fact contains expected value
+              $logentry_data = {
+                level     => 'ok',
+                msg       => $message,
+                rulestate => 'compliant',
+              }
             }
           }
-
         } else {
 
           # if no current value is available assume test is compliant

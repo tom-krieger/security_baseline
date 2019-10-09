@@ -299,6 +299,15 @@ Facter.add(:security_baseline) do
     pwquality['ocredit'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep ^ucredit /etc/security/pwquality.conf')
     pwquality['ucredit'] = check_value_string(val, 'none')
+    if (pwquality['minlen'] == 'none') || (pwquality['minlen'] < 14) ||
+       (pwquality['dcredit'] == 'none') || (pwquality['dcredit'] != -1) ||
+       (pwquality['lcredit'] == 'none') || (pwquality['lcredit'] != -1) ||
+       (pwquality['ocredit'] == 'none') || (pwquality['ocredit'] != -1) ||
+       (pwquality['ucredit'] == 'none') || (pwquality['ucredit'] != -1)
+      pwquality['status'] = false
+    else
+      pwquality['status'] = true
+    end
     val = Facter::Core::Execution.exec('grep "^auth.*required.*pam_faillock.so" /etc/pam.d/password-auth')
     valreq = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep "^auth.*[success=1.*default=bad].*pam_unix.so" /etc/pam.d/password-auth')
@@ -320,11 +329,12 @@ Facter.add(:security_baseline) do
     valdef = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep "^auth.*sufficient.*pam_faillock.so" /etc/pam.d/system-auth')
     valsuf = check_value_string(val, 'none')
-    pwquality['password-auth-config'] = if (valreq == 'none') || (valsuc == 'none') || (valdef == 'none') || (valsuf == 'none')
-                                          false
-                                        else
-                                          true
-                                        end
+    pwquality['system-auth-config'] = if (valreq == 'none') || (valsuc == 'none') || (valdef == 'none') || (valsuf == 'none')
+                                        false
+                                      else
+                                        true
+                                      end
+    pwquality['lockout'] = pwquality['password-auth-config'] && pwquality['system-auth-config']
     pam['pwquality'] = pwquality
     opasswd = {}
     val1 = Facter::Core::Execution.exec("egrep '^password\s+sufficient\s+pam_unix.so' /etc/pam.d/password-auth")[%r{remember=(\d+)}, 0]
@@ -353,12 +363,14 @@ Facter.add(:security_baseline) do
                              else
                                true
                              end
+    opasswd['status'] = opasswd['password-auth'] && opasswd['system-auth']
     pam['opasswd'] = opasswd
     sha = {}
     val = Facter::Core::Execution.exec("egrep '^password\s+sufficient\s+pam_unix.so' /etc/pam.d/password-auth")
     sha['password-auth'] = check_value_regex(val, 'sha512')
     val = Facter::Core::Execution.exec("egrep '^password\s+sufficient\s+pam_unix.so' /etc/pam.d/system-auth")
     sha['system-auth'] = check_value_regex(val, 'sha512')
+    sha['status'] = sha['password-auth'] && sha['system-auth']
     pam['sha512'] = sha
     security_baseline['pam'] = pam
 

@@ -42,14 +42,13 @@ class security_baseline::rules::sec_pam_passwd_sha512 (
     $services.each | $service | {
 
       pam { "pam-${service}-sha512":
-        ensure           => positioned,
-        service          => $service,
-        type             => 'password',
-        control          => 'sufficient',
-        control_is_param => true,
-        module           => 'pam_unix.so',
-        arguments        => ['sha512'],
-        position         => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
+        ensure    => positioned,
+        service   => $service,
+        type      => 'password',
+        control   => 'sufficient',
+        module    => 'pam_unix.so',
+        arguments => ['sha512'],
+        position  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
       }
 
     }

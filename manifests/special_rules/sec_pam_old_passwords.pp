@@ -46,7 +46,7 @@ class security_baseline::special_rules::sec_pam_old_passwords (
 
     $services.each | $service | {
 
-      pam { "pam ${service} sufficient":
+      pam { "pam-${service}-sufficient":
         ensure    => present,
         service   => $service,
         type      => 'password',

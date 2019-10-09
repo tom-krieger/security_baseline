@@ -15,6 +15,7 @@ require 'facter/helpers/check_value_boolean'
 require 'facter/helpers/check_value_regex'
 require 'facter/helpers/read_file_stats'
 require 'facter/helpers/get_local_users'
+require 'facter/helpers/trim_string'
 
 # frozen_string_literal: true
 
@@ -290,15 +291,15 @@ Facter.add(:security_baseline) do
     pwquality['password-auth'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/system-auth')
     pwquality['system-auth'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec('grep ^minlen /etc/security/pwquality.conf')
+    val = trim_string(Facter::Core::Execution.exec('grep ^minlen /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
     pwquality['minlen'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec('grep ^dcredit /etc/security/pwquality.conf')
+    val = trim_string(Facter::Core::Execution.exec('grep ^dcredit /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
     pwquality['dcredit'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec('grep ^lcredit /etc/security/pwquality.conf')
+    val = trim_string(Facter::Core::Execution.exec('grep ^lcredit /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
     pwquality['lcredit'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec('grep ^ocredit /etc/security/pwquality.conf')
+    val = trim_string(Facter::Core::Execution.exec('grep ^ocredit /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
     pwquality['ocredit'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec('grep ^ucredit /etc/security/pwquality.conf')
+    val = trim_string(Facter::Core::Execution.exec('grep ^ucredit /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
     pwquality['ucredit'] = check_value_string(val, 'none')
     if (pwquality['minlen'] == 'none') || (pwquality['minlen'] < '14') ||
        (pwquality['dcredit'] == 'none') || (pwquality['dcredit'] != '-1') ||

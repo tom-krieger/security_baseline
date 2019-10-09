@@ -87,9 +87,7 @@ define security_baseline::sec_check (
         if($current_value) {
 
           if($current_value.is_a(Array) and $fact_value.is_a(Array)) {
-            echo { 'arrays':
-              loglevel => warning,
-            }
+            
             unless(member($current_value, $fact_value)) {
               echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
                 loglevel => $loglevel,

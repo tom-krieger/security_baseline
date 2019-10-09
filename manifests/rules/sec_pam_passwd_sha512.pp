@@ -41,7 +41,7 @@ class security_baseline::rules::sec_pam_passwd_sha512 (
 
     $services.each | $service | {
 
-      pam { "pam ${service} sufficient":
+      pam { "pam-${service}-sha512":
         ensure           => present,
         service          => $service,
         type             => 'password',

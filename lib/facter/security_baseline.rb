@@ -14,6 +14,7 @@ require 'facter/helpers/check_value_string'
 require 'facter/helpers/check_value_boolean'
 require 'facter/helpers/check_value_regex'
 require 'facter/helpers/read_file_stats'
+require 'facter/helpers/get_local_users'
 
 # frozen_string_literal: true
 
@@ -373,6 +374,8 @@ Facter.add(:security_baseline) do
     sha['status'] = sha['password-auth'] && sha['system-auth']
     pam['sha512'] = sha
     security_baseline['pam'] = pam
+
+    security_baseline['local_users'] = get_local_users
 
     security_baseline
   end

@@ -22,6 +22,9 @@
 # @param oldpasswords
 #    Number of old passwords to remember
 #
+# @param sha512
+#    Enable or disable sha512 password encryption
+#
 # @example
 #   class security_baseline::special_rules::ssec_pam_pw_requirements {
 #       enforce => true,
@@ -36,6 +39,7 @@ class security_baseline::special_rules::sec_pam_old_passwords (
   String $log_level           = '',
   String $logfile             = '',
   Integer $oldpasswords       = 5,
+  Boolean $sha512             = true,
 ) {
   $services = [
     'system-auth',
@@ -43,6 +47,12 @@ class security_baseline::special_rules::sec_pam_old_passwords (
   ]
 
   if($enforce) {
+
+    if($sha512) {
+      $arguments = ["remember=${oldpasswords}", 'shadow', 'sha512', 'try_first_pass', 'use_authtok']
+    } else {
+      $arguments = ["remember=${oldpasswords}", 'shadow', 'try_first_pass', 'use_authtok']
+    }
 
     $services.each | $service | {
 
@@ -52,7 +62,7 @@ class security_baseline::special_rules::sec_pam_old_passwords (
         type      => 'password',
         control   => 'sufficient',
         module    => 'pam_unix.so',
-        arguments => ["remember=${oldpasswords}", 'shadow', 'try_first_pass', 'use_authtok'],
+        arguments => $arguments,
         position  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
       }
     }

@@ -32,27 +32,8 @@ class security_baseline::rules::sec_pam_passwd_sha512 (
   String $message   = '',
   String $log_level = ''
 ) {
-  $services = [
-    'system-auth',
-    'password-auth',
-  ]
 
-  if($enforce) {
-
-    $services.each | $service | {
-
-      pam { "pam-${service}-sha512":
-        ensure    => positioned,
-        service   => $service,
-        type      => 'password',
-        control   => 'sufficient',
-        module    => 'pam_unix.so',
-        arguments => ['sha512'],
-        position  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
-      }
-
-    }
-  } else {
+  unless($enforce) {
     unless ($facts['security_baseline']['pam']['sha512']['status']) {
       echo { 'password-sha512':
         message  => $message,

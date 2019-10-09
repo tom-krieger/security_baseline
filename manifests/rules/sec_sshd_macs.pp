@@ -36,7 +36,7 @@ class security_baseline::rules::sec_sshd_macs (
       file_line { 'ssh-macs':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
-        line   => 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512@openssh.com,hmac-sha2-256@openssh.com,umac-128@openssh.com',
+        line   => 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com',
         match  => '^MACs.*',
         notify => Exec['reload-sshd'],
       }

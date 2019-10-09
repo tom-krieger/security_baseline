@@ -86,7 +86,7 @@ define security_baseline::sec_check (
 
         if($current_value) {
 
-          if(validate_array($current_value) and validate_array($fact_value)) {
+          if(is_array($current_value) and is_array($fact_value)) {
             unless(member($current_value, $fact_value)) {
               echo { "Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
                 loglevel => $loglevel,

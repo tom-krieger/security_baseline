@@ -301,15 +301,15 @@ Facter.add(:security_baseline) do
     pwquality['ocredit'] = check_value_string(val, 'none')
     val = trim_string(Facter::Core::Execution.exec('grep ^ucredit /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
     pwquality['ucredit'] = check_value_string(val, 'none')
-    if (pwquality['minlen'] == 'none') || (pwquality['minlen'] < '14') ||
-       (pwquality['dcredit'] == 'none') || (pwquality['dcredit'] != '-1') ||
-       (pwquality['lcredit'] == 'none') || (pwquality['lcredit'] != '-1') ||
-       (pwquality['ocredit'] == 'none') || (pwquality['ocredit'] != '-1') ||
-       (pwquality['ucredit'] == 'none') || (pwquality['ucredit'] != '-1')
-      pwquality['status'] = false
-    else
-      pwquality['status'] = true
-    end
+    pwquality['status'] = if (pwquality['minlen'] == 'none') || (pwquality['minlen'] < '14') ||
+                             (pwquality['dcredit'] == 'none') || (pwquality['dcredit'] != '-1') ||
+                             (pwquality['lcredit'] == 'none') || (pwquality['lcredit'] != '-1') ||
+                             (pwquality['ocredit'] == 'none') || (pwquality['ocredit'] != '-1') ||
+                             (pwquality['ucredit'] == 'none') || (pwquality['ucredit'] != '-1')
+                            false
+                          else
+                            true
+                          end
     val = Facter::Core::Execution.exec('grep "^auth.*required.*pam_faillock.so" /etc/pam.d/password-auth')
     valreq = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep "^auth.*[success=1.*default=bad].*pam_unix.so" /etc/pam.d/password-auth')

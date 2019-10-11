@@ -33,11 +33,10 @@
 #   }
 #
 # @api private
-class security_baseline::special_rules::sec_pam_old_passwords (
+class security_baseline::rules::sec_pam_old_passwords (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',
-  String $logfile             = '',
   Integer $oldpasswords       = 5,
   Boolean $sha512             = true,
 ) {

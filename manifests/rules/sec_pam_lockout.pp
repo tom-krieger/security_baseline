@@ -35,11 +35,10 @@
 #   }
 #
 # @api private
-class security_baseline::special_rules::sec_pam_lockout (
+class security_baseline::rules::sec_pam_lockout (
   Boolean $enforce     = true,
   String $message      = '',
   String $log_level    = '',
-  String $logfile      = '',
   Integer $attempts    = 3,
   Integer $lockouttime = 900,
 ) {

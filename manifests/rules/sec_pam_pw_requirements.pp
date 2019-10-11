@@ -52,11 +52,10 @@
 #   }
 #
 # @api private
-class security_baseline::special_rules::sec_pam_pw_requirements (
+class security_baseline::rules::sec_pam_pw_requirements (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',
-  String $logfile             = '',
   Integer $minlen             = 14,
   Integer $dcredit            = -1,
   Integer $ucredit            = -1,

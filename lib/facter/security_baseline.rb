@@ -419,7 +419,7 @@ Facter.add(:security_baseline) do
     else
       ret = true
     end
-    security_baseline…['umask'] = ret
+    security_baseline['umask'] = ret
 
     val = Facter::Core::Execution.exec('grep "^TMOUT" /etc/bashrc /etc/profile')
     unless val.nil? || val.empty?
@@ -436,7 +436,7 @@ Facter.add(:security_baseline) do
     else
       ret = true
     end
-    security_baseline…['timeout'] = ret
+    security_baseline['timeout'] = ret
 
     security_baseline
   end

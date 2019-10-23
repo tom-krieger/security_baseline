@@ -377,11 +377,11 @@ Facter.add(:security_baseline) do
     security_baseline['pam'] = pam
 
     pw_data = {}
-    val = Facter::Core::Execution.exec("grep PASS_MAX_DAYS /etc/login.defs | awk '{print $2;}'")
+    val = Facter::Core::Execution.exec("grep ^PASS_MAX_DAYS /etc/login.defs | awk '{print $2;}'")
     pw_data['pass_max_days'] = check_value_string(val, '0')
-    val = Facter::Core::Execution.exec("grep PASS_MIN_DAYS /etc/login.defs | awk '{print $2;}'")
+    val = Facter::Core::Execution.exec("grep ^PASS_MIN_DAYS /etc/login.defs | awk '{print $2;}'")
     pw_data['pass-min_days'] = check_value_string(val, '0')
-    val = Facter::Core::Execution.exec("grep PASS_WARN_AGE /etc/login.defs | awk '{print $2;}'")
+    val = Facter::Core::Execution.exec("grep ^PASS_WARN_AGE /etc/login.defs | awk '{print $2;}'")
     pw_data['pass_warn_age'] = check_value_string(val, '0')
     val = Facter::Core::Execution.exec('useradd -D | grep INACTIVE | cut -f 2 -d =')
     pw_data['inactive'] = check_value_string(val, '-1')

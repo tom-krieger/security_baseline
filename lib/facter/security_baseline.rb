@@ -392,7 +392,7 @@ Facter.add(:security_baseline) do
     accounts = {}
     wrong_shell = []
     val = Facter::Core::Execution.exec("egrep -v \"^\/+\" /etc/passwd | awk -F: '($1!=\"root\" && $1!=\"sync\" && $1!=\"shutdown\" && $1!=\"halt\" && $3<1000 && $7!=\"/sbin/nologin\" && $7!=\"/bin/false\") {print}'")
-    unless val.nil? && val.empty?
+    unless val.nil? || val.empty?
       val.split("\n").each do |line|
         data = line.split(%r{:})
         wrong_shell.push(data[0])
@@ -402,6 +402,41 @@ Facter.add(:security_baseline) do
     val = Facter::Core::Execution.exec('grep "^root:" /etc/passwd | cut -f4 -d:')
     accounts['root_gid'] = check_value_string(val, 'none')
     security_baseline['accounts'] = accounts
+
+    ret = false
+    val = Facter::Core::Execution.exec('grep "umask" /etc/profile /etc/profile.d/*.sh /etc/bashrc')
+    unless val.nil? || val.empty?
+      val.split("\n").each do |line|
+        if line =~ %r{umask\s*\d+}
+          line.strip!
+          data = line.split(%r{\s+})
+          mask = data[1]
+          if mask.to_s < '027'
+            ret = true
+          end
+        end
+      end
+    else
+      ret = true
+    end
+    security_baseline…['umask'] = ret
+
+    val = Facter::Core::Execution.exec('grep "^TMOUT" /etc/bashrc /etc/profile')
+    unless val.nil? || val.empty?
+      val.split("\n").each do |line|
+        if line =~ %r{TIMEOUT=\d+}
+          line.strip!
+          data = line.split(%r{=})
+          timeout = data[1]
+          if timeout.to_s > '900'
+            ret = true
+          end
+        end
+      end
+    else
+      ret = true
+    end
+    security_baseline…['timeout'] = ret
 
     security_baseline
   end

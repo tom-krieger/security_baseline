@@ -347,7 +347,7 @@ Facter.add(:security_baseline) do
     if val2.nil? || val2.empty?
       val2 = 0
     end
-    opasswd['password-auth'] = if (val1 < '5') && (val2 < '5')
+    opasswd['password-auth'] = if (val1.to_s < '5') && (val2.to_s < '5')
                                  false
                                else
                                  true
@@ -360,7 +360,7 @@ Facter.add(:security_baseline) do
     if val2.nil? || val2.empty?
       val2 = 0
     end
-    opasswd['system-auth'] = if (val1 < '5') && (val2 < '5')
+    opasswd['system-auth'] = if (val1.to_s < '5') && (val2.to_s < '5')
                                false
                              else
                                true

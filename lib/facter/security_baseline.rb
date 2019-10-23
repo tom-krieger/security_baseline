@@ -376,6 +376,8 @@ Facter.add(:security_baseline) do
     pam['sha512'] = sha
     security_baseline['pam'] = pam
 
+    security_baseline['local_users'] = get_local_users
+
     pw_data = {}
     val = Facter::Core::Execution.exec("grep ^PASS_MAX_DAYS /etc/login.defs | awk '{print $2;}'")
     pw_data['pass_max_days'] = check_value_string(val, '0')
@@ -387,7 +389,19 @@ Facter.add(:security_baseline) do
     pw_data['inactive'] = check_value_string(val, '-1')
     security_baseline['pw_data'] = pw_data
 
-    security_baseline['local_users'] = get_local_users
+    accounts = {}
+    wrong_shell = []
+    val = Facter::Core::Execution.exec("egrep -v \"^\/+\" /etc/passwd | awk -F: '($1!=\"root\" && $1!=\"sync\" && $1!=\"shutdown\" && $1!=\"halt\" && $3<1000 && $7!=\"/sbin/nologin\" && $7!=\"/bin/false\") {print}'")
+    unless val.nil? && val.empty?
+      val.split("\n").each do |line|
+        data = line.split(%r{:})
+        wrong_shell.push(data[0])
+      end
+    end
+    accounts['wrong_shell'] = wrong_shell
+    val = Facter::Core::Execution.exec('grep "^root:" /etc/passwd | cut -f4 -d:')
+    accounts['root_gid'] = check_value_string(val, 'none')
+    security_baseline['accounts'] = accounts
 
     security_baseline
   end

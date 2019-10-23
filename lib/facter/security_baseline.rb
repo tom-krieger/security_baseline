@@ -404,7 +404,7 @@ Facter.add(:security_baseline) do
     security_baseline['accounts'] = accounts
 
     ret = false
-    val = Facter::Core::Execution.exec('grep "umask" /etc/profile /etc/profile.d/*.sh /etc/bashrc')
+    val = Facter::Core::Execution.exec('grep -h "umask" /etc/profile /etc/profile.d/*.sh /etc/bashrc')
     unless val.nil? || val.empty?
       val.split("\n").each do |line|
         if line =~ %r{umask\s*\d+}
@@ -421,7 +421,7 @@ Facter.add(:security_baseline) do
     end
     security_baseline['umask'] = ret
 
-    val = Facter::Core::Execution.exec('grep "^TMOUT" /etc/bashrc /etc/profile')
+    val = Facter::Core::Execution.exec('grep -h "^TMOUT" /etc/bashrc /etc/profile')
     unless val.nil? || val.empty?
       val.split("\n").each do |line|
         if line =~ %r{TIMEOUT=\d+}

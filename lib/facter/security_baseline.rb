@@ -381,7 +381,7 @@ Facter.add(:security_baseline) do
     pw_data = {}
     val = Facter::Core::Execution.exec("grep ^PASS_MAX_DAYS /etc/login.defs | awk '{print $2;}'")
     pw_data['pass_max_days'] = check_value_string(val, '99999')
-    pw_data['pass_max_days_status'] = '365' <= pw_data['pass_max_days'].to_s
+    pw_data['pass_max_days_status'] = 365 < pw_data['pass_max_days']
     val = Facter::Core::Execution.exec("grep ^PASS_MIN_DAYS /etc/login.defs | awk '{print $2;}'")
     pw_data['pass_min_days'] = check_value_string(val, '0')
     pw_data['pass_min_days_status'] = pw_data['pass_min_days'] < '7'

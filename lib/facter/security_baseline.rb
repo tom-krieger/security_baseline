@@ -409,7 +409,7 @@ Facter.add(:security_baseline) do
         wrong_shell.push(data[0])
       end
     end
-    accounts['shell_nologin'] = wrong_shell
+    accounts['no_shell_nologin'] = wrong_shell
     val = Facter::Core::Execution.exec('grep "^root:" /etc/passwd | cut -f4 -d:')
     accounts['root_gid'] = check_value_string(val, 'none')
     security_baseline['accounts'] = accounts

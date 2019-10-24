@@ -9,4 +9,3 @@ def check_value_integer(val, default = 0)
     val.to_i
   end
 end
-  

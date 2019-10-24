@@ -11,6 +11,7 @@ require 'facter/helpers/get_facts_xinetd_services'
 require 'facter/helpers/get_facts_sysctl'
 require 'facter/helpers/get_facts_aide'
 require 'facter/helpers/check_value_string'
+require 'facter/helpers/check_value_integer'
 require 'facter/helpers/check_value_boolean'
 require 'facter/helpers/check_value_regex'
 require 'facter/helpers/read_file_stats'
@@ -381,9 +382,9 @@ Facter.add(:security_baseline) do
 
     pw_data = {}
     val = Facter::Core::Execution.exec("grep ^PASS_MAX_DAYS /etc/login.defs | awk '{print $2;}'")
-    pw_data['pass_max_days'] = check_value_string(val, '99999')
+    pw_data['pass_max_days'] = check_value_integer(val, 99999)
     pp pw_data['pass_max_days']
-    pw_data['pass_max_days_status'] = if pw_data['pass_max_days'] > '365'
+    pw_data['pass_max_days_status'] = if pw_data['pass_max_days'] > 365
                                         true
                                       else
                                         false

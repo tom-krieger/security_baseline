@@ -22,7 +22,7 @@
 #    Password expires after days
 #
 # @example
-#   class security_baseline::special_rules::sec_passwd_warn_days {
+#   class security_baseline::rules::sec_passwd_warn_days {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',

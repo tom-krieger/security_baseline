@@ -26,7 +26,7 @@
 #    Enable or disable sha512 password encryption
 #
 # @example
-#   class security_baseline::special_rules::ssec_pam_pw_requirements {
+#   class security_baseline::rules::ssec_pam_pw_requirements {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',

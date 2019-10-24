@@ -21,7 +21,7 @@
 #    Password expires after days
 #
 # @example
-#   class security_baseline::special_rules::sec_root_gid {
+#   class security_baseline::rules::sec_root_gid {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',

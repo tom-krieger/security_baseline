@@ -23,7 +23,7 @@
 #    Password expires after days
 #
 # @example
-#   class security_baseline::special_rules::sec_shell_nologin {
+#   class security_baseline::rules::sec_shell_nologin {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',

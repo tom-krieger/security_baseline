@@ -28,7 +28,7 @@
 #    Lockout the account for this number of seconds
 #
 # @example
-#   class security_baseline::special_rules::sec_pam_lockout {
+#   class security_baseline::rules::sec_pam_lockout {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'

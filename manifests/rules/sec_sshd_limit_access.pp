@@ -49,7 +49,7 @@
 #    Unix groups not allowed to connect by ssh
 #
 # @example
-#   class security_baseline::special_rules::sec_sshd_limit_access {
+#   class security_baseline::rules::sec_sshd_limit_access {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',

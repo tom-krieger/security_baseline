@@ -376,7 +376,7 @@ Facter.add(:security_baseline) do
     sha['system-auth'] = check_value_regex(val, 'sha512')
     sha['status'] = sha['password-auth'] && sha['system-auth']
     pam['sha512'] = sha
-    val = Facter::Core::Execution.exec('grep pam_wheel.so /etc/pam.d/su')
+    val = Facter::Core::Execution.exec('egrep "^auth\s+required\s+pam_wheel.so\s+use_uid" /etc/pam.d/su')
     pam['wheel'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep wheel /etc/group | cut -d : -f 4')
     if val.nil? || val.empty?

@@ -39,10 +39,14 @@ class security_baseline::rules::sec_restrict_su (
   Array $wheel_users          = ['root'],
 ) {
   if($enforce) {
-    file_line { 'su':
-      path => '/etc/pam.d/su',
-      line => 'auth required pam_wheel.so use_uid',
-    }
+    pam { 'pam-su-restrict':
+        ensure    => present,
+        service   => 'su',
+        type      => 'auth',
+        control   => 'required',
+        module    => 'pam_wheel.so',
+        arguments => ['use_uid'],
+      }
 
     $wheel_users.each | $user | {
       exec { "${user}_wheel":

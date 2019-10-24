@@ -16,6 +16,7 @@ require 'facter/helpers/check_value_regex'
 require 'facter/helpers/read_file_stats'
 require 'facter/helpers/get_local_users'
 require 'facter/helpers/trim_string'
+require 'pp'
 
 # frozen_string_literal: true
 
@@ -381,6 +382,7 @@ Facter.add(:security_baseline) do
     pw_data = {}
     val = Facter::Core::Execution.exec("grep ^PASS_MAX_DAYS /etc/login.defs | awk '{print $2;}'")
     pw_data['pass_max_days'] = check_value_string(val, '99999')
+    pp pw_data['pass_max_days']
     pw_data['pass_max_days_status'] = if pw_data['pass_max_days'] > '365'
                                         true
                                       else

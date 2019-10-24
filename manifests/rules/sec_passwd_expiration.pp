@@ -35,9 +35,6 @@ class security_baseline::rules::sec_passwd_expiration (
   String $log_level           = '',
   Integer $max_pass_days      = 90,
 ) {
-  $log_default = {
-
-  }
   if($enforce) {
     file_line { 'password expiration policy':
       ensure => present,
@@ -54,5 +51,12 @@ class security_baseline::rules::sec_passwd_expiration (
       }
     }
   } else {
+    if($facts['security_baseline']['pw_data']['pass_max_days_status']) {
+      echo { 'pass-max-days':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
+    }
   }
 }

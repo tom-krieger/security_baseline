@@ -391,6 +391,13 @@ Facter.add(:security_baseline) do
     val = Facter::Core::Execution.exec('useradd -D | grep INACTIVE | cut -f 2 -d =')
     pw_data['inactive'] = check_value_string(val, '-1')
     pw_data['inactive_status'] = pw_data['inactive'] < '30'
+    ret = false
+    security_baseline['local_users'].each do |user, data|
+      unless data['password_date_valid']
+        ret = true
+      end
+    end
+    pw_data['pw_change_in_future'] = ret
     security_baseline['pw_data'] = pw_data
 
     accounts = {}
@@ -409,36 +416,34 @@ Facter.add(:security_baseline) do
 
     ret = false
     val = Facter::Core::Execution.exec('grep -h "umask" /etc/profile /etc/profile.d/*.sh /etc/bashrc')
-    unless val.nil? || val.empty?
+    if val.nil? || val.empty?
+      ret = true
+    else
       val.split("\n").each do |line|
-        if line =~ %r{umask\s*\d+}
-          line.strip!
-          data = line.split(%r{\s+})
-          mask = data[1]
-          if mask.to_s < '027'
-            ret = true
-          end
+        next unless line =~ %r{umask\s*\d+}
+        line.strip!
+        data = line.split(%r{\s+})
+        mask = data[1]
+        if mask.to_s < '027'
+          ret = true
         end
       end
-    else
-      ret = true
     end
     security_baseline['umask'] = ret
 
     val = Facter::Core::Execution.exec('grep -h "^TMOUT" /etc/bashrc /etc/profile')
-    unless val.nil? || val.empty?
+    if val.nil? || val.empty?
+      ret = true
+    else
       val.split("\n").each do |line|
-        if line =~ %r{TIMEOUT=\d+}
-          line.strip!
-          data = line.split(%r{=})
-          timeout = data[1]
-          if timeout.to_s > '900'
-            ret = true
-          end
+        next unless line =~ %r{TIMEOUT=\d+}
+        line.strip!
+        data = line.split(%r{=})
+        timeout = data[1]
+        if timeout.to_s > '900'
+          ret = true
         end
       end
-    else
-      ret = true
     end
     security_baseline['timeout'] = ret
 

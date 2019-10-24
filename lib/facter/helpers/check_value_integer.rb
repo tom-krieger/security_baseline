@@ -4,9 +4,9 @@
 
 def check_value_integer(val, default = 0)
     if val.nil? || val.empty?
-      default
+      default.to_i
     else
-      val
+      val.to_i
     end
   end
   

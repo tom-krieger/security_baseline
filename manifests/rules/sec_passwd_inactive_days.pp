@@ -44,6 +44,7 @@ class security_baseline::rules::sec_passwd_inactive_days (
         exec { "/bin/chage --inactive ${inactive_pass_days} ${user}": }
       }
     }
+    exec { "/sbin/useradd -f ${inactive_pass_days}": }
   } else {
     if($facts['security_baseline']['pw_data']['inactive_status']) {
       echo { 'pass-warn-days':

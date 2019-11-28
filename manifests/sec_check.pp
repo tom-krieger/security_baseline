@@ -58,7 +58,7 @@ define security_baseline::sec_check (
   Optional[Hash] $config_data = {},
 ) {
 
-    if($active) {
+    if($active) and (has_key($facts, 'security_baseline')) {
 
       $logentry_default = {
         rulenr    => $title,
@@ -189,5 +189,5 @@ define security_baseline::sec_check (
         * => $merged_data
       }
 
-    } # rule active
+    } # rule active and security_baseline fact available
 }

@@ -39,6 +39,7 @@ class security_baseline (
   Boolean $set_postrun      = true,
 ) {
   include ::security_baseline::services
+  include ::security_baseline::system_file_permissions_cron
 
   if($debug) {
     echo{"Applying security baseline version: ${baseline_version}":

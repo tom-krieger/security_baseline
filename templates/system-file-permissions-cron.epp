@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rpm -Va --nomtime --nosize --nomd5 --nolinkto > "<%= $filename %>"
+
+exit $?

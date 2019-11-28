@@ -504,7 +504,7 @@ Facter.add(:security_baseline) do
     if File.exist?('/root/system-file-permissions.txt')
       text = File.open('/root/system-file-permissions.txt').read
       text.gsub!(%r{\r\n?}, "\n")
-      files = text.split("‘\n")
+      files = text.split("\n")
     end
     file_permissions['system_files'] = files
 

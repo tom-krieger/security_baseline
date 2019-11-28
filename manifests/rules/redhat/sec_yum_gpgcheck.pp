@@ -18,14 +18,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_yum_gpgcheck {
+#   class security_baseline::rules::redhat::sec_yum_gpgcheck {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_yum_gpgcheck (
+class security_baseline::rules::redhat::sec_yum_gpgcheck (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

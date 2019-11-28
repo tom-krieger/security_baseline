@@ -18,14 +18,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_jffs2 {
+#   class security_baseline::rules::redhat::sec_jffs2 {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_jffs2 (
+class security_baseline::rules::redhat::sec_jffs2 (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

@@ -18,14 +18,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_selinux_state {
+#   class security_baseline::rules::redhat::sec_selinux_state {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_selinux_policy (
+class security_baseline::rules::redhat::sec_selinux_policy (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

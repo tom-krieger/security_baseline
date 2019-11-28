@@ -19,14 +19,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_nfs_rpcbind {
+#   class security_baseline::rules::redhat::sec_nfs_rpcbind {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_nfs_rpcbind (
+class security_baseline::rules::redhat::sec_nfs_rpcbind (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

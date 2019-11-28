@@ -17,14 +17,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_tmp_nodev {
+#   class security_baseline::rules::redhat::sec_tmp_nodev {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_dev_shm_nodev (
+class security_baseline::rules::redhat::sec_dev_shm_nodev (
   $enforce = true,
   String $message = '',
   String $log_level = ''

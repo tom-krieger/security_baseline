@@ -20,14 +20,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_rsh_client {
+#   class security_baseline::rules::redhat::sec_rsh_client {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_rsh_client (
+class security_baseline::rules::redhat::sec_rsh_client (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

@@ -18,14 +18,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_issue_net_permissions_uid {
+#   class security_baseline::rules::redhat::sec_issue_net_permissions_uid {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_issue_net_permissions_uid (
+class security_baseline::rules::redhat::sec_issue_net_permissions_uid (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

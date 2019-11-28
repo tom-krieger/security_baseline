@@ -49,14 +49,14 @@
 #    Unix groups not allowed to connect by ssh
 #
 # @example
-#   class security_baseline::rules::sec_sshd_limit_access {
+#   class security_baseline::rules::redhat::sec_sshd_limit_access {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
 #   }
 #
 # @api private
-class security_baseline::rules::sec_sshd_limit_access (
+class security_baseline::rules::redhat::sec_sshd_limit_access (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',

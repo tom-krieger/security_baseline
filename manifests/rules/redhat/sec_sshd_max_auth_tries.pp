@@ -19,14 +19,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_sshd_max_auth_tries {
+#   class security_baseline::rules::redhat::sec_sshd_max_auth_tries {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_sshd_max_auth_tries (
+class security_baseline::rules::redhat::sec_sshd_max_auth_tries (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

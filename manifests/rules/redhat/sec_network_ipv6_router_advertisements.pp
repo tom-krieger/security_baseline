@@ -18,14 +18,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_network_ipv6_router_advertisements {
+#   class security_baseline::rules::redhat::sec_network_ipv6_router_advertisements {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_network_ipv6_router_advertisements (
+class security_baseline::rules::redhat::sec_network_ipv6_router_advertisements (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

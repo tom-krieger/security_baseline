@@ -21,14 +21,14 @@
 #    Password expires after days
 #
 # @example
-#   class security_baseline::rules::sec_timeout_setting {
+#   class security_baseline::rules::redhat::sec_timeout_setting {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
 #   }
 #
 # @api private
-class security_baseline::rules::sec_timeout_setting (
+class security_baseline::rules::redhat::sec_timeout_setting (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',

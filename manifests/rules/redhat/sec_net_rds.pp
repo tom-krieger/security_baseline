@@ -19,14 +19,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_net_rds {
+#   class security_baseline::rules::redhat::sec_net_rds {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_net_rds (
+class security_baseline::rules::redhat::sec_net_rds (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

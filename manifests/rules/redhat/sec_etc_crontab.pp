@@ -20,14 +20,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_etc_crontab {
+#   class security_baseline::rules::redhat::sec_etc_crontab {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_etc_crontab (
+class security_baseline::rules::redhat::sec_etc_crontab (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''

@@ -20,14 +20,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_tcp_wrappers {
+#   class security_baseline::rules::redhat::sec_tcp_wrappers {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_tcp_wrappers (
+class security_baseline::rules::redhat::sec_tcp_wrappers (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

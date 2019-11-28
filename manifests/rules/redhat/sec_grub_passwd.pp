@@ -19,14 +19,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_grub_passwd {
+#   class security_baseline::rules::redhat::sec_grub_passwd {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_grub_passwd (
+class security_baseline::rules::redhat::sec_grub_passwd (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

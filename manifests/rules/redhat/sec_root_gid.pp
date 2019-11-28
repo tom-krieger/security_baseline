@@ -21,14 +21,14 @@
 #    Password expires after days
 #
 # @example
-#   class security_baseline::rules::sec_root_gid {
+#   class security_baseline::rules::redhat::sec_root_gid {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
 #   }
 #
 # @api private
-class security_baseline::rules::sec_root_gid (
+class security_baseline::rules::redhat::sec_root_gid (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',

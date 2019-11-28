@@ -17,14 +17,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_unconfigured_daemons {
+#   class security_baseline::rules::redhat::sec_unconfigured_daemons {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_unconfigured_daemons (
+class security_baseline::rules::redhat::sec_unconfigured_daemons (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

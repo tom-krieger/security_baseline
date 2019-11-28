@@ -21,14 +21,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_cron_monthly {
+#   class security_baseline::rules::redhat::sec_cron_monthly {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_cron_monthly (
+class security_baseline::rules::redhat::sec_cron_monthly (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''

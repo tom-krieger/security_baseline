@@ -19,14 +19,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_var_log_audit_partition {
+#   class security_baseline::rules::redhat::sec_var_log_audit_partition {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_var_log_audit_partition (
+class security_baseline::rules::redhat::sec_var_log_audit_partition (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

@@ -20,14 +20,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_avahi {
+#   class security_baseline::rules::redhat::sec_avahi {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_avahi (
+class security_baseline::rules::redhat::sec_avahi (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

@@ -26,14 +26,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_network_tcp_syn_cookies {
+#   class security_baseline::rules::redhat::sec_network_tcp_syn_cookies {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_network_tcp_syn_cookies (
+class security_baseline::rules::redhat::sec_network_tcp_syn_cookies (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

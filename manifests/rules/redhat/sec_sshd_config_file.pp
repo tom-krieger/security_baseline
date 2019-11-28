@@ -17,14 +17,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_sshd_config_file {
+#   class security_baseline::rules::redhat::sec_sshd_config_file {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_sshd_config_file (
+class security_baseline::rules::redhat::sec_sshd_config_file (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

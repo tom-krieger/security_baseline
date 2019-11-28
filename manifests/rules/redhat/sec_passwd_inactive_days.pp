@@ -21,14 +21,14 @@
 #    Password expires after days
 #
 # @example
-#   class security_baseline::rules::sec_passwd_inactive_days {
+#   class security_baseline::rules::redhat::sec_passwd_inactive_days {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
 #   }
 #
 # @api private
-class security_baseline::rules::sec_passwd_inactive_days (
+class security_baseline::rules::redhat::sec_passwd_inactive_days (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',

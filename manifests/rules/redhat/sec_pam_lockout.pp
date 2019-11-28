@@ -28,14 +28,14 @@
 #    Lockout the account for this number of seconds
 #
 # @example
-#   class security_baseline::rules::sec_pam_lockout {
+#   class security_baseline::rules::redhat::sec_pam_lockout {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_pam_lockout (
+class security_baseline::rules::redhat::sec_pam_lockout (
   Boolean $enforce     = true,
   String $message      = '',
   String $log_level    = '',

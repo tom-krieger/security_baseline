@@ -19,14 +19,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_vfat {
+#   class security_baseline::rules::redhat::sec_vfat {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_vfat (
+class security_baseline::rules::redhat::sec_vfat (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

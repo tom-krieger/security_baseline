@@ -22,14 +22,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_stc_crond {
+#   class security_baseline::rules::redhat::sec_stc_crond {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_etc_crond (
+class security_baseline::rules::redhat::sec_etc_crond (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''

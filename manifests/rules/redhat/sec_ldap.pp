@@ -18,14 +18,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sec_ldap {
+#   class security_baseline::rules::redhat::sec_ldap {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sec_ldap (
+class security_baseline::rules::redhat::sec_ldap (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

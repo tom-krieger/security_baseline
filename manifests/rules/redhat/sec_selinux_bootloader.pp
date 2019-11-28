@@ -22,7 +22,7 @@
 #   }
 #
 # @api private
-class security_baseline::rules::sec_selinux_bootloader (
+class security_baseline::rules::redhat::sec_selinux_bootloader (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''

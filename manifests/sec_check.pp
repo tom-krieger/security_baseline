@@ -9,6 +9,12 @@
 # @param active
 #    Sets a rule active or inactive. Inactive rules will not be used
 #
+# @param level
+#    Profile level
+#
+# @param scored
+#    Indicates if a ruile is scored or not
+#
 # @param description
 #    Information about the rule. Currently only for information.
 #
@@ -55,6 +61,8 @@ define security_baseline::sec_check (
   String $message             = '',
   String $log_level           = 'warning',
   Boolean $active             = true,
+  Integer $level              = 1,
+  Boolean $scored             = true,
   Optional[Hash] $config_data = {},
 ) {
 
@@ -64,6 +72,8 @@ define security_baseline::sec_check (
         rulenr    => $title,
         rule      => $rulename,
         desc      => $description,
+        level     => $level,
+        scored    => $scored,
       }
 
       if($::security_baseline::debug) {
@@ -91,7 +101,7 @@ define security_baseline::sec_check (
             if(member($current_value, $fact_value)) {
               # fact contains expected value
               $logentry_data = {
-                level     => 'ok',
+                loglevel   => 'ok',
                 msg       => $message,
                 rulestate => 'compliant',
               }
@@ -102,7 +112,7 @@ define security_baseline::sec_check (
               }
 
               $logentry_data = {
-                level      => $log_level,
+                loglevel  => $log_level,
                 msg       => $message,
                 rulestate => 'not compliant',
               }
@@ -115,7 +125,7 @@ define security_baseline::sec_check (
               }
 
               $logentry_data = {
-                level      => $log_level,
+                loglevel  => $log_level,
                 msg       => $message,
                 rulestate => 'not compliant',
               }
@@ -124,7 +134,7 @@ define security_baseline::sec_check (
 
               # fact contains expected value
               $logentry_data = {
-                level     => 'ok',
+                loglevel  => 'ok',
                 msg       => $message,
                 rulestate => 'compliant',
               }
@@ -134,7 +144,7 @@ define security_baseline::sec_check (
 
           # if no current value is available assume test is compliant
           $logentry_data = {
-            level     => 'ok',
+            loglevel  => 'ok',
             msg       => $message,
             rulestate => 'compliant',
           }
@@ -152,7 +162,7 @@ define security_baseline::sec_check (
 
         # if no fact name is available assume test is compliant
         $logentry_data = {
-          level     => 'ok',
+          loglevel  => 'ok',
           msg       => $message,
           rulestate => 'compliant',
         }

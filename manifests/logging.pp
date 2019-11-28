@@ -34,9 +34,11 @@ define security_baseline::logging (
   $rulenr,
   $rule,
   $desc,
-  $level,
+  $loglevel,
   $msg,
-  $rulestate
+  $rulestate,
+  $level,
+  $scored,
 ) {
   concat::fragment { $rulenr:
     content => epp('security_baseline/logentry.epp', {
@@ -44,8 +46,10 @@ define security_baseline::logging (
       'rule'      => $rule,
       'desc'      => $desc,
       'msg'       => $msg,
-      'level'     => $level,
+      'loglevel'  => $level,
       'rulestate' => $rulestate,
+      'level'     => $level,
+      'scored'    => $scored,
     }),
     target  => $::security_baseline::logfile,
   }

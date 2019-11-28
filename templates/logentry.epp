@@ -1,7 +1,9 @@
   "<%= $rulenr %>":
     rule: "<%= $rule %>"
     description: "<%= $desc %>" 
+    loglevel: "<%= $loglevel %>"
     level: "<%= $level %>"
+    scored: "<%= $scored %>"
     msg: "<%= $msg %>"
     status: "<%= $rulestate %>"
 

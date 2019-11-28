@@ -31,7 +31,7 @@
 # @param message
 #    Message to print into the log
 #
-# @param loglevel
+# @param log_level
 #    Loglevel for the message
 #
 # @param config_data
@@ -101,7 +101,7 @@ define security_baseline::sec_check (
             if(member($current_value, $fact_value)) {
               # fact contains expected value
               $logentry_data = {
-                loglevel   => 'ok',
+                log_level => 'ok',
                 msg       => $message,
                 rulestate => 'compliant',
               }
@@ -112,7 +112,7 @@ define security_baseline::sec_check (
               }
 
               $logentry_data = {
-                loglevel  => $log_level,
+                log_level => $log_level,
                 msg       => $message,
                 rulestate => 'not compliant',
               }
@@ -125,7 +125,7 @@ define security_baseline::sec_check (
               }
 
               $logentry_data = {
-                loglevel  => $log_level,
+                log_level => $log_level,
                 msg       => $message,
                 rulestate => 'not compliant',
               }
@@ -134,7 +134,7 @@ define security_baseline::sec_check (
 
               # fact contains expected value
               $logentry_data = {
-                loglevel  => 'ok',
+                log_level => 'ok',
                 msg       => $message,
                 rulestate => 'compliant',
               }
@@ -144,7 +144,7 @@ define security_baseline::sec_check (
 
           # if no current value is available assume test is compliant
           $logentry_data = {
-            loglevel  => 'ok',
+            log_level => 'ok',
             msg       => $message,
             rulestate => 'compliant',
           }
@@ -162,7 +162,7 @@ define security_baseline::sec_check (
 
         # if no fact name is available assume test is compliant
         $logentry_data = {
-          loglevel  => 'ok',
+          log_level => 'ok',
           msg       => $message,
           rulestate => 'compliant',
         }

@@ -31,7 +31,8 @@ class security_baseline::rules::sec_tmp_nosuid (
 ) {
   if $enforce {
 
-    if $facts['security_baseline']['partitions']['tmp']['partition'] {
+    if (has_key($facts, 'security_baseline')) and
+      defined($facts['security_baseline']['partitions']['tmp']['partition']) {
 
       if $facts['security_baseline']['partitions']['tmp']['nosuid'] == false {
         echo { 'tmp-nosuid':

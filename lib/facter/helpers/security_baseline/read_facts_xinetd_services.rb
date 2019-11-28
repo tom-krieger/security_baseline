@@ -1,6 +1,6 @@
 # get facts about xinetd services
 
-def get_facts_xinetd_services
+def read_facts_xinetd_services
   xinetd_services = {}
   srvs = ['echo', 'time', 'chargen', 'tftp', 'daytime', 'discard']
 

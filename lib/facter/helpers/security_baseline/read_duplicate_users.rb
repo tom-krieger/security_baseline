@@ -1,9 +1,9 @@
-# get_duplicfate_users.rb
-# get duplifate users by uid and/os username
+# read_duplicate_users.rb
+# get duplicate users by uid and/os username
 # mykey = uid gets duplicate uids
 # mykey = user gets duplicate usernames
 
-def get_duplicate_users(mykey)
+def read_duplicate_users(mykey)
   users = ''
   if File.exist?('/etc/passwd')
     userdata = {}

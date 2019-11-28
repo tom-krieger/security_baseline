@@ -1,21 +1,21 @@
 require 'facter/helpers/security_baseline/check_service_enabled'
 require 'facter/helpers/security_baseline/check_package_installed'
 require 'facter/helpers/security_baseline/check_kernel_module'
-require 'facter/helpers/security_baseline/get_duplicate_groups'
-require 'facter/helpers/security_baseline/get_duplicate_users'
-require 'facter/helpers/security_baseline/get_sysctl_value'
-require 'facter/helpers/security_baseline/get_facts_kernel_modules'
-require 'facter/helpers/security_baseline/get_facts_packages_installed'
-require 'facter/helpers/security_baseline/get_facts_services_enabled'
-require 'facter/helpers/security_baseline/get_facts_xinetd_services'
-require 'facter/helpers/security_baseline/get_facts_sysctl'
-require 'facter/helpers/security_baseline/get_facts_aide'
+require 'facter/helpers/security_baseline/read_duplicate_groups'
+require 'facter/helpers/security_baseline/read_duplicate_users'
+require 'facter/helpers/security_baseline/read_sysctl_value'
+require 'facter/helpers/security_baseline/read_facts_kernel_modules'
+require 'facter/helpers/security_baseline/read_facts_packages_installed'
+require 'facter/helpers/security_baseline/read_facts_services_enabled'
+require 'facter/helpers/security_baseline/read_facts_xinetd_services'
+require 'facter/helpers/security_baseline/read_facts_sysctl'
+require 'facter/helpers/security_baseline/read_facts_aide'
 require 'facter/helpers/security_baseline/check_value_string'
 require 'facter/helpers/security_baseline/check_value_integer'
 require 'facter/helpers/security_baseline/check_value_boolean'
 require 'facter/helpers/security_baseline/check_value_regex'
 require 'facter/helpers/security_baseline/read_file_stats'
-require 'facter/helpers/security_baseline/get_local_users'
+require 'facter/helpers/security_baseline/read_local_users'
 require 'facter/helpers/security_baseline/trim_string'
 require 'pp'
 
@@ -37,12 +37,12 @@ Facter.add(:security_baseline) do
                                                   val
                                                 end
 
-    security_baseline[:kernel_modules] = get_facts_kernel_modules
-    security_baseline[:packages_installed] = get_facts_packages_installed
-    security_baseline[:services_enabled] = get_facts_services_enabled
-    security_baseline[:xinetd_services] = get_facts_xinetd_services
-    security_baseline[:sysctl] = get_facts_sysctl
-    security_baseline[:aide] = get_facts_aide(distid)
+    security_baseline[:kernel_modules] = read_facts_kernel_modules
+    security_baseline[:packages_installed] = read_facts_packages_installed
+    security_baseline[:services_enabled] = read_facts_services_enabled
+    security_baseline[:xinetd_services] = read_facts_xinetd_services
+    security_baseline[:sysctl] = read_facts_sysctl
+    security_baseline[:aide] = read_facts_aide(distid)
 
     selinux = {}
     val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
@@ -109,13 +109,13 @@ Facter.add(:security_baseline) do
     end
 
     groups = {}
-    groups['duplicate_gid'] = get_duplicate_groups('gid')
-    groups['duplicate_group'] = get_duplicate_groups('group')
+    groups['duplicate_gid'] = read_duplicate_groups('gid')
+    groups['duplicate_group'] = read_duplicate_groups('group')
     security_baseline[:groups] = groups
 
     users = {}
-    users['duplicate_uid'] = get_duplicate_users('uid')
-    users['duplidate_user'] = get_duplicate_users('user')
+    users['duplicate_uid'] = read_duplicate_users('uid')
+    users['duplidate_user'] = read_duplicate_users('user')
     security_baseline[:users] = users
 
     if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
@@ -379,20 +379,20 @@ Facter.add(:security_baseline) do
     val = Facter::Core::Execution.exec('egrep "^auth\s+required\s+pam_wheel.so\s+use_uid" /etc/pam.d/su')
     pam['wheel'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep wheel /etc/group | cut -d : -f 4')
-    if val.nil? || val.empty?
-      users = []
-    else
-      users = val.split(%r{,})
-    end
+    users = if val.nil? || val.empty?
+              []
+            else
+              val.split(%r{,})
+            end
     pam['wheel_users'] = users
     pam['wheel_users_count'] = users.count
     security_baseline['pam'] = pam
 
-    security_baseline['local_users'] = get_local_users
+    security_baseline['local_users'] = read_local_users
 
     pw_data = {}
     val = Facter::Core::Execution.exec("grep ^PASS_MAX_DAYS /etc/login.defs | awk '{print $2;}'")
-    pw_data['pass_max_days'] = check_value_integer(val, 99999)
+    pw_data['pass_max_days'] = check_value_integer(val, 99_999)
     pw_data['pass_max_days_status'] = if pw_data['pass_max_days'] > 365
                                         true
                                       else

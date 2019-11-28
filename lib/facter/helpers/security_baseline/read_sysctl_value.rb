@@ -2,7 +2,7 @@
 # params:
 #    value to read
 
-def get_sysctl_value(value)
+def read_sysctl_value(value)
   ret = ''
   val = Facter::Core::Execution.exec("sysctl #{value}").split(%r{=})
   if !val.nil? && !val.empty?

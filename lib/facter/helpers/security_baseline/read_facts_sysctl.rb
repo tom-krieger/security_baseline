@@ -1,9 +1,9 @@
 # get facts about sysctl settings
 
-def get_facts_sysctl
+def read_facts_sysctl
   sysctl = {}
-  sysctl['kernel_aslr'] = get_sysctl_value('kernel.randomize_va_space')
-  sysctl['fs_dumpable'] = get_sysctl_value('fs.suid_dumpable')
+  sysctl['kernel_aslr'] = read_sysctl_value('kernel.randomize_va_space')
+  sysctl['fs_dumpable'] = read_sysctl_value('fs.suid_dumpable')
 
   network_keys = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
                   'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',
@@ -14,7 +14,7 @@ def get_facts_sysctl
                   'net.ipv6.conf.default.accept_redirects', 'net.ipv6.conf.all.disable_ipv6', 'net.ipv6.conf.default.disable_ipv6']
 
   network_keys.each do |key|
-    sysctl[key] = get_sysctl_value(key)
+    sysctl[key] = read_sysctl_value(key)
   end
 
   sysctl

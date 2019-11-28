@@ -1,6 +1,6 @@
 # get facts about aide
 
-def get_facts_aide(distid)
+def read_facts_aide(distid)
   aide = {}
   cronentry = Facter::Core::Execution.exec('crontab -u root -l | grep aide')
   fileentry = Facter::Core::Execution.exec('grep -rh aide /etc/cron.* /etc/crontab')

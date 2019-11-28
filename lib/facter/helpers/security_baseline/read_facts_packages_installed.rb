@@ -1,6 +1,6 @@
 # get facts about installed packages
 
-def get_facts_packages_installed
+def read_facts_packages_installed
   packages_installed = {}
   packages = { 'iptables' => '-q',
                'openldap-clients' => '-q',

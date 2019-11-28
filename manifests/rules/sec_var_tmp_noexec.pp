@@ -31,7 +31,8 @@ class security_baseline::rules::sec_var_tmp_noexec (
 ) {
   if $enforce {
 
-    if $facts['security_baseline']['partitions']['var_tmp']['partition'] {
+    if (has_key($facts, 'security_baseline')) and
+      defined($facts['security_baseline']['partitions']['var_tmp']['partition']) {
 
       if $facts['security_baseline']['partitions']['var_tmp']['noexc'] == false {
         echo { 'var-tmp-noexec':

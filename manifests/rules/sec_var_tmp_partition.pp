@@ -37,7 +37,7 @@ class security_baseline::rules::sec_var_tmp_partition (
 
   if($enforce) {
     if (has_key($facts, 'security_baseline')) and
-      defined($facts['security_baseline']['partitions']['var_tmp']['partition'] == undef) and
+      defined($facts['security_baseline']['partitions']['var_tmp']['partition']) and
       ($facts['security_baseline']['partitions']['var_tmp']['partition'] == undef) {
 
       echo { 'var-tmp-partition':

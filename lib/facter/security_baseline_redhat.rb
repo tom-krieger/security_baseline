@@ -242,6 +242,23 @@ Facter.add(:security_baseline) do
 
     security_baseline['cron'] = cron
 
+    val = Facter::Core::Execution.exec('dmesg | grep NX')
+    security_baseline['nx'] = if check_value_string(val, 'none') =~ %r{NX (Execute Disable) protection: active}
+                                'protected'
+                              else
+                                'unprotected'
+                              end
+
+    val1 = Facter::Core::Execution.exec('rpm -q ntp')
+    val2 = Facter::Core::Execution.exec('rpm -q chrony')
+    ntp = check_value_string(val1, 'none')
+    chrony = check_value_string(val2, 'none')
+    security_baseline['ntp_use'] = if ntp != 'none' || chrony != 'none'
+                                     'used'
+                                   else
+                                     'not used'
+                                   end
+                                   
     sshd = {}
     sshd['package'] = if Facter.value(:osfamily) == 'Suse'
                         check_package_installed('openssh')

@@ -258,7 +258,7 @@ Facter.add(:security_baseline) do
                                    else
                                      'not used'
                                    end
-                                   
+
     sshd = {}
     sshd['package'] = if Facter.value(:osfamily) == 'Suse'
                         check_package_installed('openssh')
@@ -481,6 +481,50 @@ Facter.add(:security_baseline) do
       end
     end
     security_baseline['timeout'] = ret
+
+    file_permissions = {}
+    file_permissions['passwd'] = read_file_stats('/etc/passwd')
+    file_permissions['shadow'] = read_file_stats('/etc/shadow')
+    file_permissions['group'] = read_file_stats('/etc/group')
+    file_permissions['gshadow'] = read_file_stats('/etc/gshadow')
+    file_permissions['passwd-'] = read_file_stats('/etc/passwd-')
+    file_permissions['shadow-'] = read_file_stats('/etc/shadow-')
+    file_permissions['group-'] = read_file_stats('/etc/group-')
+    file_permissions['gshadow-'] = read_file_stats('/etc/gshadow-')
+
+    files = []
+    if File.exist?('/root/world-writable-files.txt')
+      text = File.open('/root/world-writable-files.txt').read
+      text.gsub!(%r{\r\n?}, "\n")
+      files = text.split("\n")
+    end
+    file_permissions['world_writeable'] = files
+
+    files = []
+    if File.exist?('/root/system-file-permissions.txt')
+      text = File.open('/root/system-file-permissions.txt').read
+      text.gsub!(%r{\r\n?}, "\n")
+      files = text.split("‘\n")
+    end
+    file_permissions['system_files'] = files
+
+    files = []
+    if File.exist?('/root/unowned_files_user.txt')
+      text = File.open('/root/unowned_files_user.txt').read
+      text.gsub!(%r{\r\n?}, "\n")
+      files = text.split("‘\n")
+    end
+    file_permissions['unowned_by_user'] = files
+
+    files = []
+    if File.exist?('/root/unowned_files_group.txt')
+      text = File.open('/root/unowned_files_group.txt').read
+      text.gsub!(%r{\r\n?}, "\n")
+      files = text.split("‘\n")
+    end
+    file_permissions['unowned_by_group'] = files
+
+    security_baseline['file_permissions'] = file_permissions
 
     security_baseline
   end

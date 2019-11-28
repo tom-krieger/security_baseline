@@ -40,6 +40,8 @@ class security_baseline (
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
+  include ::security_baseline::world_writeable_files_cron
+  include ::security_baseline::unowned_files_cron
 
   if($debug) {
     echo{"Applying security baseline version: ${baseline_version}":

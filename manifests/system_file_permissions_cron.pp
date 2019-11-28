@@ -4,9 +4,9 @@
 #
 # @example
 #   include security_baseline::system_file_permissions_cron
-class security_baseline::system_file_permissions_cron (
-  $filename = '/tmp/system-file-permissions.txt',
-) {
+class security_baseline::system_file_permissions_cron {
+  $filename = '/root/system-file-permissions.txt'
+
   file { '/usr/local/sbin/system-file-permissions.sh':
     ensure  => file,
     owner   => 'root',

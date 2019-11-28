@@ -1,0 +1,6 @@
+#!/bin/bash
+
+df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nouser > <%= $unowned_user %>
+df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -nogroup > <%= $unowned_group %>
+
+exit 0

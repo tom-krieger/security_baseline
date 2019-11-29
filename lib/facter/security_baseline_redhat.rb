@@ -242,8 +242,8 @@ Facter.add(:security_baseline) do
 
     security_baseline['cron'] = cron
 
-    val = Facter::Core::Execution.exec('dmesg | grep NX')
-    security_baseline['nx'] = if check_value_string(val, 'none') =~ %r{NX (Execute Disable) protection: active}
+    val = Facter::Core::Execution.exec('')
+    security_baseline['nx'] = if check_value_string(val, 'none') =~ %r{protection: active}
                                 'protected'
                               else
                                 'unprotected'

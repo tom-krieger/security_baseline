@@ -498,7 +498,8 @@ Facter.add(:security_baseline) do
       text.gsub!(%r{\r\n?}, "\n")
       files = text.split("\n")
     end
-    file_permissions['world_writeable'] = files
+    file_permissions['world_writable'] = files
+    file_permissions['world_writable_count'] = files.count
 
     files = []
     if File.exist?('/root/system-file-permissions.txt')
@@ -507,6 +508,7 @@ Facter.add(:security_baseline) do
       files = text.split("\n")
     end
     file_permissions['system_files'] = files
+    file_permissions['system_files_count'] = files.count
 
     files = []
     if File.exist?('/root/unowned_files_user.txt')
@@ -514,7 +516,8 @@ Facter.add(:security_baseline) do
       text.gsub!(%r{\r\n?}, "\n")
       files = text.split("‘\n")
     end
-    file_permissions['unowned_by_user'] = files
+    file_permissions['unowned'] = files
+    file_permissions['unowned_count'] = files.count
 
     files = []
     if File.exist?('/root/unowned_files_group.txt')
@@ -522,7 +525,8 @@ Facter.add(:security_baseline) do
       text.gsub!(%r{\r\n?}, "\n")
       files = text.split("‘\n")
     end
-    file_permissions['unowned_by_group'] = files
+    file_permissions['ungrouped'] = files
+    file_permissions['ungrouped_count'] = files.count
 
     security_baseline['file_permissions'] = file_permissions
 

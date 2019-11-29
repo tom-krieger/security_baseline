@@ -17,23 +17,36 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::redhat::sec_issue_permissions_gid {
+#   class security_baseline::rules::redhat::sec_issue_permissions {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::redhat::sec_issue_permissions_gid (
+class security_baseline::rules::redhat::sec_issue_permissions (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''
 ) {
-  if(!$enforce) and ($facts['security_baseline']['issue']['os']['gid'] != 0) {
-    echo { 'issue-os-gid':
-      message  => $message,
-      loglevel => $log_level,
-      withpath => false,
+  if($enforce) {
+
+    unless(defined(File['/etc/issue'])) {
+      file { '/etc/issue':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
+    }
+
+  } else {
+    if($facts['security_baseline']['issue']['os']['combined'] != '0-0-420') {
+      echo { 'issue-os-uid':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
     }
   }
 }

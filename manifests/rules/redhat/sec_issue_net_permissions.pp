@@ -18,14 +18,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::redhat::sec_issue_net_permissions_uid {
+#   class security_baseline::rules::redhat::sec_issue_net_permissions {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::redhat::sec_issue_net_permissions_uid (
+class security_baseline::rules::redhat::sec_issue_net_permissions (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''
@@ -42,7 +42,7 @@ class security_baseline::rules::redhat::sec_issue_net_permissions_uid (
     }
 
   } else {
-    if($facts['security_baseline']['issue']['net']['uid'] != 0) {
+    if($facts['security_baseline']['issue']['net']['combined'] != '0-0-420') {
       echo { 'issue-os-uid':
         message  => $message,
         loglevel => $log_level,

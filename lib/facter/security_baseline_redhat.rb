@@ -561,7 +561,7 @@ Facter.add(:security_baseline) do
     end
 
     if File.exist?('/usr/local/security_baseline_scripts/check_home_dir_owner.sh')
-      val = Facter::Core::Execition.exec('/usr/local/security_baseline_scripts/check_home_dir_owner.sh')
+      val = Facter::Core::Execution.exec('/usr/local/security_baseline_scripts/check_home_dir_owner.sh')
       security_baseline['home_dir_owners'] = check_value_string(val, 'none')
     end
 

@@ -37,9 +37,9 @@ class security_baseline::config {
     mode   => '0700',
   }
 
-  file { '/usr/local/sbin/check_dot_file_write.sh':
+  file { '/usr/local/sbin/ss_write.sh':
     ensure => file,
-    source => 'puppet:///modules/security_baseline/check_dot_file_write.sh',
+    source => 'puppet:///modules/security_baseline/check_dot_files_write.sh',
     owner  => 'root',
     group  => 'root',
     mode   => '0700',

@@ -530,7 +530,7 @@ Facter.add(:security_baseline) do
 
     security_baseline['file_permissions'] = file_permissions
 
-    val = Facter::Core::execution.exec("cat /etc/shadow | awk -F: \'($2 == \"\" ) { print $1 \" does not have a password \"}\'")
+    val = Facter::Core::Execution.exec("cat /etc/shadow | awk -F: \'($2 == \"\" ) { print $1 \" does not have a password \"}\'")
     security_baseline['empty_passwords'] = check_value_string(val, 'none')
     
     legacy = {}
@@ -565,8 +565,8 @@ Facter.add(:security_baseline) do
       security_baseline['home_dir_owners'] = check_value_string(val, 'none')
     end
 
-    if File.exist?('/usr/local/sbin/check_dot_file_write.sh')
-      val = Facter::Core::Execution.exec('/usr/local/sbin/check_dot_file_write.sh')
+    if File.exist?('/usr/local/sbin/check_dot_files_write.sh')
+      val = Facter::Core::Execution.exec('/usr/local/sbin/check_dot_files_write.sh')
       security_baseline['user_dot_file_write'] = check_value_string(val, 'none')
     end
 

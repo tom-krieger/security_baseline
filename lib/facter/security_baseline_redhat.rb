@@ -571,7 +571,7 @@ Facter.add(:security_baseline) do
     end
 
     if File.exist?('/usr/local/security_baseline_scripts/check_forward_files.sh')
-      val = Facter::CFore::Execution.exec('/usr/local/security_baseline_scripts/check_forward_files.sh')
+      val = Facter::Core::Execution.exec('/usr/local/security_baseline_scripts/check_forward_files.sh')
       security_baseline['forward_files'] = check_value_string(val, 'none')
     end
 

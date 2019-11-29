@@ -576,12 +576,12 @@ Facter.add(:security_baseline) do
     end
 
     if File.exist?('/usr/local/security_baseline_scripts/check_netrc_files.sh')
-      val = Factr::Core::Execution.exe('/usr/local/security_baseline_scripts/check_netrc_files.sh')
+      val = Facter::Core::Execution.exe('/usr/local/security_baseline_scripts/check_netrc_files.sh')
       security_baseline['netrc_files'] = check_value_string(val, 'none')
     end
 
     if File.exist?('/usr/local/security_baseline_scripts/check_netrc_files_write.sh')
-      val = Factr::Core::Execution.exe('/usr/local/security_baseline_scripts/check_netrc_files_write.sh')
+      val = Facter::Core::Execution.exe('/usr/local/security_baseline_scripts/check_netrc_files_write.sh')
       security_baseline['netrc_files_write'] = check_value_string(val, 'none')
     end
 

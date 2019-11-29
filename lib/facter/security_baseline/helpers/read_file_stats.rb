@@ -6,12 +6,12 @@ def read_file_stats(filename)
   if File.exist?(filename)
     uid = File.stat(filename).uid
     gid = File.stat(filename).gid
-    mode = File.stat(filename).mode & 0o7777
-    combined = uid + '-' + gid + '-' + mode
+    fmode = File.stat(filename).mode & 0o7777
+    combined = "#{uid}-#{gid}-#{fmode}"
     ret = {
       'uid' => uid,
       'gid' => gid,
-      'mode' => mode,
+      'mode' => fmode,
       'combined' => combined,
     }
   else

@@ -591,7 +591,7 @@ Facter.add(:security_baseline) do
     end
 
     if File.exist?('/usr/local/security_baseline_scripts/check_passwd_group_exist.sh')
-      val = Facer::Core::Execution.exec('/usr/local/security_baseline_scripts/check_passwd_group_exist.sh')
+      val = Facter::Core::Execution.exec('/usr/local/security_baseline_scripts/check_passwd_group_exist.sh')
       security_baseline['passwd_group'] = check_value_string(val, 'none')
     end
 

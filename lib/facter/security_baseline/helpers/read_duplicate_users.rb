@@ -1,7 +1,7 @@
 # read_duplicate_users.rb
 # get duplicate users by uid and/os username
-# mykey = uid gets duplicate uids
-# mykey = user gets duplicate usernames
+# mykey = uid : gets duplicate uids
+# mykey = user : gets duplicate usernames
 
 def read_duplicate_users(mykey)
   users = ''

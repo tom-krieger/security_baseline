@@ -530,6 +530,80 @@ Facter.add(:security_baseline) do
 
     security_baseline['file_permissions'] = file_permissions
 
+    val = Facter::Core::execution.exec("cat /etc/shadow | awk -F: \'($2 == \"\" ) { print $1 \" does not have a password \"}\'")
+    security_baseline['empty_passwords'] = check_value_string(val, 'none')
+    
+    legacy = {}
+    val = Facter::Core::Execution.exec("grep '^\+:' /etc/passwd")
+    legacy['passwd'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec("grep '^\+:' /etc/shadow")
+    legacy['shadow'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec("grep '^\+:' /etc/group")
+    legacy['group'] = check_value_string(val, 'none')
+    secutity_baseline['legacy_plus'] = legacy
+
+    val = Facter::Core::Execution.exec("cat /etc/passwd | awk -F: '($3 == 0) { print $1 }'")    
+    security_baseline['uid_0'] = check_value_string(val, 'none')
+
+    if File.exist?('/usr/local/sbin/root_path_integrity.sh')
+      val = Facter::Core::Execurion.exec('/usr/local/sbin/root_path_integrity.sh')
+      security_baseline['root_path_integrity'] = check_value_string(val, 'none')
+    end
+
+    if File.exist?('/usr/local/sbin/check_user_home_dirs.sh')
+      val = Facter::Core::Execution.exec('/usr/local/sbin/check_user_home_dirs.sh')
+      security_baseline['user_home_dirs'] = check_value_string(val, 'none')
+    end
+
+    if File.exist?('/usr/local/sbin/check_home_dir_permissions.sh')
+      val = Facter::Core::Execution.exec('/usr/local/sbin/check_home_dir_permissions.sh')
+      security_baseline['home_dir_permissions'] = check_value_string(val, 'none')
+    end
+
+    if File.exist?('/usr/local/sbin/check_home_dir_owner.sh')
+      val = Facter::Core::Execition.exec('/usr/local/sbin/check_home_dir_owner.sh')
+      security_baseline['home_dir_owners'] = check_value_string(val, 'none')
+    end
+
+    if File.exist?('/usr/local/sbin/check_dot_file_write.sh')
+      val = Facter::Core::Execution.exec('/usr/local/sbin/check_dot_file_write.sh')
+      security_baseline['user_dot_file_write'] = check_value_string(val, 'none')
+    end
+
+    if File.exist?('/usr/local/sbin/check_forward_files.sh')
+      val = Facter::CFore::Execution.exec('/usr/local/sbin/check_forward_files.sh')
+      security_baseline['forward_files'] = check_value_string(val, 'none')
+    end
+
+    if File.exist?('/usr/local/sbin/check_netrc_files.sh')
+      val = Factr::Core::Execution.exe('/usr/local/sbin/check_netrc_files.sh')
+      security_baseline['netrc_files'] = check_value_string(val, 'none')
+    end
+
+    if File.exist?('/usr/local/sbin/check_netrc_files_write.sh')
+      val = Factr::Core::Execution.exe('/usr/local/sbin/check_netrc_files_write.sh')
+      security_baseline['netrc_files_write'] = check_value_string(val, 'none')
+    end
+
+    if File.exist?('/usr/local/sbin/check_rhosts_files.sh')
+      val = Facter::Core::Execution.exec('/usr/local/sbin/check_rhosts_files.sh')
+      security_baseline['rhosts_files'] = check_value_string(val, 'none')
+    end
+
+    if File.exist?('/usr/local/sbin/check_passwd_group_exist.sh')
+      val = Facer::Core::Execution.exec('/usr/local/sbin/check_passwd_group_exist.sh')
+      security_baseline['passwd_group'] = check_value_string(val, 'none')
+    end
+
+    security_baseline['duplicate_uids'] = read_duplicate_users('uid')
+    security_baseline['duplicate_uids_count'] = security_baseline['duplicate_uids'].count
+    security_baseline['duplicate_users'] = read_duplicate_users('user')
+    security_baseline['duplicate_users_count'] = security_baseline['duplicate_users'].count
+    security_baseline['duplicate_gids'] = read_duplicate_groups('gid')
+    security_baseline['duplicate_gids_count'] = security_baseline['duplicate_gids'].count
+    security_baseline['duplicate_groups'] = read_duplicate_groups('group')
+    security_baseline['duplicate_groups_count'] = security_baseline['duplicate_groups'].count
+
     security_baseline
   end
 end

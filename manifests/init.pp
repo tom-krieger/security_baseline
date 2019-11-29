@@ -38,6 +38,7 @@ class security_baseline (
   String $logfile           = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
   Boolean $set_postrun      = true,
 ) {
+  include ::security_baseline::config
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
   include ::security_baseline::world_writeable_files_cron

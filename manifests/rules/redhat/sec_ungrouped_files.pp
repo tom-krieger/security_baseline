@@ -2,7 +2,7 @@
 #    Ensure no ungrouped files or directories exist (Scored)
 #
 # Sometimes when administrators delete users or groups from the system they neglect to remove all 
-# files owned by those users or groups.
+# files owned by those users or g
 # 
 # Rationale:
 # A new user who is assigned the deleted user's user ID or group ID may then end up "owning" these files, 

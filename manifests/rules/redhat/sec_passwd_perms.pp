@@ -26,8 +26,8 @@
 #
 # @api private
 class security_baseline::rules::redhat::sec_passwd_perms (
-  $enforce = true,
-  String $message = '',
+  $enforce          = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if($enforce) {

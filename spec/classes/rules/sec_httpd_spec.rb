@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'security_baseline::rules::sec_httpd' do
+describe 'security_baseline::rules::redhat::sec_httpd' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) do

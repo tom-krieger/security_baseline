@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'security_baseline::rules::sec_tcp_wrappers' do
+describe 'security_baseline::rules::redhat::sec_tcp_wrappers' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) do

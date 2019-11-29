@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'security_baseline::rules::sec_sshd_max_auth_tries' do
+describe 'security_baseline::rules::redhat::sec_sshd_max_auth_tries' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }

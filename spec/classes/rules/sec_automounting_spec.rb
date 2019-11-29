@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'security_baseline::rules::sec_automounting' do
+describe 'security_baseline::rules::redhat::sec_automounting' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) do

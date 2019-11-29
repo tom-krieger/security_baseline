@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'security_baseline::rules::sec_passwd_last_change_in_past' do
+describe 'security_baseline::rules::redhat::sec_passwd_last_change_in_past' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }

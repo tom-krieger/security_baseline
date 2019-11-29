@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'security_baseline::rules::sec_pam_pw_requirements' do
+describe 'security_baseline::rules::redhat::sec_pam_pw_requirements' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }

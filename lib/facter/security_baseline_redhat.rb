@@ -546,7 +546,7 @@ Facter.add(:security_baseline) do
     security_baseline['uid_0'] = check_value_string(val, 'none')
 
     if File.exist?('/usr/local/security_baseline_scripts/root_path_integrity.sh')
-      val = Facter::Core::Execurion.exec('/usr/local/security_baseline_scripts/root_path_integrity.sh')
+      val = Facter::Core::Execution.exec('/usr/local/security_baseline_scripts/root_path_integrity.sh')
       security_baseline['root_path_integrity'] = check_value_string(val, 'none')
     end
 

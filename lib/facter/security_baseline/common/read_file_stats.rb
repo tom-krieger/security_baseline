@@ -19,7 +19,7 @@ def read_file_stats(filename)
       'uid' => 'none',
       'gid' => 'none',
       'mode' => 'none',
-      'combined' => 'none-none-none'
+      'combined' => 'none-none-none',
     }
   end
 

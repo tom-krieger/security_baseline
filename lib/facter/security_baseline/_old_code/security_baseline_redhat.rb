@@ -532,7 +532,7 @@ Facter.add(:security_baseline) do
 
     val = Facter::Core::Execution.exec("cat /etc/shadow | awk -F: \'($2 == \"\" ) { print $1 \" does not have a password \"}\'")
     security_baseline['empty_passwords'] = check_value_string(val, 'none')
-    
+
     legacy = {}
     val = Facter::Core::Execution.exec("grep '^\+:' /etc/passwd")
     legacy['passwd'] = check_value_string(val, 'none')
@@ -542,7 +542,7 @@ Facter.add(:security_baseline) do
     legacy['group'] = check_value_string(val, 'none')
     security_baseline['legacy_plus'] = legacy
 
-    val = Facter::Core::Execution.exec("cat /etc/passwd | awk -F: '($3 == 0) { print $1 }'")    
+    val = Facter::Core::Execution.exec("cat /etc/passwd | awk -F: '($3 == 0) { print $1 }'")
     security_baseline['uid_0'] = check_value_string(val, 'none')
 
     if File.exist?('/usr/local/security_baseline_scripts/root_path_integrity.sh')

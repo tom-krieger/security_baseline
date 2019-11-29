@@ -595,7 +595,7 @@ Facter.add(:security_baseline) do
       security_baseline['passwd_group'] = check_value_string(val, 'none')
     end
 
-    security_baseline['duplicate_uids'] = chdck_value_string(read_duplicate_users('uid'), 'none')
+    security_baseline['duplicate_uids'] = check_value_string(read_duplicate_users('uid'), 'none')
     security_baseline['duplicate_users'] = check_value_string(read_duplicate_users('user'), 'none')
     security_baseline['duplicate_gids'] = check_value_string(read_duplicate_groups('gid'), 'none')
     security_baseline['duplicate_groups'] = check_value_string(read_duplicate_groups('group'), 'none')

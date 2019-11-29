@@ -32,7 +32,7 @@ class security_baseline::rules::redhat::sec_duplicate_uids (
   if($enforce) {
 
   } else {
-    if ($facts['security_baseline']['duplicate_uids_count'] != 0) {
+    if ($facts['security_baseline']['duplicate_uids'] != 'none') {
       echo { 'duplicate-uids':
         message  => $message,
         loglevel => $log_level,

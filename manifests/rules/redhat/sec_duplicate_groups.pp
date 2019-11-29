@@ -33,7 +33,7 @@ class security_baseline::rules::redhat::sec_duplicate_groups (
   if($enforce) {
 
   } else {
-    if ($facts['security_baseline']['duplicate_groups_count'] != 0) {
+    if ($facts['security_baseline']['duplicate_groups'] != 'none') {
       echo { 'duplicate-groups':
         message  => $message,
         loglevel => $log_level,

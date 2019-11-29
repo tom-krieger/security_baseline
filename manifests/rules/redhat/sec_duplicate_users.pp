@@ -34,7 +34,7 @@ class security_baseline::rules::redhat::sec_duplicate_users (
   if($enforce) {
 
   } else {
-    if ($facts['security_baseline']['duplicate_users_count'] != 0) {
+    if ($facts['security_baseline']['duplicate_users'] != 'none') {
       echo { 'duplicate-users':
         message  => $message,
         loglevel => $log_level,

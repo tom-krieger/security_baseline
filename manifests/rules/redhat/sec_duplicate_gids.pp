@@ -32,7 +32,7 @@ class security_baseline::rules::redhat::sec_duplicate_gids (
   if($enforce) {
 
   } else {
-    if ($facts['security_baseline']['duplicate_gids_count'] != 0) {
+    if ($facts['security_baseline']['duplicate_gids'] != 'none') {
       echo { 'duplicate-gids':
         message  => $message,
         loglevel => $log_level,

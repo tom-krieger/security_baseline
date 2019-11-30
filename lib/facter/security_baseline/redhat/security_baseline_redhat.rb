@@ -17,6 +17,7 @@ require 'facter/security_baseline/common/check_value_regex'
 require 'facter/security_baseline/common/read_file_stats'
 require 'facter/security_baseline/common/read_local_users'
 require 'facter/security_baseline/common/trim_string'
+require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'pp'
 
 # frozen_string_literal: true
@@ -24,22 +25,41 @@ require 'pp'
 # security_baseline_redhat.rb
 # collect facts about the security baseline
 
-def security_baseline_redhat(_os, distid)
+def security_baseline_redhat(os, distid, _release)
   security_baseline = {}
 
-  val = Facter::Core::Execution.exec('puppet config print | grep postrun_command')
-  security_baseline['puppet_agent_postrun'] = if val.empty? || val.nil?
-                                                'none'
-                                              else
-                                                val
-                                              end
+  services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
+              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond']
+  packages = { 'iptables' => '-q',
+               'openldap-clients' => '-q',
+               'mcstrans' => '-q',
+               'prelink' => '-q',
+               'rsh' => '-q',
+               'libselinux' => '-q',
+               'setroubleshoot' => '-q',
+               'talk' => '-q',
+               'tcp_wrappers' => '-q',
+               'telnet' => '-q',
+               'ypbind' => '-q' }
+  modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat']
+  xinetd_services = ['echo', 'time', 'chargen', 'tftp', 'daytime', 'discard']
+  sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
+                   'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',
+                   'net.ipv4.conf.default.accept_redirects', 'net.ipv4.conf.all.secure_redirects', 'net.ipv4.conf.all.log_martians',
+                   'net.ipv4.conf.default.log_martians', 'net.ipv4.icmp_echo_ignore_broadcasts', 'net.ipv4.icmp_ignore_bogus_error_responses',
+                   'net.ipv4.conf.all.rp_filter', 'net.ipv4.conf.default.rp_filter', 'net.ipv4.tcp_syncookies',
+                   'net.ipv6.conf.all.accept_ra', 'net.ipv6.conf.default.accept_ra', 'net.ipv6.conf.all.accept_redirects',
+                   'net.ipv6.conf.default.accept_redirects', 'net.ipv6.conf.all.disable_ipv6', 'net.ipv6.conf.default.disable_ipv6',
+                   'kernel.randomize_va_space', 'fs.suid_dumpable']
 
-  security_baseline[:kernel_modules] = read_facts_kernel_modules
-  security_baseline[:packages_installed] = read_facts_packages_installed
-  security_baseline[:services_enabled] = read_facts_services_enabled
-  security_baseline[:xinetd_services] = read_facts_xinetd_services
-  security_baseline[:sysctl] = read_facts_sysctl
-  security_baseline[:aide] = read_facts_aide(distid)
+  security_baseline['puppet_agent_postrun'] = check_puppet_postrun_command
+  security_baseline[:kernel_modules] = read_facts_kernel_modules(modules)
+  security_baseline[:packages_installed] = read_facts_packages_installed(packages)
+  security_baseline[:services_enabled] = read_facts_services_enabled(services)
+
+  security_baseline[:xinetd_services] = read_facts_xinetd_services(xinetd_services)
+  security_baseline[:sysctl] = read_facts_sysctl(sysctl_values)
+  security_baseline[:aide] = read_facts_aide(distid, os)
 
   selinux = {}
   val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
@@ -91,40 +111,25 @@ def security_baseline_redhat(_os, distid)
 
   security_baseline[:partitions] = partitions
 
-  if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
-    yum = {}
-    yum['repolist'] = Facter::Core::Execution.exec('yum repolist')
-    value = Facter::Core::Execution.exec('grep ^gpgcheck /etc/yum.conf')
-    yum['gpgcheck'] = if value.empty?
-                        false
-                      elsif value == 'gpgcheck=1'
-                        true
-                      else
-                        false
-                      end
-    security_baseline[:yum] = yum
-  end
+  yum = {}
+  yum['repolist'] = Facter::Core::Execution.exec('yum repolist')
+  value = Facter::Core::Execution.exec('grep ^gpgcheck /etc/yum.conf')
+  yum['gpgcheck'] = if value.empty?
+                      false
+                    elsif value == 'gpgcheck=1'
+                      true
+                    else
+                      false
+                    end
+  security_baseline[:yum] = yum
 
-  groups = {}
-  groups['duplicate_gid'] = read_duplicate_groups('gid')
-  groups['duplicate_group'] = read_duplicate_groups('group')
-  security_baseline[:groups] = groups
+  x11 = {}
+  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+  x11['installed'] = pkgs.split("\n")
 
-  users = {}
-  users['duplicate_uid'] = read_duplicate_users('uid')
-  users['duplidate_user'] = read_duplicate_users('user')
-  security_baseline[:users] = users
-
-  if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
-    x11 = {}
-    pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
-    x11['installed'] = pkgs.split("\n")
-
-    security_baseline[:x11] = x11
-  end
+  security_baseline[:x11] = x11
 
   single_user_mode = {}
-
   resc = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/rescue.service')
   single_user_mode['rescue'] = check_value_boolean(resc, false)
 
@@ -153,23 +158,26 @@ def security_baseline_redhat(_os, distid)
   motd['mode'] = val['mode']
   security_baseline[:motd] = motd
 
-  if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
-    security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
-    val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
-    security_baseline[:unconfigured_daemons] = check_value_string(val, 'none')
-  end
+  security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
+
+  val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
+  security_baseline[:unconfigured_daemons] = check_value_string(val, 'none')
 
   val = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
   security_baseline[:sticky_ww] = check_value_string(val, 'none')
 
-  if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
-    val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
-    security_baseline[:security_patches] = check_value_string(val, 'none')
-  end
+  val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
+  security_baseline[:security_patches] = check_value_string(val, 'none')
 
-  if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
-    security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
-  end
+  security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
+  val1 = check_value_string(Facter::Core::Execution.exec('grep "user-db:user" /etc/dconf/profile/gdm'), 'none')
+  val2 = check_value_string(Facter::Core::Execution.exec('grep "system-db:gdm" /etc/dconf/profile/gdm'), 'none')
+  val3 = check_value_string(Facter::Core::Execution.exec('grep "file-db:/usr/share/gdm/greeter-dconf-defaults" /etc/dconf/profile/gdm'), 'none')
+  security_baseline[:gnome_gdm_conf] = if val1 == 'none' || val2 == 'none' || val3 == 'none'
+                                         false
+                                       else
+                                         true
+                                       end
 
   grub = {}
   val = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
@@ -185,8 +193,8 @@ def security_baseline_redhat(_os, distid)
 
   coredumps = {}
   fsdumpable = if security_baseline.key?('sysctl')
-                 if security_baseline['sysctl'].key?('fs_dumpable')
-                   security_baseline['sysctl']['fs_dumpable']
+                 if security_baseline['sysctl'].key?('fs.suid_dumpable')
+                   security_baseline['sysctl']['fs.suid_dumpable']
                  else
                    nil
                  end
@@ -195,18 +203,15 @@ def security_baseline_redhat(_os, distid)
                end
 
   coredumps['limits'] = Facter::Core::Execution.exec('grep -H "hard core" /etc/security/limits.conf /etc/security/limits.d/*')
-  coredumps['status'] = if coredumps['limits'].empty? || (!fsdumpable.nil? && (security_baseline['sysctl']['fs_dumpable'] != 0))
+  coredumps['status'] = if coredumps['limits'].empty? || (!fsdumpable.nil? && (security_baseline['sysctl']['fs.suid_dumpable'] != 0))
                           false
                         else
                           true
                         end
-
   security_baseline[:coredumps] = coredumps
 
-  if distid =~ %r{RedHatEnterprise|CentOS|Fedora}
-    pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
-    security_baseline['x11-packages'] = pkgs.split("\n")
-  end
+  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+  security_baseline['x11-packages'] = pkgs.split("\n")
 
   cron = {}
   cron['/etc/crontab'] = read_file_stats('/etc/crontab')
@@ -222,24 +227,23 @@ def security_baseline_redhat(_os, distid)
 
   cron['restrict'] = if (cron['/etc/cron.allow']['uid'] != 0) ||
                         (cron['/etc/cron.allow']['gid'] != 0) ||
-                        (cron['/etc/cron.allow']['mode'] != 0o0600) ||
+                        (cron['/etc/cron.allow']['mode'] != 384) ||
                         (cron['/etc/cron.deny']['uid'] != 0) ||
                         (cron['/etc/cron.deny']['gid'] != 0) ||
-                        (cron['/etc/cron.deny']['mode'] != 0o0600) ||
+                        (cron['/etc/cron.deny']['mode'] != 384) ||
                         (cron['/etc/at.allow']['uid'] != 0) ||
                         (cron['/etc/at.allow']['gid'] != 0) ||
-                        (cron['/etc/at.allow']['mode'] != 0o0600) ||
+                        (cron['/etc/at.allow']['mode'] != 384) ||
                         (cron['/etc/at.deny']['uid'] != 0) ||
                         (cron['/etc/at.deny']['gid'] != 0) ||
-                        (cron['/etc/at.deny']['mode'] != 0o0600)
+                        (cron['/etc/at.deny']['mode'] != 384)
                        false
                      else
                        true
                      end
-
   security_baseline['cron'] = cron
 
-  val = Facter::Core::Execution.exec('')
+  val = Facter::Core::Execution.exec('dmesg | grep NX')
   security_baseline['nx'] = if check_value_string(val, 'none') =~ %r{protection: active}
                               'protected'
                             else
@@ -257,11 +261,7 @@ def security_baseline_redhat(_os, distid)
                                  end
 
   sshd = {}
-  sshd['package'] = if Facter.value(:osfamily) == 'Suse'
-                      check_package_installed('openssh')
-                    else
-                      check_package_installed('openssh-server')
-                    end
+  sshd['package'] = check_package_installed('openssh-server')
   sshd['/etc/ssh/sshd_config'] = read_file_stats('/etc/ssh/sshd_config')
   val = Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
   sshd['protocol'] = check_value_string(val, 'none')
@@ -281,8 +281,7 @@ def security_baseline_redhat(_os, distid)
   sshd['permitemptypasswords'] = check_value_string(val, 'none')
   val = Facter::Core::Execution.exec('grep "^PermitUserEnvironment" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
   sshd['permituserenvironment'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^MACs" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split(%r{\,})
-  sshd['macs'] = val
+  sshd['macs'] = Facter::Core::Execution.exec('grep "^MACs" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split(%r{\,})
   val = Facter::Core::Execution.exec('grep "^ClientAliveInterval" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
   sshd['clientaliveinterval'] = check_value_string(val, 'none')
   val = Facter::Core::Execution.exec('grep "^ClientAliveCountMax" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip

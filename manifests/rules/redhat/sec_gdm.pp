@@ -39,6 +39,7 @@ class security_baseline::rules::redhat::sec_gdm (
         path    => '/etc/dconf/profile/gdm',
         content => "user-db:user\nsystem-db:gdm\nfile-db:/usr/share/gdm/greeter-dconf-defaults",
       }
+
       file { 'banner-login':
         ensure  => present,
         path    => '/etc/dconf/db/gdm.d/01-banner-message',
@@ -46,7 +47,8 @@ class security_baseline::rules::redhat::sec_gdm (
         require => File['gdm'],
         notify  => Exec['dconf-gdm'],
       }
-      exec { 'dconf-gdm':
+
+      exec { 'dconf-gdm-exec':
         path        => '/bin/',
         command     => 'dconf update',
         refreshonly => true,
@@ -54,11 +56,14 @@ class security_baseline::rules::redhat::sec_gdm (
 
     } else {
 
-      echo { 'gdm':
+      if($facts['security_baseline']['gnome_gdm_conf'] == false) {
+        echo { 'gdm-conf':
         message  => $message,
         loglevel => $log_level,
         withpath => false,
       }
+      }
+
 
     }
 

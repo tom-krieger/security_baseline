@@ -1,8 +1,7 @@
 # return facts about kernel modules
 
-def read_facts_kernel_modules
+def read_facts_kernel_modules(modules)
   kernel_modules = {}
-  modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat']
 
   modules.each do |mod|
     kernel_modules[mod] = check_kernel_module(mod)

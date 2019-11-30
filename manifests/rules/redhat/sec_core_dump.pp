@@ -46,8 +46,8 @@ class security_baseline::rules::redhat::sec_core_dump (
   } else {
     if(
       ($facts['security_baseline']['coredumps'].empty) or
-      ($facts['security_baseline']['sysctl']['fs_dumpable'].empty) or
-      ($facts['security_baseline']['sysctl']['fs_dumpable'] != 0)
+      ($facts['security_baseline']['sysctl']['fs.suid_dumpable'].empty) or
+      ($facts['security_baseline']['sysctl']['fs.suid_dumpable'] != 0)
     ) {
       echo { 'coredumps':
         message  => $message,

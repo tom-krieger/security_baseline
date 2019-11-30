@@ -1,8 +1,7 @@
 # get facts about xinetd services
 
-def read_facts_xinetd_services
+def read_facts_xinetd_services(srvs)
   xinetd_services = {}
-  srvs = ['echo', 'time', 'chargen', 'tftp', 'daytime', 'discard']
 
   srvs.each do |srv|
     srv_name = "srv_#{srv}"

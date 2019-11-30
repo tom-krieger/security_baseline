@@ -52,7 +52,7 @@ class security_baseline::rules::redhat::sec_restrict_su (
       exec { "${user}_wheel":
         command => "usermod -G wheel ${user}",
         unless  => "grep wheel /etc/group | grep ${user}",
-        path    => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
+        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       }
     }
   } else {

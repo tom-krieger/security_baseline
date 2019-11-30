@@ -41,10 +41,14 @@ class security_baseline::rules::redhat::sec_passwd_inactive_days (
       if ($attributes['password_expires_days'] != 'never') and
           ($attributes['password_expires_days'] != 'password must be changed') and
           ($attributes['password_inactive_days'] != $inactive_pass_days) {
-        exec { "/bin/chage --inactive ${inactive_pass_days} ${user}": }
+        exec { "chage --inactive ${inactive_pass_days} ${user}":
+          path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
     }
-    exec { "/sbin/useradd -D -f ${inactive_pass_days}": }
+    exec { "useradd -D -f ${inactive_pass_days}":
+      
+    }
   } else {
     if($facts['security_baseline']['pw_data']['inactive_status']) {
       echo { 'pass-warn-days':

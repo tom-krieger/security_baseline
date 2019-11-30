@@ -33,6 +33,7 @@ def security_baseline_sles(os, distid, release)
                'prelink' => '-q',
                'rsh' => '-q',
                'libselinux' => '-q',
+               'libpwquality1' => '-q',
                'setroubleshoot' => '-q',
                'talk' => '-q',
                'tcpd' => '-q',

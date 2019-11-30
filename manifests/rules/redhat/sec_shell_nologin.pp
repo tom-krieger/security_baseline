@@ -40,7 +40,7 @@ class security_baseline::rules::redhat::sec_shell_nologin (
       $facts['security_baseline']['accounts']['no_shell_nologin'].each | String $user | {
         exec { "nologin ${user}":
           command => "usermod -s /sbin/nologin ${user}",
-          path    => '/sbin/',
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
         }
       }
     }

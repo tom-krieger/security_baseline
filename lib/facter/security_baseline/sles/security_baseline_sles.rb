@@ -399,7 +399,7 @@ def security_baseline_sles(os, distid, release)
   security_baseline['accounts'] = accounts
 
   ret = false
-  val = Facter::Core::Execution.exec('grep -h "umask" /etc/profile /etc/profile.d/*.sh /etc/bashrc')
+  val = Facter::Core::Execution.exec('grep -h "umask" /etc/bash.bashrc /etc/profile /etc/profile.d/*.sh')
   if val.nil? || val.empty?
     ret = true
   else
@@ -415,7 +415,7 @@ def security_baseline_sles(os, distid, release)
   end
   security_baseline['umask'] = ret
 
-  val = Facter::Core::Execution.exec('grep -h "^TMOUT" /etc/bashrc /etc/profile')
+  val = Facter::Core::Execution.exec('grep -h "^TMOUT" /etc/bash.bashrc /etc/profile')
   if val.nil? || val.empty?
     ret = true
   else

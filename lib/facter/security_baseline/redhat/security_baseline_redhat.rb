@@ -42,7 +42,8 @@ def security_baseline_redhat(os, distid, release)
                'telnet' => '-q',
                'ypbind' => '-q' }
   modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat']
-  xinetd_services = ['echo', 'time', 'chargen', 'tftp', 'daytime', 'discard']
+  xinetd_services = ['echo-dgram', 'echo-stream', 'time-dgram', 'time-stream', 'chargen-dgram', 'chargen-stream', 'tftp', 
+                     'daytime-dgram', 'daytime-stream', 'discard-dgram', 'discard-stream']
   sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
                    'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',
                    'net.ipv4.conf.default.accept_redirects', 'net.ipv4.conf.all.secure_redirects', 'net.ipv4.conf.all.log_martians',

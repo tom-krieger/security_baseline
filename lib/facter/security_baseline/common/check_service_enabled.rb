@@ -11,13 +11,13 @@ end
 # check if an xinetd servicve is enabled
 def check_xinetd_service(service)
   ret = false
-  srv = Facter::Core::Execution.exec("chkconfig --list 2>/dev/null | grep #{service}")
+  srv = Facter::Core::Execution.exec("chkconfig --list 2>/dev/null | grep #{service}:")
   if srv.empty?
     ret = false
   else
     srvs = srv.split("\n")
     srvs.each do |line|
-      data = line.split(%r{:})
+      data = line.split(%r{:}).strip
       if data[1].casecmp('off') != 0
         ret = true
       end

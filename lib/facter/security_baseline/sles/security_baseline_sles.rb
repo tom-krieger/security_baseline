@@ -40,7 +40,7 @@ def security_baseline_sles(os, distid, release)
                'telnet' => '-q',
                'ypbind' => '-q' }
   modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat']
-  xinetd_services = ['echo', 'time', 'chargen', 'tftp', 'daytime', 'discard']
+  xinetd_services = ['echo', 'echo-udp', 'time', 'time-udp', 'chargen', 'chargen-udp', 'tftp', 'tftp-udp', 'daytime', 'daytime-udp', 'discard', 'discard-udp']
   sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
                    'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',
                    'net.ipv4.conf.default.accept_redirects', 'net.ipv4.conf.all.secure_redirects', 'net.ipv4.conf.all.log_martians',

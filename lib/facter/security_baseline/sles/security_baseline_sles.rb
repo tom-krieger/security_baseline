@@ -22,7 +22,7 @@ require 'facter/security_baseline/common/trim_string'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'pp'
 
-def security_baseline_sles(_os, _distid, _release)
+def security_baseline_sles(os, distid, release)
   security_baseline = {}
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
@@ -251,7 +251,7 @@ def security_baseline_sles(_os, _distid, _release)
                                  else
                                    'not used'
                                  end
-  
+
   sshd = {}
   sshd['package'] = check_package_installed('openssh')
   sshd['/etc/ssh/sshd_config'] = read_file_stats('/etc/ssh/sshd_config')
@@ -295,8 +295,8 @@ def security_baseline_sles(_os, _distid, _release)
   pam = {}
   pwquality = {}
   val = Facter::Core::Execution.exec('grep pam_cracklib.so /etc/pam.d/common-password')
-  pwquality['try_first_pass'] = val.match(%r{try_first_pass})    
-  h = val.match(%r{retry=(\d+)})          
+  pwquality['try_first_pass'] = val.match(%r{try_first_pass})
+  h = val.match(%r{retry=(\d+)})
   pwquality['retry'] = check_value_string(h[1], 'none')
   val = trim_string(Facter::Core::Execution.exec('grep ^minlen /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
   pwquality['minlen'] = check_value_string(val, 'none')
@@ -333,7 +333,7 @@ def security_baseline_sles(_os, _distid, _release)
   if val1.nil? || val1.empty?
     val1 = 0
   end
-  opasswd['status'] = if (val1.to_s < '5')
+  opasswd['status'] = if val1.to_s < '5'
                         false
                       else
                         true

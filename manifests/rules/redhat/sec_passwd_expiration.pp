@@ -47,7 +47,9 @@ class security_baseline::rules::redhat::sec_passwd_expiration (
 
     $local_users.each |String $user, Hash $attributes| {
       if $attributes['password_expires_days'] != 'never' and $attributes['max_days_between_password_change'] != $max_pass_days {
-        exec { "/bin/chage --maxdays ${max_pass_days} ${user}": }
+        exec { "chage --maxdays ${max_pass_days} ${user}":
+          path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
     }
   } else {

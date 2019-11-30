@@ -47,7 +47,9 @@ class security_baseline::rules::redhat::sec_passwd_min_days (
 
     $local_users.each |String $user, Hash $attributes| {
       if $attributes['password_expires_days'] != 'never' and $attributes['min_days_between_password_change'] != $min_pass_days {
-        exec { "/bin/chage --mindays ${min_pass_days} ${user}": }
+        exec { "chage --mindays ${min_pass_days} ${user}":
+          path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
     }
   } else {

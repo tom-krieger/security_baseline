@@ -12,7 +12,7 @@
     },
     {
       "name": "puppetlabs-concat",
-      "version_requirement": "6.1.0"
+      "version_requirement": ">= 6.1.0 < 7.0.0"
     },
     {
       "name": "camptocamp-kmod",
@@ -33,6 +33,10 @@
     {
       "name": "herculesteam-augeasproviders_core",
       "version_requirement": "2.5.0"
+    },
+    {
+      "name": "herculesteam-augeasproviders_sysctl",
+      "version_requirement": "2.3.1"
     },
     {
       "name": "purplehazech-syslogng",

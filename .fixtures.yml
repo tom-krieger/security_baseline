@@ -8,6 +8,9 @@ fixtures:
     stdlib:
       repo: "puppetlabs/stdlib"
       ref: "6.0.0"
+    concat:
+      repo: "puppetlabs/concat"
+      ref: "6.1.0"
     kmod:
       repo: "camptocamp/kmod"
       ref: "2.3.1"
@@ -24,5 +27,14 @@ fixtures:
       repo: "puppet/autofs"
       ref: "5.0.1"
     augeasprovider_pam:
-      repo: "'herculesteam/augeasproviders_pam"
+      repo: "herculesteam/augeasproviders_pam"
       ref: "2.2.1"
+    echo:
+      repo: "ipcrm/echo"
+      ref: "0.1.6"
+    syslogng:
+      repo: "purplehazech/syslogng"
+      ref: "0.7.1"
+    rsyslog:
+      repo: "puppet/rsyslog"
+      ref: "3.3.0"

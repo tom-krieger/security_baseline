@@ -30,12 +30,12 @@ class security_baseline::rules::redhat::sec_auditd_init (
   if($enforce) {
     file_line {'auditd init delete rules':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-D'
     }
     file_line {'auditd init set buffer':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => "-b ${buffer_size}"
     }
   }

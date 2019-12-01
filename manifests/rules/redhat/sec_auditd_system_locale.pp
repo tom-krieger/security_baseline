@@ -50,38 +50,38 @@ class security_baseline::rules::redhat::sec_auditd_system_locale (
   if($enforce) {
     file_line { 'watch network environment rule 1':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-a always,exit -F arch=b32 -S sethostname,setdomainname -F key=system-locale',
     }
     file_line { 'watch network environment rule 2':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/issue -p wa -k system-locale',
     }
     file_line { 'watch network environment rule 3':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/issue.net -p wa -k system-locale',
     }
     file_line { 'watch network environment rule 4':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/hosts -p wa -k system-locale',
     }
     file_line { 'watch network environment rule 5':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/sysconfig/network -p wa -k system-locale',
     }
     file_line { 'watch network environment rule 6':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/sysconfig/network-scripts -p wa -k system-locale',
     }
     if($facts['architecture'] == 'x86_64') {
       file_line { 'watch network environment rule 7':
         ensure => present,
-        path   => $secutity_baseline::auditd_rules_file,
+        path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S sethostname,setdomainname -F key=system-locale',
       }
     }

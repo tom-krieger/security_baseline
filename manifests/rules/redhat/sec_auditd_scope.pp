@@ -42,12 +42,12 @@ class security_baseline::rules::redhat::sec_auditd_scope (
   if($enforce) {
     file_line { 'watch scope rule 1':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/sudoers -p wa -k scope',
     }
     file_line { 'watch scope rule 2':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/sudoers.d/ -p wa -k scope',
     }
   } else {

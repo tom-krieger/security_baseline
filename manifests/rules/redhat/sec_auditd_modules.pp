@@ -45,29 +45,29 @@ class security_baseline::rules::redhat::sec_auditd_modules (
   if($enforce) {
     file_line { 'watch modules rule 1':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /sbin/insmod -p x -k modules',
     }
     file_line { 'watch modules rule 2':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /sbin/rmmod -p x -k modules',
     }
     file_line { 'watch modules rule 3':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /sbin/modprobe -p x -k modules',
     }
     if($facts['architecture'] == 'x86_64') {
       file_line { 'watch modules rule 4':
         ensure => present,
-        path   => $secutity_baseline::auditd_rules_file,
+        path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules',
       }
     } else {
       file_line { 'watch modules rule 4':
         ensure => present,
-        path   => $secutity_baseline::auditd_rules_file,
+        path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b32 -S init_module -S delete_module -k modules',
       }
     }

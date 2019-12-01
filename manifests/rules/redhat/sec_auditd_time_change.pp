@@ -35,29 +35,29 @@ class security_baseline::rules::redhat::sec_auditd_time_change (
   if($enforce) {
     file_line { 'watch for date-time-change rule 1':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change',
     }
     file_line { 'watch for date-time-change rule 2':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-a always,exit -F arch=b32 -S clock_settime -k time-change',
     }
     file_line { 'watch for date-time-change rule 3':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/localtime -p wa -k time-change',
     }
 
     if($facts['architecture'] == 'x86_64') {
       file_line { 'watch for date-time-change rule 4':
         ensure => present,
-        path   => $secutity_baseline::auditd_rules_file,
+        path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change',
       }
       file_line { 'wwatch for date-time-change rule 5':
         ensure => present,
-        path   => $secutity_baseline::auditd_rules_file,
+        path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S clock_settime -k time-change',
       }
     }

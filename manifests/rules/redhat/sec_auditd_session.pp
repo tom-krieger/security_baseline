@@ -44,7 +44,7 @@ class security_baseline::rules::redhat::sec_auditd_session (
   if($enforce) {
     file_line { 'watch session rule 1':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /var/run/utmp -p wa -k session',
     }
   } else {

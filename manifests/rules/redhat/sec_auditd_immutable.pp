@@ -40,7 +40,7 @@ class security_baseline::rules::redhat::sec_auditd_immutable (
   if($enforce) {
     file_line { '-e 2':
       ensure             => present,
-      path               => $secutity_baseline::auditd_rules_file,
+      path               => $security_baseline::auditd_rules_file,
       line               => '-e 2',
       append_on_no_match => true,
     }

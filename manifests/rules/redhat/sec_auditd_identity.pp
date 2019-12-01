@@ -41,27 +41,27 @@ class security_baseline::rules::redhat::sec_auditd_identity (
   if($enforce) {
     file_line { 'watch identity rule 1':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/group -p wa -k identity',
     }
     file_line { 'watch identity rule 2':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/passwd -p wa -k identity',
     }
     file_line { 'watch identity rule 3':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/gshadow -p wa -k identity',
     }
     file_line { 'watch identity rule 4':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/shadow -p wa -k identity',
     }
     file_line { 'watch identity rule 5':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/security/opasswd -p wa -k identity',
     }
   } else {

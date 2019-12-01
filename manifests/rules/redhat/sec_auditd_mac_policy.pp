@@ -39,12 +39,12 @@ class security_baseline::rules::redhat::sec_auditd_mac_policy (
   if($enforce) {
     file_line { 'mac policy rule 1':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/selinux/ -p wa -k MAC-policy',
     }
     file_line { 'mac policy rule 2':
       ensure => present,
-      path   => $secutity_baseline::auditd_rules_file,
+      path   => $security_baseline::auditd_rules_file,
       line   => '-w /usr/share/selinux/ -p wa -k MAC-policy',
     }
   } else {

@@ -41,7 +41,7 @@ class security_baseline::rules::redhat::sec_auditd_privileged_commands (
       $rules.each |$rule| {
         file_line { $rule:
           ensure => present,
-          path   => $secutity_baseline::auditd_rules_file,
+          path   => $security_baseline::auditd_rules_file,
           line   => $rule,
         }
       }

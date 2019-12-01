@@ -25,6 +25,7 @@ require 'pp'
 
 def security_baseline_sles(os, distid, _release)
   security_baseline = {}
+  arch = Facter.value(:architecture)
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
               'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond']
@@ -584,7 +585,13 @@ def security_baseline_sles(os, distid, _release)
                                       else
                                         val
                                       end
-
+  auditd['when_full'] = if auditd['admin_space_left_action'] == 'none' ||
+                           auditd['action_mail_acct'] == 'none' ||
+                           auditd['space_left_action'] == 'none'
+                          false
+                        else
+                          true
+                        end
   val = Facter::Core::Execution.exec('grep max_log_file_action /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
   auditd['max_log_file_action'] = if val.empty? || val.nil?
                                     'none'
@@ -610,7 +617,7 @@ def security_baseline_sles(os, distid, _release)
     expected.push('-a always,exit -F arch=b64 -S adjtimex,settimeofday -F key=time-change')
     expected.push('-a always,exit -F arch=b64 -S clock_settime -F key=time-change')
   end
-  auditd['time-change'] = check_values(val, expected)
+  auditd['time-change'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep identity')
   expected = [
@@ -620,7 +627,7 @@ def security_baseline_sles(os, distid, _release)
     '-w /etc/shadow -p wa -k identity',
     '-w /etc/security/opasswd -p wa -k identity',
   ]
-  auditd['identity'] = check_values(val, expected)
+  auditd['identity'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep system-locale')
   expected = [
@@ -634,34 +641,34 @@ def security_baseline_sles(os, distid, _release)
   if arch == 'x86_64'
     expected.push('-a always,exit -F arch=b64 -S sethostname,setdomainname -F key=system-locale')
   end
-  auditd['system-locale'] = check_values(val, expected)
+  auditd['system-locale'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep MAC-policy')
   expected = [
     '-w /etc/selinux -p wa -k MAC-policy',
     '-w /usr/share/selinux -p wa -k MAC-policy',
   ]
-  auditd['mac-policy'] = check_values(val, expected)
+  auditd['mac-policy'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep logins')
   expected = [
     '-w /var/log/lastlog -p wa -k logins',
     '-w /var/run/faillock -p wa -k logins',
   ]
-  auditd['logins'] = check_values(val, expected, true)
+  auditd['logins'] = check_values_expected(val, expected, true)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep session')
   expected = [
     '-w /var/run/utmp -p wa -k session',
   ]
-  auditd['session'] = check_values(val, expected)
+  auditd['session'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep "logins$"')
   expected = [
     '-w /var/log/wtmp -p wa -k logins',
     '-w /var/log/btmp -p wa -k logins',
   ]
-  auditd['session-logins'] = check_values(val, expected, true)
+  auditd['session-logins'] = check_values_expected(val, expected, true)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep perm_mod')
   expected = [
@@ -674,7 +681,7 @@ def security_baseline_sles(os, distid, _release)
     expected.push('-a always,exit -F arch=b64 -S chown,fchown,lchown,fchownat -F auid>=1000 -F auid!=-1 -F key=perm_mod')
     expected.push('-a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=1000 -F auid!=-1 -F key=perm_mod')
   end
-  auditd['perm-mod'] = check_values(val, expected)
+  auditd['perm-mod'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep access')
   expected = [
@@ -685,7 +692,7 @@ def security_baseline_sles(os, distid, _release)
     expected.push('-a always,exit -F arch=b64 -S open,truncate,ftruncate,creat,openat -F exit=-EACCES -F auid>=1000 -F auid!=-1 -F key=access')
     expected.push('-a always,exit -F arch=b64 -S open,truncate,ftruncate,creat,openat -F exit=-EPERM -F auid>=1000 -F auid!=-1 -F key=access')
   end
-  auditd['access'] = check_values(val, expected)
+  auditd['access'] = check_values_expected(val, expected)
 
   rules = {}
   priv_cmds = []
@@ -710,7 +717,7 @@ def security_baseline_sles(os, distid, _release)
   auditd['priv-cmds-list'] = priv_cmds.uniq
 
   val = Facter::Core::Execution.exec('auditctl -l | grep "privileged$"')
-  auditd['priv-cmds'] = check_values(val, expected, true)
+  auditd['priv-cmds'] = check_values_expected(val, expected, true)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep "mounts$"')
   expected = [
@@ -719,7 +726,7 @@ def security_baseline_sles(os, distid, _release)
   if arch == 'x86_64'
     expected.push('-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=-1 -F key=mounts')
   end
-  auditd['mounts'] = check_values(val, expected)
+  auditd['mounts'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep "delete$"')
   expected = [
@@ -728,20 +735,20 @@ def security_baseline_sles(os, distid, _release)
   if arch == 'x86_64'
     expected.push('-a always,exit -F arch=b64 -S rename,unlink,unlinkat,renameat -F auid>=1000 -F auid!=-1 -F key=delete')
   end
-  auditd['delete'] = check_values(val, expected)
+  auditd['delete'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep scope')
   expected = [
     '-w /etc/sudoers -p wa -k scope',
     '-w /etc/sudoers.d -p wa -k scope',
   ]
-  auditd['scope'] = check_values(val, expected)
+  auditd['scope'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep actions')
   expected = [
     '-w /var/log/sudo.log -p wa -k actions',
   ]
-  auditd['actions'] = check_values(val, expected)
+  auditd['actions'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep "modules$"')
   expected = [
@@ -754,7 +761,7 @@ def security_baseline_sles(os, distid, _release)
   else
     expected.push('-a always,exit -F arch=b32q -S init_module,delete_module -F key=modules')
   end
-  auditd['modules'] = check_values(val, expected)
+  auditd['modules'] = check_values_expected(val, expected)
 
   val = Facter::Core::Execution.exec('grep "^\s*[^#]" /etc/audit/audit.rules | tail -1')
   auditd['immutable'] = if val.empty? || val.nil?

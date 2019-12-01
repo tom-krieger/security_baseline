@@ -37,7 +37,7 @@ class security_baseline::rules::redhat::sec_auditd_service (
     service { 'auditd':
       ensure  => running,
       enable  => true,
-      require => Package['auditd']
+      require => Package['audit']
     }
 
   } else {

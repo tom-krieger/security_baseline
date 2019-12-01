@@ -602,32 +602,32 @@ def security_baseline_redhat(os, distid, _release)
   auditd = {}
   val = Facter::Core::Execution.exec('grep "^max_log_file.*=" /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
   auditd['max_log_file'] = if val.empty? || val.nil?
-                                               'none'
-                                             else
-                                               val
-                                             end
+                             'none'
+                           else
+                             val
+                           end
 
   val = Facter::Core::Execution.exec('grep "^space_left_action.*=" /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
   auditd['space_left_action'] = if val.empty? || val.nil?
-                                                    'none'
-                                                  else
-                                                    val
-                                                  end
+                                  'none'
+                                else
+                                  val
+                                end
 
   val = Facter::Core::Execution.exec('grep action_mail_acct /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
   auditd['action_mail_acct'] = if val.empty? || val.nil?
-                                                   'none'
-                                                 else
-                                                   val
-                                                 end
+                                 'none'
+                               else
+                                 val
+                               end
 
   val = Facter::Core::Execution.exec('grep "^admin_space_left_action.*=" /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
   auditd['admin_space_left_action'] = if val.empty? || val.nil?
-                                                          'none'
-                                                        else
-                                                          val
-                                                        end
-  auditd['when_full'] = if auditd['admin_space_left_action'] == 'none' || 
+                                        'none'
+                                      else
+                                        val
+                                      end
+  auditd['when_full'] = if auditd['admin_space_left_action'] == 'none' ||
                            auditd['action_mail_acct'] == 'none' ||
                            auditd['space_left_action'] == 'none'
                           false
@@ -807,12 +807,12 @@ def security_baseline_redhat(os, distid, _release)
 
   val = Facter::Core::Execution.exec('grep "^\s*[^#]" /etc/audit/audit.rules | tail -1')
   auditd['immutable'] = if val.empty? || val.nil?
-                                            false
-                                          elsif val == '-e 2'
-                                            true
-                                          else
-                                            false
-                                          end
+                          false
+                        elsif val == '-e 2'
+                          true
+                        else
+                          false
+                        end
 
   security_baseline['auditd'] = auditd
 

@@ -36,7 +36,7 @@ class security_baseline::rules::redhat::sec_auditd_max_log_file (
   Integer $max_log_size = 16,
 ) {
   if($enforce) {
-    @class { 'auditd':
+    class { 'auditd':
       max_log_file => $max_log_size,
     }
   } else {

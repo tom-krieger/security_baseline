@@ -47,7 +47,7 @@ class security_baseline::rules::redhat::sec_auditd_when_full (
   String $admin_space_left_action = 'halt',
 ) {
   if($enforce) {
-    @class { 'auditd':
+    class { 'auditd':
       space_left_action       => $space_left_action,
       action_mail_acct        => $action_mail_acct,
       admin_space_left_action => $admin_space_left_action,
@@ -63,5 +63,6 @@ class security_baseline::rules::redhat::sec_auditd_when_full (
         loglevel => $log_level,
         withpath => false,
       }
+    }
   }
 }

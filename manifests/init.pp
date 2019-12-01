@@ -78,8 +78,6 @@ class security_baseline (
 
   create_resources('::security_baseline::sec_check', $rules)
 
-  realize Class['auditd']
-
   concat::fragment { 'finish':
     content => epp('security_baseline/logfile_end.epp', {}),
     target  => $logfile,

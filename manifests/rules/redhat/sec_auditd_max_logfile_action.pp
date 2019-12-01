@@ -36,7 +36,7 @@ class security_baseline::rules::redhat::sec_auditd_max_logfile_action (
   String $max_log_file_action = 'keep_logs',
 ) {
   if($enforce) {
-    @class { 'auditd':
+    class { 'auditd':
       max_log_file_action => $max_log_file_action,
       buffer_size         => 8192,
     }

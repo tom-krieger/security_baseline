@@ -116,7 +116,7 @@ class security_baseline::rules::sles::sec_pam_pw_requirements (
       module    => 'pam_cracklib.so',
       arguments => [
         'try_first_pass',
-        'retrys=3',
+        'retry=3',
         "minlen=${minlen}",
         "dcredit=${dcredit}",
         "ucredit=${ucredit}",

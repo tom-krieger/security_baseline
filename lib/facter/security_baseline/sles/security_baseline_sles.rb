@@ -20,6 +20,7 @@ require 'facter/security_baseline/common/read_file_stats'
 require 'facter/security_baseline/common/read_local_users'
 require 'facter/security_baseline/common/trim_string'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
+require 'facter/security_baseline/common/check_values_expected'
 require 'pp'
 
 def security_baseline_sles(os, distid, _release)

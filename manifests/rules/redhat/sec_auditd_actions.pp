@@ -35,7 +35,7 @@ class security_baseline::rules::redhat::sec_auditd_actions (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'watch admin actions rule 1':
+    file_line { 'watch admin actions rule 1':
       ensure => present,
       path   => $secutity_baseline::auditd_rules_file,
       line   => '-w /var/log/sudo.log -p wa -k actions',

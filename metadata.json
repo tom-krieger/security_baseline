@@ -11,6 +11,10 @@
       "version_requirement": ">= 4.6.0 < 7.0.0"
     },
     {
+      "name": "puppetlabs-concat",
+      "version_requirement": "6.1.0"
+    },
+    {
       "name": "camptocamp-kmod",
       "version_requirement": "2.3.1"
     },

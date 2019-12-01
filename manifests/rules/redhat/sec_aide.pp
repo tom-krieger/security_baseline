@@ -27,8 +27,8 @@
 #
 # @api private
 class security_baseline::rules::redhat::sec_aide (
-  Boolean $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
 

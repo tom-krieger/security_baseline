@@ -25,8 +25,9 @@ require 'pp'
 # security_baseline_redhat.rb
 # collect facts about the security baseline
 
-def security_baseline_redhat(os, distid, release)
+def security_baseline_redhat(os, distid, _release)
   security_baseline = {}
+  arch = Facter.value(:architecture)
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
               'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond']
@@ -596,6 +597,223 @@ def security_baseline_redhat(os, distid, release)
   security_baseline['duplicate_users'] = check_value_string(read_duplicate_users('user'), 'none')
   security_baseline['duplicate_gids'] = check_value_string(read_duplicate_groups('gid'), 'none')
   security_baseline['duplicate_groups'] = check_value_string(read_duplicate_groups('group'), 'none')
+
+  auditd = {}
+  val = Facter::Core::Execution.exec('grep "^max_log_file.*=" /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
+  auditd['max_log_file'] = if val.empty? || val.nil?
+                                               'none'
+                                             else
+                                               val
+                                             end
+
+  val = Facter::Core::Execution.exec('grep "^space_left_action.*=" /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
+  auditd['space_left_action'] = if val.empty? || val.nil?
+                                                    'none'
+                                                  else
+                                                    val
+                                                  end
+
+  val = Facter::Core::Execution.exec('grep action_mail_acct /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
+  auditd['action_mail_acct'] = if val.empty? || val.nil?
+                                                   'none'
+                                                 else
+                                                   val
+                                                 end
+
+  val = Facter::Core::Execution.exec('grep "^admin_space_left_action.*=" /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
+  auditd['admin_space_left_action'] = if val.empty? || val.nil?
+                                                          'none'
+                                                        else
+                                                          val
+                                                        end
+  auditd['when_full'] = if auditd['admin_space_left_action'] == 'none' || 
+                           auditd['action_mail_acct'] == 'none' ||
+                           auditd['space_left_action'] == 'none'
+                          false
+                        else
+                          true
+                        end
+  val = Facter::Core::Execution.exec('grep max_log_file_action /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
+  auditd['max_log_file_action'] = if val.empty? || val.nil?
+                                    'none'
+                                  else
+                                    val
+                                  end
+
+  auditd['srv_auditd'] = check_service_is_enabled('auditd')
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg')
+  auditd['auditing_process'] = if val.empty? || val.nil?
+                                 'none'
+                               else
+                                 val
+                               end
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep time-change')
+  expected = [
+    '-a always,exit -F arch=b32 -S stime,settimeofday,adjtimex -F key=time-change',
+    '-a always,exit -F arch=b32 -S clock_settime -F key=time-change',
+    '-w /etc/localtime -p wa -k time-change',
+  ]
+  if arch == 'x86_64'
+    expected.push('-a always,exit -F arch=b64 -S adjtimex,settimeofday -F key=time-change')
+    expected.push('-a always,exit -F arch=b64 -S clock_settime -F key=time-change')
+  end
+  auditd['time-change'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep identity')
+  expected = [
+    '-w /etc/group -p wa -k identity',
+    '-w /etc/passwd -p wa -k identity',
+    '-w /etc/gshadow -p wa -k identity',
+    '-w /etc/shadow -p wa -k identity',
+    '-w /etc/security/opasswd -p wa -k identity',
+  ]
+  auditd['identity'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep system-locale')
+  expected = [
+    '-a always,exit -F arch=b32 -S sethostname,setdomainname -F key=system-locale',
+    '-w /etc/issue -p wa -k system-locale',
+    '-w /etc/issue.net -p wa -k system-locale',
+    '-w /etc/hosts -p wa -k system-locale',
+    '-w /etc/sysconfig/network -p wa -k system-locale',
+    '-w /etc/sysconfig/network-scripts -p wa -k system-locale',
+  ]
+  if arch == 'x86_64'
+    expected.push('-a always,exit -F arch=b64 -S sethostname,setdomainname -F key=system-locale')
+  end
+  auditd['system-locale'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep MAC-policy')
+  expected = [
+    '-w /etc/selinux -p wa -k MAC-policy',
+    '-w /usr/share/selinux -p wa -k MAC-policy',
+  ]
+  auditd['mac-policy'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep logins')
+  expected = [
+    '-w /var/log/lastlog -p wa -k logins',
+    '-w /var/run/faillock -p wa -k logins',
+  ]
+  auditd['logins'] = check_values(val, expected, true)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep session')
+  expected = [
+    '-w /var/run/utmp -p wa -k session',
+  ]
+  auditd['session'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep "logins$"')
+  expected = [
+    '-w /var/log/wtmp -p wa -k logins',
+    '-w /var/log/btmp -p wa -k logins',
+  ]
+  auditd['session-logins'] = check_values(val, expected, true)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep perm_mod')
+  expected = [
+    '-a always,exit -F arch=b32 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=-1 -F key=perm_mod',
+    '-a always,exit -F arch=b32 -S lchown,fchown,chown,fchownat -F auid>=1000 -F auid!=-1 -F key=perm_mod',
+    '-a always,exit -F arch=b32 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=1000 -F auid!=-1 -F key=perm_mod',
+  ]
+  if arch == 'x86_64'
+    expected.push('-a always,exit -F arch=b64 -S chmod,fchmod,fchmodat -F auid>=1000 -F auid!=-1 -F key=perm_mod')
+    expected.push('-a always,exit -F arch=b64 -S chown,fchown,lchown,fchownat -F auid>=1000 -F auid!=-1 -F key=perm_mod')
+    expected.push('-a always,exit -F arch=b64 -S setxattr,lsetxattr,fsetxattr,removexattr,lremovexattr,fremovexattr -F auid>=1000 -F auid!=-1 -F key=perm_mod')
+  end
+  auditd['perm-mod'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep access')
+  expected = [
+    '-a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat -F exit=-EACCES -F auid>=1000 -F auid!=-1 -F key=access',
+    '-a always,exit -F arch=b32 -S open,creat,truncate,ftruncate,openat -F exit=-EPERM -F auid>=1000 -F auid!=-1 -F key=access',
+  ]
+  if arch == 'x86_64'
+    expected.push('-a always,exit -F arch=b64 -S open,truncate,ftruncate,creat,openat -F exit=-EACCES -F auid>=1000 -F auid!=-1 -F key=access')
+    expected.push('-a always,exit -F arch=b64 -S open,truncate,ftruncate,creat,openat -F exit=-EPERM -F auid>=1000 -F auid!=-1 -F key=access')
+  end
+  auditd['access'] = check_values(val, expected)
+
+  rules = {}
+  priv_cmds = []
+  expected = []
+  # Facter.value(:partitions).each do |_part, data|
+  #  if (data.key?('mount')) && (data['filesystem'] != 'iso9660') && ! _part.match(%r{^\/dev/loop}) && ! _part.match(%r{^\/dev/mapper\/docker})
+  #    mount = data['mount']
+  #    cmd = "find #{mount} -xdev \\( -perm -4000 -o -perm -2000 \\) -type f | awk '{print \"-a always,exit -S all -F path=\" $1 \" -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged\"; }'"
+  #    rules_raw = Facter::Core::Execution.exec(cmd).split("\n")
+  #    priv_cmds.push(rules_raw)
+  #    rules[mount] = rules_raw
+  #    expected.push(*rules_raw)
+  #  end
+  # end
+  cmd = "find /usr -xdev \\( -perm -4000 -o -perm -2000 \\) -type f | awk '{print \"-a always,exit -S all -F path=\" $1 \" -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged\"; }'"
+  rules_raw = Facter::Core::Execution.exec(cmd).split("\n")
+  priv_cmds.push(rules_raw)
+  rules['/usr'] = rules_raw
+  expected.push(*rules_raw)
+  expected.uniq!
+  auditd['priv-cmds-rules'] = rules
+  auditd['priv-cmds-list'] = priv_cmds.uniq
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep "privileged$"')
+  auditd['priv-cmds'] = check_values(val, expected, true)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep "mounts$"')
+  expected = [
+    '-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=-1 -F key=mounts',
+  ]
+  if arch == 'x86_64'
+    expected.push('-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=-1 -F key=mounts')
+  end
+  auditd['mounts'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep "delete$"')
+  expected = [
+    '-a always,exit -F arch=b32 -S unlink,rename,unlinkat,renameat -F auid>=1000 -F auid!=-1 -F key=delete',
+  ]
+  if arch == 'x86_64'
+    expected.push('-a always,exit -F arch=b64 -S rename,unlink,unlinkat,renameat -F auid>=1000 -F auid!=-1 -F key=delete')
+  end
+  auditd['delete'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep scope')
+  expected = [
+    '-w /etc/sudoers -p wa -k scope',
+    '-w /etc/sudoers.d -p wa -k scope',
+  ]
+  auditd['scope'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep actions')
+  expected = [
+    '-w /var/log/sudo.log -p wa -k actions',
+  ]
+  auditd['actions'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('auditctl -l | grep "modules$"')
+  expected = [
+    '-w /sbin/insmod -p x -k modules',
+    '-w /sbin/rmmod -p x -k modules',
+    '-w /sbin/modprobe -p x -k modules',
+  ]
+  if arch == 'x86_64'
+    expected.push('-a always,exit -F arch=b64 -S init_module,delete_module -F key=modules')
+  else
+    expected.push('-a always,exit -F arch=b32q -S init_module,delete_module -F key=modules')
+  end
+  auditd['modules'] = check_values(val, expected)
+
+  val = Facter::Core::Execution.exec('grep "^\s*[^#]" /etc/audit/audit.rules | tail -1')
+  auditd['immutable'] = if val.empty? || val.nil?
+                                            false
+                                          elsif val == '-e 2'
+                                            true
+                                          else
+                                            false
+                                          end
+
+  security_baseline['auditd'] = auditd
 
   security_baseline
 end

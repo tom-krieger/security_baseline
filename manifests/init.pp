@@ -33,10 +33,12 @@
 class security_baseline (
   String $baseline_version,
   Hash $rules,
-  Boolean $debug            = false,
-  Boolean $log_info         = false,
-  String $logfile           = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
-  Boolean $set_postrun      = true,
+  Boolean $debug             = false,
+  Boolean $log_info          = false,
+  String $logfile            = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
+  Boolean $set_postrun       = true,
+  Array $auditd_suid_include = [],
+  Array $auditd_suid_exclude = [],
 ) {
   include ::security_baseline::config
   include ::security_baseline::services
@@ -49,6 +51,12 @@ class security_baseline (
       loglevel => 'debug',
       withpath => false,
     }
+  }
+
+  class {'security_baseline::auditd_suid_rules_cron':
+    include => $auditd_suid_include,
+    exclude => $auditd_suid_exclude,
+    before  => Concat[$logfile],
   }
 
   class { '::security_baseline::config_puppet_agent':
@@ -69,6 +77,8 @@ class security_baseline (
   }
 
   create_resources('::security_baseline::sec_check', $rules)
+
+  realize Class['auditd']
 
   concat::fragment { 'finish':
     content => epp('security_baseline/logfile_end.epp', {}),

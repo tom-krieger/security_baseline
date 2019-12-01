@@ -1,0 +1,7 @@
+
+for fs in <%= $include %> ; do
+
+  logger -p daemon.info -t $prog "working on $fs"
+  find ${fs} -xdev \( -perm -4000 -o -perm -2000 \) -type f | awk '{print "-a always,exit -S all -F path=" $1 " -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged"; }'
+
+done > /tmp/auditd.rules.$$

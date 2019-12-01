@@ -46,6 +46,11 @@ class security_baseline (
   include ::security_baseline::world_writeable_files_cron
   include ::security_baseline::unowned_files_cron
 
+  class { '::auditd':
+    buffer_size => 8192,
+    before      => Concat[$logfile],
+  }
+
   if($debug) {
     echo{"Applying security baseline version: ${baseline_version}":
       loglevel => 'debug',

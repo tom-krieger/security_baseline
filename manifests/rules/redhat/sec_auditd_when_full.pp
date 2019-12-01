@@ -47,10 +47,20 @@ class security_baseline::rules::redhat::sec_auditd_when_full (
   String $admin_space_left_action = 'halt',
 ) {
   if($enforce) {
-    class { 'auditd':
-      space_left_action       => $space_left_action,
-      action_mail_acct        => $action_mail_acct,
-      admin_space_left_action => $admin_space_left_action,
+    file_line { 'auditd_space_left_action':
+      line  => "space_left_action = ${space_left_action}",
+      path  => '/etc/audit/auditd.conf',
+      match => '^space_left_action',
+    }
+    file_line { 'auditd_action_mail_acct':
+      line  => "action_mail_acct = ${action_mail_acct}",
+      path  => '/etc/audit/auditd.conf',
+      match => '^action_mail_acct',
+    }
+    file_line { 'auditd_admin_space_left_action':
+      line  => "admin_space_left_action = ${admin_space_left_action}",
+      path  => '/etc/audit/auditd.conf',
+      match => '^admin_space_left_action',
     }
   } else {
     if(

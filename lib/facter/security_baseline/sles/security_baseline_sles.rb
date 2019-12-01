@@ -303,7 +303,7 @@ def security_baseline_sles(os, distid, release)
         else
           ''
         end
-  pwquality['retry'] = check_value_string(h, 'none')
+  pwquality['retry'] = check_value_string(val, 'none')
   val = trim_string(Facter::Core::Execution.exec('grep ^minlen /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
   pwquality['minlen'] = check_value_string(val, 'none')
   val = trim_string(Facter::Core::Execution.exec('grep ^dcredit /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))

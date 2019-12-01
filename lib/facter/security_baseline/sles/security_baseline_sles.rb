@@ -298,6 +298,11 @@ def security_baseline_sles(os, distid, release)
   val = Facter::Core::Execution.exec('grep pam_cracklib.so /etc/pam.d/common-password')
   pwquality['try_first_pass'] = val.match(%r{try_first_pass})
   h = val.match(%r{retry\s*=\s*(?<rt>\d+)})
+  val = if h.is_a?(Hash)
+          h['rt']
+        else
+          ''
+        end
   pwquality['retry'] = check_value_string(h, 'none')
   val = trim_string(Facter::Core::Execution.exec('grep ^minlen /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
   pwquality['minlen'] = check_value_string(val, 'none')

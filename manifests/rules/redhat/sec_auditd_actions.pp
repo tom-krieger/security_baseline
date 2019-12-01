@@ -36,7 +36,9 @@ class security_baseline::rules::redhat::sec_auditd_actions (
 ) {
   if($enforce) {
     auditd::rule { 'watch admin actions rule 1':
-      content => '-w /var/log/sudo.log -p wa -k actions',
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /var/log/sudo.log -p wa -k actions',
     }
   } else {
     if($facts['security_baseline']['auditd']['actions'] == false) {

@@ -42,11 +42,15 @@ class security_baseline::rules::redhat::sec_auditd_session_logins (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'watch session rule 2':
-      content => '-w /var/log/wtmp -p wa -k logins',
+    file_line { 'watch session rule 2':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /var/log/wtmp -p wa -k logins',
     }
-    auditd::rule { 'watch session rule 3':
-      content => '-w /var/log/btmp -p wa -k logins',
+    file_line { 'watch session rule 3':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /var/log/btmp -p wa -k logins',
     }
   } else {
     if($facts['security_baseline']['auditd']['session-logins'] == false) {

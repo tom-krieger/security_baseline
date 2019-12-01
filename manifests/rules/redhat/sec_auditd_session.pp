@@ -42,7 +42,7 @@ class security_baseline::rules::redhat::sec_auditd_session (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'watch session rule 1':
+    file_line { 'watch session rule 1':
       content => '-w /var/run/utmp -p wa -k session',
     }
   } else {

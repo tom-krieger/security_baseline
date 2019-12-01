@@ -823,7 +823,7 @@ def security_baseline_sles(os, distid, _release)
                          end
   syslog['syslog-ng'] = syslog_ng
 
-  syslog['syslog_installed'] = syslog['rsyslog']['package'] ||syslog['syslog-ng']['package']
+  syslog['syslog_installed'] = syslog['rsyslog']['package'] || syslog['syslog-ng']['package']
 
   logfiles = {}
   Facter::Core::Execution.exec('find /var/log -type f').split("\n").each do |logfile|

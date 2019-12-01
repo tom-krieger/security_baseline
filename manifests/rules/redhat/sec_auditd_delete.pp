@@ -41,12 +41,16 @@ class security_baseline::rules::redhat::sec_auditd_delete (
   String $log_level = ''
 ) {
   if ($enforce) {
-    auditd::rule { 'watch deletes rule 1':
-      content => '-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
+    file_line { 'watch deletes rule 1':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
     }
     if($facts['architecture'] == 'x86_64') {
-      auditd::rule { 'watch deletes rule 2':
-        content => '-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
+      file_line { 'watch deletes rule 2':
+        ensure => present,
+        path   => $secutity_baseline::auditd_rules_file,
+        line   => '-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
       }
     }
   } else {

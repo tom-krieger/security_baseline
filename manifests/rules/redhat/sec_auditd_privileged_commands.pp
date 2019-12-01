@@ -39,7 +39,10 @@ class security_baseline::rules::redhat::sec_auditd_privileged_commands (
   if($enforce) {
     $facts['security_baseline']['auditd']['priv-cmds-list'].each |$part, $rules| {
       $rules.each |$rule| {
-        auditd::rule { $rule:
+        file_line { $rule:
+          ensure => present,
+          path   => $secutity_baseline::auditd_rules_file,
+          line   => $rule,
         }
       }
     }

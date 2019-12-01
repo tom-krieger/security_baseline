@@ -25,6 +25,14 @@
     {
       "name": "herculesteam-augeasproviders_pam",
       "version_requirement": "2.2.1"
+    },
+    {
+      "name": "purplehazech-syslogng",
+      "version_requirement": "0.7.1"
+    },
+    {
+      "name": "puppet-rsyslog",
+      "version_requirement": "3.3.0"
     }
   ],
   "operatingsystem_support": [

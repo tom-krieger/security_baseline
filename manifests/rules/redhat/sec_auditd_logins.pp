@@ -38,11 +38,15 @@ class security_baseline::rules::redhat::sec_auditd_logins (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'logins policy rule 1':
-      content => '-w /var/log/lastlog -p wa -k logins',
+    file_line { 'logins policy rule 1':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /var/log/lastlog -p wa -k logins',
     }
-    auditd::rule { 'logins policy rule 2':
-      content => '-w /var/run/faillock/ -p wa -k logins',
+    file_line { 'logins policy rule 2':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /var/run/faillock/ -p wa -k logins',
     }
   } else {
     if($facts['security_baseline']['auditd']['logins'] == false) {

@@ -45,12 +45,16 @@ class security_baseline::rules::redhat::sec_auditd_mounts (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'watch mounts rule 1':
-      content => '-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts',
+    file_line { 'watch mounts rule 1':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts',
     }
     if($facts['architecture'] == 'x86_64') {
-      auditd::rule { 'watch mounts rule 2':
-        content => '-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts',
+      file_line { 'watch mounts rule 2':
+        ensure => present,
+        path   => $secutity_baseline::auditd_rules_file,
+        line   => '-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts',
       }
     }
   } else {

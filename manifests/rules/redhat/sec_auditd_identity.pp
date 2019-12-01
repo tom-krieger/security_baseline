@@ -39,20 +39,30 @@ class security_baseline::rules::redhat::sec_auditd_identity (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'watch identity rule 1':
-      content => '-w /etc/group -p wa -k identity',
+    file_line { 'watch identity rule 1':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /etc/group -p wa -k identity',
     }
-    auditd::rule { 'watch identity rule 2':
-      content => '-w /etc/passwd -p wa -k identity',
+    file_line { 'watch identity rule 2':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /etc/passwd -p wa -k identity',
     }
-    auditd::rule { 'watch identity rule 3':
-      content => '-w /etc/gshadow -p wa -k identity',
+    file_line { 'watch identity rule 3':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /etc/gshadow -p wa -k identity',
     }
-    auditd::rule { 'watch identity rule 4':
-      content => '-w /etc/shadow -p wa -k identity',
+    file_line { 'watch identity rule 4':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /etc/shadow -p wa -k identity',
     }
-    auditd::rule { 'watch identity rule 5':
-      content => '-w /etc/security/opasswd -p wa -k identity',
+    file_line { 'watch identity rule 5':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /etc/security/opasswd -p wa -k identity',
     }
   } else {
     if($facts['security_baseline']['auditd']['identity'] == false) {

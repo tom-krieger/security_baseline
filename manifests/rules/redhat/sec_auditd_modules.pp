@@ -43,22 +43,32 @@ class security_baseline::rules::redhat::sec_auditd_modules (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'watch modules rule 1':
-      content => '-w /sbin/insmod -p x -k modules',
+    file_line { 'watch modules rule 1':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /sbin/insmod -p x -k modules',
     }
-    auditd::rule { 'watch modules rule 2':
-      content => '-w /sbin/rmmod -p x -k modules',
+    file_line { 'watch modules rule 2':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /sbin/rmmod -p x -k modules',
     }
-    auditd::rule { 'watch modules rule 3':
-      content => '-w /sbin/modprobe -p x -k modules',
+    file_line { 'watch modules rule 3':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /sbin/modprobe -p x -k modules',
     }
     if($facts['architecture'] == 'x86_64') {
-      auditd::rule { 'watch modules rule 4':
-        content => '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules',
+      file_line { 'watch modules rule 4':
+        ensure => present,
+        path   => $secutity_baseline::auditd_rules_file,
+        line   => '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules',
       }
     } else {
-      auditd::rule { 'watch modules rule 4':
-        content => '-a always,exit -F arch=b32 -S init_module -S delete_module -k modules',
+      file_line { 'watch modules rule 4':
+        ensure => present,
+        path   => $secutity_baseline::auditd_rules_file,
+        line   => '-a always,exit -F arch=b32 -S init_module -S delete_module -k modules',
       }
     }
   } else {

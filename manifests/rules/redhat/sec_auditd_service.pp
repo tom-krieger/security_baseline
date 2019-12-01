@@ -30,7 +30,15 @@ class security_baseline::rules::redhat::sec_auditd_service (
   String $log_level = ''
 ) {
   if($enforce) {
-    # service is managed by auditd class
+    package { 'audit':
+      ensure => installed,
+    }
+
+    service { 'auditd':
+      ensure  => running,
+      enable  => true,
+      require => Package['auditd']
+    }
 
   } else {
     if($facts['security_baseline']['auditd']['srv_auditd'] == false) {

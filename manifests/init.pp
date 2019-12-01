@@ -39,17 +39,13 @@ class security_baseline (
   Boolean $set_postrun       = true,
   Array $auditd_suid_include = [],
   Array $auditd_suid_exclude = [],
+  String $auditd_rules_file  = '/etc/audit/rules.d/sec_baseline_auditd.rules'
 ) {
   include ::security_baseline::config
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
   include ::security_baseline::world_writeable_files_cron
   include ::security_baseline::unowned_files_cron
-
-  class { '::auditd':
-    buffer_size => 8192,
-    before      => Concat[$logfile],
-  }
 
   if($debug) {
     echo{"Applying security baseline version: ${baseline_version}":

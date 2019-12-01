@@ -36,18 +36,26 @@ class security_baseline::rules::redhat::sec_auditd_access (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'watch access rule 1':
-      content => '-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access', #lint:ignore:140chars
+    file_line { 'watch access rule 1':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access', #lint:ignore:140chars
     }
-    auditd::rule { 'watch access rule 2':
-      content => '-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access', #lint:ignore:140chars
+    file_line { 'watch access rule 2':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-a always,exit -F arch=b32 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access', #lint:ignore:140chars
     }
     if($facts['architecture'] == 'x86_64') {
-      auditd::rule { 'watch access rule 3':
-        content => '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access', #lint:ignore:140chars
+      file_line { 'watch access rule 3':
+        ensure => present,
+        path   => $secutity_baseline::auditd_rules_file,
+        line   => '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EACCES -F auid>=1000 -F auid!=4294967295 -k access', #lint:ignore:140chars
       }
-      auditd::rule { 'watch access rule 4':
-        content => '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access', #lint:ignore:140chars
+      file_line { 'watch access rule 4':
+        ensure => present,
+        path   => $secutity_baseline::auditd_rules_file,
+        line   => '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access', #lint:ignore:140chars
       }
     }
   } else {

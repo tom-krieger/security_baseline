@@ -33,22 +33,32 @@ class security_baseline::rules::redhat::sec_auditd_time_change (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'watch for date-time-change rule 1':
-      content => '-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change',
+    file_line { 'watch for date-time-change rule 1':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change',
     }
-    auditd::rule { 'watch for date-time-change rule 2':
-      content => '-a always,exit -F arch=b32 -S clock_settime -k time-change',
+    file_line { 'watch for date-time-change rule 2':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-a always,exit -F arch=b32 -S clock_settime -k time-change',
     }
-    auditd::rule { 'watch for date-time-change rule 3':
-      content => '-w /etc/localtime -p wa -k time-change',
+    file_line { 'watch for date-time-change rule 3':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /etc/localtime -p wa -k time-change',
     }
 
     if($facts['architecture'] == 'x86_64') {
-      auditd::rule { 'watch for date-time-change rule 4':
-        content => '-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change',
+      file_line { 'watch for date-time-change rule 4':
+        ensure => present,
+        path   => $secutity_baseline::auditd_rules_file,
+        line   => '-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change',
       }
-      auditd::rule { 'wwatch for date-time-change rule 5':
-        content => '-a always,exit -F arch=b64 -S clock_settime -k time-change',
+      file_line { 'wwatch for date-time-change rule 5':
+        ensure => present,
+        path   => $secutity_baseline::auditd_rules_file,
+        line   => '-a always,exit -F arch=b64 -S clock_settime -k time-change',
       }
     }
   } else {

@@ -40,11 +40,15 @@ class security_baseline::rules::redhat::sec_auditd_scope (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { 'watch scope rule 1':
-      content => '-w /etc/sudoers -p wa -k scope',
+    file_line { 'watch scope rule 1':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /etc/sudoers -p wa -k scope',
     }
-    auditd::rule { 'watch scope rule 2':
-      content => '-w /etc/sudoers.d/ -p wa -k scope',
+    file_line { 'watch scope rule 2':
+      ensure => present,
+      path   => $secutity_baseline::auditd_rules_file,
+      line   => '-w /etc/sudoers.d/ -p wa -k scope',
     }
   } else {
     if($facts['security_baseline']['auditd']['scope'] == false) {

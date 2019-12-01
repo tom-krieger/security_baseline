@@ -38,8 +38,11 @@ class security_baseline::rules::redhat::sec_auditd_immutable (
   String $log_level = ''
 ) {
   if($enforce) {
-    auditd::rule { '-e 2':
-      order => 9999,
+    file_line { '-e 2':
+      ensure             => present,
+      path               => $secutity_baseline::auditd_rules_file,
+      line               => '-e 2',
+      append_on_no_match => true,
     }
   } else {
     if($facts['security_baseline']['auditd']['immutable'] == false) {

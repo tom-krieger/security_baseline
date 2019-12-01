@@ -1,0 +1,7 @@
+
+rm -f /tmp/auditd.sules.suid
+uniq /tmp/auditd.rules.$$ /tmp/auditd.sules.suid
+
+logger -p daemon.info -t $prog "finished auditd suid progs rule creation"
+
+exit 0

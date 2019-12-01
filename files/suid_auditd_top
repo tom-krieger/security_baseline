@@ -1,0 +1,6 @@
+#!/bin/bash
+
+prog=`basename $0`
+logger -p daemon.info -t $prog "started auditd suid progs rule creation ..."
+
+rm -f /tmp/auditd.rules.$$

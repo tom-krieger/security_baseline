@@ -108,22 +108,21 @@ class security_baseline::rules::sles::sec_pam_pw_requirements (
       match  => '^#?lcredit',
     }
 
-    $services.each | $service | {
-      pam { "pam_cracklib ${service}":
-        ensure    => present,
-        service   => $service,
-        type      => 'auth',
-        module    => 'pam_cracklib.so',
-        arguments => [
-          'try_first_pass',
-          'retrys=3',
-          "minlen=${minlen}",
-          "dcredit=${dcredit}",
-          "ucredit=${ucredit}",
-          "ocredit=${ocredit}",
-          "lcredit=${lcredit}"
-        ]
-      }
+    pam { 'pam_cracklib common-password':
+      ensure    => present,
+      service   => 'common-password',
+      type      => 'password',
+      control   => 'requisite',
+      module    => 'pam_cracklib.so',
+      arguments => [
+        'try_first_pass',
+        'retrys=3',
+        "minlen=${minlen}",
+        "dcredit=${dcredit}",
+        "ucredit=${ucredit}",
+        "ocredit=${ocredit}",
+        "lcredit=${lcredit}"
+      ]
     }
   } else {
     unless ($facts['security_baseline']['pam']['pwquality']['status']) {

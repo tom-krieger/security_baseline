@@ -37,7 +37,7 @@ class security_baseline::rules::redhat::sec_auditd_init (
     file_line {'auditd init delete rules':
       ensure  => present,
       path    => $security_baseline::auditd_rules_file,
-      line    => '-D',,
+      line    => '-D',
       require => File[$security_baseline::auditd_rules_file],
     }
     file_line {'auditd init set buffer':

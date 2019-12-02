@@ -32,8 +32,14 @@ class security_baseline::rules::redhat::sec_logrotate (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'logrotate':
-      ensure => installed,
+    class { '::logrotate':
+      config => {
+        dateext      => true,
+        compress     => true,
+        rotate       => 7,
+        rotate_every => 'week',
+        ifempty      => true,
+      },
     }
   } else {
     if($facts['security_baseline']['packages_installed']['logrotate'] == false) {

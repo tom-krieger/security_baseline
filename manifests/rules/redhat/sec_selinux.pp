@@ -25,8 +25,8 @@
 #
 # @api private
 class security_baseline::rules::redhat::sec_selinux (
-  Boolean $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if $facts['os']['name'].downcase() != 'sles' {

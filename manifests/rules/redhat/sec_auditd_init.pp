@@ -12,6 +12,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param buffer_size
+#    Value for Buffer size in rules file header.
+#
 # @example
 #   class security_baseline::rules::redhat::sec_auditd_init {
 #       enforce => true,

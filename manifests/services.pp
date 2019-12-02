@@ -11,4 +11,16 @@ class security_baseline::services {
     path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
     refreshonly => true,
   }
+
+  exec { 'reload-rsyslog':
+    command     => 'pkill -HUP rsyslog',
+    path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+    refreshonly => true,
+  }
+
+  exec { 'reload-syslog-ng':
+    command     => 'pkill -HUP syslog-ng',
+    path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+    refreshonly => true,
+  }
 }

@@ -820,16 +820,16 @@ def security_baseline_redhat(os, distid, _release)
   rsyslog = {}
   rsyslog['service'] = check_service_is_enabled('rsyslog')
   rsyslog['package'] = check_package_installed('rsyslog')
-  val = Facter::Core::Execution.exec('grep ^\$FileCreateMode /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
+  val = Facter::Core::Execution.exec('grep -H ^\$FileCreateMode /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
   unless val.empty? || val.nil?
     val.split(%r{\s+})[1].strip!
   end
   rsyslog['filepermissions'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^*.*[^I][^I]*@" /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
+  val = Facter::Core::Execution.exec('grep -H "^*.*[^I][^I]*@" /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
   rsyslog['remotesyslog'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec("grep '$ModLoad imtcp' /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null")
+  val = Facter::Core::Execution.exec("grep -H '$ModLoad imtcp' /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null")
   mod = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec("grep '$InputTCPServerRun' /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null")
+  val = Facter::Core::Execution.exec("grep -H '$InputTCPServerRun' /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null")
   port = check_value_string(val, 'none')
   rsyslog['loghost'] = if (mod != 'none') && (port != 'none')
                          true
@@ -841,22 +841,22 @@ def security_baseline_redhat(os, distid, _release)
   syslog_ng = {}
   syslog_ng['service'] = check_service_is_enabled('syslog-ng')
   syslog_ng['package'] = check_package_installed('syslog-ng')
-  val = Facter::Core::Execution.exec('grep ^options /etc/syslog-ng/syslog-ng.conf 2>/dev/null').match(%r{perm\((\d+)\)})
+  val = Facter::Core::Execution.exec('grep - H ^options /etc/syslog-ng/syslog-ng.conf 2>/dev/null').match(%r{perm\((\d+)\)})
   syslog_ng['filepermissions'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep destination logserver /etc/syslog-ng/syslog-ng.conf 2>/sdev/null').match(%r{tcp\((.*)\)})
+  val = Facter::Core::Execution.exec('grep -H destination logserver /etc/syslog-ng/syslog-ng.conf 2>/sdev/null').match(%r{tcp\((.*)\)})
   logserv = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "log.*{.*source(src);.*destination(logserver);.*};" /etc/syslog-ng/syslog-ng.conf 2>/dev/null')
+  val = Facter::Core::Execution.exec('grep -H "log.*{.*source(src);.*destination(logserver);.*};" /etc/syslog-ng/syslog-ng.conf 2>/dev/null')
   logsend = check_value_string(val, 'none')
   syslog_ng['remotesyslog'] = if (logserv == 'none') || (logsend == 'none')
                                 'none'
                               else
                                 logserv
                               end
-  val = Facter::Core::Execution.exec('grep "source net{.*tcp();.*};" /etc/syslog-ng/syslog-ng.conf 2>/dev/null')
+  val = Facter::Core::Execution.exec('grep -H "source net{.*tcp();.*};" /etc/syslog-ng/syslog-ng.conf 2>/dev/null')
   logsrc = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "destination remote.*{.*file(\"/var/log/remote/\${FULLHOST}-log\");.*};" /etc/syslog-ng/syslog-ng.conf 2>/dev/null')
+  val = Facter::Core::Execution.exec('grep -H "destination remote.*{.*file(\"/var/log/remote/\${FULLHOST}-log\");.*};" /etc/syslog-ng/syslog-ng.conf 2>/dev/null')
   logdest = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "log {.*source(net);.*destination(remote);.*};" /etc/syslog-ng/syslog-ng.conf 2>/dev/null')
+  val = Facter::Core::Execution.exec('grep -H "log {.*source(net);.*destination(remote);.*};" /etc/syslog-ng/syslog-ng.conf 2>/dev/null')
   log = check_value_string(val, 'none')
   syslog_ng['loghost'] = if (logsrc != 'none') && (logdest != 'none') && (log != 'none')
                            true
@@ -869,8 +869,8 @@ def security_baseline_redhat(os, distid, _release)
 
   logfiles = {}
   Facter::Core::Execution.exec('find /var/log -type f').split("\n").each do |logfile|
-    mode = File.stat(logfile).mode & 0o7777
-    logfiles[logfile] = mode
+    stats = read_file_stats(logdfile)
+    logfiles[logfile] = stats['mode']
   end
   syslog['logfiles'] = logfiles
   security_baseline['syslog'] = syslog

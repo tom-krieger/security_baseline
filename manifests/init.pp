@@ -41,7 +41,6 @@ class security_baseline (
   Array $auditd_suid_exclude = [],
   String $auditd_rules_file  = '/etc/audit/rules.d/sec_baseline_auditd.rules'
 ) {
-  include ::security_baseline::config
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
   include ::security_baseline::world_writeable_files_cron
@@ -54,14 +53,14 @@ class security_baseline (
     }
   }
 
+  class { '::security_baseline::config':
+    before  => Concat[$logfile],
+  }
+  
   class {'security_baseline::auditd_suid_rules_cron':
     include => $auditd_suid_include,
     exclude => $auditd_suid_exclude,
     before  => Concat[$logfile],
-  }
-
-  class { '::security_baseline::config_puppet_agent':
-    before => Concat[$logfile],
   }
 
   concat { $logfile:

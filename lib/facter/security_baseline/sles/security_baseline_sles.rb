@@ -826,11 +826,16 @@ def security_baseline_sles(os, distid, _release)
   syslog['syslog_installed'] = syslog['rsyslog']['package'] || syslog['syslog-ng']['package']
 
   logfiles = {}
+  log_status = 'ok'
   Facter::Core::Execution.exec('find /var/log -type f').split("\n").each do |logfile|
-    stats = read_file_stats(logdfile)
+    stats = read_file_stats(logfile)
     logfiles[logfile] = stats['mode']
+    if stats['mode'] != 416
+      log_status = 'not ok'
+    end
   end
   syslog['logfiles'] = logfiles
+  syslog['log_status'] = log_status
   security_baseline['syslog'] = syslog
 
   security_baseline

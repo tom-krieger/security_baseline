@@ -41,3 +41,9 @@ fixtures:
     logrotate:
       repo: "puppet/logrotate"
       ref: "4.0.0"
+    ntp:
+      repo: "puppetlabs/ntp"
+      ref: "8.0.0"
+    chrony:
+      repo: "jorten/chrony"
+      ref: "0.3.0"

@@ -253,15 +253,45 @@ def security_baseline_redhat(os, distid, _release)
                               'unprotected'
                             end
 
+  ntpdata = {}
   val1 = Facter::Core::Execution.exec('rpm -q ntp')
   val2 = Facter::Core::Execution.exec('rpm -q chrony')
   ntp = check_value_string(val1, 'none')
   chrony = check_value_string(val2, 'none')
-  security_baseline['ntp_use'] = if ntp != 'none' || chrony != 'none'
-                                   'used'
-                                 else
-                                   'not used'
-                                 end
+  ntpdata['ntp_use'] = if ntp != 'none' || chrony != 'none'
+                         'used'
+                       else
+                         'not used'
+                       end
+  if File.exist?('/etc/ntp.conf')
+    val = Facter::Core::Execution.exec('grep -h "^restrict" /etc/ntp.conf')
+    ntpdata['ntp_restrict'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep -h "^(server|pool)" /etc/ntp.conf')
+    ntpdata['ntp_server'] = check_value_string(val, 'none')
+  else
+    ntpdata['ntp_restrict'] = 'none'
+    ntpdata['ntp_server'] = 'none'
+  end
+  if File.exist?('/etc/sysconfig/ntp')
+    val = Facter::Core::Execution.exec('grep -h "^NTPD_OPTIONS" /etc/sysconfig/ntp')
+    ntpdata['ntp_options'] = check_value_string(val, 'none')
+  else
+    ntpdata['ntp_options'] = 'none'
+  end
+  ntpdata['ntp_status'] = ntpdata['ntp_restrict'] != 'none' && ntpdata['ntp_server'] != 'none' && ntpdata['ntp_options'] == 'none'
+
+  if File.exist?('/etc/chrony.conf')
+    val = Facter::Core::Execution.exec('grep -h "^(server|pool)" /etc/chrony.conf')
+    ntpdata['chrony_server'] = check_value_string(val, 'none')
+  else
+    ntpdata['chrony_server'] = 'none'
+  end
+  if File.exist?('/etc/sysconfig/chronyd')
+    val = Facter::Core::Execution.exec('grep -h ^OPTIONS /etc/sysconfig/chronyd')
+    ntpdata['chrony_options'] = check_value_string(val, 'none')
+  end
+  ntpdata['chrony_status'] = ntpdata['chrony_server'] != 'none' && ntpdata['chrony_options'] != 'none'
+  security_baseline['ntp'] = ntpdata
 
   sshd = {}
   sshd['package'] = check_package_installed('openssh-server')

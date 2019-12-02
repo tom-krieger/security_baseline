@@ -28,15 +28,23 @@ class security_baseline::rules::redhat::sec_auditd_init (
   Integer $buffer_size = 8192,
 ) {
   if($enforce) {
-    file_line {'auditd init delete rules':
+    file { $security_baseline::auditd_rules_file:
       ensure => present,
-      path   => $security_baseline::auditd_rules_file,
-      line   => '-D'
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0750',
+    }
+    file_line {'auditd init delete rules':
+      ensure  => present,
+      path    => $security_baseline::auditd_rules_file,
+      line    => '-D',,
+      require => File[$security_baseline::auditd_rules_file],
     }
     file_line {'auditd init set buffer':
-      ensure => present,
-      path   => $security_baseline::auditd_rules_file,
-      line   => "-b ${buffer_size}"
+      ensure  => present,
+      path    => $security_baseline::auditd_rules_file,
+      line    => "-b ${buffer_size}",
+      require => File[$security_baseline::auditd_rules_file],
     }
   }
 }

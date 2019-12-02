@@ -872,7 +872,7 @@ def security_baseline_redhat(os, distid, _release)
   Facter::Core::Execution.exec('find /var/log -type f').split("\n").each do |logfile|
     stats = read_file_stats(logfile)
     logfiles[logfile] = stats['mode']
-    if (stats['mode'] != 416)
+    if stats['mode'] != 416
       log_status = 'not ok'
     end
   end

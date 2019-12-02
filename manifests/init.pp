@@ -56,7 +56,7 @@ class security_baseline (
   class { '::security_baseline::config':
     before  => Concat[$logfile],
   }
-  
+
   class {'security_baseline::auditd_suid_rules_cron':
     include => $auditd_suid_include,
     exclude => $auditd_suid_exclude,

@@ -45,6 +45,10 @@
     {
       "name": "puppet-rsyslog",
       "version_requirement": "3.3.0"
+    },
+    {
+      "name": "puppet-logrotate",
+      "version_requirement": "4.0.0"
     }
   ],
   "operatingsystem_support": [

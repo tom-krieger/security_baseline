@@ -38,3 +38,6 @@ fixtures:
     rsyslog:
       repo: "puppet/rsyslog"
       ref: "3.3.0"
+    logrotate:
+      repo: "puppet/logrotate"
+      ref: "4.0.0"

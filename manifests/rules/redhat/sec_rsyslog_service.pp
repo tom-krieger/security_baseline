@@ -29,14 +29,11 @@ class security_baseline::rules::redhat::sec_rsyslog_service (
   String $log_level = ''
 ) {
   if($enforce) {
-    if(!defined(Package['rsyslog'])) {
-      package { 'rsyslog':
-        ensure => installed,
-      }
-
+    if(!defined(Service['rsyslog'])) {
       service { 'rsyslog':
-        ensure => running,
-        enable => true,
+        ensure  => running,
+        enable  => true,
+        require => Package['rsyslog'],
       }
     }
   } else {

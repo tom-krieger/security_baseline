@@ -17,6 +17,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param log_config
+#    Logfile configuration
+#
 # @example
 #   class security_baseline::rules::redhat::sec_syslogng_service {
 #       enforce => true,

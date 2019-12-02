@@ -36,11 +36,15 @@ class security_baseline::rules::redhat::sec_syslog_installed (
   if($enforce) {
     if($syslog_daemon == 'rsyslog') {
       if(!defined(Package['rsyslog'])) {
-        realize Package['rsyslog']
+        package { 'rsyslog':
+          ensure => installed,
+        }
       }
     } elsif ($syslog_daemon == 'syslog-ng') {
       if(!defined(Package['syslog-ng'])) {
-        realize Package['syslog-ng']
+        package { 'rsyslog':
+          ensure => installed,
+        }
       }
     } else {
       fail("Unknown syslog daemon: ${syslog_daemon}")

@@ -30,14 +30,10 @@ class security_baseline::rules::redhat::sec_syslogng_service (
   String $log_level = ''
 ) {
   if($enforce) {
-    @package { 'rsyslog':
-      ensure => installed,
-    }
     if(!defined(Service['syslog-ng'])) {
       service { 'syslog-ng':
-        ensure  => running,
-        enable  => true,
-        require => Package['syslog-ng'],
+        ensure => running,
+        enable => true,
       }
     }
   }

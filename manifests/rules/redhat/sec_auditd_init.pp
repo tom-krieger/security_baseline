@@ -47,4 +47,10 @@ class security_baseline::rules::redhat::sec_auditd_init (
       require => File[$security_baseline::auditd_rules_file],
     }
   }
+
+  exec { 'reload auditd rules':
+    refreshonly => true,
+    command     => "auditctl -R ${security_baseline::auditd_rules_file}",
+    path        => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
+  }
 }

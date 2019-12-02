@@ -49,12 +49,14 @@ class security_baseline::rules::redhat::sec_auditd_mounts (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-a always,exit -F arch=b32 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts',
+      notify => Exec['reload auditd rules'],
     }
     if($facts['architecture'] == 'x86_64') {
       file_line { 'watch mounts rule 2':
         ensure => present,
         path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S mount -F auid>=1000 -F auid!=4294967295 -k mounts',
+        notify => Exec['reload auditd rules'],
       }
     }
   } else {

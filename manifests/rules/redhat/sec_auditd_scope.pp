@@ -44,11 +44,13 @@ class security_baseline::rules::redhat::sec_auditd_scope (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/sudoers -p wa -k scope',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch scope rule 2':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/sudoers.d/ -p wa -k scope',
+      notify => Exec['reload auditd rules'],
     }
   } else {
     if($facts['security_baseline']['auditd']['scope'] == false) {

@@ -43,26 +43,31 @@ class security_baseline::rules::redhat::sec_auditd_identity (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/group -p wa -k identity',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch identity rule 2':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/passwd -p wa -k identity',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch identity rule 3':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/gshadow -p wa -k identity',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch identity rule 4':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/shadow -p wa -k identity',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch identity rule 5':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/security/opasswd -p wa -k identity',
+      notify => Exec['reload auditd rules'],
     }
   } else {
     if($facts['security_baseline']['auditd']['identity'] == false) {

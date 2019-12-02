@@ -47,28 +47,33 @@ class security_baseline::rules::redhat::sec_auditd_modules (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /sbin/insmod -p x -k modules',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch modules rule 2':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /sbin/rmmod -p x -k modules',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch modules rule 3':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /sbin/modprobe -p x -k modules',
+      notify => Exec['reload auditd rules'],
     }
     if($facts['architecture'] == 'x86_64') {
       file_line { 'watch modules rule 4':
         ensure => present,
         path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S init_module -S delete_module -k modules',
+        notify => Exec['reload auditd rules'],
       }
     } else {
       file_line { 'watch modules rule 4':
         ensure => present,
         path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b32 -S init_module -S delete_module -k modules',
+        notify => Exec['reload auditd rules'],
       }
     }
   } else {

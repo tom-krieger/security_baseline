@@ -43,6 +43,7 @@ class security_baseline::rules::redhat::sec_auditd_privileged_commands (
           ensure => present,
           path   => $security_baseline::auditd_rules_file,
           line   => $rule,
+          notify => Exec['reload auditd rules'],
         }
       }
     }

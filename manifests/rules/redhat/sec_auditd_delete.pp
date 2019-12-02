@@ -45,12 +45,14 @@ class security_baseline::rules::redhat::sec_auditd_delete (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-a always,exit -F arch=b32 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
+      notify => Exec['reload auditd rules'],
     }
     if($facts['architecture'] == 'x86_64') {
       file_line { 'watch deletes rule 2':
         ensure => present,
         path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S unlink -S unlinkat -S rename -S renameat -F auid>=1000 -F auid!=4294967295 -k delete',
+        notify => Exec['reload auditd rules'],
       }
     }
   } else {

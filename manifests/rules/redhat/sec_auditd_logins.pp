@@ -42,11 +42,13 @@ class security_baseline::rules::redhat::sec_auditd_logins (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /var/log/lastlog -p wa -k logins',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'logins policy rule 2':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /var/run/faillock/ -p wa -k logins',
+      notify => Exec['reload auditd rules'],
     }
   } else {
     if($facts['security_baseline']['auditd']['logins'] == false) {

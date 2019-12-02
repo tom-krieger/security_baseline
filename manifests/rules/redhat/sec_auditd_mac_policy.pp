@@ -41,11 +41,13 @@ class security_baseline::rules::redhat::sec_auditd_mac_policy (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/selinux/ -p wa -k MAC-policy',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'mac policy rule 2':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /usr/share/selinux/ -p wa -k MAC-policy',
+      notify => Exec['reload auditd rules'],
     }
   } else {
     if($facts['security_baseline']['auditd']['mac-policy'] == false) {

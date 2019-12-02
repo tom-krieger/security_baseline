@@ -46,11 +46,13 @@ class security_baseline::rules::redhat::sec_auditd_session_logins (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /var/log/wtmp -p wa -k logins',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch session rule 3':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /var/log/btmp -p wa -k logins',
+      notify => Exec['reload auditd rules'],
     }
   } else {
     if($facts['security_baseline']['auditd']['session-logins'] == false) {

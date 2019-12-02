@@ -43,6 +43,7 @@ class security_baseline::rules::redhat::sec_auditd_immutable (
       path               => $security_baseline::auditd_rules_file,
       line               => '-e 2',
       append_on_no_match => true,
+      notify             => Exec['reload auditd rules'],
     }
   } else {
     if($facts['security_baseline']['auditd']['immutable'] == false) {

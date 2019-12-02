@@ -37,16 +37,19 @@ class security_baseline::rules::redhat::sec_auditd_time_change (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-a always,exit -F arch=b32 -S adjtimex -S settimeofday -S stime -k time-change',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch for date-time-change rule 2':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-a always,exit -F arch=b32 -S clock_settime -k time-change',
+      notify => Exec['reload auditd rules'],
     }
     file_line { 'watch for date-time-change rule 3':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /etc/localtime -p wa -k time-change',
+      notify => Exec['reload auditd rules'],
     }
 
     if($facts['architecture'] == 'x86_64') {
@@ -54,11 +57,13 @@ class security_baseline::rules::redhat::sec_auditd_time_change (
         ensure => present,
         path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change',
+        notify => Exec['reload auditd rules'],
       }
       file_line { 'wwatch for date-time-change rule 5':
         ensure => present,
         path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S clock_settime -k time-change',
+        notify => Exec['reload auditd rules'],
       }
     }
   } else {

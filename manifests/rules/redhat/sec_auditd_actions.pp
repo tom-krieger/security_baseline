@@ -39,6 +39,7 @@ class security_baseline::rules::redhat::sec_auditd_actions (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /var/log/sudo.log -p wa -k actions',
+      notify => Exec['reload auditd rules'],
     }
   } else {
     if($facts['security_baseline']['auditd']['actions'] == false) {

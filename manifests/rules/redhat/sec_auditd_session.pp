@@ -46,6 +46,7 @@ class security_baseline::rules::redhat::sec_auditd_session (
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-w /var/run/utmp -p wa -k session',
+      notify => Exec['reload auditd rules'],
     }
   } else {
     if($facts['security_baseline']['auditd']['session'] == false) {

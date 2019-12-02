@@ -869,7 +869,7 @@ def security_baseline_redhat(os, distid, _release)
 
   logfiles = {}
   Facter::Core::Execution.exec('find /var/log -type f').split("\n").each do |logfile|
-    stats = read_file_stats(logdfile)
+    stats = read_file_stats(logfile)
     logfiles[logfile] = stats['mode']
   end
   syslog['logfiles'] = logfiles

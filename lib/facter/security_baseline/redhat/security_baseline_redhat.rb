@@ -451,8 +451,8 @@ def security_baseline_redhat(os, distid, _release)
   pw_data['pass_warn_age'] = check_value_string(val, '0')
   pw_data['pass_warn_age_status'] = pw_data['pass_warn_age'] < '7'
   val = Facter::Core::Execution.exec('useradd -D | grep INACTIVE | cut -f 2 -d =')
-  pw_data['inactive'] = check_value_string(val, '-1')
-  pw_data['inactive_status'] = pw_data['inactive'] < '30'
+  pw_data['inactive'] = check_value_string(val, '-1').to_i
+  pw_data['inactive_status'] = pw_data['inactive'] < 30
   ret = false
   security_baseline['local_users'].each do |_user, data|
     unless data['password_date_valid']
@@ -676,7 +676,7 @@ def security_baseline_redhat(os, distid, _release)
   auditd['auditing_process'] = if val.empty? || val.nil?
                                  'none'
                                else
-                                 'auditd=1'
+                                 'audit=1'
                                end
 
   val = Facter::Core::Execution.exec('auditctl -l | grep time-change')

@@ -46,8 +46,11 @@ class security_baseline::rules::redhat::sec_passwd_inactive_days (
         }
       }
     }
-    exec { "useradd -D -f ${inactive_pass_days}":
-      path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+
+    if($facts['security_baseline']['pw_data']['inactive_days'] != $inactive_pass_days) {
+      exec { "useradd -D -f ${inactive_pass_days}":
+        path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      }
     }
   } else {
     if($facts['security_baseline']['pw_data']['inactive_status']) {

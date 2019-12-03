@@ -381,6 +381,8 @@ def security_baseline_sles(os, distid, _release)
   val = Facter::Core::Execution.exec('useradd -D | grep INACTIVE | cut -f 2 -d =')
   pw_data['inactive'] = check_value_string(val, '-1')
   pw_data['inactive_status'] = pw_data['inactive'] < '30'
+  val = Facter::Core::Execution.exec('grep -h INACTIVE= /etc/default/useradd | cut -f 2 -d "="')
+  pw_data['inactive_days'] = check_value_string(val, '-1')
   ret = false
   security_baseline['local_users'].each do |_user, data|
     unless data['password_date_valid']

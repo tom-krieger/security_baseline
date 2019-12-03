@@ -59,7 +59,7 @@ def security_baseline_sles(os, distid, _release)
 
   security_baseline[:xinetd_services] = read_facts_xinetd_services(xinetd_services)
   security_baseline[:sysctl] = read_facts_sysctl(sysctl_values)
-  security_baseline[:aide] = read_facts_aide(distid, os)
+  security_baseline[:aide] = read_facts_aide(os)
 
   selinux = {}
   val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg')

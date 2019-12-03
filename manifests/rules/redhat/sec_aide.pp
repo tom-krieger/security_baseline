@@ -47,7 +47,10 @@ class security_baseline::rules::redhat::sec_aide (
 
   } else {
 
-    if(empty($facts['security_baseline']['aide']['version']) or ($facts['security_baseline']['aide']['version'] == 'not installed')) {
+    if(
+      ($facts['security_baseline']['aide']['version'] == 'none') or
+      ($facts['security_baseline']['aide']['status'] == 'not installed')
+    ) {
       echo { 'aide':
           message  => $message,
           loglevel => $log_level,

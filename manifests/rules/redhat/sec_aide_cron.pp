@@ -31,14 +31,17 @@ class security_baseline::rules::redhat::sec_aide_cron (
 ) {
   if($enforce) {
 
-    if(empty($::aide_cron) and ! empty($::aide_version)) {
+    if(
+      ($facts['security_baseline']['aide']['version'] != 'none') and
+      ($facts['security_baseline']['aide']['status'] == 'installed')
+    ) {
 
       file { '/etc/cron.d/aide.cron':
-        ensure => file,
-        source => 'puppet:///modules/security_baseline/aide-cron',
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0644';
+        ensure  => file,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => '0 5 * * * root /usr/sbin/aide --check',
       }
 
     }
@@ -53,6 +56,5 @@ class security_baseline::rules::redhat::sec_aide_cron (
         withpath => false,
       }
     }
-
   }
 }

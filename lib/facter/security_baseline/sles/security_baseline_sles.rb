@@ -600,13 +600,11 @@ def security_baseline_sles(os, distid, _release)
                                   end
 
   auditd['srv_auditd'] = check_service_is_enabled('auditd')
-  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg')
+  val = Facter::Core::Execution.exec('grep "^\s*linux.*audit=1" /boot/grub2/grub.cfg')
   auditd['auditing_process'] = if val.empty? || val.nil?
                                  'none'
-                               elsif val =~ %r{auditd=1}
-                                 'auditd=1'
                                else
-                                 'none'
+                                 'auditd=1'
                                end
 
   val = Facter::Core::Execution.exec('auditctl -l | grep time-change')

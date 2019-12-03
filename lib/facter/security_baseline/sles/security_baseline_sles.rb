@@ -558,7 +558,7 @@ def security_baseline_sles(os, distid, _release)
   security_baseline['duplicate_groups'] = check_value_string(read_duplicate_groups('group'), 'none')
 
   auditd = {}
-  val = Facter::Core::Execution.exec('grep "^max_log_file.*=" /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
+  val = Facter::Core::Execution.exec('grep "^max_log_file\s*=" /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip
   auditd['max_log_file'] = if val.empty? || val.nil?
                              'none'
                            else

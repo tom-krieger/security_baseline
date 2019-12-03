@@ -13,15 +13,18 @@ describe 'security_baseline' do
             '1.1.1.1' => {
               'rulename' => 'cramfs',
               'active' => true,
+              'scored' => true,
+              'level' => 1,
               'description' => 'Support for cramfs removed',
               'enforce' => true,
-              'class' => '::security_baseline::rules::sec_cramfs',
+              'class' => '::security_baseline::rules::redhat::sec_cramfs',
               'check' => {
-                'fact_name' => 'kmod_cramfs',
+                'fact_hash' => 'security_baseline',
+                'fact_name' => ['kernel_modules', 'cramfs'],
                 'fact_value' => false,
               },
               'message' => 'Test message unit test',
-              'loglevel' => 'warning,',
+              'log_level' => 'warning,',
             },
           },
         }

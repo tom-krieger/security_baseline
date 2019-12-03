@@ -562,7 +562,7 @@ def security_baseline_sles(os, distid, _release)
   auditd['max_log_file'] = if val.empty? || val.nil?
                              'none'
                            else
-                             val
+                             val.to_i
                            end
 
   val = Facter::Core::Execution.exec('grep "^space_left_action.*=" /etc/audit/auditd.conf | awk -F\'=\' \'{print $2;}\'').strip

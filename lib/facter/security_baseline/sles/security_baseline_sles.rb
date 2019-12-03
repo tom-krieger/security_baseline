@@ -603,8 +603,10 @@ def security_baseline_sles(os, distid, _release)
   val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg')
   auditd['auditing_process'] = if val.empty? || val.nil?
                                  'none'
+                               elsif val =~ %r{auditd=1}
+                                 'auditd=1'
                                else
-                                 val
+                                 'none'
                                end
 
   val = Facter::Core::Execution.exec('auditctl -l | grep time-change')

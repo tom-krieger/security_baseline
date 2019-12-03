@@ -39,7 +39,7 @@ class security_baseline::rules::redhat::sec_auditd_max_logfile_action (
     file_line { 'auditd_max_log_file_action':
       line  => "max_log_file_action = ${$max_log_file_action}",
       path  => '/etc/audit/auditd.conf',
-      match => '^$max_log_file_action',
+      match => '^max_log_file_action',
     }
   } else {
     if($facts['security_baseline']['auditd']['max_log_file_action'] == 'none') {

@@ -6,6 +6,103 @@ describe 'security_baseline::config' do
       let(:facts) { os_facts }
 
       it { is_expected.to compile }
+      it do
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/')
+          .with(
+            'ensure' => 'directory',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/root_path_integrity.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/check_user_home_dirs.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/check_home_dir_permissions.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/check_home_dir_owner.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/ss_write.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/check_forward_files.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/check_netrc_files.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/check_netrc_files_write.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+          is_expected.to contain_file('/usr/local/security_baseline_scripts/root_path_integrity.sh')
+          .with(
+            'ensure' => 'present',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/check_rhosts_files.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/check_passwd_group_exist.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+      end
     end
   end
 end

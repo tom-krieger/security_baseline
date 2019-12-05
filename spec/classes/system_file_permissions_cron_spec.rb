@@ -1,11 +1,59 @@
 require 'spec_helper'
 
 describe 'security_baseline::system_file_permissions_cron' do
-  on_supported_os.each do |os, os_facts|
-    context "on #{os}" do
-      let(:facts) { os_facts }
+  context 'RedHat' do
+    let(:facts) { {
+      :osfamily => 'RedHat',
+      :operatingsystem => 'CentOS',
+      :architecture => 'x86_64',
+    } }
 
-      it { is_expected.to compile }
-    end
+    it { is_expected.to compile }
+
+      it do
+        is_expected.to contain_file('/usr/local/sbin/system-file-permissions.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/etc/cron.d/system-file-permissions.cron')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0644',
+          )
+      end
+  end
+
+  context 'Suse' do
+    let(:facts) { {
+      :osfamily => 'Suse',
+      :operatingsystem => 'SLES',
+      :architecture => 'x86_64',
+    } }
+
+    it { is_expected.to compile }
+
+      it do
+        is_expected.to contain_file('/usr/local/sbin/system-file-permissions.sh')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/etc/cron.d/system-file-permissions.cron')
+          .with(
+            'ensure' => 'file',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0644',
+          )
+      end
   end
 end

@@ -7,12 +7,18 @@ describe 'security_baseline::rules::redhat::sec_freevxfs' do
       let(:params) do
         {
           'enforce' => true,
-          'message' => 'freexfs',
+          'message' => 'freevxfs',
           'loglevel' => 'warning',
         }
       end
 
       it { is_expected.to compile }
+      it do
+        is_expected.to contain_kmod__install('freevxfs')
+          .with(
+            command: '/bin/true',
+          )
+      end
     end
   end
 end

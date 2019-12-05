@@ -13,6 +13,12 @@ describe 'security_baseline::rules::redhat::sec_cramfs' do
       end
 
       it { is_expected.to compile }
+      it do
+        is_expected.to contain_kmod__install('cramfs')
+          .with(
+            command: '/bin/true',
+          )
+      end
     end
   end
 end

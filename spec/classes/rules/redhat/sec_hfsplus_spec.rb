@@ -13,6 +13,12 @@ describe 'security_baseline::rules::redhat::sec_hfsplus' do
       end
 
       it { is_expected.to compile }
+      it do
+        is_expected.to contain_kmod__install('hfsplus')
+          .with(
+            command: '/bin/true',
+          )
+      end
     end
   end
 end

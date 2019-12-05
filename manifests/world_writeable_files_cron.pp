@@ -8,7 +8,7 @@ class security_baseline::world_writeable_files_cron {
   $filename = '/root/world-writable-files.txt'
 
   file { '/usr/local/sbin/world-wrirable-files.sh':
-    ensure  => file,
+    ensure  => present,
     content => epp('security_baseline/world-writeable-files.epp', { filename => $filename }),
     owner   => 'root',
     group   => 'root',
@@ -16,7 +16,7 @@ class security_baseline::world_writeable_files_cron {
   }
 
   file { '/etc/cron.d/woirld-writebale-files.cron':
-    ensure => file,
+    ensure => present,
     source => 'puppet:///modules/security_baseline/world-writeable-files.cron',
     owner  => 'root',
     group  => 'root',

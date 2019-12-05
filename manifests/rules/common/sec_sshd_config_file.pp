@@ -32,7 +32,7 @@ class security_baseline::rules::common::sec_sshd_config_file (
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
       file { '/etc/ssh/sshd_config':
-        ensure => file,
+        ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0600',

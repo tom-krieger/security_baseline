@@ -9,7 +9,7 @@ class security_baseline::system_file_permissions_cron {
     $filename = '/root/system-file-permissions.txt'
 
     file { '/usr/local/sbin/system-file-permissions.sh':
-      ensure  => file,
+      ensure  => present,
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
@@ -17,7 +17,7 @@ class security_baseline::system_file_permissions_cron {
     }
 
     file { '/etc/cron.d/system-file-permissions.cron':
-      ensure => file,
+      ensure => present,
       source => 'puppet:///modules/security_baseline/system-file-permissions.cron',
       owner  => 'root',
       group  => 'root',

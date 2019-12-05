@@ -36,14 +36,14 @@ class security_baseline::rules::common::sec_grub2 (
   if($enforce) {
 
     file { '/boot/grub2/grub.cfg':
-      ensure => file,
+      ensure => present,
       owner  => 'root',
       group  => 'root',
       mode   => '0600',
     }
 
     file { '/boot/grub2/user.cfg':
-      ensure => file,
+      ensure => present,
       owner  => 'root',
       group  => 'root',
       mode   => '0600',

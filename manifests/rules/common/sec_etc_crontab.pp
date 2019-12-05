@@ -35,7 +35,7 @@ class security_baseline::rules::common::sec_etc_crontab (
   if($enforce) {
 
     file { '/etc/crontab':
-      ensure => file,
+      ensure => present,
       owner  => 'root',
       group  => 'root',
       mode   => '0600',

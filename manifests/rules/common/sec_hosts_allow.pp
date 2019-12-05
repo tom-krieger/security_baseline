@@ -33,7 +33,7 @@ class security_baseline::rules::common::sec_hosts_allow (
   if($enforce) {
 
     file { '/etc/hosts.allow':
-      ensure  => file,
+      ensure  => present,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',

@@ -33,7 +33,7 @@ class security_baseline::rules::common::sec_hosts_deny (
   if($enforce) {
 
     file { '/etc/hosts.deny':
-      ensure  => file,
+      ensure  => present,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',

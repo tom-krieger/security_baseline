@@ -38,28 +38,28 @@ class security_baseline::rules::common::sec_cron_restrict (
   if($enforce) {
 
     file { '/etc/cron.allow':
-      ensure => file,
+      ensure => present,
       owner  => 'root',
       group  => 'root',
       mode   => '0600',
     }
 
     file { '/etc/cron.deny':
-      ensure => file,
+      ensure => present,
       owner  => 'root',
       group  => 'root',
       mode   => '0600',
     }
 
     file { '/etc/at.allow':
-      ensure => file,
+      ensure => present,
       owner  => 'root',
       group  => 'root',
       mode   => '0600',
     }
 
     file { '/etc/at.deny':
-      ensure => file,
+      ensure => present,
       owner  => 'root',
       group  => 'root',
       mode   => '0600',

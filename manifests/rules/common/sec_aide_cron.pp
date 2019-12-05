@@ -37,7 +37,7 @@ class security_baseline::rules::common::sec_aide_cron (
     ) {
 
       file { '/etc/cron.d/aide.cron':
-        ensure  => file,
+        ensure  => present,
         owner   => 'root',
         group   => 'root',
         mode    => '0644',

@@ -9,7 +9,7 @@ class security_baseline::unowned_files_cron {
   $unowned_group = '/root/unowned_files_group.txt'
 
   file { '/usr/local/sbin/unowned_files.sh':
-    ensure  => file,
+    ensure  => present,
     content => epp('security_baseline/unowned-files.epp', {
       unowned_user  => $unowned_user,
       unowned_group => $unowned_group,
@@ -20,7 +20,7 @@ class security_baseline::unowned_files_cron {
   }
 
   file { '/etc/cron.d/unowned-files.cron':
-    ensure => file,
+    ensure => present,
     source => 'puppet:///modules/security_baseline/unowned-files.cron',
     owner  => 'root',
     group  => 'root',

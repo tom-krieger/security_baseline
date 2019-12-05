@@ -95,7 +95,7 @@ class security_baseline::rules::common::sec_ntp_daemon_ntp (
     }
 
     file { '/etc/sysconfig/ntpd':
-      ensure  => file,
+      ensure  => present,
       owner   => 'root',
       group   => 'root',
       mode    => '0644',

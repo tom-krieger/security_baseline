@@ -40,7 +40,7 @@ class security_baseline::rules::common::sec_rsyslog_logging (
   if($enforce) {
     $log_config.each | $config, $dest | {
       file { "/etc/rsyslog.d/${config}":
-        ensure  => file,
+        ensure  => present,
         content => "${config} ${dest}",
         notify  => Exec['reload-rsyslog'],
       }

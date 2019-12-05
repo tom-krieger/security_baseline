@@ -19,4 +19,14 @@ describe 'security_baseline::rules::redhat::sec_service_chargen' do
       it { is_expected.to compile }
     end
   end
+  context 'RedHat' do
+    let(:facts) { {
+      :osfamily => 'RedHat',
+      :operatingsystem => 'CentOS',
+      :architecture => 'x86_64',
+      :srv_chargen => true,
+    } }
+
+    it { is_expected.to compile }
+  end
 end

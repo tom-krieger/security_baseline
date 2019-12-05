@@ -1,22 +1,20 @@
 require 'spec_helper'
 
 describe 'security_baseline::rules::redhat::sec_service_echo' do
-  on_supported_os.each do |os, os_facts|
-    context "on #{os}" do
-      let(:facts) do
-        os_facts.merge(
-          'srv_echo' => true,
-        )
-      end
-      let(:params) do
-        {
-          'enforce' => true,
-          'message' => 'echo service',
-          'loglevel' => 'warning',
-        }
-      end
-
-      it { is_expected.to compile }
+  context 'RedHat' do
+    let(:facts) { {
+      :osfamily => 'RedHat',
+      :operatingsystem => 'CentOS',
+      :architecture => 'x86_64',
+    } }
+    let(:params) do
+      {
+        'enforce' => true,
+        'message' => 'service chargen',
+        'loglevel' => 'warning',
+      }
     end
+
+    it { is_expected.to compile }
   end
 end

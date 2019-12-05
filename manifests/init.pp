@@ -33,13 +33,14 @@
 class security_baseline (
   String $baseline_version,
   Hash $rules,
-  Boolean $debug             = false,
-  Boolean $log_info          = false,
-  String $logfile            = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
-  Boolean $set_postrun       = true,
-  Array $auditd_suid_include = [],
-  Array $auditd_suid_exclude = [],
-  String $auditd_rules_file  = '/etc/audit/rules.d/sec_baseline_auditd.rules'
+  Boolean $debug                              = false,
+  Boolean $log_info                           = false,
+  String $logfile                             = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
+  Boolean $set_postrun                        = true,
+  Array $auditd_suid_include                  = [],
+  Array $auditd_suid_exclude                  = [],
+  String $auditd_rules_file                   = '/etc/audit/rules.d/sec_baseline_auditd.rules',
+  Enum['fact', 'local_file'] $reporting_type  = 'fact',
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron

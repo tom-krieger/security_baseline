@@ -66,14 +66,17 @@ define security_baseline::sec_check (
   Optional[Hash] $config_data = {},
 ) {
 
+    $reporting_type = $::security_baseline::reporting_type
+
     if($active) and (has_key($facts, 'security_baseline')) {
 
       $logentry_default = {
-        rulenr    => $title,
-        rule      => $rulename,
-        desc      => $description,
-        level     => $level,
-        scored    => $scored,
+        rulenr         => $title,
+        rule           => $rulename,
+        desc           => $description,
+        level          => $level,
+        scored         => $scored,
+        reporting_type => $reporting_type,
       }
 
       if($::security_baseline::debug) {

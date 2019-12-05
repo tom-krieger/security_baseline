@@ -39,18 +39,21 @@ define security_baseline::logging (
   $rulestate,
   $level,
   $scored,
+  Enum['fact', 'local_file'] $reporting_type = 'fact',
 ) {
-  concat::fragment { $rulenr:
-    content => epp('security_baseline/logentry.epp', {
-      'rulenr'    => $rulenr,
-      'rule'      => $rule,
-      'desc'      => $desc,
-      'msg'       => $msg,
-      'loglevel'  => $log_level,
-      'rulestate' => $rulestate,
-      'level'     => $level,
-      'scored'    => $scored,
-    }),
-    target  => $::security_baseline::logfile,
+  if($reporting_type == 'fact') {
+      concat::fragment { $rulenr:
+      content => epp('security_baseline/logentry.epp', {
+        'rulenr'    => $rulenr,
+        'rule'      => $rule,
+        'desc'      => $desc,
+        'msg'       => $msg,
+        'loglevel'  => $log_level,
+        'rulestate' => $rulestate,
+        'level'     => $level,
+        'scored'    => $scored,
+      }),
+      target  => $::security_baseline::logfile,
+    }
   }
 }

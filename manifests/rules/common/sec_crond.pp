@@ -44,7 +44,7 @@ class security_baseline::rules::common::sec_crond (
   } else {
 
     if($facts['security_baseline']['services_enabled']['srv_crond'] != 'enabled') {
-      echo { 'cups':
+      echo { 'crond':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

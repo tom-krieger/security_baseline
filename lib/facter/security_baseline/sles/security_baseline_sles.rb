@@ -28,7 +28,7 @@ def security_baseline_sles(os, distid, _release)
   arch = Facter.value(:architecture)
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
-              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond']
+              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'cron']
   packages = { 'iptables' => '-q',
                'openldap-clients' => '-q',
                'mcstrans' => '-q',

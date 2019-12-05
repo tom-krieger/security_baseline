@@ -9,15 +9,15 @@ describe 'security_baseline::unowned_files_cron' do
       it do
         is_expected.to contain_file('/usr/local/sbin/unowned_files.sh')
           .with(
-            'ensure' => 'file',
+            'ensure' => 'present',
             'owner'  => 'root',
             'group'  => 'root',
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/etc/cron.d/aide.cron')
+        is_expected.to contain_file('/etc/cron.d/unowned-files.cron')
           .with(
-            'ensure' => 'file',
+            'ensure' => 'present',
             'owner'  => 'root',
             'group'  => 'root',
             'mode'   => '0644',

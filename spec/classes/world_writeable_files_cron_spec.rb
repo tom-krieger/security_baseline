@@ -10,7 +10,7 @@ describe 'security_baseline::world_writeable_files_cron' do
       it do
         is_expected.to contain_file('/usr/local/sbin/world-wrirable-files.sh')
           .with(
-            'ensure' => 'file',
+            'ensure' => 'present',
             'owner'  => 'root',
             'group'  => 'root',
             'mode'   => '0700',
@@ -18,7 +18,7 @@ describe 'security_baseline::world_writeable_files_cron' do
 
         is_expected.to contain_file('/etc/cron.d/woirld-writebale-files.cron')
           .with(
-            'ensure' => 'file',
+            'ensure' => 'present',
             'owner'  => 'root',
             'group'  => 'root',
             'mode'   => '0644',

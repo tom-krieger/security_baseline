@@ -10,6 +10,8 @@
 #
 # Note that these change only apply to accounts configured on the local system.
 #
+# This rule is done together with sec_pam_old_passwords
+#
 # @param enforce
 #    Enforce the rule or just test and log
 #

@@ -5,8 +5,8 @@
 # @example
 #   include security_baseline::system_file_permissions_cron
 class security_baseline::system_file_permissions_cron {
-  if($facts['osfamily'] == 'redhat') or ($facts['osfamily'] == 'Suse') {
-      $filename = '/root/system-file-permissions.txt'
+  if($facts['osfamily'] == 'RedHat') or ($facts['osfamily'] == 'Suse') {
+    $filename = '/root/system-file-permissions.txt'
 
     file { '/usr/local/sbin/system-file-permissions.sh':
       ensure  => file,

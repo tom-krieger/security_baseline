@@ -43,6 +43,15 @@ class security_baseline::rules::redhat::sec_aide (
       command     => 'aide --init',
       path        => '/sbin/',
       refreshonly => true,
+      notify      => Exec['rename_aidedb'],
+    }
+
+    exec { 'rename_aidedb':
+      command     => 'mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz',
+      creates     => '/var/lib/aide/aide.db.gz',
+      path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
+      logoutput   => true,
+      refreshonly => true,
     }
 
   } else {

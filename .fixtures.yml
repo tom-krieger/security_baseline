@@ -20,15 +20,18 @@ fixtures:
     sysctl:
       repo: "herculesteam/augeasproviders_sysctl"
       ref: "2.3.1"
+    augeasproviders:
+      repo: "herculesteam/augeasproviders"
+      ref: "2.2.1"
     augeasprovider_core:
       repo: "herculesteam/augeasproviders_core"
       ref: "2.4.0"
-    autofs:
-      repo: "puppet/autofs"
-      ref: "5.0.1"
     augeasprovider_pam:
       repo: "herculesteam/augeasproviders_pam"
       ref: "2.2.1"
+    autofs:
+      repo: "puppet/autofs"
+      ref: "5.0.1"
     echo:
       repo: "ipcrm/echo"
       ref: "0.1.6"
@@ -47,3 +50,6 @@ fixtures:
     chrony:
       repo: "jorten/chrony"
       ref: "0.3.0"
+    augeas_core:
+      repo: "puppetlabs/augeas_core"
+      ref: "1.0.5"

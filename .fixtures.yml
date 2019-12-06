@@ -29,6 +29,9 @@ fixtures:
     augeasprovider_pam:
       repo: "herculesteam/augeasproviders_pam"
       ref: "2.2.1"
+    augeasprovider_grub:
+      repo: "herculesteam/augeasproviders_grub"
+      ref: "3.1.0"
     autofs:
       repo: "puppet/autofs"
       ref: "5.0.1"

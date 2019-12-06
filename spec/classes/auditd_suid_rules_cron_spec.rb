@@ -32,7 +32,7 @@ describe 'security_baseline::auditd_suid_rules_cron' do
           .with(
             'target' => '/etc/cron.daily/suid-audit',
             'source' => 'puppet:///modules/security_baseline/suid_auditd_top',
-            'order'  => 01,
+            'order'  => 1,
           )
 
         is_expected.to contain_concat__fragment('suid_cron_body')
@@ -50,7 +50,7 @@ describe 'security_baseline::auditd_suid_rules_cron' do
       end
     end
 
-    context "on #{os} with error" do
+    context "on #{os} with error to be thrown" do
       let(:pre_condition) do
         <<-EOF
         class { 'security_baseline':
@@ -65,8 +65,8 @@ describe 'security_baseline::auditd_suid_rules_cron' do
       end
       let(:facts) { os_facts }
 
-      it { 
-        is_expected.to compile.and_raise_error(/Please include directories or exclude them but you can not do both!/)
+      it {
+        is_expected.to compile.and_raise_error(%r{Please include directories or exclude them but you can not do both!})
       }
     end
   end

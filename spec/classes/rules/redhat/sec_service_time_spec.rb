@@ -1,33 +1,59 @@
 require 'spec_helper'
 
+enforce_options = [true, false]
+
 describe 'security_baseline::rules::redhat::sec_service_time' do
-  context 'RedHat' do
-    let(:facts) { {
-      :osfamily => 'RedHat',
-      :operatingsystem => 'CentOS',
-      :architecture => 'x86_64',
-    } }
-    let(:params) do
-      {
-        'enforce' => true,
-        'message' => 'service chargen',
-        'loglevel' => 'warning',
-      }
-    end
 
-    it { is_expected.to compile }
-    it do
-      is_expected.to contain_service('time-dgram')
-        .with(
-          'ensure' => 'stopped',
-          'enable' => false,
-        )
+  enforce_options.each do |enforce|
 
-      is_expected.to contain_service('time-stream')
-        .with(
-          'ensure' => 'stopped',
-          'enable' => false,
-        )
+    context "RedHat with enforce = #{enforce}" do
+      let(:facts) { {
+        :osfamily => 'RedHat',
+        :operatingsystem => 'CentOS',
+        :architecture => 'x86_64',
+        :srv_time => true,
+        :security_baseline => {
+          :xinetd_services => {
+            :srv_time => true
+          }
+        }
+      } }
+
+      let(:params) do
+        {
+          'enforce' => enforce,
+          'message' => 'servive time',
+          'log_level' => 'warning',
+        }
+      end
+
+      it { is_expected.to compile }
+      it do
+        if enforce
+          is_expected.to contain_service('time-dgram')
+            .with(
+              'ensure' => 'stopped',
+              'enable' => false,
+            )
+
+          is_expected.to contain_service('time-stream')
+            .with(
+              'ensure' => 'stopped',
+              'enable' => false,
+            )
+
+          is_expected.not_to contain_echo('time-service')
+        else
+          is_expected.not_to contain_service('time-dgram')
+          is_expected.not_to contain_service('time-stream')
+          is_expected.to contain_echo('time-service')
+            .with(
+              'message'  => 'servive time',
+              'loglevel' => 'warning',
+              'withpath' => false,
+            )
+        end
+      end
     end
   end
 end

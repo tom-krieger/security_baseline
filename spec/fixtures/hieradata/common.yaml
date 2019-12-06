@@ -1,0 +1,22 @@
+---
+security_baseline::baseline_version: '1.0.0'
+security_baseline::debug: true
+security_baseline::log_info: true
+security_baseline::rules:
+  '1.1.1.1':
+    rulename: 'cramfs'
+    active: true
+    scored: true
+    level: 1
+    description: 'The cramfs filesystem type is a compressed read-only Linux filesystem embedded in small footprint systems. A cramfs image can be used without having to first decompress the image.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_cramfs'
+    check:
+      fact_hash: security_baseline
+      fact_name: 
+        - kernel_modules
+        - cramfs
+      fact_value: false
+    message: 'Rule 1.1.1.1. Cramfs kernel module should not be available.'
+    log_level: 'warning'
+  

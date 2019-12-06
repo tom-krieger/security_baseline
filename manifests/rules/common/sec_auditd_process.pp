@@ -36,7 +36,7 @@ class security_baseline::rules::common::sec_auditd_process (
     }
   } else {
     if($facts['security_baseline']['auditd']['auditing_process'] == 'none') {
-      echo { 'auditd-max-log-action':
+      echo { 'auditd-process':
         message  => 'Auditd process not configured in grub.',
         loglevel => $log_level,
         withpath => false,

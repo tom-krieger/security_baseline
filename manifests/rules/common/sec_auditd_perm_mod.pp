@@ -42,7 +42,7 @@ class security_baseline::rules::common::sec_auditd_perm_mod (
   String $log_level = ''
 ) {
   if($enforce) {
-    file_line { 'watch pem mod rule 1':
+    file_line { 'watch perm mod rule 1':
       ensure => present,
       path   => $security_baseline::auditd_rules_file,
       line   => '-a always,exit -F arch=b32 -S chmod -S fchmod -S fchmodat -F auid>=1000 -F auid!=4294967295 -k perm_mod',

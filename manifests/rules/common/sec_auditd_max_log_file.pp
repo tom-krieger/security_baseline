@@ -37,12 +37,12 @@ class security_baseline::rules::common::sec_auditd_max_log_file (
 ) {
   if($enforce) {
     file_line { 'auditd_max_log_size':
-      line  => "max_log_file = ${max_log_size}",
       path  => '/etc/audit/auditd.conf',
+      line  => "max_log_file = ${max_log_size}",
       match => '^max_log_file =',
     }
   } else {
-    if($facts['security_baseline_auditd']['max_log_file'] == 'none') {
+    if($facts['security_baseline']['auditd']['max_log_file'] == 'none') {
       echo { 'auditd-max-log-size':
         message  => 'Auditd setting for max_log_file is not correct.',
         loglevel => $log_level,

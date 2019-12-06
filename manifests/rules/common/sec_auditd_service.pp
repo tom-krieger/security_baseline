@@ -42,7 +42,7 @@ class security_baseline::rules::common::sec_auditd_service (
 
   } else {
     if($facts['security_baseline']['auditd']['srv_auditd'] == false) {
-      echo { 'auditd-max-log-action':
+      echo { 'auditd-service':
         message  => 'Auditd servive should be enabled and running.',
         loglevel => $log_level,
         withpath => false,

@@ -4,20 +4,21 @@ enforce_options = [true, false]
 
 describe 'security_baseline::rules::redhat::sec_pam_old_passwords' do
   enforce_options.each do |enforce|
-
     context "RedHat pam_old_passwords with enforce = #{enforce}" do
-      let(:facts) { {
-        :osfamily => 'RedHat',
-        :operatingsystem => 'CentOS',
-        :architecture => 'x86_64',
-        :security_baseline => {
-          :pam => {
-            :opasswd => {
-              :status => false
-            }
-          }
+      let(:facts) do
+        {
+          osfamily: 'RedHat',
+          operatingsystem: 'CentOS',
+          architecture: 'x86_64',
+          security_baseline: {
+            pam: {
+              opasswd: {
+                status: false,
+              },
+            },
+          },
         }
-      } }
+      end
       let(:params) do
         {
           'enforce' => enforce,
@@ -38,7 +39,7 @@ describe 'security_baseline::rules::redhat::sec_pam_old_passwords' do
               'type'      => 'password',
               'control'   => 'sufficient',
               'module'    => 'pam_unix.so',
-              'arguments' => ["remember=5", 'shadow', 'sha512', 'try_first_pass', 'use_authtok'],
+              'arguments' => ['remember=5', 'shadow', 'sha512', 'try_first_pass', 'use_authtok'],
               'position'  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
             )
 
@@ -49,7 +50,7 @@ describe 'security_baseline::rules::redhat::sec_pam_old_passwords' do
               'type'      => 'password',
               'control'   => 'sufficient',
               'module'    => 'pam_unix.so',
-              'arguments' => ["remember=5", 'shadow', 'sha512', 'try_first_pass', 'use_authtok'],
+              'arguments' => ['remember=5', 'shadow', 'sha512', 'try_first_pass', 'use_authtok'],
               'position'  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
             )
           is_expected.not_to contain_echo('password-reuse')
@@ -67,18 +68,20 @@ describe 'security_baseline::rules::redhat::sec_pam_old_passwords' do
     end
 
     context "RedHat without sha512 with enforce = #{enforce}" do
-      let(:facts) { {
-        :osfamily => 'RedHat',
-        :operatingsystem => 'CentOS',
-        :architecture => 'x86_64',
-        :security_baseline => {
-          :pam => {
-            :opasswd => {
-              :status => false
-            }
-          }
+      let(:facts) do
+        {
+          osfamily: 'RedHat',
+          operatingsystem: 'CentOS',
+          architecture: 'x86_64',
+          security_baseline: {
+            pam: {
+              opasswd: {
+                status: false,
+              },
+            },
+          },
         }
-      } }
+      end
       let(:params) do
         {
           'enforce' => enforce,
@@ -99,7 +102,7 @@ describe 'security_baseline::rules::redhat::sec_pam_old_passwords' do
               'type'      => 'password',
               'control'   => 'sufficient',
               'module'    => 'pam_unix.so',
-              'arguments' => ["remember=5", 'shadow', 'try_first_pass', 'use_authtok'],
+              'arguments' => ['remember=5', 'shadow', 'try_first_pass', 'use_authtok'],
               'position'  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
             )
 
@@ -110,7 +113,7 @@ describe 'security_baseline::rules::redhat::sec_pam_old_passwords' do
               'type'      => 'password',
               'control'   => 'sufficient',
               'module'    => 'pam_unix.so',
-              'arguments' => ["remember=5", 'shadow', 'try_first_pass', 'use_authtok'],
+              'arguments' => ['remember=5', 'shadow', 'try_first_pass', 'use_authtok'],
               'position'  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
             )
           is_expected.not_to contain_echo('password-reuse')

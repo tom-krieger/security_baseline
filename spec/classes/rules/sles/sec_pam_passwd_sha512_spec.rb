@@ -3,22 +3,22 @@ require 'spec_helper'
 enforce_options = [true, false]
 
 describe 'security_baseline::rules::sles::sec_pam_passwd_sha512' do
-
   enforce_options.each do |enforce|
-
     context "sude with enforce = #{enforce}" do
-      let(:facts) { {
-        :osfamily => 'Suse',
-        :operatingsystem => 'SLES',
-        :architecture => 'x86_64',
-        :security_baseline => {
-          :pam =>{
-            :sha512 => {
-              :status => false,
-            }
-          }
+      let(:facts) do
+        {
+          osfamily: 'Suse',
+          operatingsystem: 'SLES',
+          architecture: 'x86_64',
+          security_baseline: {
+            pam: {
+              sha512: {
+                status: false,
+              },
+            },
+          },
         }
-      } }
+      end
       let(:params) do
         {
           'enforce' => enforce,

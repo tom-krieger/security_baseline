@@ -3,20 +3,20 @@ require 'spec_helper'
 enforce_options = [true, false]
 
 describe 'security_baseline::rules::sles::sec_service_echo' do
-
   enforce_options.each do |enforce|
-
     context "Suse with enforce = #{enforce}" do
-      let(:facts) { {
-        :osfamily => 'Suse',
-        :operatingsystem => 'SLES',
-        :architecture => 'x86_64',
-        :security_baseline => {
-          :xinetd_services => {
-            :srv_echo => true
-          }
+      let(:facts) do
+        {
+          osfamily: 'Suse',
+          operatingsystem: 'SLES',
+          architecture: 'x86_64',
+          security_baseline: {
+            xinetd_services: {
+              srv_echo: true,
+            },
+          },
         }
-      } }
+      end
       let(:params) do
         {
           'enforce' => enforce,
@@ -39,7 +39,7 @@ describe 'security_baseline::rules::sles::sec_service_echo' do
               'ensure' => 'stopped',
               'enable' => false,
             )
-            
+
           is_expected.not_to contain_echo('echo-service')
         else
           is_expected.not_to contain_service('echo')

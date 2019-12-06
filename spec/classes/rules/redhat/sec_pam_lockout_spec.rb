@@ -3,23 +3,22 @@ require 'spec_helper'
 enforce_options = [true, false]
 
 describe 'security_baseline::rules::redhat::sec_pam_lockout' do
-
   enforce_options.each do |enforce|
-
     context "RedHat with enforce = #{enforce}" do
-    
-      let(:facts) { {
-        :osfamily => 'RedHat',
-        :operatingsystem => 'CentOS',
-        :architecture => 'x86_64',
-        :security_baseline => {
-          :pam => {
-            :pwquality => {
-              :lockout => false
-            }
-          }
+      let(:facts) do
+        {
+          osfamily: 'RedHat',
+          operatingsystem: 'CentOS',
+          architecture: 'x86_64',
+          security_baseline: {
+            pam: {
+              pwquality: {
+                lockout: false,
+              },
+            },
+          },
         }
-      } }
+      end
       let(:params) do
         {
           'enforce' => enforce,
@@ -56,8 +55,8 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
                 'preauth',
                 'audit',
                 'silent',
-                "deny=3",
-                "unlock_time=900",
+                'deny=3',
+                'unlock_time=900',
               ],
               'position'         => 'before *[type="auth" and module="pam_unix.so"]',
             )
@@ -73,8 +72,8 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
               'arguments'        => [
                 'authfail',
                 'audit',
-                "deny=3",
-                "unlock_time=900",
+                'deny=3',
+                'unlock_time=900',
               ],
               'position'         => 'after *[type="auth" and module="pam_unix.so"]',
             )
@@ -90,8 +89,8 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
               'arguments'        => [
                 'authsucc',
                 'audit',
-                "deny=3",
-                "unlock_time=900",
+                'deny=3',
+                'unlock_time=900',
               ],
               'position'         => 'after *[type="auth" and module="pam_faillock.so" and control="[default=die]"]',
             )
@@ -119,8 +118,8 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
                 'preauth',
                 'audit',
                 'silent',
-                "deny=3",
-                "unlock_time=900",
+                'deny=3',
+                'unlock_time=900',
               ],
               'position'         => 'before *[type="auth" and module="pam_unix.so"]',
             )
@@ -136,8 +135,8 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
               'arguments'        => [
                 'authfail',
                 'audit',
-                "deny=3",
-                "unlock_time=900",
+                'deny=3',
+                'unlock_time=900',
               ],
               'position'         => 'after *[type="auth" and module="pam_unix.so"]',
             )
@@ -153,13 +152,13 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
               'arguments'        => [
                 'authsucc',
                 'audit',
-                "deny=3",
-                "unlock_time=900",
+                'deny=3',
+                'unlock_time=900',
               ],
-              'position'         => 'after *[type="auth" and module="pam_faillock.so" and control="[default=die]"]',
+              'position' => 'after *[type="auth" and module="pam_faillock.so" and control="[default=die]"]',
             )
 
-            is_expected.not_to contain_echo('pam-lockout')
+          is_expected.not_to contain_echo('pam-lockout')
         else
           is_expected.not_to contain_pam('pam_unix system-auth')
           is_expected.not_to contain_pam('pam_faillock preauth system-auth')

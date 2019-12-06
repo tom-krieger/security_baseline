@@ -3,22 +3,22 @@ require 'spec_helper'
 enforce_options = [true, false]
 
 describe 'security_baseline::rules::redhat::sec_pam_pw_requirements' do
-
   enforce_options.each do |enforce|
-
     context 'RedHat with enforce = #{enforce}' do
-      let(:facts) { {
-        :osfamily => 'RedHat',
-        :operatingsystem => 'CentOS',
-        :architecture => 'x86_64',
-        :security_baseline => {
-          :pam => {
-            :pwquality => {
-              :status => false
-            }
-          }
+      let(:facts) do
+        {
+          osfamily: 'RedHat',
+          operatingsystem: 'CentOS',
+          architecture: 'x86_64',
+          security_baseline: {
+            pam: {
+              pwquality: {
+                status: false,
+              },
+            },
+          },
         }
-      } }
+      end
       let(:params) do
         {
           'enforce' => enforce,
@@ -39,7 +39,7 @@ describe 'security_baseline::rules::redhat::sec_pam_pw_requirements' do
             .with(
               'ensure' => 'present',
               'path'   => '/etc/security/pwquality.conf',
-              'line'   => "minlen = 14",
+              'line'   => 'minlen = 14',
               'match'  => '^#?minlen',
             )
 
@@ -47,7 +47,7 @@ describe 'security_baseline::rules::redhat::sec_pam_pw_requirements' do
             .with(
               'ensure' => 'present',
               'path'   => '/etc/security/pwquality.conf',
-              'line'   => "dcredit = -1",
+              'line'   => 'dcredit = -1',
               'match'  => '^#?dcredit',
             )
 
@@ -55,7 +55,7 @@ describe 'security_baseline::rules::redhat::sec_pam_pw_requirements' do
             .with(
               'ensure' => 'present',
               'path'   => '/etc/security/pwquality.conf',
-              'line'   => "ucredit = -1",
+              'line'   => 'ucredit = -1',
               'match'  => '^#?ucredit',
             )
 
@@ -63,7 +63,7 @@ describe 'security_baseline::rules::redhat::sec_pam_pw_requirements' do
             .with(
               'ensure' => 'present',
               'path'   => '/etc/security/pwquality.conf',
-              'line'   => "ocredit = -1",
+              'line'   => 'ocredit = -1',
               'match'  => '^#?ocredit',
             )
 
@@ -71,7 +71,7 @@ describe 'security_baseline::rules::redhat::sec_pam_pw_requirements' do
             .with(
               'ensure' => 'present',
               'path'   => '/etc/security/pwquality.conf',
-              'line'   => "lcredit = -1",
+              'line'   => 'lcredit = -1',
               'match'  => '^#?lcredit',
             )
 
@@ -82,7 +82,7 @@ describe 'security_baseline::rules::redhat::sec_pam_pw_requirements' do
               'type'      => 'password',
               'control'   => 'requisite',
               'module'    => 'pam_pwquality.so',
-              'arguments' => ['try_first_pass', 'retry=3']
+              'arguments' => ['try_first_pass', 'retry=3'],
             )
 
           is_expected.to contain_pam('pam-password-auth-requisite')
@@ -92,7 +92,7 @@ describe 'security_baseline::rules::redhat::sec_pam_pw_requirements' do
               'type'      => 'password',
               'control'   => 'requisite',
               'module'    => 'pam_pwquality.so',
-              'arguments' => ['try_first_pass', 'retry=3']
+              'arguments' => ['try_first_pass', 'retry=3'],
             )
           is_expected.not_to contain_echo('pam-password-complexity')
         else

@@ -3,21 +3,21 @@ require 'spec_helper'
 enforce_options = [true, false]
 
 describe 'security_baseline::rules::redhat::sec_service_daytime' do
-
   enforce_options.each do |enforce|
-
     context "RedHat with enforce = #{enforce}" do
-      let(:facts) { {
-        :osfamily => 'RedHat',
-        :operatingsystem => 'CentOS',
-        :architecture => 'x86_64',
-        :srv_daytime => true,
-        :security_baseline => {
-          :xinetd_services => {
-            :srv_daytime => true
-          }
+      let(:facts) do
+        {
+          osfamily: 'RedHat',
+          operatingsystem: 'CentOS',
+          architecture: 'x86_64',
+          srv_daytime: true,
+          security_baseline: {
+            xinetd_services: {
+              srv_daytime: true,
+            },
+          },
         }
-      } }
+      end
 
       let(:params) do
         {

@@ -5,8 +5,9 @@ describe 'security_baseline::sec_check' do
 
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
-      let(:pre_condition) { <<-EOF
-        class { 'security_baseline': 
+      let(:pre_condition) do
+        <<-EOF
+        class { 'security_baseline':
           baseline_version => '1.0.0',
           rules => {},
           logfile => '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
@@ -15,7 +16,7 @@ describe 'security_baseline::sec_check' do
           debug => true,
         }
         EOF
-      }
+      end
       let(:facts) { os_facts }
       let(:params) do
         {
@@ -32,7 +33,7 @@ describe 'security_baseline::sec_check' do
 
       it { is_expected.to compile }
       it {
-        #is_expected.to contain_echo('Applying rule cramfs')
+        # is_expected.to contain_echo('Applying rule cramfs')
         #  .with(
         #    'loglevel' => 'debug',
         #    'withpath' => false,

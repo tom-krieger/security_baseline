@@ -3,18 +3,18 @@ require 'spec_helper'
 enforce_options = [true, false]
 
 describe 'security_baseline::rules::sles::sec_timeout_setting' do
-
   enforce_options.each do |enforce|
-
     context "Suse with enforce = #{enforce}" do
-      let(:facts) { {
-        :osfamily => 'Suse',
-        :operatingsystem => 'SLES',
-        :architecture => 'x86_64',
-        :security_baseline => {
-          :timeout => true,
+      let(:facts) do
+        {
+          osfamily: 'Suse',
+          operatingsystem: 'SLES',
+          architecture: 'x86_64',
+          security_baseline: {
+            timeout: true,
+          },
         }
-      } }
+      end
       let(:params) do
         {
           'enforce' => enforce,
@@ -30,13 +30,13 @@ describe 'security_baseline::rules::sles::sec_timeout_setting' do
           is_expected.to contain_file_line('bashrc_tmout')
             .with(
               'path' => '/etc/bash.bashrc',
-              'line' => "TMOUT=900",
+              'line' => 'TMOUT=900',
             )
 
           is_expected.to contain_file_line('profile_tmout')
             .with(
               'path' => '/etc/profile',
-              'line' => "TMOUT=900",
+              'line' => 'TMOUT=900',
             )
 
           is_expected.not_to contain_echo('timeout-setting')

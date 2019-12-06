@@ -3,29 +3,29 @@ require 'spec_helper'
 enforce_options = [true, false]
 
 describe 'security_baseline::rules::sles::sec_pam_lockout' do
-
   enforce_options.each do |enforce|
-
     context "Suse with enforce = #{enforce}" do
-      let(:facts) { {
-        :osfamily => 'Suse',
-        :operatingsystem => 'SLES',
-        :architecture => 'x86_64',
-        :security_baseline => {
-          :pam => {
-            :pwquality => {
-              :lockout => false
-            }
-          }
+      let(:facts) do
+        {
+          osfamily: 'Suse',
+          operatingsystem: 'SLES',
+          architecture: 'x86_64',
+          security_baseline: {
+            pam: {
+              pwquality: {
+                lockout: false,
+              },
+            },
+          },
         }
-      } }
+      end
       let(:params) do
         {
           'enforce' => enforce,
           'message' => 'pam lockout',
           'log_level' => 'warning',
           'lockouttime' => 900,
-          'attempts' => 3
+          'attempts' => 3,
         }
       end
 
@@ -43,8 +43,8 @@ describe 'security_baseline::rules::sles::sec_pam_lockout' do
                 'onerr=fail',
                 'audit',
                 'silent',
-                "deny=3",
-                "unlock_time=900",
+                'deny=3',
+                'unlock_time=900',
               ],
             )
 

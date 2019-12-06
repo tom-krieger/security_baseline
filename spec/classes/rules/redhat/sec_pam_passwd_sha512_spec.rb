@@ -1,20 +1,21 @@
 require 'spec_helper'
-enforce_options = [true, false]
 
 describe 'security_baseline::rules::redhat::sec_pam_passwd_sha512' do
   context 'RedHat' do
-    let(:facts) { {
-      :osfamily => 'RedHat',
-      :operatingsystem => 'CentOS',
-      :architecture => 'x86_64',
-      :security_baseline => {
-        :pam => {
-          :sha512 => {
-            :status => false
-          }
-        }
+    let(:facts) do
+      {
+        osfamily: 'RedHat',
+        operatingsystem: 'CentOS',
+        architecture: 'x86_64',
+        security_baseline: {
+          pam: {
+            sha512: {
+              status: false,
+            },
+          },
+        },
       }
-    } }
+    end
     let(:params) do
       {
         'enforce' => false,

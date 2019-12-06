@@ -4,19 +4,18 @@ enforce_options = [true, false]
 
 describe 'security_baseline::rules::common::sec_aide' do
   on_supported_os.each do |os, os_facts|
-
     enforce_options.each do |enforce|
       context "on #{os}" do
-        let(:facts) { 
+        let(:facts) do
           os_facts.merge(
             'security_baseline' => {
               'aide' => {
                 'version' =>  '6.1.2',
                 'status' => 'not installed',
-              }
-            }
+              },
+            },
           )
-        }
+        end
         let(:params) do
           {
             'enforce' => enforce,
@@ -46,7 +45,7 @@ describe 'security_baseline::rules::common::sec_aide' do
                 'loglevel' => 'warning',
                 'withpath' => false,
               )
-            
+
           end
         end
       end

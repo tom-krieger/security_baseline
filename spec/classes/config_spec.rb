@@ -79,7 +79,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-          is_expected.to contain_file('/usr/local/security_baseline_scripts/root_path_integrity.sh')
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/root_path_integrity.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',

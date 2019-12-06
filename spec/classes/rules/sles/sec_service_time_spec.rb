@@ -2,11 +2,13 @@ require 'spec_helper'
 
 describe 'security_baseline::rules::sles::sec_service_time' do
   context 'Suse' do
-    let(:facts) { {
-      :osfamily => 'Suse',
-      :operatingsystem => 'SLES',
-      :architecture => 'x86_64',
-    } }
+    let(:facts) do
+      {
+        osfamily: 'Suse',
+        operatingsystem: 'SLES',
+        architecture: 'x86_64',
+      }
+    end
     let(:params) do
       {
         'enforce' => true,

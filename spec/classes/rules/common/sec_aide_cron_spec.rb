@@ -3,9 +3,7 @@ require 'spec_helper'
 enforce_options = [true, false]
 
 describe 'security_baseline::rules::common::sec_aide_cron' do
-
   enforce_options.each do |enforce|
-
     on_supported_os.each do |os, os_facts|
       context "on #{os} with enforce = #{enforce}" do
         let(:facts) do
@@ -14,8 +12,8 @@ describe 'security_baseline::rules::common::sec_aide_cron' do
               'aide' => {
                 'version' =>  '6.1.2',
                 'status' => 'installed',
-              }
-            }
+              },
+            },
           )
         end
         let(:params) do

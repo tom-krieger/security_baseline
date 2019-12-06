@@ -1,5 +1,5 @@
 # @summary 
-#    Ensure auditd service is enabled (Scored)
+#    Ensure auditd service is enabled (Scored).
 #
 # Turn on the auditd daemon to record system events.
 #

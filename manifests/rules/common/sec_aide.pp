@@ -61,10 +61,10 @@ class security_baseline::rules::common::sec_aide (
       ($facts['security_baseline']['aide']['status'] == 'not installed')
     ) {
       echo { 'aide':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
     }
   }
 }

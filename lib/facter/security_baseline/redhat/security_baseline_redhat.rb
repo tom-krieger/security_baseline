@@ -26,7 +26,7 @@ require 'pp'
 # security_baseline_redhat.rb
 # collect facts about the security baseline
 
-def security_baseline_redhat(os, distid, _release)
+def security_baseline_redhat(os, _distid, _release)
   security_baseline = {}
   arch = Facter.value(:architecture)
 

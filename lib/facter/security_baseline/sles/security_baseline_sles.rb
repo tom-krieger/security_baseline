@@ -23,7 +23,7 @@ require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'facter/security_baseline/common/check_values_expected'
 require 'pp'
 
-def security_baseline_sles(os, distid, _release)
+def security_baseline_sles(os, _distid, _release)
   security_baseline = {}
   arch = Facter.value(:architecture)
 

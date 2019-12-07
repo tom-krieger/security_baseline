@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_dev_shm_noexec (
 ) {
   if $enforce {
 
-    if $::dev_shm_partition {
+    unless $facts['security_baseline']['partitions']['shm']['partition'].empty {
 
       if $facts['security_baseline']['partitions']['shm']['noexec'] == false {
         echo { 'dev-shm-noexec':

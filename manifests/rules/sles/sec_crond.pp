@@ -17,29 +17,23 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_crond {
+#   class security_baseline::rules::sles::sec_crond {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_crond (
+class security_baseline::rules::sles::sec_crond (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''
 ) {
   if($enforce) {
-    if($facts['osfamily'] == 'RedHat') {
-      $srv = 'crond'
-    } else {
-      $srv = 'cron'
-    }
-
-    service { $srv:
+    service { 'cron':
       ensure => 'running',
       enable => true
-      }
+    }
 
   } else {
 

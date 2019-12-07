@@ -40,7 +40,7 @@ class security_baseline::rules::common::sec_cron_daily (
       owner  => 'root',
       group  => 'root',
       mode   => '0700',
-      }
+    }
 
   } else {
 

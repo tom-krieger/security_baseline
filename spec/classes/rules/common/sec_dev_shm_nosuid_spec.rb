@@ -15,9 +15,9 @@ describe 'security_baseline::rules::common::sec_dev_shm_nosuid' do
                   'noexec' => false,
                   'nosuid' => false,
                   'partition' => '/dev/shm',
-                }
-              }
-            }
+                },
+              },
+            },
           )
         end
         let(:params) do
@@ -28,8 +28,8 @@ describe 'security_baseline::rules::common::sec_dev_shm_nosuid' do
           }
         end
 
-        it { 
-          is_expected.to compile 
+        it {
+          is_expected.to compile
           if enforce
             is_expected.to contain_echo('dev-shm-nosuid')
               .with(

@@ -59,7 +59,7 @@ class security_baseline::rules::common::sec_auditd_time_change (
         line   => '-a always,exit -F arch=b64 -S adjtimex -S settimeofday -k time-change',
         notify => Exec['reload auditd rules'],
       }
-      file_line { 'wwatch for date-time-change rule 5':
+      file_line { 'watch for date-time-change rule 5':
         ensure => present,
         path   => $security_baseline::auditd_rules_file,
         line   => '-a always,exit -F arch=b64 -S clock_settime -k time-change',

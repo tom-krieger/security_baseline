@@ -68,6 +68,9 @@ describe 'security_baseline::rules::common::sec_auditd_access' do
                     'path'   => '/etc/audit/rules.d/sec_baseline_auditd.rules',
                     'line'   => '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access',
                   )
+              else
+                is_expected.not_to contain_file_line('watch access rule 3')
+                is_expected.not_to contain_file_line('watch access rule 4')
               end
 
               is_expected.not_to contain_echo('auditd-access')
@@ -76,16 +79,8 @@ describe 'security_baseline::rules::common::sec_auditd_access' do
             it {
               is_expected.not_to contain_file_line('watch access rule 1')
               is_expected.not_to contain_file_line('watch access rule 2')
-
-              if arch == 'x86_64'
-                is_expected.not_to contain_file_line('watch access rule 3')
-                is_expected.not_to contain_file_line('watch access rule 4')
-                  .with(
-                    'ensure' => 'present',
-                    'path'   => '/etc/audit/rules.d/sec_baseline_auditd.rules',
-                    'line'   => '-a always,exit -F arch=b64 -S creat -S open -S openat -S truncate -S ftruncate -F exit=-EPERM -F auid>=1000 -F auid!=4294967295 -k access',
-                  )
-              end
+              is_expected.not_to contain_file_line('watch access rule 3')
+              is_expected.not_to contain_file_line('watch access rule 4')
 
               is_expected.to contain_echo('auditd-access')
                 .with(

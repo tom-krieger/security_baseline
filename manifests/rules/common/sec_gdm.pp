@@ -30,7 +30,7 @@ class security_baseline::rules::common::sec_gdm (
   String $message = '',
   String $log_level = ''
 ) {
-  if($::gnome_gdm) {
+  if($facts['security_baseline']['gnome_gdm']) {
 
     if($enforce) {
 
@@ -45,7 +45,7 @@ class security_baseline::rules::common::sec_gdm (
         path    => '/etc/dconf/db/gdm.d/01-banner-message',
         content => "[org/gnome/login-screen]\nbanner-message-enable=true\nbanner-message-text=\'Authorized uses only. All activity may be monitored and reported.\'", #lint:ignore:140chars
         require => File['gdm'],
-        notify  => Exec['dconf-gdm'],
+        notify  => Exec['dconf-gdm-exec'],
       }
 
       exec { 'dconf-gdm-exec':
@@ -58,14 +58,11 @@ class security_baseline::rules::common::sec_gdm (
 
       if($facts['security_baseline']['gnome_gdm_conf'] == false) {
         echo { 'gdm-conf':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
-      }
-
-
     }
-
   }
 }

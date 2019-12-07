@@ -92,7 +92,6 @@ describe 'security_baseline::rules::common::sec_auditd_time_change' do
               end
 
               is_expected.not_to contain_echo('auditd-time-change')
-              
             }
 
           else

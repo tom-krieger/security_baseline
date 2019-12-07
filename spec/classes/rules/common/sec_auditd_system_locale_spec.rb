@@ -96,12 +96,12 @@ describe 'security_baseline::rules::common::sec_auditd_system_locale' do
 
               if arch == 'x86_64'
                 is_expected.to contain_file_line('watch network environment rule 7')
-                .with(
-                  'ensure' => 'present',
-                  'path'   => '/etc/audit/rules.d/sec_baseline_auditd.rules',
-                  'line'   => '-a always,exit -F arch=b64 -S sethostname,setdomainname -F key=system-locale',
-                )
-                .that_notifies('Exec[reload auditd rules]')
+                  .with(
+                    'ensure' => 'present',
+                    'path'   => '/etc/audit/rules.d/sec_baseline_auditd.rules',
+                    'line'   => '-a always,exit -F arch=b64 -S sethostname,setdomainname -F key=system-locale',
+                  )
+                  .that_notifies('Exec[reload auditd rules]')
               else
                 is_expected.not_to contain_file_line('watch network environment rule 7')
               end

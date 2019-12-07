@@ -53,21 +53,21 @@ describe 'security_baseline::rules::common::sec_auditd_when_full' do
             it {
               is_expected.to contain_file_line('auditd_space_left_action')
                 .with(
-                  'line'  => "space_left_action = email",
+                  'line'  => 'space_left_action = email',
                   'path'  => '/etc/audit/auditd.conf',
                   'match' => '^space_left_action',
                 )
 
               is_expected.to contain_file_line('auditd_action_mail_acct')
                 .with(
-                  'line'  => "action_mail_acct = root",
+                  'line'  => 'action_mail_acct = root',
                   'path'  => '/etc/audit/auditd.conf',
                   'match' => '^action_mail_acct',
                 )
 
               is_expected.to contain_file_line('auditd_admin_space_left_action')
                 .with(
-                  'line'  => "admin_space_left_action = halt",
+                  'line'  => 'admin_space_left_action = halt',
                   'path'  => '/etc/audit/auditd.conf',
                   'match' => '^admin_space_left_action',
                 )

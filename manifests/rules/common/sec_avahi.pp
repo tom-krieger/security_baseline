@@ -36,8 +36,8 @@ class security_baseline::rules::common::sec_avahi (
 
     service {'avahi-daemon':
       ensure => 'stopped',
-      enable => false
-      }
+      enable => false,
+    }
 
   } else {
 

@@ -32,9 +32,11 @@ describe 'security_baseline::rules::common::sec_core_dump' do
                 'path' => '/etc/security/limits.conf',
                 'line' => '* hard core 0',
               )
+            is_expected.to contain_sysctl('fs.suid_dumpable').with('value' => 0)
             is_expected.not_to contain_echo('coredumps')
           else
             is_expected.not_to contain_file_line('limits_hc')
+            is_expected.not_to contain_sysctl('fs.suid_dumpable')
             is_expected.to contain_echo('coredumps')
               .with(
                 'message'  => 'core dump hard core',

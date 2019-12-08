@@ -33,7 +33,7 @@ class security_baseline::rules::common::sec_group_passwd (
 
   } else {
     if ($facts['security_baseline']['passwd_group'] != 'none') {
-      echo { 'user-rhosts-files':
+      echo { 'group-passwd-test':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

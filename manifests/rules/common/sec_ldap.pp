@@ -39,8 +39,8 @@ class security_baseline::rules::common::sec_ldap (
 
   } else {
 
-    if($::srv_ldap == 'enabled') {
-      echo { 'dhcpd':
+    if($facts['security_baseline']['services_enabled']['srv_ldap'] == 'enabled') {
+      echo { 'ldap':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

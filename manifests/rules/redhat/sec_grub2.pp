@@ -20,14 +20,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_grub2 {
+#   class security_baseline::rules::redhat::sec_grub2 {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_grub2 (
+class security_baseline::rules::redhat::sec_grub2 (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''
@@ -53,21 +53,12 @@ class security_baseline::rules::common::sec_grub2 (
     if(
       ($facts['security_baseline']['grub']['grub.cfg']['uid'] != 0) or
       ($facts['security_baseline']['grub']['grub.cfg']['gid'] != 0) or
-      ($facts['security_baseline']['grub']['grub.cfg']['mode'] != 0600)
-    ) {
-      echo { 'grub-grub-cfg':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
-    }
-
-    if(
+      ($facts['security_baseline']['grub']['grub.cfg']['mode'] != 384) or
       ($facts['security_baseline']['grub']['user.cfg']['uid'] != 0) or
       ($facts['security_baseline']['grub']['user.cfg']['gid'] != 0) or
-      ($facts['security_baseline']['grub']['user.cfg']['mode'] != 0600)
+      ($facts['security_baseline']['grub']['user.cfg']['mode'] != 384)
     ) {
-      echo { 'grub-user-cfg':
+      echo { 'grub-grub-cfg':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

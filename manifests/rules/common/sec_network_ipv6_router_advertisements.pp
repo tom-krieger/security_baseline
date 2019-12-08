@@ -35,6 +35,8 @@ class security_baseline::rules::common::sec_network_ipv6_router_advertisements (
     sysctl {
       'net.ipv6.conf.all.accept_ra':
         value => 0;
+    }
+    sysctl {
       'net.ipv6.conf.default.accept_ra':
         value => 0;
     }

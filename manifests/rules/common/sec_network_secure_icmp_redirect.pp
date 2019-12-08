@@ -37,6 +37,8 @@ class security_baseline::rules::common::sec_network_secure_icmp_redirect (
     sysctl {
       'net.ipv4.conf.all.secure_redirects':
         value => 0;
+    }
+    sysctl {
       'net.ipv4.conf.default.secure_redirects':
         value => 0;
     }

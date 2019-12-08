@@ -30,15 +30,11 @@ class security_baseline::rules::common::sec_legacy_plus_group (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-    if ($facts['security_baseline']['legacy_plus']['group'] != 'none') {
-      echo { 'legacy-plus-group':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if ($facts['security_baseline']['legacy_plus']['group'] != 'none') {
+    echo { 'legacy-plus-group':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

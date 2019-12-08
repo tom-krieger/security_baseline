@@ -41,6 +41,8 @@ class security_baseline::rules::common::sec_network_reverse_path_filtering (
     sysctl {
       'net.ipv4.conf.all.rp_filter':
         value => 1;
+    }
+    sysctl {
       'net.ipv4.conf.default.rp_filter':
         value => 1;
     }

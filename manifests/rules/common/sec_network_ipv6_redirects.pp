@@ -38,6 +38,8 @@ class security_baseline::rules::common::sec_network_ipv6_redirects (
     sysctl {
       'net.ipv6.conf.all.accept_redirects':
         value => 0;
+    }
+    sysctl {
       'net.ipv6.conf.default.accept_redirects':
         value => 0;
     }

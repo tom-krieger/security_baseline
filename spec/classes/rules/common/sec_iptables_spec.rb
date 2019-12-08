@@ -2,16 +2,15 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_aide_cron' do
+describe 'security_baseline::rules::common::sec_iptables' do
   enforce_options.each do |enforce|
     on_supported_os.each do |os, os_facts|
       context "on #{os} with enforce = #{enforce}" do
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {
-              'aide' => {
-                'version' =>  '6.1.2',
-                'status' => 'installed',
+              'packages_installed' => {
+                'iptables' => false,
               },
             },
           )
@@ -19,7 +18,7 @@ describe 'security_baseline::rules::common::sec_aide_cron' do
         let(:params) do
           {
             'enforce' => enforce,
-            'message' => 'aide cron',
+            'message' => 'iptables package',
             'log_level' => 'warning',
           }
         end
@@ -27,18 +26,17 @@ describe 'security_baseline::rules::common::sec_aide_cron' do
         it { is_expected.to compile }
         it do
           if enforce
-            is_expected.to contain_file('/etc/cron.d/aide.cron')
+            is_expected.to contain_package('iptables')
               .with(
-                'ensure' => 'present',
-                'owner'  => 'root',
-                'group'  => 'root',
-                'mode'   => '0644',
+                'ensure' => 'installed',
               )
-            is_expected.not_to contain_echo('aide-cron')
+
+            is_expected.not_to contain_echo('iptables')
           else
-            is_expected.to contain_echo('aide-cron')
+            is_expected.not_to contain_package('iptables')
+            is_expected.to contain_echo('iptables')
               .with(
-                'message'  => 'aide cron',
+                'message'  => 'iptables package',
                 'loglevel' => 'warning',
                 'withpath' => false,
               )

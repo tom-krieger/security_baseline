@@ -33,6 +33,8 @@ class security_baseline::rules::common::sec_network_ipv6_disable (
     sysctl {
       'net.ipv6.conf.all.disable_ipv6':
         value => 1;
+    }
+    sysctl {
       'net.ipv6.conf.default.disable_ipv6':
         value => 1;
     }

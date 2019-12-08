@@ -42,7 +42,7 @@ class security_baseline::rules::common::sec_issue_permissions (
 
   } else {
     if($facts['security_baseline']['issue']['os']['combined'] != '0-0-420') {
-      echo { 'issue-os-uid':
+      echo { 'issue-os-perms':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

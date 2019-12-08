@@ -37,14 +37,11 @@ class security_baseline::rules::common::sec_motd (
   String $message = '',
   String $log_level = ''
 ) {
-    if($enforce) {
-
-      if($facts['security_baseline']['motd']) {
-        echo { 'motd':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+    if($facts['security_baseline']['motd']['content'] != '') {
+      echo { 'motd':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

@@ -29,15 +29,11 @@ class security_baseline::rules::common::sec_home_dirs_owner (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-    if ($facts['security_baseline']['home_dir_owners'] != 'none') {
-      echo { 'home-dir-perms':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if ($facts['security_baseline']['home_dir_owners'] != 'none') {
+    echo { 'home-dir-perms':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

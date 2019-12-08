@@ -30,17 +30,13 @@ class security_baseline::rules::common::sec_home_partition (
   String $log_level = ''
 ) {
 
-  if($enforce) {
-    if (has_key($facts, 'security_baseline')) and
-      defined($facts['security_baseline']['partitions']['home']['partition']) and
-      ($facts['security_baseline']['partitions']['home']['partition'] == undef) {
+  if (has_key($facts, 'security_baseline')) and
+    ($facts['security_baseline']['partitions']['home']['partition'] == undef) {
 
-      echo { 'home-partition':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-        }
+    echo { 'home-partition':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
       }
-  }
-
+    }
 }

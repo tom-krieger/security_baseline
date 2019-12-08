@@ -34,18 +34,13 @@ class security_baseline::rules::common::sec_var_tmp_partition (
   String $message = '',
   String $log_level = ''
 ) {
+  if (has_key($facts, 'security_baseline')) and
+    ($facts['security_baseline']['partitions']['var_tmp']['partition'] == undef) {
 
-  if($enforce) {
-    if (has_key($facts, 'security_baseline')) and
-      defined($facts['security_baseline']['partitions']['var_tmp']['partition']) and
-      ($facts['security_baseline']['partitions']['var_tmp']['partition'] == undef) {
-
-      echo { 'var-tmp-partition':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-        }
-      }
+    echo { 'var-tmp-partition':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
+    }
   }
-
 }

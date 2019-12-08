@@ -29,15 +29,11 @@ class security_baseline::rules::common::sec_home_dirs_exist (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-    if ($facts['security_baseline']['user_home_dirs'] != 'none') {
-      echo { 'users-home-dirs-exist':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if ($facts['security_baseline']['user_home_dirs'] != 'none') {
+    echo { 'users-home-dirs-exist':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

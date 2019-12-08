@@ -37,7 +37,7 @@ class security_baseline::rules::common::sec_motd_permissions (
 
   } else {
     if($facts['security_baseline']['motd']['combined'] != '0-0-420') {
-      echo { 'issue-os-uid':
+      echo { 'motd-perms':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

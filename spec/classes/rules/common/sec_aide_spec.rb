@@ -38,6 +38,7 @@ describe 'security_baseline::rules::common::sec_aide' do
               .with(
                 command: 'mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz',
               )
+            is_expected.not_to contain_echo('aide')
           else
             is_expected.to contain_echo('aide')
               .with(

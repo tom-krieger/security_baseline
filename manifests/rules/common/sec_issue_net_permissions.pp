@@ -43,7 +43,7 @@ class security_baseline::rules::common::sec_issue_net_permissions (
 
   } else {
     if($facts['security_baseline']['issue']['net']['combined'] != '0-0-420') {
-      echo { 'issue-os-uid':
+      echo { 'issue-net-perms':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

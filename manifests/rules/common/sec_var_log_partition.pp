@@ -29,17 +29,12 @@ class security_baseline::rules::common::sec_var_log_partition (
   String $message = '',
   String $log_level = ''
 ) {
-
-  if($enforce) {
-    if (has_key($facts, 'security_baseline')) and
-      defined($facts['security_baseline']['partitions']['var_log']['partition']) and
-      ($facts['security_baseline']['partitions']['var_log']['partition'] == undef) {
-      echo { 'var-log-partition':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if (has_key($facts, 'security_baseline')) and
+    ($facts['security_baseline']['partitions']['var_log']['partition'] == undef) {
+    echo { 'var-log-partition':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
-
 }

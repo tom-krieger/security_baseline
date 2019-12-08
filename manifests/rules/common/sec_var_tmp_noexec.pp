@@ -29,17 +29,13 @@ class security_baseline::rules::common::sec_var_tmp_noexec (
   String $message = '',
   String $log_level = ''
 ) {
-  if $enforce {
+  if (has_key($facts, 'security_baseline')) {
 
-    if (has_key($facts, 'security_baseline')) and
-      defined($facts['security_baseline']['partitions']['var_tmp']['partition']) {
-
-      if $facts['security_baseline']['partitions']['var_tmp']['noexc'] == false {
-        echo { 'var-tmp-noexec':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+    if $facts['security_baseline']['partitions']['var_tmp']['noexec'] == false {
+      echo { 'var-tmp-noexec':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

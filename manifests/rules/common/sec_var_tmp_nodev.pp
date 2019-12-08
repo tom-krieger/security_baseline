@@ -29,17 +29,13 @@ class security_baseline::rules::common::sec_var_tmp_nodev (
   String $message = '',
   String $log_level = ''
 ) {
-  if $enforce {
+  if (has_key($facts, 'security_baseline')) {
 
-    if (has_key($facts, 'security_baseline')) and
-      defined($facts['security_baseline']['partitions']['var_tmp']['partition']) {
-
-      if $facts['security_baseline']['partitions']['var_tmp']['nodev'] == false {
-        echo { 'var-tmp-nodev':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+    if $facts['security_baseline']['partitions']['var_tmp']['nodev'] == false {
+      echo { 'var-tmp-nodev':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

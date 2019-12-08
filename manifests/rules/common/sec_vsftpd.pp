@@ -40,7 +40,7 @@ class security_baseline::rules::common::sec_vsftpd (
 
   } else {
 
-    if($::srv_vsftpd == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_vsftpd'] == 'enabled') {
       echo { 'vsftpd':
         message  => $message,
         loglevel => $log_level,

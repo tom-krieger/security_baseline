@@ -38,7 +38,7 @@ class security_baseline::rules::common::sec_net_dccp (
   } else {
 
     if($facts['security_baseline']['kernel_modules']['dccp']) {
-      echo { 'net-dccp':
+      echo { 'dccp':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

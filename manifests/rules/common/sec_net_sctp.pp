@@ -39,7 +39,7 @@ class security_baseline::rules::common::sec_net_sctp (
   } else {
 
     if($facts['security_baseline']['kernel_modules']['sctp']) {
-      echo { 'net-sctp':
+      echo { 'sctp':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

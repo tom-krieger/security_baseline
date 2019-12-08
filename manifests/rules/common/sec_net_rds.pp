@@ -38,7 +38,7 @@ class security_baseline::rules::common::sec_net_rds (
   } else {
 
     if($facts['security_baseline']['kernel_modules']['rds']) {
-      echo { 'net-rds ':
+      echo { 'rds':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

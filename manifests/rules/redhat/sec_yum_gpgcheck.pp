@@ -18,40 +18,34 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_yum_gpgcheck {
+#   class security_baseline::rules::redhat::sec_yum_gpgcheck {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_yum_gpgcheck (
-  Boolean $enforce = true,
-  String $message = '',
+class security_baseline::rules::redhat::sec_yum_gpgcheck (
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
+  if($enforce) {
 
-  if $facts['os']['name'].downcase() != 'sles' {
+    file_line { 'yum_gpgcheck':
+      ensure => present,
+      path   => '/etc/yum.conf',
+      line   => 'gpgcheck=1',
+      match  => '^gpgcheck',
+    }
 
-    if($enforce) {
+  } else {
 
-      file_line { 'yum_gpgcheck':
-        ensure => present,
-        path   => '/etc/yum.conf',
-        line   => 'gpgcheck=1',
-        match  => '^gpgcheck',
-      }
-
-    } else {
-
-      if( $facts['security_baseline']['yum']['gpgcheck'] == false) {
-
-        echo { 'yum_gpgcheck':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
-
+    if( $facts['security_baseline']['yum']['gpgcheck'] == false) {
+      echo { 'yum_gpgcheck':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

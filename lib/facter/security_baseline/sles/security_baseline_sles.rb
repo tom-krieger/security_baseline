@@ -113,6 +113,8 @@ def security_baseline_sles(os, _distid, _release)
 
   zypper = {}
   zypper['repolist'] = Facter::Core::Execution.exec('zypper repos')
+  val = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
+  zypper['gpgcheck'] = check_value_string(val, '') != ''
   security_baseline[:zypper] = zypper
 
   x11 = {}

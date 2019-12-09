@@ -47,7 +47,7 @@ describe 'security_baseline::rules::common::sec_passwd_min_days' do
               .with(
                 'ensure' => 'present',
                 'path'   => '/etc/login.defs',
-                'line'   => "PASS_MIN_DAYS ${min_pass_days}",
+                'line'   => 'PASS_MIN_DAYS ${min_pass_days}',
                 'match'  => '^#?PASS_MIN_DAYS',
               )
 

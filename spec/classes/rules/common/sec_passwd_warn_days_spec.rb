@@ -48,10 +48,10 @@ describe 'security_baseline::rules::common::sec_passwd_warn_days' do
               .with(
                 'ensure' => 'present',
                 'path'   => '/etc/login.defs',
-                'line'   => "PASS_WARN_AGE ${warn_pass_days}",
+                'line'   => 'PASS_WARN_AGE 7',
                 'match'  => '^#?PASS_WARN_AGE',
               )
-            
+
             is_expected.to contain_exec('chage --warndays 7 test1')
               .with(
                 'path' => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],

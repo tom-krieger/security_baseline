@@ -10,7 +10,7 @@ def check_package_installed(pkg, opts = '-q')
   elsif os == 'Debian'
     val = Facter::Core::Execution.exec("dpkg -s #{pkg}")
   end
-  if val.empty? || val =~ %r{not installed}
+  if val.nil? || val.empty? || val =~ %r{not installed}
     false
   else
     true

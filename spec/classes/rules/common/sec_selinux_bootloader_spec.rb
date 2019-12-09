@@ -48,7 +48,6 @@ describe 'security_baseline::rules::common::sec_selinux_bootloader' do
                 'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
                 'refreshonly' => true,
               )
-            }
 
             is_expected.not_to contain_echo('bootloader-selinux')
           else

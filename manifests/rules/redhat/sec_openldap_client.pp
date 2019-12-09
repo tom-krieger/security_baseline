@@ -18,40 +18,29 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_openldap_client {
+#   class security_baseline::rules::redhat::sec_openldap_client {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_openldap_client (
-  Boolean $enforce = true,
-  String $message = '',
+class security_baseline::rules::redhat::sec_openldap_client (
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if($enforce) {
-
-    if $facts['os']['name'].downcase() == 'sles' {
-      $action = 'absent'
-    } else {
-      $action = 'purged'
-    }
     package { 'openldap-clients':
-      ensure => $action,
+      ensure => 'purged',
     }
-
   } else {
-
     if($facts['security_baseline']['packages_installed']['openldap_clients']) {
-
-      echo { 'openldp-clients':
+      echo { 'openldap-clients':
         message  => $message,
         loglevel => $log_level,
         withpath => false,
       }
-
     }
-
   }
 }

@@ -4,7 +4,7 @@ enforce_options = [true, false]
 
 describe 'security_baseline::rules::redhat::sec_prelink' do
   enforce_options.each do |enforce|
-    context "Suse with enforce = #{enforce}" do
+    context "Redhat with enforce = #{enforce}" do
       let(:facts) do
         {
           osfamily: 'RedHat',

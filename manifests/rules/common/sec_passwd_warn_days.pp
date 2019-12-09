@@ -43,10 +43,11 @@ class security_baseline::rules::common::sec_passwd_warn_days (
       match  => '^#?PASS_WARN_AGE',
     }
 
-    $local_users = pick($facts['local_users'], {})
-
-    $local_users.each |String $user, Hash $attributes| {
-      if $attributes['password_expires_days'] != 'never' and $attributes['warn_days_between_password_change'] != $warn_pass_days {
+    $facts['security_baseline']['local_users'].each |String $user, Hash $attributes| {
+      if (
+        ($attributes['password_expires_days'] != 'never') and
+        ($attributes['warn_days_between_password_change'] != $warn_pass_days)
+      ) {
         exec { "chage --warndays ${warn_pass_days} ${user}":
           path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
         }
@@ -54,7 +55,7 @@ class security_baseline::rules::common::sec_passwd_warn_days (
     }
   } else {
     if($facts['security_baseline']['pw_data']['pass_warn_age_status']) {
-      echo { 'pass-warn-days':
+      echo { 'pass-min-warn-days':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

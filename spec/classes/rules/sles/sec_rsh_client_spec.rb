@@ -2,18 +2,17 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::redhat::sec_mcstrans' do
+describe 'security_baseline::rules::sles::sec_rsh_client' do
   enforce_options.each do |enforce|
-    context "Redhat with enforce = #{enforce}" do
+    context "Suse with enforce = #{enforce}" do
       let(:facts) do
         {
-          osfamily: 'RedHat',
-          operatingsystem: 'CentOS',
+          osfamily: 'Suse',
+          operatingsystem: 'SLES',
           architecture: 'x86_64',
           security_baseline: {
             packages_installed: {
-              mcstrans_pkg: true,
-              prelink: true,
+              rsh: true,
             },
           },
         }
@@ -21,7 +20,7 @@ describe 'security_baseline::rules::redhat::sec_mcstrans' do
       let(:params) do
         {
           'enforce' => enforce,
-          'message' => 'mcstrans package',
+          'message' => 'rsh package',
           'log_level' => 'warning',
         }
       end
@@ -29,17 +28,17 @@ describe 'security_baseline::rules::redhat::sec_mcstrans' do
       it { is_expected.to compile }
       it do
         if enforce
-          is_expected.to contain_package('mcstrans')
+          is_expected.to contain_package('rsh')
             .with(
-              'ensure' => 'purged',
+              'ensure' => 'absent',
             )
 
-          is_expected.not_to contain_echo('mcstrans')
+          is_expected.not_to contain_echo('rsh-client')
         else
-          is_expected.not_to contain_package('mcstrans')
-          is_expected.to contain_echo('mcstrans')
+          is_expected.not_to contain_package('rsh')
+          is_expected.to contain_echo('rsh-client')
             .with(
-              'message'  => 'mcstrans package',
+              'message'  => 'rsh package',
               'loglevel' => 'warning',
               'withpath' => false,
             )

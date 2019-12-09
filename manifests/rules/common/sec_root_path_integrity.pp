@@ -30,15 +30,11 @@ class security_baseline::rules::common::sec_root_path_integrity (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-    if ($facts['security_baseline']['root_path_integrity'] != 'none') {
-      echo { 'root-path-integrity':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if ($facts['security_baseline']['root_path_integrity'] != 'none') {
+    echo { 'root-path-integrity':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

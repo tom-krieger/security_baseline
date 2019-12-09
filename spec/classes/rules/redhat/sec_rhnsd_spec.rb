@@ -2,15 +2,16 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_logrotate' do
+describe 'security_baseline::rules::redhat::sec_rhnsd' do
   on_supported_os.each do |os, os_facts|
     enforce_options.each do |enforce|
       context "on #{os} with enforce = #{enforce}" do
         let(:facts) do
           os_facts.merge(
+            'srv_avahi' => 'enabled',
             'security_baseline' => {
-              'packages_installed' => {
-                'logrotate' => false,
+              'services_enabled' => {
+                'srv_rhnsd' => 'enabled',
               },
             },
           )
@@ -18,7 +19,7 @@ describe 'security_baseline::rules::common::sec_logrotate' do
         let(:params) do
           {
             'enforce' => enforce,
-            'message' => 'logrotate configuration',
+            'message' => 'rhnsd service',
             'log_level' => 'warning',
           }
         end
@@ -26,22 +27,17 @@ describe 'security_baseline::rules::common::sec_logrotate' do
         it {
           is_expected.to compile
           if enforce
-            is_expected.to create_class('logrotate')
+            is_expected.to contain_service('rhnsd')
               .with(
-                'config' => {
-                  'dateext'      => true,
-                  'compress'     => true,
-                  'rotate'       => 7,
-                  'rotate_every' => 'week',
-                  'ifempty'      => true,
-                },
+                'ensure' => 'stopped',
+                'enable' => false,
               )
-            is_expected.not_to contain_echo('logrotate')
+            is_expected.not_to contain_echo('rhnsd')
           else
-            is_expected.not_to create_class('logrotate')
-            is_expected.to contain_echo('logrotate')
+            is_expected.not_to contain_service('rhnsd')
+            is_expected.to contain_echo('rhnsd')
               .with(
-                'message'  => 'logrotate configuration',
+                'message'  => 'rhnsd service',
                 'loglevel' => 'warning',
                 'withpath' => false,
               )

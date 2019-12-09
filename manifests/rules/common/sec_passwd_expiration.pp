@@ -43,10 +43,11 @@ class security_baseline::rules::common::sec_passwd_expiration (
       match  => '^#?PASS_MAX_DAYS',
     }
 
-    $local_users = pick($facts['local_users'], {})
-
-    $local_users.each |String $user, Hash $attributes| {
-      if $attributes['password_expires_days'] != 'never' and $attributes['max_days_between_password_change'] != $max_pass_days {
+    $facts['security_baseline']['local_users'].each |String $user, Hash $attributes| {
+      if (
+        ($attributes['password_expires_days'] != 'never') and
+        ($attributes['max_days_between_password_change'] != $max_pass_days)
+      ) {
         exec { "chage --maxdays ${max_pass_days} ${user}":
           path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
         }

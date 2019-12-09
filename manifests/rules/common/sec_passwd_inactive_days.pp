@@ -35,12 +35,12 @@ class security_baseline::rules::common::sec_passwd_inactive_days (
   Integer $inactive_pass_days = 30,
 ) {
   if($enforce) {
-    $local_users = pick($facts['local_users'], {})
-
-    $local_users.each |String $user, Hash $attributes| {
-      if ($attributes['password_expires_days'] != 'never') and
-          ($attributes['password_expires_days'] != 'password must be changed') and
-          ($attributes['password_inactive_days'] != $inactive_pass_days) {
+    $facts['security_baseline']['local_users'].each |String $user, Hash $attributes| {
+      if (
+        ($attributes['password_expires_days'] != 'never') and
+        ($attributes['password_expires_days'] != 'password must be changed') and
+        ($attributes['password_inactive_days'] != $inactive_pass_days)
+      ) {
         exec { "chage --inactive ${inactive_pass_days} ${user}":
           path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
         }

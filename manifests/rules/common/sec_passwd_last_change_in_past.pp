@@ -33,11 +33,9 @@ class security_baseline::rules::common::sec_passwd_last_change_in_past (
   String $log_level           = '',
 ) {
   if($enforce) {
-    $local_users = pick($facts['local_users'], {})
+    $facts['security_baseline']['local_users'].each |String $user, Hash $attributes| {
 
-    $local_users.each |String $user, Hash $attributes| {
-
-      if !$attributes['password_date_valid'] {
+      if (!$attributes['password_date_valid']) {
         echo { "plcd ${user}":
           message  => 'We believe the user has a password last changed date in the future.',
           loglevel => 'warning',
@@ -47,7 +45,7 @@ class security_baseline::rules::common::sec_passwd_last_change_in_past (
     }
   } else {
     if($facts['security_baseline']['pw_data']['pw_change_in_future']) {
-      echo { 'pass-warn-days':
+      echo { 'pass-future-days':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

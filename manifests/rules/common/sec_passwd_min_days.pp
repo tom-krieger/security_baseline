@@ -43,10 +43,11 @@ class security_baseline::rules::common::sec_passwd_min_days (
       match  => '^#?PASS_MIN_DAYS',
     }
 
-    $local_users = pick($facts['local_users'], {})
-
-    $local_users.each |String $user, Hash $attributes| {
-      if $attributes['password_expires_days'] != 'never' and $attributes['min_days_between_password_change'] != $min_pass_days {
+    $facts['security_baseline']['local_users'].each |String $user, Hash $attributes| {
+      if (
+        ($attributes['password_expires_days'] != 'never') and
+        ($attributes['min_days_between_password_change'] != $min_pass_days)
+      ) {
         exec { "chage --mindays ${min_pass_days} ${user}":
           path => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
         }

@@ -4,7 +4,7 @@ enforce_options = [true, false]
 
 describe 'security_baseline::rules::sles::sec_pam_passwd_sha512' do
   enforce_options.each do |enforce|
-    context "sude with enforce = #{enforce}" do
+    context "Suse with enforce = #{enforce}" do
       let(:facts) do
         {
           osfamily: 'Suse',

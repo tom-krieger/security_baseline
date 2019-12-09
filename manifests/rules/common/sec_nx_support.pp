@@ -33,16 +33,11 @@ class security_baseline::rules::common::sec_nx_support (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-
-    if($facts['security_baseline']['nx'] != 'protected') {
-      echo { 'nx-support':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if($facts['security_baseline']['nx'] != 'protected') {
+    echo { 'nx-support':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

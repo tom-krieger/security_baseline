@@ -121,7 +121,7 @@ define security_baseline::sec_check (
               }
             }
           } else {
-              if($current_value != $fact_value) {
+            if($current_value != $fact_value) {
               echo { "Rule ${title} Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
                 loglevel => $log_level,
                 withpath => false,

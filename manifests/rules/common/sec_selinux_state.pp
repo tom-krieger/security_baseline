@@ -28,27 +28,20 @@ class security_baseline::rules::common::sec_selinux_state (
   String $message = '',
   String $log_level = ''
 ) {
-  if $facts['os']['name'].downcase() != 'sles' {
+  if($enforce) {
+    file_line { 'selinux_enforce':
+      path     => '/etc/selinux/config',
+      line     => 'SELINUX=enforcing',
+      match    => 'SELINUX=',
+      multiple => true,
+    }
+  } else {
+    if($::selinux_config_mode != 'enforcing') {
 
-    if($enforce) {
-
-      file_line { 'selinux_enforce':
-        path     => '/etc/selinux/config',
-        line     => 'SELINUX=enforcing',
-        match    => 'SELINUX=',
-        multiple => true,
-      }
-
-    } else {
-
-      if($::selinux_config_mode != 'enforcing') {
-
-        echo { 'selinux':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
-
+      echo { 'selinux_enforce':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

@@ -852,9 +852,10 @@ def security_baseline_redhat(os, _distid, _release)
   rsyslog['package'] = check_package_installed('rsyslog')
   val = Facter::Core::Execution.exec('grep -h ^\$FileCreateMode /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
   unless val.empty? || val.nil?
-    val.split(%r{\s+})[1].strip!
+    val.strip!
+    val1 = val.match(%r{FileCreateMode (\d+)})
   end
-  rsyslog['filepermissions'] = check_value_string(val, 'none')
+  rsyslog['filepermissions'] = check_value_string(val1, 'none')
   val = Facter::Core::Execution.exec('grep -h "^*.*[^I][^I]*@" /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
   rsyslog['remotesyslog'] = check_value_string(val, 'none')
   val = Facter::Core::Execution.exec("grep -h '$ModLoad imtcp' /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null")

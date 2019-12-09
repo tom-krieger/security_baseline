@@ -73,7 +73,7 @@ class security_baseline::rules::common::sec_rsyslog_remote_syslog (
       ($facts['security_baseline']['syslog']['rsyslog']['loghost'] == false) and ($is_loghost) or
       ($facts['security_baseline']['syslog']['rsyslog']['loghost'] == true) and ($is_loghost == false)
     ) {
-      echo { 'rsyslog-service':
+      echo { 'rsyslog-remote-syslog':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

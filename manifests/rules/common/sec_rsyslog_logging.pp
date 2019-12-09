@@ -32,20 +32,20 @@
 #
 # @api private
 class security_baseline::rules::common::sec_rsyslog_logging (
-  Boolean $enforce  = true,
-  String $message   = '',
-  String $log_level = '',
-  Hsh $log_config   = {},
+  Boolean $enforce   = true,
+  String $message    = '',
+  String $log_level  = '',
+  Hash $log_config   = {},
 ) {
   if($enforce) {
-    $log_config.each | $config, $dest | {
-      file { "/etc/rsyslog.d/${config}":
+    $log_config.each | $config, $data | {
+      $src = $data['src']
+      $dst = $data['dst']
+      file { "/etc/rsyslog.d/${config}.conf":
         ensure  => present,
-        content => "${config} ${dest}",
+        content => "${src} ${dst}",
         notify  => Exec['reload-rsyslog'],
       }
     }
-  } else {
-
   }
 }

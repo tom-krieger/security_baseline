@@ -5,7 +5,7 @@ enforce_options = [true, false]
 describe 'security_baseline::rules::common::sec_aide' do
   on_supported_os.each do |os, os_facts|
     enforce_options.each do |enforce|
-      context "on #{os}" do
+      context "on #{os} with enforce = #{enforce}" do
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {

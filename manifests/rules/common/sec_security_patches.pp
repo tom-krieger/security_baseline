@@ -33,16 +33,12 @@ class security_baseline::rules::common::sec_security_patches (
   String $message = '',
   String $log_level = ''
 ) {
-  if($enforce) {
+  if($facts['security_baseline']['security_patches'] != 'none') {
 
-    if($facts['security_baseline']['security_patches'] != 'none') {
-
-      echo { 'security-patches':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
-
+    echo { 'security-patches':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

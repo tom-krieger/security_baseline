@@ -34,7 +34,10 @@ def security_baseline_sles(os, _distid, _release)
                'mcstrans' => '-q',
                'prelink' => '-q',
                'rsh' => '-q',
-               'libselinux' => '-q',
+               'libselinux1' => '-q',
+               'selinux-policy' => '-q',
+               'libapparmor1' => '-q',
+               'apparmor-utils' => '-q',
                'libpwquality1' => '-q',
                'setroubleshoot' => '-q',
                'talk' => '-q',
@@ -62,9 +65,27 @@ def security_baseline_sles(os, _distid, _release)
   security_baseline[:aide] = read_facts_aide(os)
 
   selinux = {}
-  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg')
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
   selinux['bootloader'] = check_value_boolean(val, true)
   security_baseline[:selinux] = selinux
+
+  apparmor = {}
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep "apparmor.*=.*0"')
+  apparmor['bootloader'] = check_value_boolean(val, true)
+  val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are loaded"').match(%r{(\d+) profiles are loaded})
+  apparmor['profiles'] = check_value_integer(val)
+  val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are in enforce mode"').match(%r{(\d+) profiles are in enforce mode})
+  apparmor['profiles_enforced'] = check_value_integer(val)
+  val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are in complain mode"').match(%r{(\d+) profiles are in complain mode})
+  apparmor['profiles_complain'] = check_value_integer(val)
+  security_baseline[:apparmor] = apparmor
+
+  security_baseline['access_control'] = if security_baseline['packages_installed']['libselinux1'] ||
+                                           security_baseline['packages_installed']['libapparmor1']
+                                          'installed'
+                                        else
+                                          'none'
+                                        end
 
   partitions = {}
   shm = {}
@@ -790,9 +811,10 @@ def security_baseline_sles(os, _distid, _release)
   rsyslog['package'] = check_package_installed('rsyslog')
   val = Facter::Core::Execution.exec('grep -h ^\$FileCreateMode /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
   unless val.empty? || val.nil?
-    val.split(%r{\s+})[1].strip!
+    val.strip!
+    val1 = val.match(%r{FileCreateMode (\d+)})
   end
-  rsyslog['filepermissions'] = check_value_string(val, 'none')
+  rsyslog['filepermissions'] = check_value_string(val1, 'none')
   val = Facter::Core::Execution.exec('grep -h "^*.*[^I][^I]*@" /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
   rsyslog['remotesyslog'] = check_value_string(val, 'none')
   val = Facter::Core::Execution.exec("grep -h '$ModLoad imtcp' /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null")

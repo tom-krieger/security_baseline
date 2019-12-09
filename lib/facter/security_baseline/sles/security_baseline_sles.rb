@@ -116,13 +116,13 @@ def security_baseline_sles(os, _distid, _release)
   # val = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
   # zypper['gpgcheck'] = check_value_string(val, '') != ''
   zypper['gpgcheck'] = value = Facter::Core::Execution.exec('grep "^gpgcheck = on" /etc/zypp/zypp.conf')
-  yum['gpgcheck'] = if value.empty?
-                      false
-                    elsif value == 'gpgcheck = on'
-                      true
-                    else
-                      false
-                    end
+  zypper['gpgcheck'] = if value.empty?
+                         false
+                       elsif value == 'gpgcheck = on'
+                         true
+                       else
+                         false
+                       end
   security_baseline[:zypper] = zypper
 
   x11 = {}

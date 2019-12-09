@@ -42,10 +42,18 @@ describe 'security_baseline::rules::common::sec_selinux_bootloader' do
                 'match' => '^GRUB_CMDLINE_LINUX_DEFAULT',
               )
               .that_notifies('Exec[selinux-grub-config]')
+            is_expected.to contain_exec('selinux-grub-config')
+              .with(
+                'command'     => 'grub2-mkconfig -o /boot/grub2/grub.cfg',
+                'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+                'refreshonly' => true,
+              )
+            }
 
             is_expected.not_to contain_echo('bootloader-selinux')
           else
             is_expected.not_to contain_file_line('cmdline_definition')
+            is_expected.not_to contain_exec('selinux-grub-config')
             is_expected.to contain_echo('bootloader-selinux')
               .with(
                 'message'  => 'bootloader selinux',

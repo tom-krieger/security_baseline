@@ -72,12 +72,24 @@ def security_baseline_sles(os, _distid, _release)
   apparmor = {}
   val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep "apparmor.*=.*0"')
   apparmor['bootloader'] = check_value_boolean(val, true)
-  val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are loaded"').match(%r{(\d+) profiles are loaded})
-  apparmor['profiles'] = check_value_integer(val)
-  val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are in enforce mode"').match(%r{(\d+) profiles are in enforce mode})
-  apparmor['profiles_enforced'] = check_value_integer(val)
-  val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are in complain mode"').match(%r{(\d+) profiles are in complain mode})
-  apparmor['profiles_complain'] = check_value_integer(val)
+  val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are loaded"')
+  apparmor['profiles'] = if val.nil? || val.empty?
+                           0
+                         else
+                           val.match(%r{(?<profiles>\d+) profiles are loaded})['profiles']
+                         end
+  val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are in enforce mode"')
+  apparmor['profiles_enforced'] = if val.nil? || val.empty?
+                                    0
+                                  else
+                                    val.match(%r{(?<enforce>\d+) profiles are in enforce mode})[:enforce]
+                                  end
+  val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are in complain mode"')
+  apparmor['profiles_complain'] = if val.nil? || val.empty?
+                                    0
+                                  else
+                                    val.match(%r{(?<complain>\d+) profiles are in complain mode})[:comlain]
+                                  end
   security_baseline[:apparmor] = apparmor
 
   security_baseline['access_control'] = if security_baseline['packages_installed']['libselinux1'] ||

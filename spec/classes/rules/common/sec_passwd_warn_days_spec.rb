@@ -44,6 +44,14 @@ describe 'security_baseline::rules::common::sec_passwd_warn_days' do
         it {
           is_expected.to compile
           if enforce
+            is_expected.to contain_file_line('password warning days')
+              .with(
+                'ensure' => 'present',
+                'path'   => '/etc/login.defs',
+                'line'   => "PASS_WARN_AGE ${warn_pass_days}",
+                'match'  => '^#?PASS_WARN_AGE',
+              )
+            
             is_expected.to contain_exec('chage --warndays 7 test1')
               .with(
                 'path' => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],

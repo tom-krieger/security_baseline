@@ -43,6 +43,14 @@ describe 'security_baseline::rules::common::sec_passwd_min_days' do
         it {
           is_expected.to compile
           if enforce
+            is_expected.to contain_file_line('password min days password change')
+              .with(
+                'ensure' => 'present',
+                'path'   => '/etc/login.defs',
+                'line'   => "PASS_MIN_DAYS ${min_pass_days}",
+                'match'  => '^#?PASS_MIN_DAYS',
+              )
+
             is_expected.to contain_exec('chage --mindays 7 test1')
               .with(
                 'path' => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
@@ -51,6 +59,7 @@ describe 'security_baseline::rules::common::sec_passwd_min_days' do
             is_expected.not_to contain_echo('pass-min-days')
           else
             is_expected.not_to contain_exec('chage --mindays 7 test1')
+            is_expected.not_to contain_file_line('password min days password change')
             is_expected.to contain_echo('pass-min-days')
               .with(
                 'message'  => 'password warning days',

@@ -34,7 +34,7 @@ describe 'security_baseline::rules::common::sec_selinux_state' do
                 'group'  => 'root',
                 'mode'   => '0644',
               )
-            
+
             is_expected.to contain_file_line('selinux_enforce')
               .with(
                 'path'     => '/etc/selinux/config',

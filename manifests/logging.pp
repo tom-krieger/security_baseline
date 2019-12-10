@@ -43,17 +43,17 @@ define security_baseline::logging (
 ) {
   if($reporting_type == 'fact') {
       concat::fragment { $rulenr:
-      content => epp('security_baseline/logentry.epp', {
-        'rulenr'    => $rulenr,
-        'rule'      => $rule,
-        'desc'      => $desc,
-        'msg'       => $msg,
-        'loglevel'  => $log_level,
-        'rulestate' => $rulestate,
-        'level'     => $level,
-        'scored'    => $scored,
-      }),
-      target  => $::security_baseline::logfile,
+        content => epp('security_baseline/logentry.epp', {
+          'rulenr'    => $rulenr,
+          'rule'      => $rule,
+          'desc'      => $desc,
+          'msg'       => $msg,
+          'loglevel'  => $log_level,
+          'rulestate' => $rulestate,
+          'level'     => $level,
+          'scored'    => $scored,
+        }),
+        target  => $::security_baseline::logfile,
     }
   }
 }

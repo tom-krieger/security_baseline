@@ -33,7 +33,7 @@ class security_baseline::rules::common::sec_sshd_max_auth_tries (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-max-auth-tries':
+      file_line { 'sshd-max-auth-tries':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'MaxAuthTries 4',

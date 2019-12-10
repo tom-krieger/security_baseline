@@ -33,7 +33,7 @@ class security_baseline::rules::common::sec_sshd_x11_forward (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-x11-forward':
+      file_line { 'sshd-x11-forward':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'X11Forwarding no',
@@ -42,7 +42,7 @@ class security_baseline::rules::common::sec_sshd_x11_forward (
       }
     } else {
       if($facts['security_baseline']['sshd']['x1qforward'] != 'no') {
-        echo { 'sshd-x11forward':
+        echo { 'sshd-x11-forward':
           message  => $message,
           loglevel => $log_level,
           withpath => false,

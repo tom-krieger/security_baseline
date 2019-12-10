@@ -32,7 +32,7 @@ class security_baseline::rules::common::sec_sshd_root_login (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-root-login':
+      file_line { 'sshd-root-login':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'PermitRootLogin no',

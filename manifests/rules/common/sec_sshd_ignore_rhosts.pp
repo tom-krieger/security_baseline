@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_sshd_ignore_rhosts (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-ignore-rhosts':
+      file_line { 'sshd-ignore-rhosts':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'IgnoreRhosts yes',

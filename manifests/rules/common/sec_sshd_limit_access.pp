@@ -71,7 +71,7 @@ class security_baseline::rules::common::sec_sshd_limit_access (
         $users = join($allow_users, ' ')
 
         file_line{ 'ssh-allow-users':
-          ensure => 'present',
+          ensure => present,
           path   => '/etc/ssh/sshd_config',
           line   => "AllowUsers ${users}",
           match  => '^#?AllowUsers',
@@ -83,7 +83,7 @@ class security_baseline::rules::common::sec_sshd_limit_access (
         $groups = join($allow_groups, ' ')
 
         file_line{ 'ssh-allow-groups':
-          ensure => 'present',
+          ensure => present,
           path   => '/etc/ssh/sshd_config',
           line   => "AllowGroups ${groups}",
           match  => '^#?AllowGroups',
@@ -95,7 +95,7 @@ class security_baseline::rules::common::sec_sshd_limit_access (
         $deniedusers = join($deny_users, ' ')
 
         file_line{ 'ssh-deny-users':
-          ensure => 'present',
+          ensure => present,
           path   => '/etc/ssh/sshd_config',
           line   => "DenyUsers ${deniedusers}",
           match  => '^#?DenyUsers',
@@ -107,7 +107,7 @@ class security_baseline::rules::common::sec_sshd_limit_access (
         $deniedgroups = join($deny_groups, ' ')
 
         file_line{ 'ssh-deny-groups':
-          ensure => 'present',
+          ensure => present,
           path   => '/etc/ssh/sshd_config',
           line   => "DenyGroups ${deniedgroups}",
           match  => '^#?DenyGroups',

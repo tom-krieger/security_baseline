@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_sshd_user_environment (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-user-environmant':
+      file_line { 'sshd-user-environment':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'PermitUserEnvironment no',

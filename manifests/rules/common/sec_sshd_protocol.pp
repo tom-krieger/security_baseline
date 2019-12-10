@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_sshd_protocol (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-protocol':
+      file_line { 'sshd-protocol':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'Protocol 2',

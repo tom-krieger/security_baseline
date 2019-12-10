@@ -32,7 +32,7 @@ class security_baseline::rules::common::sec_sshd_banner (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-banner':
+      file_line { 'sshd-banner':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'Banner /etc/issue.net',

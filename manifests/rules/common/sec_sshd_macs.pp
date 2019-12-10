@@ -33,7 +33,7 @@ class security_baseline::rules::common::sec_sshd_macs (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-macs':
+      file_line { 'sshd-macs':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com',  #lint:ignore:140chars

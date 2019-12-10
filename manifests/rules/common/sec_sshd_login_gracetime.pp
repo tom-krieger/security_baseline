@@ -34,7 +34,7 @@ class security_baseline::rules::common::sec_sshd_login_gracetime (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-login-gracetime':
+      file_line { 'sshd-login-gracetime':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'LoginGraceTime 60',

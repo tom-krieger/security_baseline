@@ -42,14 +42,14 @@ class security_baseline::rules::common::sec_sshd_timeouts (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-timeouts':
+      file_line { 'sshd-timeouts':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'ClientAliveInterval 300',
         match  => '^ClientAliveInterval.*',
         notify => Exec['reload-sshd'],
       }
-      file_line { 'ssh-timeouts-2':
+      file_line { 'sshd-timeouts-2':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'ClientAliveCountMax 0',

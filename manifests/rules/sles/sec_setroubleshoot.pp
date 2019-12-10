@@ -18,40 +18,29 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_setroubleshoot {
+#   class security_baseline::rules::sles::sec_setroubleshoot {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_setroubleshoot (
+class security_baseline::rules::sles::sec_setroubleshoot (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''
 ) {
-
   if($enforce) {
-
-    if $facts['os']['name'].downcase() == 'sles' {
-      $action = 'absent'
-    } else {
-      $action = 'purged'
-    }
     package { 'setroubleshoot':
-      ensure => $action,
+      ensure => 'absent',
     }
-
   } else {
-
     if($facts['security_baseline']['packages_installed']['setroubleshoot']) {
-
       echo { 'setroubleshoot':
         message  => $message,
         loglevel => $log_level,
         withpath => false,
       }
-
     }
   }
 }

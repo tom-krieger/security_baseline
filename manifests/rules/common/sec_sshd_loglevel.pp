@@ -34,7 +34,7 @@ class security_baseline::rules::common::sec_sshd_loglevel (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-loglevel':
+      file_line { 'sshd-loglevel':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'LogLevel INFO',

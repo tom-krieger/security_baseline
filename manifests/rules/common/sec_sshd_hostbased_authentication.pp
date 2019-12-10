@@ -36,7 +36,7 @@ class security_baseline::rules::common::sec_sshd_hostbased_authentication (
     ($facts['security_baseline']['sshd']['protocol'] == '2')
   ) {
     if($enforce) {
-      file_line { 'ssh-hostbased-auth':
+      file_line { 'sshd-hostbased-auth':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'HostbasedAuthentication no',

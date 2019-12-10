@@ -26,29 +26,24 @@
 #
 # @api private
 class security_baseline::rules::common::sec_single_user_mode (
-  Boolean $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if($enforce) {
-
     file_line { 'su-rescue':
       path  => '/usr/lib/systemd/system/rescue.service',
       line  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
       match => '^ExecStart=',
     }
-
     file_line { 'su-emergency':
       path  => '/usr/lib/systemd/system/emergency.service',
       line  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
       match => '^ExecStart=',
     }
-
   } else {
-
-    if(($::single_user_mode_emergency == false) or ($::single_user_mode_rescue == false)) {
-
-      echo { 'sticky-ww':
+    if($facts['security_baseline']['single_user_mode']['status'] == false) {
+      echo { 'single_user_mode':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

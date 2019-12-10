@@ -26,7 +26,7 @@ class security_baseline::rules::common::sec_sshd_empty_passwords (
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'ssh-empty-passwords':
+      file_line { 'sshd-empty-passwords':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
         line   => 'PermitEmptyPasswords no',

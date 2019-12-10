@@ -8,7 +8,7 @@ describe 'security_baseline::rules::sles::sec_apparmor_bootloader' do
       context "on #{os} with enforce = #{enforce}" do
         let(:pre_condition) do
           <<-EOF
-          exec {'apparmor-grupb-config':
+          exec {'apparmor-grub-config':
             command     => 'grub2-mkconfig -o /boot/grub2/grub.cfg',
             path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             refreshonly => true,

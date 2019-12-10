@@ -88,12 +88,12 @@ def security_baseline_sles(os, _distid, _release)
   apparmor['profiles_complain'] = if val.nil? || val.empty?
                                     0
                                   else
-                                    val.match(%r{(?<complain>\d+) profiles are in complain mode})[:comlain]
+                                    val.match(%r{(?<complain>\d+) profiles are in complain mode})[:complain]
                                   end
   security_baseline[:apparmor] = apparmor
 
-  security_baseline['access_control'] = if security_baseline['packages_installed']['libselinux1'] ||
-                                           security_baseline['packages_installed']['libapparmor1']
+  security_baseline['access_control'] = if security_baseline[:packages_installed][:libselinux1] ||
+                                           security_baseline[:packages_installed][:libapparmor1]
                                           'installed'
                                         else
                                           'none'

@@ -29,6 +29,14 @@ class security_baseline::rules::common::sec_selinux_state (
   String $log_level = ''
 ) {
   if($enforce) {
+    if(!defined(File['/etc/selinux/config'])) {
+      file { '/etc/selinux/config':
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
+    }
     file_line { 'selinux_enforce':
       path     => '/etc/selinux/config',
       line     => 'SELINUX=enforcing',

@@ -27,6 +27,14 @@ describe 'security_baseline::rules::common::sec_selinux_state' do
         it { is_expected.to compile }
         it do
           if enforce
+            is_expected.to contain_file('/etc/selinux/config')
+              .with(
+                'ensure' => 'present',
+                'owner'  => 'root',
+                'group'  => 'root',
+                'mode'   => '0644',
+              )
+            
             is_expected.to contain_file_line('selinux_enforce')
               .with(
                 'path'     => '/etc/selinux/config',
@@ -37,6 +45,7 @@ describe 'security_baseline::rules::common::sec_selinux_state' do
 
             is_expected.not_to contain_echo('selinux_enforce')
           else
+            is_expected.not_to contain_file('/etc/selinux/config')
             is_expected.not_to contain_file_line('selinux_enforce')
             is_expected.to contain_echo('selinux_enforce')
               .with(

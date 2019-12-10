@@ -824,7 +824,7 @@ def security_baseline_sles(os, _distid, _release)
   val = Facter::Core::Execution.exec('grep -h ^\$FileCreateMode /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
   unless val.empty? || val.nil?
     val.strip!
-    val1 = val.match(%r{FileCreateMode (\d+)})
+    val1 = val.match(%r{FileCreateMode (?<mode>\d+)})[:mode]
   end
   rsyslog['filepermissions'] = check_value_string(val1, 'none')
   val = Facter::Core::Execution.exec('grep -h "^*.*[^I][^I]*@" /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')

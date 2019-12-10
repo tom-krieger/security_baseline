@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe 'security_baseline::sec_check' do
+  let(:title) { '1.1.1' }
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:pre_condition) do

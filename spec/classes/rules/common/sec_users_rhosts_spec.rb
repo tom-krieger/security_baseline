@@ -3,15 +3,6 @@ require 'spec_helper'
 describe 'security_baseline::rules::common::sec_users_rhosts' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
-      let(:facts) { os_facts }
-
-      it { is_expected.to compile }
-    end
-  end
-end
-describe 'security_baseline::rules::common::sec_users_dot_files' do
-  on_supported_os.each do |os, os_facts|
-    context "on #{os}" do
       let(:facts) do
         os_facts.merge(
           'security_baseline' => {

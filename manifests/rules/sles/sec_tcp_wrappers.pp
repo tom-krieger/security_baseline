@@ -20,40 +20,29 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_tcp_wrappers {
+#   class security_baseline::rules::sles::sec_tcp_wrappers {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_tcp_wrappers (
-  Boolean $enforce = true,
-  String $message = '',
+class security_baseline::rules::sles::sec_tcp_wrappers (
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if($enforce) {
-
-    if $facts['os']['name'].downcase() != 'sles' {
-      $pkg = 'tcp_wrappers'
-    } else {
-      $pkg = 'tcpd'
-    }
-    package { $pkg:
+    package { 'tcpd':
       ensure => installed,
     }
-
   } else {
-
     if($facts['security_baseline']['packages_installed']['tcp_wrappers']) {
-
-      echo { 'tcp-wrappers':
+      echo { 'tcpd':
         message  => $message,
         loglevel => $log_level,
         withpath => false,
       }
-
     }
-
   }
 }

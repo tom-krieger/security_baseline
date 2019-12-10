@@ -42,7 +42,7 @@ class security_baseline::rules::common::sec_syslog_installed (
       }
     } elsif ($syslog_daemon == 'syslog-ng') {
       if(!defined(Package['syslog-ng'])) {
-        package { 'rsyslog':
+        package { 'syslog-ng':
           ensure => installed,
         }
       }

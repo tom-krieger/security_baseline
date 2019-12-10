@@ -40,13 +40,15 @@ describe 'security_baseline::rules::common::sec_aide' do
               )
             is_expected.not_to contain_echo('aide')
           else
+            is_expected.not_to contain_package('aide')
+            is_expected.not_to contain_exec('aidedb')
+            is_expected.not_to contain_exec('rename_aidedb')
             is_expected.to contain_echo('aide')
               .with(
                 'message'  => 'aide package',
                 'loglevel' => 'warning',
                 'withpath' => false,
               )
-
           end
         end
       end

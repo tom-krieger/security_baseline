@@ -28,15 +28,11 @@ class security_baseline::rules::common::sec_users_netrc_files_write (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-    if ($facts['security_baseline']['netrc_files_write'] != 'none') {
-      echo { 'user-netrc-files-write':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if ($facts['security_baseline']['netrc_files_write'] != 'none') {
+    echo { 'user-netrc-files-write':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

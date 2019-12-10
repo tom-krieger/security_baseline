@@ -30,15 +30,11 @@ class security_baseline::rules::common::sec_users_dot_files (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-    if ($facts['security_baseline']['user_dot_file_write'] != 'none') {
-      echo { 'user-dot-files-write':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if ($facts['security_baseline']['user_dot_file_write'] != 'none') {
+    echo { 'user-dot-files-write':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

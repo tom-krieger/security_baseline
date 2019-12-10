@@ -26,19 +26,15 @@
 #
 # @api private
 class security_baseline::rules::common::sec_uid_0_root (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-    if ($facts['security_baseline']['uid_0'] != 'root') {
-      echo { 'uid_0_root':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if ($facts['security_baseline']['uid_0'] != 'root') {
+    echo { 'uid_0_root':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

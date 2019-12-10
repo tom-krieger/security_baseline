@@ -44,7 +44,5 @@ class security_baseline::rules::common::sec_syslogng_logging (
         notify => Exec['reload-syslog-ng'],
       }
     }
-  } else {
-
   }
 }

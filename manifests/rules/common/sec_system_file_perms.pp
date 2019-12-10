@@ -31,18 +31,11 @@ class security_baseline::rules::common::sec_system_file_perms (
   String $message = '',
   String $log_level = ''
 ) {
-  if !empty($facts['security_baseline']['file_permissions']['system_files']) {
-
-    if $enforce {
-
-    } else {
-
-      echo { 'system-file-perms':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
-
+  if ($facts['security_baseline']['file_permissions']['system_files_count'] != 0) {
+    echo { 'system-file-perms':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

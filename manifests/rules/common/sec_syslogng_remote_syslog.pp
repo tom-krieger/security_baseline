@@ -82,7 +82,7 @@ class security_baseline::rules::common::sec_syslogng_remote_syslog (
       ($facts['security_baseline']['syslog']['syslog-ng']['loghost'] == false) and ($is_loghost) or
       ($facts['security_baseline']['syslog']['syslog-ng']['loghost'] == true) and ($is_loghost == false)
     ) {
-      echo { 'syslogng-service':
+      echo { 'syslogng-remote-syslog-host':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

@@ -30,15 +30,11 @@ class security_baseline::rules::common::sec_unowned_files (
   String $message = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-    if ($facts['security_baseline']['file_permissions']['unowned_count'] != 0) {
-      echo { 'unowned_files':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if ($facts['security_baseline']['file_permissions']['unowned_count'] != 0) {
+    echo { 'unowned_files':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

@@ -32,17 +32,19 @@ class security_baseline::rules::common::sec_rsyslog_default_file_perms (
 ) {
   if($enforce) {
     file_line { 'rsyslog-filepermissions':
-      ensure => present,
-      path   => '/etc/rsyslog.conf',
-      line   => '$FileCreateMode 0640',
-      match  => '^\$FileCreateMode.*',
-      notify => Exec['reload-rsyslog'],
+      ensure  => present,
+      path    => '/etc/rsyslog.conf',
+      line    => '$FileCreateMode 0640',
+      match   => '^\$FileCreateMode.*',
+      notify  => Exec['reload-rsyslog'],
+      require => Package['rsyslog'],
     }
     if(!defined(File['/etc/rsyslog.d/'])) {
       file { '/etc/rsyslog.d/':
         ensure  => directory,
         recurse => true,
         mode    => '0640',
+        require => Package['rsyslog'],
       }
     }
   } else {

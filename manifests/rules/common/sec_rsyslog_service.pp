@@ -31,8 +31,9 @@ class security_baseline::rules::common::sec_rsyslog_service (
   if($enforce) {
     if(!defined(Service['rsyslog'])) {
       service { 'rsyslog':
-        ensure => running,
-        enable => true,
+        ensure  => running,
+        enable  => true,
+        require => Package['rsyslog'],
       }
     }
   } else {

@@ -38,10 +38,11 @@ class security_baseline::rules::common::sec_syslogng_logging (
   if($enforce) {
     $log_config.each | $config | {
       file_line { "syslog-ng logs ${config}":
-        ensure => present,
-        path   => '/etc/syslog-ng/syslog-ng.conf',
-        line   => $config,
-        notify => Exec['reload-syslog-ng'],
+        ensure  => present,
+        path    => '/etc/syslog-ng/syslog-ng.conf',
+        line    => $config,
+        notify  => Exec['reload-syslog-ng'],
+        require => Package['syslog-ng'],
       }
     }
   }

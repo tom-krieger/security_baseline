@@ -37,11 +37,12 @@ class security_baseline::rules::common::sec_rsyslog_remote_logs (
 ) {
   if($enforce) {
     file_line { 'rsyslog-remote-log-host':
-      ensure => present,
-      path   => '/etc/rsyslog.conf',
-      line   => "*.* @@${remote_log_host}",
-      match  => '^\*\.\* \@\@.*',
-      notify => Exec['reload-rsyslog'],
+      ensure  => present,
+      path    => '/etc/rsyslog.conf',
+      line    => "*.* @@${remote_log_host}",
+      match   => '^\*\.\* \@\@.*',
+      notify  => Exec['reload-rsyslog'],
+      require => Package['rsyslog'],
     }
   } else {
     if($facts['security_baseline']['syslog']['rsyslog']['remotesyslog'] == 'none') {

@@ -45,6 +45,7 @@ class security_baseline::rules::common::sec_rsyslog_logging (
         ensure  => present,
         content => "${src} ${dst}",
         notify  => Exec['reload-rsyslog'],
+        require => Package['rsyslog'],
       }
     }
   }

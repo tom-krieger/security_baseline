@@ -32,8 +32,9 @@ class security_baseline::rules::common::sec_syslogng_service (
   if($enforce) {
     if(!defined(Service['syslog-ng'])) {
       service { 'syslog-ng':
-        ensure => running,
-        enable => true,
+        ensure  => running,
+        enable  => true,
+        require => Package['syslog-ng'],
       }
     }
   }

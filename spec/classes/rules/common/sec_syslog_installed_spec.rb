@@ -31,9 +31,14 @@ describe 'security_baseline::rules::common::sec_syslog_installed' do
               .with(
                 'ensure' => 'installed',
               )
+            is_expected.to contain_package('syslog-ng')
+              .with(
+                'ensure' => 'absent',
+              )
             is_expected.not_to contain_echo('syslog-installed')
           else
             is_expected.not_to contain_package('rsyslog')
+            is_expected.not_to contain_package('syslog-ng')
             is_expected.to contain_echo('syslog-installed')
               .with(
                 'message'  => 'syslog installed',
@@ -71,9 +76,14 @@ describe 'security_baseline::rules::common::sec_syslog_installed' do
               .with(
                 'ensure' => 'installed',
               )
+            is_expected.to contain_package('rsyslog')
+              .with(
+                'ensure' => 'absent',
+              )
             is_expected.not_to contain_echo('syslog-installed')
           else
             is_expected.not_to contain_package('syslog-ng')
+            is_expected.not_to contain_package('rsyslog')
             is_expected.to contain_echo('syslog-installed')
               .with(
                 'message'  => 'syslog installed',

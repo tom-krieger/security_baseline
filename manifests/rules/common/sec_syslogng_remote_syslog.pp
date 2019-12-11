@@ -39,42 +39,47 @@ class security_baseline::rules::common::sec_syslogng_remote_syslog (
   if($enforce) {
     if $is_loghost {
       file_line { 'syslog-ng remote 1':
-        ensure => present,
-        path   => '/etc/syslog-ng/syslog-ng.conf',
-        line   => 'source net{ tcp(); };',
-        match  => '^source net',
-        notify => Exec['reload-syslog-ng'],
+        ensure  => present,
+        path    => '/etc/syslog-ng/syslog-ng.conf',
+        line    => 'source net{ tcp(); };',
+        match   => '^source net',
+        notify  => Exec['reload-syslog-ng'],
+        require => Package['syslog-ng'],
       }
 
       file_line { 'syslog-ng remote 2':
-        ensure => present,
-        path   => '/etc/syslog-ng/syslog-ng.conf',
-        line   => 'destination remote { file("/var/log/remote/${FULLHOST}-log"); };', # lint:ignore:single_quote_string_with_variables
-        match  => '^destination remote',
-        notify => Exec['reload-syslog-ng'],
+        ensure  => present,
+        path    => '/etc/syslog-ng/syslog-ng.conf',
+        line    => 'destination remote { file("/var/log/remote/${FULLHOST}-log"); };', # lint:ignore:single_quote_string_with_variables
+        match   => '^destination remote',
+        notify  => Exec['reload-syslog-ng'],
+        require => Package['syslog-ng'],
       }
 
       file_line { 'syslog-ng remote 3':
-        ensure => present,
-        path   => '/etc/syslog-ng/syslog-ng.conf',
-        line   => 'log { source(net); destination(remote); };',
-        notify => Exec['reload-syslog-ng'],
+        ensure  => present,
+        path    => '/etc/syslog-ng/syslog-ng.conf',
+        line    => 'log { source(net); destination(remote); };',
+        notify  => Exec['reload-syslog-ng'],
+        require => Package['syslog-ng'],
       }
     } else {
       file_line { 'syslog-ng remote 1':
-        ensure => present,
-        path   => '/etc/syslog-ng/syslog-ng.conf',
-        line   => '',
-        match  => '^source net',
-        notify => Exec['reload-syslog-ng'],
+        ensure  => present,
+        path    => '/etc/syslog-ng/syslog-ng.conf',
+        line    => '',
+        match   => '^source net',
+        notify  => Exec['reload-syslog-ng'],
+        require => Package['syslog-ng'],
       }
 
       file_line { 'syslog-ng remote 2':
-        ensure => present,
-        path   => '/etc/syslog-ng/syslog-ng.conf',
-        line   => '',
-        match  => '^destination remote',
-        notify => Exec['reload-syslog-ng'],
+        ensure  => present,
+        path    => '/etc/syslog-ng/syslog-ng.conf',
+        line    => '',
+        match   => '^destination remote',
+        notify  => Exec['reload-syslog-ng'],
+        require => Package['syslog-ng'],
       }
     }
   } else {

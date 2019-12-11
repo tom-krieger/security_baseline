@@ -41,31 +41,35 @@ class security_baseline::rules::common::sec_rsyslog_remote_syslog (
   if($enforce) {
     if($is_loghost) {
       file_line { 'rsyslog.conf add ModLoad':
-        ensure => present,
-        path   => '/etc/rsyslog.conf',
-        line   => '$ModLoad imtcp',
-        match  => '\$ModLoad',
+        ensure  => present,
+        path    => '/etc/rsyslog.conf',
+        line    => '$ModLoad imtcp',
+        match   => '\$ModLoad',
+        require => Package['rsyslog'],
       }
 
       file_line { 'rsyslog.conf add InputTCPServerRun':
-        ensure => present,
-        path   => '/etc/rsyslog.conf',
-        line   => '$InputTCPServerRun 514',
-        match  => '\$InputTCPServerRun',
+        ensure  => present,
+        path    => '/etc/rsyslog.conf',
+        line    => '$InputTCPServerRun 514',
+        match   => '\$InputTCPServerRun',
+        require => Package['rsyslog'],
       }
     } else {
       file_line { 'rsyslog.conf remove ModLoad':
-        ensure => present,
-        path   => '/etc/rsyslog.conf',
-        line   => '#$ModLoad imtcp',
-        match  => '\$ModLoad',
+        ensure  => present,
+        path    => '/etc/rsyslog.conf',
+        line    => '#$ModLoad imtcp',
+        match   => '\$ModLoad',
+        require => Package['rsyslog'],
       }
 
       file_line { 'rsyslog.conf remove InputTCPServerRun':
-        ensure => present,
-        path   => '/etc/rsyslog.conf',
-        line   => '#$InputTCPServerRun 514',
-        match  => '\$InputTCPServerRun',
+        ensure  => present,
+        path    => '/etc/rsyslog.conf',
+        line    => '#$InputTCPServerRun 514',
+        match   => '\$InputTCPServerRun',
+        require => Package['rsyslog'],
       }
     }
   } else {

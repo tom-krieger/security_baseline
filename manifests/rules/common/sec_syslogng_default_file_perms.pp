@@ -31,6 +31,14 @@ class security_baseline::rules::common::sec_syslogng_default_file_perms (
   String $log_level = ''
 ) {
   if($enforce) {
+    if(!defined(Package['syslog-ng'])) {
+      package { 'syslog-ng':
+        ensure => installed,
+      }
+      package { 'rsyslog':
+        ensure => absent,
+      }
+    }
     file_line { 'syslog-ng permissions':
       ensure  => present,
       path    => '/etc/syslog-ng/syslog-ng.conf',

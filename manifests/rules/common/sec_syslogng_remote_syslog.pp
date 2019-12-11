@@ -37,6 +37,14 @@ class security_baseline::rules::common::sec_syslogng_remote_syslog (
   Boolean $is_loghost = false,
 ) {
   if($enforce) {
+    if(!defined(Package['syslog-ng'])) {
+      package { 'syslog-ng':
+        ensure => installed,
+      }
+      package { 'rsyslog':
+        ensure => absent,
+      }
+    }
     if $is_loghost {
       file_line { 'syslog-ng remote 1':
         ensure  => present,

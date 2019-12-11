@@ -36,6 +36,14 @@ class security_baseline::rules::common::sec_syslogng_remote_logs (
   String $remote_log_host = '',
 ) {
   if($enforce) {
+    if(!defined(Package['syslog-ng'])) {
+      package { 'syslog-ng':
+        ensure => installed,
+      }
+      package { 'rsyslog':
+        ensure => absent,
+      }
+    }
     file_line { 'syslog-ng remote_log_host':
       ensure  => present,
       path    => '/etc/syslog-ng/syslog-ng.conf',

@@ -94,7 +94,7 @@ def security_baseline_sles(os, _distid, _release)
 
   seval = check_package_installed('libselinux1')
   arval = check_package_installed('libapparmor1')
-  security_baseline['access_control'] = if seval ||arval
+  security_baseline['access_control'] = if seval || arval
                                           'installed'
                                         else
                                           'none'
@@ -288,7 +288,7 @@ def security_baseline_sles(os, _distid, _release)
                             else
                               'unprotected'
                             end
-  
+
   ntpdata = {}
   ntp = check_package_installed('ntp')
   chrony = check_package_installed('chrony')

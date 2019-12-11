@@ -6,10 +6,10 @@ describe 'security_baseline::rules::common::sec_ntp_usage' do
       let(:facts) do
         os_facts.merge(
           'security_baseline' => {
-            'ntp_use' => 'unused',
             'ntp' => {
               'chrony_status' => false,
               'ntp_status' => false,
+              'ntp_use' => 'unused',
             },
           },
         )

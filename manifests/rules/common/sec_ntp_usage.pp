@@ -30,7 +30,7 @@ class security_baseline::rules::common::sec_ntp_usage (
   String $message = '',
   String $log_level = ''
 ) {
-  if($facts['security_baseline']['ntp_use'] != 'used') {
+  if($facts['security_baseline']['ntp']['ntp_use'] != 'used') {
     echo { 'ntp-usage':
       message  => $message,
       loglevel => $log_level,

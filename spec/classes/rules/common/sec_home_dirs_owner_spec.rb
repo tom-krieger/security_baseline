@@ -20,7 +20,7 @@ describe 'security_baseline::rules::common::sec_home_dirs_owner' do
 
       it {
         is_expected.to compile
-        is_expected.to contain_echo('home-dir-perms')
+        is_expected.to contain_echo('home-dir-owners')
           .with(
             'message'  => 'users own homedir',
             'loglevel' => 'warning',

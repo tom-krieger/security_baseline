@@ -102,7 +102,7 @@ define security_baseline::sec_check (
           $current_value = $facts[$fact_name]
         }
 
-        echo { "current value ${current_value}":
+        echo { "current value ${fact_name} -> ${current_value}":
           loglevel => 'info',
           withpath => false,
         }

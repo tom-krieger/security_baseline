@@ -87,14 +87,19 @@ define security_baseline::sec_check (
       }
 
       $fact_name = $check['fact_name']
-      if($fact_name != '') {
+      unless (empty($fact_name)) {
         $fact_value = $check['fact_value']
         $data_hash  = $facts[$check['fact_hash']]
 
-        if(! $data_hash.empty()) {
+        if(!$data_hash.empty()) {
           $current_value = dig($data_hash, *$fact_name)
         } else {
           $current_value = $facts[$fact_name]
+        }
+
+        echo { "current value #{current_value}":
+          loglevel => 'info',
+          withpath => false,
         }
 
         if($current_value) {

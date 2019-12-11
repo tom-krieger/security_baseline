@@ -92,8 +92,9 @@ def security_baseline_sles(os, _distid, _release)
                                   end
   security_baseline[:apparmor] = apparmor
 
-  security_baseline['access_control'] = if security_baseline[:packages_installed][:libselinux1] ||
-                                           security_baseline[:packages_installed][:libapparmor1]
+  seval = check_package_installed('libselinux1')
+  arval = check_package_installed('libapparmor1')
+  security_baseline['access_control'] = if seval ||arval
                                           'installed'
                                         else
                                           'none'

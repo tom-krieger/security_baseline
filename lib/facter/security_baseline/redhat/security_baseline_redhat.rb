@@ -779,6 +779,7 @@ def security_baseline_redhat(os, _distid, _release)
   #    expected.push(*rules_raw)
   #  end
   # end
+  auditd_suid_cmds = Facter.value('security_baseline_auditd_rules')
   cmd = "find /usr -xdev \\( -perm -4000 -o -perm -2000 \\) -type f | awk '{print \"-a always,exit -S all -F path=\" $1 \" -F perm=x -F auid>=1000 -F auid!=-1 -F key=privileged\"; }'"
   rules_raw = Facter::Core::Execution.exec(cmd).split("\n")
   priv_cmds.push(rules_raw)
@@ -789,7 +790,8 @@ def security_baseline_redhat(os, _distid, _release)
   auditd['priv-cmds-list'] = priv_cmds.uniq
 
   val = Facter::Core::Execution.exec('auditctl -l | grep "privileged$"')
-  auditd['priv-cmds'] = check_values_expected(val, expected, true)
+  # auditd['priv-cmds'] = check_values_expected(val, expected, true)
+  auditd['priv-cmds'] = check_values_expected(val, auditd_suid_cmds, true)
 
   val = Facter::Core::Execution.exec('auditctl -l | grep "mounts$"')
   expected = [

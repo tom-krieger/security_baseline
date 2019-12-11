@@ -96,7 +96,7 @@ define security_baseline::sec_check (
           withpath => false,
         }
 
-        if(!$data_hash.empty()) {
+        unless(empty($data_hash)) {
           $current_value = dig($data_hash, *$fact_name)
         } else {
           $current_value = $facts[$fact_name]
@@ -107,7 +107,7 @@ define security_baseline::sec_check (
           withpath => false,
         }
 
-        if($current_value) {
+        unless($current_value == undef) {
 
           if($current_value.is_a(Array) and $fact_value.is_a(Array)) {
 

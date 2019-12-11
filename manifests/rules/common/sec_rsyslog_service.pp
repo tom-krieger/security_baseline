@@ -29,12 +29,7 @@ class security_baseline::rules::common::sec_rsyslog_service (
   String $log_level = ''
 ) {
   if($enforce) {
-    @package { 'rsyslog':
-      ensure => installed,
-    }
-    @package { 'syslog-ng':
-      ensure => absent,
-    }
+   realize(Package['rsyslog'], Package['syslog-ng'])
     if(!defined(Service['rsyslog'])) {
       service { 'rsyslog':
         ensure  => running,

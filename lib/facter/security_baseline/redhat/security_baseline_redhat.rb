@@ -195,9 +195,9 @@ def security_baseline_redhat(os, _distid, _release)
   security_baseline[:grub] = grub
 
   tcp_wrapper = {}
-  tcp_wrapper['host_allow'] = File.exist?('/etc/hosts.allow')
-  tcp_wrapper['host_deny'] = File.exist?('/etc/hosts.deny')
-  security_baseline[:tcp_wrapper] = tcp_wrapper
+  tcp_wrapper['hosts_allow'] = File.exist?('/etc/hosts.allow')
+  tcp_wrapper['hosts_deny'] = File.exist?('/etc/hosts.deny')
+  security_baseline[:tcp_wrappers] = tcp_wrapper
 
   coredumps = {}
   fsdumpable = if security_baseline.key?('sysctl')
@@ -860,7 +860,7 @@ def security_baseline_redhat(os, _distid, _release)
     val.strip!
     val1 = val.match(%r{FileCreateMode (?<mode>\d+)})[:mode]
   end
-  #rsyslog['filepermissions'] = check_value_string(val1, 'none')
+  # rsyslog['filepermissions'] = check_value_string(val1, 'none')
   rsyslog['filepermissions'] = val1
   val = Facter::Core::Execution.exec('grep -h "^*.*[^I][^I]*@" /etc/rsyslog.conf /etc/rsyslog.d/*.conf 2>/dev/null')
   rsyslog['remotesyslog'] = check_value_string(val, 'none')
@@ -879,7 +879,7 @@ def security_baseline_redhat(os, _distid, _release)
   syslog_ng['service'] = check_service_is_enabled('syslog-ng')
   syslog_ng['package'] = check_package_installed('syslog-ng')
   val = Facter::Core::Execution.exec('grep -h ^options /etc/syslog-ng/syslog-ng.conf 2>/dev/null').match(%r{perm\((\d+)\)})
-  #syslog_ng['filepermissions'] = check_value_string(val, 'none')
+  # syslog_ng['filepermissions'] = check_value_string(val, 'none')
   syslog_ng['filepermissions'] = val
   val = Facter::Core::Execution.exec('grep -h destination logserver /etc/syslog-ng/syslog-ng.conf 2>/sdev/null').match(%r{tcp\((.*)\)})
   logserv = check_value_string(val, 'none')

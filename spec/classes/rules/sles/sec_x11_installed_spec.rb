@@ -14,7 +14,7 @@ describe 'security_baseline::rules::sles::sec_x11_installed' do
             'x11-packages' => ['xorg-x11-libs'],
             'x11' => {
               'installed' => true,
-            }
+            },
           },
         }
       end

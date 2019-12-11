@@ -14,7 +14,7 @@ describe 'security_baseline::rules::redhat::sec_x11_installed' do
             'x11-packages' => ['xorg-x11-xinit'],
             'x11' => {
               'installed' => true,
-            }
+            },
           },
         }
       end

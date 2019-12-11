@@ -1,4 +1,4 @@
-# @summary 
+  # @summary 
 #    Ensure address space layout randomization (ASLR) is enabled (Scored)
 #
 # Address space layout randomization (ASLR) is an exploit mitigation technique which randomly 
@@ -38,7 +38,7 @@ class security_baseline::rules::common::sec_kernel_aslr (
 
   } else {
 
-    if($facts['security_baseline']['sysctl']['kernel_aslr'] != 2) {
+    if($facts['security_baseline']['sysctl']['kernel.randomize_va_space'] != 2) {
 
       echo { 'kernel-aslr':
         message  => $message,

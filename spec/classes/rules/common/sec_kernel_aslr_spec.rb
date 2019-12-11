@@ -10,7 +10,7 @@ describe 'security_baseline::rules::common::sec_kernel_aslr' do
           os_facts.merge(
             'security_baseline' => {
               'sysctl' => {
-                'kernel_aslr' => 1,
+                'kernel.randomize_va_space' => 1,
               },
             },
           )

@@ -168,7 +168,7 @@ define security_baseline::sec_check (
             $fact_key = $fact_name
           }
 
-          echo { "No fact for ${data_hash} -> ${fact_key} found":
+          echo { "No fact for ${fact_key} found":
             loglevel => 'warning',
             withpath => false,
           }

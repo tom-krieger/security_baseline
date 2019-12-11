@@ -254,10 +254,8 @@ def security_baseline_redhat(os, _distid, _release)
                             end
 
   ntpdata = {}
-  val1 = Facter::Core::Execution.exec('rpm -q ntp')
-  val2 = Facter::Core::Execution.exec('rpm -q chrony')
-  ntp = check_value_string(val1, 'none')
-  chrony = check_value_string(val2, 'none')
+  ntp = check_package_installed('ntp')
+  chrony = check_package_installed('chrony')
   ntpdata['ntp_use'] = if ntp != 'none' || chrony != 'none'
                          'used'
                        else

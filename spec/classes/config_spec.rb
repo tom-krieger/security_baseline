@@ -30,7 +30,7 @@ describe 'security_baseline::config' do
             'path'    => ['/bin', '/usr/bin', '/usr/local/bin'],
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/')
+        is_expected.to contain_file('/usr/share/security_baseline/')
           .with(
             'ensure' => 'directory',
             'owner'  => 'root',
@@ -38,7 +38,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/logs/')
+        is_expected.to contain_file('/usr/share/security_baseline/logs/')
           .with(
             'ensure' => 'directory',
             'owner'  => 'root',
@@ -46,7 +46,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/')
           .with(
             'ensure' => 'directory',
             'owner'  => 'root',
@@ -54,7 +54,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/root_path_integrity.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/root_path_integrity.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -62,7 +62,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/check_user_home_dirs.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/check_user_home_dirs.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -70,7 +70,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/check_home_dir_permissions.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/check_home_dir_permissions.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -78,7 +78,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/check_home_dir_owner.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/check_home_dir_owner.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -86,7 +86,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/check_dot_files_write.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/check_dot_files_write.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -94,7 +94,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/check_forward_files.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/check_forward_files.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -102,7 +102,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/check_netrc_files.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/check_netrc_files.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -110,7 +110,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/check_netrc_files_write.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/check_netrc_files_write.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -118,7 +118,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/root_path_integrity.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/root_path_integrity.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -126,7 +126,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/check_rhosts_files.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/check_rhosts_files.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',
@@ -134,7 +134,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/share/security_baseline_scripts/bin/check_passwd_group_exist.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/check_passwd_group_exist.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',

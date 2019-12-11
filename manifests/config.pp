@@ -9,26 +9,26 @@ class security_baseline::config(
   Boolean $update_postrun_command = true,
   String $postrun_command         = '/usr/local/bin/puppet facts upload',
 ) {
-  file { '/usr/share/security_baseline_scripts':
+  file { '/usr/share/security_baseline':
     ensure => directory,
     owner  => 'root',
     group  => 'root',
     mode   => '0700',
   }
-  file { '/usr/share/security_baseline_scripts/logs':
+  file { '/usr/share/security_baseline/logs':
     ensure => directory,
     owner  => 'root',
     group  => 'root',
     mode   => '0700',
   }
-  file { '/usr/share/security_baseline_scripts/bin':
+  file { '/usr/share/security_baseline/bin':
     ensure => directory,
     owner  => 'root',
     group  => 'root',
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/root_path_integrity.sh':
+  file { '/usr/share/security_baseline/bin/root_path_integrity.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/root_path_integrity.sh',
     owner  => 'root',
@@ -36,7 +36,7 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/check_user_home_dirs.sh':
+  file { '/usr/share/security_baseline/bin/check_user_home_dirs.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_user_home_dirs.sh',
     owner  => 'root',
@@ -44,7 +44,7 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/check_home_dir_permissions.sh':
+  file { '/usr/share/security_baseline/bin/check_home_dir_permissions.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_home_dir_permissions.sh',
     owner  => 'root',
@@ -52,7 +52,7 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/check_home_dir_owner.sh':
+  file { '/usr/share/security_baseline/bin/check_home_dir_owner.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_home_dir_owner.sh',
     owner  => 'root',
@@ -60,7 +60,7 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/check_dot_files_write.sh':
+  file { '/usr/share/security_baseline/bin/check_dot_files_write.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_dot_files_write.sh',
     owner  => 'root',
@@ -68,7 +68,7 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/check_forward_files.sh':
+  file { '/usr/share/security_baseline/bin/check_forward_files.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_forward_files.sh',
     owner  => 'root',
@@ -76,7 +76,7 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/check_netrc_files.sh':
+  file { '/usr/share/security_baseline/bin/check_netrc_files.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_netrc_files.sh',
     owner  => 'root',
@@ -84,7 +84,7 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/check_netrc_files_write.sh':
+  file { '/usr/share/security_baseline/bin/check_netrc_files_write.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_netrc_files_write.sh',
     owner  => 'root',
@@ -92,7 +92,7 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/check_rhosts_files.sh':
+  file { '/usr/share/security_baseline/bin/check_rhosts_files.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_rhosts_files.sh',
     owner  => 'root',
@@ -100,7 +100,7 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  file { '/usr/share/security_baseline_scripts/bin/check_passwd_group_exist.sh':
+  file { '/usr/share/security_baseline/bin/check_passwd_group_exist.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_passwd_group_exist.sh',
     owner  => 'root',

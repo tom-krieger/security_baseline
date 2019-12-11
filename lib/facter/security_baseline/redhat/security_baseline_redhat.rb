@@ -129,8 +129,11 @@ def security_baseline_redhat(os, _distid, _release)
 
   x11 = {}
   pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
-  pkgs.split("\n")
-  x11['installed'] = count((pkgs) > 0)
+  x11['installed'] = if pkgs.nil? || pkgs.empty?
+                       false
+                     else
+                       true
+                     end
 
   security_baseline[:x11] = x11
 

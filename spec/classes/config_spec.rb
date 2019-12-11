@@ -4,6 +4,11 @@ describe 'security_baseline::config' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }
+      let(:params) do
+        {
+          'update_postrun_command' => true,
+        }
+      end
 
       it { is_expected.to compile }
       it do
@@ -47,7 +52,7 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/usr/local/security_baseline_scripts/ss_write.sh')
+        is_expected.to contain_file('/usr/local/security_baseline_scripts/check_dot_files_write.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',

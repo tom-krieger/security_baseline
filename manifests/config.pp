@@ -5,7 +5,9 @@
 #
 # @example
 #   include security_baseline::config
-class security_baseline::config {
+class security_baseline::config(
+  Boolean $update_postrun_command = true,
+) {
   file { '/usr/local/security_baseline_scripts':
     ensure => directory,
     owner  => 'root',
@@ -45,7 +47,7 @@ class security_baseline::config {
     mode   => '0700',
   }
 
-  file { '/usr/local/security_baseline_scripts/ss_write.sh':
+  file { '/usr/local/security_baseline_scripts/check_dot_files_write.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/check_dot_files_write.sh',
     owner  => 'root',
@@ -93,8 +95,19 @@ class security_baseline::config {
     mode   => '0700',
   }
 
-  if(('security_baseline' in $facts) and ('puppet_agent_postrun' in $facts['security_baseline'])) {
-    if ($facts['security_baseline']['puppet_agent_postrun'] != 'postrun_command = /usr/local/bin/puppet facts upload') {
+  if $update_postrun_command {
+    if(('security_baseline' in $facts) and ('puppet_agent_postrun' in $facts['security_baseline'])) {
+      if ($facts['security_baseline']['puppet_agent_postrun'] != 'postrun_command = /usr/local/bin/puppet facts upload') {
+        exec { 'set puppet agent postrun agent':
+          command => 'puppet config --section agent set postrun_command "/usr/local/bin/puppet facts upload"',
+          path    => ['/bin', '/usr/bin', '/usr/local/bin'],
+        }
+        exec { 'set puppet agent postrun main':
+          command => 'puppet config --section main set postrun_command "/usr/local/bin/puppet facts upload"',
+          path    => ['/bin', '/usr/bin', '/usr/local/bin'],
+        }
+      }
+    } else {
       exec { 'set puppet agent postrun agent':
         command => 'puppet config --section agent set postrun_command "/usr/local/bin/puppet facts upload"',
         path    => ['/bin', '/usr/bin', '/usr/local/bin'],
@@ -103,15 +116,6 @@ class security_baseline::config {
         command => 'puppet config --section main set postrun_command "/usr/local/bin/puppet facts upload"',
         path    => ['/bin', '/usr/bin', '/usr/local/bin'],
       }
-    }
-  } else {
-    exec { 'set puppet agent postrun agent':
-      command => 'puppet config --section agent set postrun_command "/usr/local/bin/puppet facts upload"',
-      path    => ['/bin', '/usr/bin', '/usr/local/bin'],
-    }
-    exec { 'set puppet agent postrun main':
-      command => 'puppet config --section main set postrun_command "/usr/local/bin/puppet facts upload"',
-      path    => ['/bin', '/usr/bin', '/usr/local/bin'],
     }
   }
 }

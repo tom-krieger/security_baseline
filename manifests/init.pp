@@ -41,7 +41,8 @@ class security_baseline (
   Array $auditd_suid_exclude                  = [],
   String $auditd_rules_file                   = '/etc/audit/rules.d/sec_baseline_auditd.rules',
   Enum['fact', 'local_file'] $reporting_type  = 'fact',
-  String $auditd_rules_fact_file              = '/opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml'
+  String $auditd_rules_fact_file              = '/opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml',
+  Boolean $update_postrun_command             = true,
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
@@ -56,6 +57,7 @@ class security_baseline (
   }
 
   class { '::security_baseline::config':
+    update_postrun_command => $update_postrun_command,
     before  => Concat[$logfile],
   }
 

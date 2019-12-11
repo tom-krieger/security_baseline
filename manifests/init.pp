@@ -50,7 +50,7 @@ class security_baseline (
   include ::security_baseline::unowned_files_cron
 
   if($debug) {
-    echo{"Applying security baseline version: ${baseline_version}":
+    echo { "Applying security baseline version: ${baseline_version}":
       loglevel => 'debug',
       withpath => false,
     }

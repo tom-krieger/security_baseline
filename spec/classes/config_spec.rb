@@ -3,7 +3,13 @@ require 'spec_helper'
 describe 'security_baseline::config' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
-      let(:facts) { os_facts }
+      let(:facts) do
+        os_facts.merge(
+          'security_baseline' => {
+            'puppet_agent_postrun' => 'postrun_command =',
+          },
+        )
+      end
       let(:params) do
         {
           'update_postrun_command' => true,
@@ -12,6 +18,18 @@ describe 'security_baseline::config' do
 
       it { is_expected.to compile }
       it do
+        is_expected.to contain_exec('set puppet agent postrun agent')
+          .with(
+            'command' => 'puppet config --section agent set postrun_command "/usr/local/bin/puppet facts upload"',
+            'path'    => ['/bin', '/usr/bin', '/usr/local/bin'],
+          )
+
+        is_expected.to contain_exec('set puppet agent postrun main')
+          .with(
+            'command' => 'puppet config --section main set postrun_command "/usr/local/bin/puppet facts upload"',
+            'path'    => ['/bin', '/usr/bin', '/usr/local/bin'],
+          )
+
         is_expected.to contain_file('/usr/local/security_baseline_scripts/')
           .with(
             'ensure' => 'directory',

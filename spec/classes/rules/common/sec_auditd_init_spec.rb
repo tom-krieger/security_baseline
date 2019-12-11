@@ -5,7 +5,7 @@ enforce_options = [true, false]
 describe 'security_baseline::rules::common::sec_auditd_init' do
   on_supported_os.each do |os, _os_facts|
     enforce_options.each do |enforce|
-      context "on #{os}" do
+      context "on #{os} with enforce = #{enforce}" do
         let(:pre_condition) do
           <<-EOF
           class { 'security_baseline':
@@ -64,6 +64,13 @@ describe 'security_baseline::rules::common::sec_auditd_init' do
             is_expected.not_to contain_file_line('auditd init delete rules')
             is_expected.not_to contain_file_line('auditd init set buffer')
           end
+
+          is_expected.to contain_exec('reload auditd rules')
+            .with(
+              'refreshonly' => true,
+              'command'     => 'auditctl -R /etc/audit/rules.d/sec_baseline_auditd.rules',
+              'path'        => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
+            )
         }
       end
     end

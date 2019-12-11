@@ -97,11 +97,10 @@ describe 'security_baseline::rules::common::sec_syslogng_remote_logs' do
 
         it { is_expected.to compile }
         it do
+          is_expected.not_to contain_file_line('syslog-ng remote_log_host')
           if enforce
-            is_expected.not_to contain_file_line('syslog-ng remote_log_host')
             is_expected.not_to contain_echo('syslogng-remote-log-host')
           else
-            is_expected.not_to contain_file_line('syslog-ng remote_log_host')
             is_expected.to contain_echo('syslogng-remote-log-host')
               .with(
                 'message'  => 'syslog-ng sent to remote log host',

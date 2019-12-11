@@ -94,11 +94,10 @@ describe 'security_baseline::rules::common::sec_rsyslog_remote_logs' do
 
         it { is_expected.to compile }
         it do
+          is_expected.not_to contain_file_line('rsyslog-remote-log-host')
           if enforce
-            is_expected.not_to contain_file_line('rsyslog-remote-log-host')
             is_expected.not_to contain_echo('rsyslog-remote-log-host')
           else
-            is_expected.not_to contain_file_line('rsyslog-remote-log-host')
             is_expected.to contain_echo('rsyslog-remote-log-host')
               .with(
                 'message'  => 'rsyslog remote log host',

@@ -30,8 +30,9 @@ describe 'security_baseline' do
         }
       end
 
-      it { is_expected.to compile.with_all_deps }
       it {
+        is_expected.to compile.with_all_deps
+
         is_expected.to create_class('security_baseline::services')
         is_expected.to create_class('security_baseline::config')
         is_expected.to create_class('security_baseline::system_file_permissions_cron')
@@ -55,6 +56,12 @@ describe 'security_baseline' do
           .with(
             'target'  => '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
             'order'   => 9999,
+          )
+
+        is_expected.to contain_echo('Applying security baseline version: 1.0.0')
+          .with(
+            'loglevel' => 'debug',
+            'withpath' => false,
           )
       }
     end

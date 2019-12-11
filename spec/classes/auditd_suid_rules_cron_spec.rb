@@ -31,7 +31,6 @@ describe 'security_baseline::auditd_suid_rules_cron' do
         is_expected.to contain_concat__fragment('suid_cron_top')
           .with(
             'target' => '/etc/cron.daily/suid-audit',
-            'source' => 'puppet:///modules/security_baseline/suid_auditd_top',
             'order'  => 1,
           )
 
@@ -44,7 +43,6 @@ describe 'security_baseline::auditd_suid_rules_cron' do
         is_expected.to contain_concat__fragment('suid_cron_end')
           .with(
             'target' => '/etc/cron.daily/suid-audit',
-            'source' => 'puppet:///modules/security_baseline/suid_auditd_end',
             'order'  => 99,
           )
       end

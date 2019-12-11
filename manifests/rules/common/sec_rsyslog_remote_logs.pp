@@ -17,7 +17,7 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param remote_log_hots
+# @param remote_log_host
 #    Remote syslog server to send logs to
 #
 # @example
@@ -44,13 +44,15 @@ class security_baseline::rules::common::sec_rsyslog_remote_logs (
         ensure => absent,
       }
     }
-    file_line { 'rsyslog-remote-log-host':
-      ensure  => present,
-      path    => '/etc/rsyslog.conf',
-      line    => "*.* @@${remote_log_host}",
-      match   => '^\*\.\* \@\@.*',
-      notify  => Exec['reload-rsyslog'],
-      require => Package['rsyslog'],
+    if ($remote_log_host != '') {
+      file_line { 'rsyslog-remote-log-host':
+        ensure  => present,
+        path    => '/etc/rsyslog.conf',
+        line    => "*.* @@${remote_log_host}",
+        match   => '^\*\.\* \@\@.*',
+        notify  => Exec['reload-rsyslog'],
+        require => Package['rsyslog'],
+      }
     }
   } else {
     if($facts['security_baseline']['syslog']['rsyslog']['remotesyslog'] == 'none') {

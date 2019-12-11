@@ -17,7 +17,7 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param remote_log_hots
+# @param remote_log_host
 #    Remote syslog server to send logs to
 #
 # @example
@@ -44,13 +44,15 @@ class security_baseline::rules::common::sec_syslogng_remote_logs (
         ensure => absent,
       }
     }
-    file_line { 'syslog-ng remote_log_host':
-      ensure  => present,
-      path    => '/etc/syslog-ng/syslog-ng.conf',
-      line    => "destination logserver { tcp(\"${remote_log_host}\" port(514)); }; log { source(src); destination(logserver); };",
-      match   => '^destination logserver',
-      notify  => Exec['reload-syslog-ng'],
-      require => Package['syslog-ng'],
+    if($remote_log_host != '') {
+      file_line { 'syslog-ng remote_log_host':
+        ensure  => present,
+        path    => '/etc/syslog-ng/syslog-ng.conf',
+        line    => "destination logserver { tcp(\"${remote_log_host}\" port(514)); }; log { source(src); destination(logserver); };",
+        match   => '^destination logserver',
+        notify  => Exec['reload-syslog-ng'],
+        require => Package['syslog-ng'],
+      }
     }
   } else {
     if($facts['security_baseline']['syslog']['syslog-ng']['remotesyslog'] == 'none') {

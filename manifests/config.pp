@@ -7,6 +7,7 @@
 #   include security_baseline::config
 class security_baseline::config(
   Boolean $update_postrun_command = true,
+  String $postrun_command         = '/usr/local/bin/puppet facts upload',
 ) {
   file { '/usr/local/security_baseline_scripts':
     ensure => directory,
@@ -97,13 +98,13 @@ class security_baseline::config(
 
   if $update_postrun_command {
     if(('security_baseline' in $facts) and ('puppet_agent_postrun' in $facts['security_baseline'])) {
-      if ($facts['security_baseline']['puppet_agent_postrun'] != 'postrun_command = /usr/local/bin/puppet facts upload') {
+      if ($facts['security_baseline']['puppet_agent_postrun'] != "postrun_command = ${postrun_command}") {
         exec { 'set puppet agent postrun agent':
-          command => 'puppet config --section agent set postrun_command "/usr/local/bin/puppet facts upload"',
+          command => "puppet config --section agent set postrun_command \"${postrun_command}\"",
           path    => ['/bin', '/usr/bin', '/usr/local/bin'],
         }
         exec { 'set puppet agent postrun main':
-          command => 'puppet config --section main set postrun_command "/usr/local/bin/puppet facts upload"',
+          command => "puppet config --section main set postrun_command \"${postrun_command}\"",
           path    => ['/bin', '/usr/bin', '/usr/local/bin'],
         }
       }

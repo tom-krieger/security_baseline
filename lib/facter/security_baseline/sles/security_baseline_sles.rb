@@ -67,12 +67,12 @@ def security_baseline_sles(os, _distid, _release)
 
   selinux = {}
   val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
-  selinux['bootloader'] = check_value_boolean(val, true)
+  selinux['bootloader'] = (val.nil? || val.empty?)
   security_baseline[:selinux] = selinux
 
   apparmor = {}
   val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep "apparmor.*=.*0"')
-  apparmor['bootloader'] = check_value_boolean(val, true)
+  apparmor['bootloader'] = (val.nil? || val.empty?)
   val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are loaded"')
   apparmor['profiles'] = if val.nil? || val.empty?
                            0

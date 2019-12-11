@@ -67,7 +67,7 @@ def security_baseline_redhat(os, _distid, _release)
 
   selinux = {}
   val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
-  selinux['bootloader'] = check_value_boolean(val, true)
+  selinux['bootloader'] = (val.nil? || val.empty?)
   security_baseline[:selinux] = selinux
 
   partitions = {}

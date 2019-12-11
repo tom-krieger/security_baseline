@@ -38,6 +38,12 @@ class security_baseline::rules::redhat::sec_prelink (
       package { 'prelink':
         ensure => 'purged',
       }
+      exec { 'reset prelink':
+        command => 'prelink -ua',
+        path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+        onlyif  => 'test -f /sbin/prelink',
+        before  => Package['prelink'],
+      }
     }
   } else {
     if($facts['security_baseline']['packages_installed']['prelink']) {

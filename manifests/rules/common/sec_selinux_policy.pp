@@ -51,7 +51,6 @@ class security_baseline::rules::common::sec_selinux_policy (
         loglevel => $log_level,
         withpath => false,
       }
-
     }
   }
 }

@@ -34,6 +34,14 @@ describe 'security_baseline::rules::sles::sec_prelink' do
               'ensure' => 'absent',
             )
 
+          is_expected.to contain_exec('reset prelink')
+            .with(
+              'command' => 'prelink -ua',
+              'path'    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+              'onlyif'  => 'test -f /sbin/prelink',
+            )
+            .that_comes_before('Package[prelink]')
+
           is_expected.not_to contain_echo('prelink')
         else
           is_expected.not_to contain_package('prelink')

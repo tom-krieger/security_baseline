@@ -37,6 +37,12 @@ class security_baseline::rules::sles::sec_prelink (
       package { 'prelink':
         ensure => 'absent',
       }
+      exec { 'reset prelink':
+        command => 'prelink -ua',
+        path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+        onlyif  => 'test -f /sbin/prelink',
+        before  => Package['prelink'],
+      }
     }
   } else {
     if($facts['security_baseline']['packages_installed']['prelink']) {

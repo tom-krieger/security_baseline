@@ -1,0 +1,1 @@
+"<%= $rulenr %>";"<%= $rule %>";"<%= $level %>";"<%= $scored %>";"<%= $log_level %>";"<%= $rulestate %>";"<%= $msg %>";"<%= $desc %>";

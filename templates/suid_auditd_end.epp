@@ -1,0 +1,11 @@
+
+rm -f /tmp/auditd.rules.suid
+echo "---" > <%= $auditd_rules_fact_file %>
+echo "security_baseline_auditd_rules:" >> <%= $auditd_rules_fact_file %>
+uniq /tmp/auditd.rules.$$ | while read rule ; do
+  echo "  - ${rule}"
+done >> <%= $auditd_rules_fact_file %>
+
+logger -p daemon.info -t $prog "finished auditd suid progs rule creation"
+
+exit 0

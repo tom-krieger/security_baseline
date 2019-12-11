@@ -1,12 +1,14 @@
-# @summary A short summary of the purpose of this class
+# @summary 
+#    Create a cron job to search binaries with s-bit
 #
-# A description of what this class does
+# Create a fact with all auditd rules needed to monitor the usage of s-bit programs.
 #
 # @example
 #   include security_baseline::auditd_suid_rules_cron
 class security_baseline::auditd_suid_rules_cron (
-  Array $include = [],
-  Array $exclude = [],
+  Array $include                 = [],
+  Array $exclude                 = [],
+  String $auditd_rules_fact_file = '/tmp/auditd.facts.yaml'
 ) {
   if(!empty($include) and !empty($exclude)) {
     fail('Please include directories or exclude them but you can not do both!')
@@ -20,9 +22,9 @@ class security_baseline::auditd_suid_rules_cron (
   }
 
   concat::fragment {'suid_cron_top':
-    target => '/etc/cron.daily/suid-audit',
-    source => 'puppet:///modules/security_baseline/suid_auditd_top',
-    order  => 01,
+    target  => '/etc/cron.daily/suid-audit',
+    content => epp('security_baseline/suid_auditd_top.epp', { 'auditd_rules_fact_file' => $auditd_rules_fact_file}),
+    order   => 01,
   }
 
   if(empty($include)) {
@@ -50,8 +52,8 @@ class security_baseline::auditd_suid_rules_cron (
   }
 
   concat::fragment {'suid_cron_end':
-    target => '/etc/cron.daily/suid-audit',
-    source => 'puppet:///modules/security_baseline/suid_auditd_end',
-    order  => 99,
+    target  => '/etc/cron.daily/suid-audit',
+    content => epp('security_baseline/suid_auditd_end.epp', { 'auditd_rules_fact_file' => $auditd_rules_fact_file}),
+    order   => 99,
   }
 }

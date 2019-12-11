@@ -80,7 +80,7 @@ define security_baseline::sec_check (
       }
 
       if($::security_baseline::debug) {
-        echo{"Applying rule ${rulename}":
+        echo { "Applying rule ${rulename}":
           loglevel => 'debug',
           withpath => false,
         }
@@ -158,7 +158,12 @@ define security_baseline::sec_check (
             $fact_key = $fact_name
           }
 
-          warning("No fact for ${fact_key} found")
+          echo { "No fact for ${fact_key} found":
+            loglevel => 'warning',
+            withpath => false,
+          }
+
+          # warning("No fact for ${fact_key} found")
         }
 
       } else {

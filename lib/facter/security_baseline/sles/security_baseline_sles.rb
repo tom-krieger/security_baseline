@@ -163,7 +163,7 @@ def security_baseline_sles(os, _distid, _release)
   x11 = {}
   pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
   pkgs.split("\n")
-  x11['installed'] = (pkgs.count > 0)
+  x11['installed'] = (count(pkgs) > 0)
   security_baseline[:x11] = x11
 
   single_user_mode = {}

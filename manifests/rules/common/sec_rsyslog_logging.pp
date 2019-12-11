@@ -38,6 +38,12 @@ class security_baseline::rules::common::sec_rsyslog_logging (
   Hash $log_config   = {},
 ) {
   if($enforce) {
+    @package { 'rsyslog':
+      ensure => installed,
+    }
+    @package { 'syslog-ng':
+      ensure => absent,
+    }
     $log_config.each | $config, $data | {
       $src = $data['src']
       $dst = $data['dst']

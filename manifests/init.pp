@@ -58,7 +58,7 @@ class security_baseline (
 
   class { '::security_baseline::config':
     update_postrun_command => $update_postrun_command,
-    before  => Concat[$logfile],
+    before                 => Concat[$logfile],
   }
 
   class {'security_baseline::auditd_suid_rules_cron':

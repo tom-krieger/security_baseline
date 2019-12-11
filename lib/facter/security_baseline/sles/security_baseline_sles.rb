@@ -31,6 +31,7 @@ def security_baseline_sles(os, _distid, _release)
               'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'cron']
   packages = { 'iptables' => '-q',
                'openldap-clients' => '-q',
+               'logrotate' => '-q',
                'mcstrans' => '-q',
                'prelink' => '-q',
                'rsh' => '-q',

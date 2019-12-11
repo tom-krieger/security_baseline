@@ -8,7 +8,6 @@ describe 'security_baseline::rules::common::sec_automounting' do
       context "on #{os} with enforce = #{enforce}" do
         let(:facts) do
           os_facts.merge(
-            'automounting' => 'enabled',
             'security_baseline' => {
               'services_enabled' => {
                 'srv_autofs' => 'enabled',

@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_automounting (
 ) {
   if $enforce {
 
-    if $::automounting == 'enabled' {
+    if $facts['security_baseline']['services_enabled']['srv_autofs'] == 'enabled' {
 
         class { 'autofs':
           service_ensure => 'stopped',

@@ -149,7 +149,7 @@ define security_baseline::sec_check (
           $logentry_data = {
             log_level => 'ok',
             msg       => $message,
-            rulestate => 'compliant',
+            rulestate => 'compliant (no value)',
           }
 
           if($fact_name.is_a(Array)) {
@@ -158,7 +158,7 @@ define security_baseline::sec_check (
             $fact_key = $fact_name
           }
 
-          echo { "No fact for ${fact_key} found":
+          echo { "No fact for ${data_hash} -> ${fact_key} found":
             loglevel => 'warning',
             withpath => false,
           }

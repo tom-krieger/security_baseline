@@ -91,9 +91,11 @@ define security_baseline::sec_check (
         $fact_value = $check['fact_value']
         $data_hash  = $facts[$check['fact_hash']]
 
-        echo { "fact name: ${fact_name}":
-          loglevel => 'info',
-          withpath => false,
+        if($::security_baseline::debug) {
+          echo { "fact name: ${fact_name}":
+            loglevel => 'info',
+            withpath => false,
+          }
         }
 
         unless(empty($data_hash)) {
@@ -102,9 +104,11 @@ define security_baseline::sec_check (
           $current_value = $facts[$fact_name]
         }
 
-        echo { "current value ${fact_name} -> ${current_value}":
-          loglevel => 'info',
-          withpath => false,
+        if($::security_baseline::debug) {
+          echo { "current value ${fact_name} -> ${current_value}":
+            loglevel => 'info',
+            withpath => false,
+          }
         }
 
         unless($current_value == undef) {
@@ -172,8 +176,6 @@ define security_baseline::sec_check (
             loglevel => 'warning',
             withpath => false,
           }
-
-          # warning("No fact for ${fact_key} found")
         }
 
       } else {

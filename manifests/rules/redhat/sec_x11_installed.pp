@@ -31,7 +31,7 @@ class security_baseline::rules::redhat::sec_x11_installed (
   String $message = '',
   String $log_level = ''
 ) {
-  if($facts['security_baseline']['x11-packages']) {
+  if($facts['security_baseline']['x11']['installed']) {
     if($enforce) {
       package { $facts['security_baseline']['x11-packages']:
         ensure => 'purged',

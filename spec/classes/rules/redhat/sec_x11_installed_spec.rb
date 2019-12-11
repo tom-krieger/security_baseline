@@ -12,6 +12,9 @@ describe 'security_baseline::rules::redhat::sec_x11_installed' do
           architecture: 'x86_64',
           security_baseline: {
             'x11-packages' => ['xorg-x11-xinit'],
+            'x11' => {
+              'installed' => true,
+            }
           },
         }
       end

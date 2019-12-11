@@ -158,12 +158,8 @@ def security_baseline_redhat(os, _distid, _release)
   issue['net']['content'] = Facter::Core::Execution.exec('egrep \'(\\\v|\\\r|\\\m|\\\s)\' /etc/issue.net')
   security_baseline[:issue] = issue
 
-  motd = {}
+  motd = read_file_stats('/etc/motd')
   motd['content'] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
-  val = read_file_stats('/etc/motd')
-  motd['uid'] = val['uid']
-  motd['gid'] = val['gid']
-  motd['mode'] = val['mode']
   security_baseline[:motd] = motd
 
   security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")

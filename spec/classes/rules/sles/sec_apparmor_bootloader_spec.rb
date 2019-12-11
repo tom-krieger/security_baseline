@@ -6,15 +6,6 @@ describe 'security_baseline::rules::sles::sec_apparmor_bootloader' do
   on_supported_os.each do |os, os_facts|
     enforce_options.each do |enforce|
       context "on #{os} with enforce = #{enforce}" do
-        let(:pre_condition) do
-          <<-EOF
-          exec {'apparmor-grub-config':
-            command     => 'grub2-mkconfig -o /boot/grub2/grub.cfg',
-            path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-            refreshonly => true,
-          }
-          EOF
-        end
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {
@@ -35,6 +26,13 @@ describe 'security_baseline::rules::sles::sec_apparmor_bootloader' do
         it { is_expected.to compile }
         it do
           if enforce
+            is_expected.to contain_exec('apparmor-grub-config')
+              .with(
+                'command'     => 'grub2-mkconfig -o /boot/grub2/grub.cfg',
+                'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+                'refreshonly' => true,
+              )
+
             is_expected.to contain_file_line('cmdline_definition')
               .with(
                 'line'  => 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"',

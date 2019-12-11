@@ -14,6 +14,7 @@ describe 'security_baseline::logging' do
     }
     EOF
   end
+
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }

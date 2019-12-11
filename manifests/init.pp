@@ -40,7 +40,7 @@ class security_baseline (
   Array $auditd_suid_include                  = [],
   Array $auditd_suid_exclude                  = [],
   String $auditd_rules_file                   = '/etc/audit/rules.d/sec_baseline_auditd.rules',
-  Enum['fact', 'local_file'] $reporting_type  = 'fact',
+  Enum['fact', 'csv_file'] $reporting_type   = 'fact',
   String $auditd_rules_fact_file              = '/opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml',
   Boolean $update_postrun_command             = true,
 ) {
@@ -68,24 +68,46 @@ class security_baseline (
     before                 => Concat[$logfile],
   }
 
-  concat { $logfile:
-    ensure => present,
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
-  }
+  if ($reporting_type == 'fact') {
+    concat { $logfile:
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
 
-  concat::fragment { 'start':
-    content => epp('security_baseline/logfile_start.epp', {'version' => $baseline_version}),
-    target  => $logfile,
-    order   => 1,
+    concat::fragment { 'start':
+      content => epp('security_baseline/logfile_start.epp', {'version' => $baseline_version}),
+      target  => $logfile,
+      order   => 1,
+    }
+  } elsif ($reporting_type == 'csv_file') {
+    concat { $logfile:
+      ensure => present,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0644',
+    }
+    concat::fragment { 'start':
+      content => epp('security_baseline/csv_file_start.epp', {}),
+      target  => $logfile,
+      order   => 1,
+    }
   }
 
   create_resources('::security_baseline::sec_check', $rules)
 
-  concat::fragment { 'finish':
-    content => epp('security_baseline/logfile_end.epp', {}),
-    target  => $logfile,
-    order   => 9999,
+  if ($reporting_type == 'fact') {
+    concat::fragment { 'finish':
+      content => epp('security_baseline/logfile_end.epp', {}),
+      target  => $logfile,
+      order   => 9999,
+    }
+  } elsif ($reporting_type == 'csv_file') {
+    concat::fragment { 'finish':
+      content => epp('security_baseline/csv_file_end.epp', {}),
+      target  => $logfile,
+      order   => 9999,
+    }
   }
 }

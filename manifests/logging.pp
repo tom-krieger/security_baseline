@@ -39,11 +39,25 @@ define security_baseline::logging (
   $rulestate,
   $level,
   $scored,
-  Enum['fact', 'local_file'] $reporting_type = 'fact',
+  Enum['fact', 'csv_file'] $reporting_type = 'fact',
 ) {
   if($reporting_type == 'fact') {
       concat::fragment { $rulenr:
         content => epp('security_baseline/logentry.epp', {
+          'rulenr'    => $rulenr,
+          'rule'      => $rule,
+          'desc'      => $desc,
+          'msg'       => $msg,
+          'loglevel'  => $log_level,
+          'rulestate' => $rulestate,
+          'level'     => $level,
+          'scored'    => $scored,
+        }),
+        target  => $::security_baseline::logfile,
+    }
+  } elsif ($reporting_type == 'csv_file') {
+    concat::fragment { $rulenr:
+        content => epp('security_baseline/csv_file_entry.epp', {
           'rulenr'    => $rulenr,
           'rule'      => $rule,
           'desc'      => $desc,

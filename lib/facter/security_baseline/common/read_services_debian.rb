@@ -16,10 +16,7 @@ def read_service_data(services, file_name)
       m = line.match(%r{id\s*=\s*(?<srvid>[A-Za-z0-9\-]+)})
       srv_id = m[:srvid]
     elsif line =~ %r{^\}} && srv
-      if srv_id == ''
-        srv_id = srv_name
-      end
-      if srv
+      if srv && srv_id != ''
         services["srv_#{srv_id}"] = !srv_status.casecmp('yes').zero?
       end
       srv_name = ''

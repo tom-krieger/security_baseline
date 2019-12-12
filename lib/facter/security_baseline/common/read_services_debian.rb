@@ -33,7 +33,7 @@ def read_services_debian
 
   Dir['/etc/xinetd.d/*'].each do |file_name|
     next if File.directory? file_name
-    services = read_service_data(services, "/etc/xinetd.d/#{file_name}")
+    services = read_service_data(services, "#{file_name}")
   end
 
   services

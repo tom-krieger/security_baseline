@@ -40,8 +40,7 @@ def security_baseline_debian(os, distid, _release)
                'ypbind' => '-q',
               'openbsd-inetd' => '-s',
             }
-  modules = ['dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf']
-  xinetd_services = ['echo', 'time', 'chargen', 'tftp', 'daytime', 'discard']
+  modules = ['dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf'
   sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
                    'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',
                    'net.ipv4.conf.default.accept_redirects', 'net.ipv4.conf.all.secure_redirects', 'net.ipv4.conf.all.log_martians',
@@ -55,10 +54,8 @@ def security_baseline_debian(os, distid, _release)
   security_baseline[:kernel_modules] = read_facts_kernel_modules(modules)
   security_baseline[:packages_installed] = read_facts_packages_installed(packages)
   security_baseline[:services_enabled] = read_facts_services_enabled(services)
-
-  security_baseline[:xinetd_services] = read_facts_xinetd_services(xinetd_services)
   security_baseline[:sysctl] = read_facts_sysctl(sysctl_values)
-  security_baseline[:aide] = read_facts_aide(distid, os)
+  security_baseline[:aide] = read_facts_aide(os)
 
   selinux = {}
   val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg')

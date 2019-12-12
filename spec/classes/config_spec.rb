@@ -13,6 +13,8 @@ describe 'security_baseline::config' do
       let(:params) do
         {
           'update_postrun_command' => true,
+          'reporting_type' => 'fact',
+          'fact_upload_command' => '/usr/local/bin/puppet facts upload',
         }
       end
 

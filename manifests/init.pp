@@ -43,7 +43,7 @@ class security_baseline (
   Enum['fact', 'csv_file'] $reporting_type    = 'fact',
   String $auditd_rules_fact_file              = '/opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml',
   Boolean $update_postrun_command             = true,
-  String $postrun_command                     = '/usr/local/bin/puppet facts upload',
+  String $fact_upload_command                 = '/usr/local/bin/puppet facts upload',
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
@@ -59,7 +59,8 @@ class security_baseline (
 
   class { '::security_baseline::config':
     update_postrun_command => $update_postrun_command,
-    postrun_command        => $postrun_command,
+    fact_upload_command    => $fact_upload_command,
+    reporting_type         => $reporting_type,
     before                 => Concat[$logfile],
   }
 

@@ -6,8 +6,9 @@
 # @example
 #   include security_baseline::config
 class security_baseline::config(
-  Boolean $update_postrun_command = true,
-  String $postrun_command         = '/usr/local/bin/puppet facts upload',
+  Boolean $update_postrun_command          = true,
+  String $fact_upload_command              = '/usr/local/bin/puppet facts upload',
+  Enum['fact', 'csv_file'] $reporting_type = 'fact',
 ) {
   file { '/usr/share/security_baseline':
     ensure => directory,
@@ -108,15 +109,15 @@ class security_baseline::config(
     mode   => '0700',
   }
 
-  if $update_postrun_command {
+  if $update_postrun_command and ($reporting_type == 'fact') {
     if(('security_baseline' in $facts) and ('puppet_agent_postrun' in $facts['security_baseline'])) {
-      if ($facts['security_baseline']['puppet_agent_postrun'] != "postrun_command = ${postrun_command}") {
+      if ($facts['security_baseline']['puppet_agent_postrun'] != "postrun_command = ${fact_upload_command}") {
         exec { 'set puppet agent postrun agent':
-          command => "puppet config --section agent set postrun_command \"${postrun_command}\"",
+          command => "puppet config --section agent set postrun_command \"${fact_upload_command}\"",
           path    => ['/bin', '/usr/bin', '/usr/local/bin'],
         }
         exec { 'set puppet agent postrun main':
-          command => "puppet config --section main set postrun_command \"${postrun_command}\"",
+          command => "puppet config --section main set postrun_command \"${fact_upload_command}\"",
           path    => ['/bin', '/usr/bin', '/usr/local/bin'],
         }
       }

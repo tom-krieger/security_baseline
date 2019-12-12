@@ -190,15 +190,15 @@ def security_baseline_ubuntu(os, _distid, _release)
 
   val = Facter::Core::Execution.exec('apt-get -s upgrade | grep "upgraded.*newly installed,.*to remove and.*not upgraded."')
   security_baseline[:security_patches] = if val.nil? || val.empty?
-    'none'
-  else
-    m = val.match(%r{(?<update>\d+) upgraded, (?<new>\d+) newly installed})
-    if m[:update] > 0 || m[:new] > 0
-      'updates available'
-    else
-      'none'
-    end
-  end
+                                           'none'
+                                         else
+                                           m = val.match(%r{(?<update>\d+) upgraded, (?<new>\d+) newly installed})
+                                           if m[:update].to_s > '0' || m[:new].to_s > '0'
+                                             'updates available'
+                                           else
+                                             'none'
+                                           end
+                                         end
 
   security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('dpkg -l | grep gnome') != ''
   if File.exist?('/etc/gdm3/greeter.dconf-defaults')

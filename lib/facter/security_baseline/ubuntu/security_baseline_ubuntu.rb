@@ -142,22 +142,20 @@ def security_baseline_ubuntu(os, distid, _release)
 
   security_baseline[:partitions] = partitions
 
-  zypper = {}
-  zypper['repolist'] = Facter::Core::Execution.exec('zypper repos')
-  # val = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
-  # zypper['gpgcheck'] = check_value_string(val, '') != ''
-  zypper['gpgcheck'] = value = Facter::Core::Execution.exec('grep "^gpgcheck = on" /etc/zypp/zypp.conf')
-  zypper['gpgcheck'] = if value.empty?
-                         false
-                       elsif value == 'gpgcheck = on'
-                         true
-                       else
-                         false
-                       end
-  security_baseline[:zypper] = zypper
+  apt = {}
+  apt['repolist'] = Facter::Core::Execution.exec('apt-cache policy')
+  value = Facter::Core::Execution.exec('apt-key list')
+  apt['gpgcheck'] = if value .nil? || value.empty?
+                      false
+                    elsif value == 'gpgcheck = on'
+                      true
+                    else
+                      false
+                    end
+  security_baseline[:apt] = apt
 
   x11 = {}
-  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+  pkgs = Facter::Core::Execution.exec('dpkg -s xorg-x11*')
   x11['installed'] = if pkgs.nil? || pkgs.empty?
                        false
                      else
@@ -190,7 +188,7 @@ def security_baseline_ubuntu(os, distid, _release)
   motd['content'] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
   security_baseline[:motd] = motd
 
-  security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
+  security_baseline[:apt_gpg_keys] = Facter::Core::Execution.exec('apt-key list')
 
   val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
   security_baseline[:unconfigured_daemons] = check_value_string(val, 'none')
@@ -201,7 +199,7 @@ def security_baseline_ubuntu(os, distid, _release)
   val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
   security_baseline[:security_patches] = check_value_string(val, 'none')
 
-  security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''
+  security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('dpkg -l | grep gnome') != ''
   val1 = check_value_string(Facter::Core::Execution.exec('grep "user-db:user" /etc/dconf/profile/gdm'), 'none')
   val2 = check_value_string(Facter::Core::Execution.exec('grep "system-db:gdm" /etc/dconf/profile/gdm'), 'none')
   val3 = check_value_string(Facter::Core::Execution.exec('grep "file-db:/usr/share/gdm/greeter-dconf-defaults" /etc/dconf/profile/gdm'), 'none')

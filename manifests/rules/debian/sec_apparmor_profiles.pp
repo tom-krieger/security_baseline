@@ -38,7 +38,7 @@ class security_baseline::rules::debian::sec_apparmor_profiles (
       exec {'apparmor enforce':
         command => 'aa-enforce /etc/apparmor.d/*',
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
-        require => Package['apparmor-utils,']
+        require => Package['apparmor-utils'],
       }
     }
   } else {

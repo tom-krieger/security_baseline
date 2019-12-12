@@ -34,7 +34,7 @@ describe 'security_baseline::rules::debian::sec_apparmor_profiles' do
               .with(
                 'ensure' => 'installed',
               )
-            
+
             is_expected.to contain_exec('apparmor enforce')
               .with(
                 'command' => 'aa-enforce /etc/apparmor.d/*',

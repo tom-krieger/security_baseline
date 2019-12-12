@@ -19,14 +19,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::debian::sec_aide {
+#   class security_baseline::rules::sles::sec_aide {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::debian::sec_aide (
+class security_baseline::rules::sles::sec_aide (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''
@@ -39,18 +39,12 @@ class security_baseline::rules::debian::sec_aide (
       notify => Exec['aidedb'],
     }
 
-    package { 'aide-common':
-      ensure  => installed,
-      notify  => Exec['aidedb'],
-      require => Package['aide'],
-    }
-
     exec { 'aidedb':
       command     => 'aide --init',
       path        => '/sbin/',
       refreshonly => true,
       notify      => Exec['rename_aidedb'],
-      require     => Package['aide-common'],
+      require     => Package['aide'],
     }
 
     exec { 'rename_aidedb':
@@ -59,7 +53,7 @@ class security_baseline::rules::debian::sec_aide (
       path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
       logoutput   => true,
       refreshonly => true,
-      require     => Package['aide-common'],
+      require     => Package['aide'],
     }
 
   } else {

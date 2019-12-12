@@ -7,14 +7,17 @@ describe 'security_baseline::rules::common::sec_aide' do
     enforce_options.each do |enforce|
       context "on #{os} with enforce = #{enforce}" do
         let(:facts) do
-          os_facts.merge(
-            'security_baseline' => {
-              'aide' => {
-                'version' =>  '6.1.2',
-                'status' => 'not installed',
+          {
+            osfamily: 'Suse',
+            operatingsystem: 'SLES',
+            architecture: 'x86_64',
+            security_baseline: {
+              aide: {
+                version: '6.1.2',
+                status: 'not installed'
               },
             },
-          )
+          }
         end
         let(:params) do
           {

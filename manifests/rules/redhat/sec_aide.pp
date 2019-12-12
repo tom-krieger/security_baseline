@@ -19,14 +19,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_aide {
+#   class security_baseline::rules::redhat::sec_aide {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_aide (
+class security_baseline::rules::redhat::sec_aide (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''
@@ -44,6 +44,7 @@ class security_baseline::rules::common::sec_aide (
       path        => '/sbin/',
       refreshonly => true,
       notify      => Exec['rename_aidedb'],
+      require     => Package['aide'],
     }
 
     exec { 'rename_aidedb':
@@ -52,6 +53,7 @@ class security_baseline::rules::common::sec_aide (
       path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
       logoutput   => true,
       refreshonly => true,
+      require     => Package['aide'],
     }
 
   } else {

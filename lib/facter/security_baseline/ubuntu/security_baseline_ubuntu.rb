@@ -24,6 +24,7 @@ require 'pp'
 
 def security_baseline_ubuntu(os, distid, _release)
   security_baseline = {}
+  arch = Facter.value(:architecture)
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
               'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond']

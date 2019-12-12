@@ -22,7 +22,7 @@ require 'facter/security_baseline/common/trim_string'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'pp'
 
-def security_baseline_debian(os, distid, _release)
+def security_baseline_ubuntu(os, distid, _release)
   security_baseline = {}
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',

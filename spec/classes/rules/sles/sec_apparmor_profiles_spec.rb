@@ -30,14 +30,21 @@ describe 'security_baseline::rules::sles::sec_apparmor_profiles' do
         it { is_expected.to compile }
         it do
           if enforce
+            is_expected.to contain_package('apparmor-utils')
+              .with(
+                'ensure' => 'installed',
+              )
+
             is_expected.to contain_exec('apparmor enforce')
               .with(
                 'command' => 'enforce /etc/apparmor.d/*',
                 'path'    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
               )
+              .that_requires('Package[apparmor-utils]')
 
             is_expected.not_to contain_echo('apparmor-profiles')
           else
+            is_expected.not_to contain_package('apparmor-utils')
             is_expected.not_to contain_exec('apparmor enforce')
             is_expected.to contain_echo('apparmor-profiles')
               .with(

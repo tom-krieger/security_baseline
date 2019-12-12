@@ -32,9 +32,13 @@ class security_baseline::rules::debian::sec_apparmor_profiles (
 ) {
   if($enforce) {
     if($facts['security_baseline']['apparmor']['profiles'] != $facts['security_baseline']['apparmor']['profiles_enforced']) {
+      package {'apparmor-utils':
+        ensure => installed,
+      }
       exec {'apparmor enforce':
         command => 'aa-enforce /etc/apparmor.d/*',
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+        require => Package['apparmor-utils,']
       }
     }
   } else {

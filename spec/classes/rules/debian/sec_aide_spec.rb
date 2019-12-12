@@ -13,7 +13,7 @@ describe 'security_baseline::rules::debian::sec_aide' do
           security_baseline: {
             aide: {
               version: '6.1.2',
-              status: 'not installed'
+              status: 'not installed',
             },
           },
         }

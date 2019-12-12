@@ -3,7 +3,7 @@ require 'spec_helper'
 enforce_options = [true, false]
 
 describe 'security_baseline::rules::common::sec_aide' do
-  on_supported_os.each do |os, os_facts|
+  on_supported_os.each do |os, _os_facts|
     enforce_options.each do |enforce|
       context "on #{os} with enforce = #{enforce}" do
         let(:facts) do
@@ -14,7 +14,7 @@ describe 'security_baseline::rules::common::sec_aide' do
             security_baseline: {
               aide: {
                 version: '6.1.2',
-                status: 'not installed'
+                status: 'not installed',
               },
             },
           }

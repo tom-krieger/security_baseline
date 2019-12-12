@@ -13,7 +13,7 @@ describe 'security_baseline::rules::debian::sec_aide_cron' do
           security_baseline: {
             aide: {
               version: '6.1.2',
-              status: 'installed'
+              status: 'installed',
             },
           },
         }

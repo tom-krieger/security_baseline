@@ -1,6 +1,6 @@
 # get facts about xinetd services
 
-def read_facts_xinetd_services(srvs, type='std')
+def read_facts_xinetd_services(srvs, type = 'std')
   xinetd_services = {}
 
   srvs.each do |srv|

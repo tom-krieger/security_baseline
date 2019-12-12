@@ -22,7 +22,7 @@ require 'facter/security_baseline/common/trim_string'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'pp'
 
-def security_baseline_debian(os, distid, _release)
+def security_baseline_debian(os, _distid, _release)
   security_baseline = {}
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
@@ -38,8 +38,7 @@ def security_baseline_debian(os, distid, _release)
                'tcp_wrappers' => '-q',
                'telnet' => '-q',
                'ypbind' => '-q',
-              'openbsd-inetd' => '-s',
-            }
+               'openbsd-inetd' => '-s' }
   modules = ['dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf']
   sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
                    'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',

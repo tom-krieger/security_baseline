@@ -9,7 +9,7 @@ def check_service_is_enabled(service)
 end
 
 # check if an xinetd servicve is enabled
-def check_xinetd_service(service, type='std')
+def check_xinetd_service(service, type = 'std')
   ret = false
   if type == 'ubuntu'
     ret = check_xinetd_service_ubuntu(service)
@@ -35,11 +35,11 @@ end
 # check xinetd services for ubuntu
 def check_xinetd_service_ubuntu(service)
   val = Facter::Core::Execution.exec("grep -R \"^#{service}\" /etc/inetd.*")
-  if val.nil? || val.empty? || val.match(%r{No such file})
-    ret = check_xinetd_files(service)
-  else
-    ret = true
-  end
+  ret = if val.nil? || val.empty? || val.match(%r{No such file})
+          check_xinetd_files(service)
+        else
+          true
+        end
 
   ret
 end

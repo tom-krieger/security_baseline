@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'security_baseline::rules::debian::sec_apt_gpgcheck' do
-  context "on Debian" do
+  context 'on Debian' do
     let(:facts) do
       {
         osfamily: 'Debian',

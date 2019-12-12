@@ -17,11 +17,11 @@ Facter.add(:security_baseline) do
     when 'redhat'
       ret = security_baseline_redhat(osfamily, distid, release)
     when 'debian'
-      if osystem == 'ubuntu'
-        ret = security_baseline_ubuntu(osfamily, distid, release)  
-      else
-        ret = security_baseline_debian(osfamily, distid, release)
-      end
+      ret = if osystem == 'ubuntu'
+              security_baseline_ubuntu(osfamily, distid, release)
+            else
+              security_baseline_debian(osfamily, distid, release)
+            end
     when 'suse'
       ret = security_baseline_sles(osfamily, distid, release)
     when 'windows'

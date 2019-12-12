@@ -22,7 +22,7 @@ require 'facter/security_baseline/common/trim_string'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'pp'
 
-def security_baseline_ubuntu(os, distid, _release)
+def security_baseline_ubuntu(os, _distid, _release)
   security_baseline = {}
   arch = Facter.value(:architecture)
 
@@ -39,8 +39,7 @@ def security_baseline_ubuntu(os, distid, _release)
                'tcp_wrappers' => '-s',
                'telnet' => '-s',
                'ypbind' => '-s',
-              'openbsd-inetd' => '-s',
-            }
+               'openbsd-inetd' => '-s' }
   modules = ['cramfs', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'udf', 'dccp', 'rds', 'sctp', 'tipc']
   xinetd_services = ['echo', 'echo-udp', 'time', 'time-udp', 'chargen', 'chargen-udp', 'tftp', 'tftp-udp', 'daytime', 'daytime-udp', 'discard', 'discard-udp']
   sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',

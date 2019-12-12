@@ -165,8 +165,7 @@ def security_baseline_ubuntu(os, distid, _release)
 
   single_user_mode = {}
   val = Facter::Core::Execution.exec('grep ^root:[*\!]: /etc/shadow')
-  singe_user_mode['rootpw'] = check_value_string(val, 'none')
-  resc = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/rescue.service')
+  singe_user_mode['rootpw'] = check_value_string(val, 'none') != 'none'
   security_baseline[:single_user_mode] = single_user_mode
 
   issue = {}

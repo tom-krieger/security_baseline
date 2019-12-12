@@ -30,7 +30,7 @@ class security_baseline::rules::debian::sec_single_user_mode (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($facts['security_baseline']['single_user_mode']['rootpw'] == 'none') {
+  if($facts['security_baseline']['single_user_mode']['rootpw'] == false) {
     echo { 'single_user_mode':
       message  => $message,
       loglevel => $log_level,

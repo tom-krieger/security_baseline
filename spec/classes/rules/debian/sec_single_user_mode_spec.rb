@@ -12,7 +12,7 @@ describe 'security_baseline::rules::common::sec_single_user_mode' do
           architecture: 'x86_64',
           security_baseline: {
             single_user_mode: {
-              rootpw: 'none',
+              rootpw: false,
             },
           },
           selinux_config_mode: 'disabled',

@@ -60,7 +60,7 @@ def security_baseline_ubuntu(os, _distid, _release)
   security_baseline[:services_enabled] = read_facts_services_enabled(services)
 
   security_baseline[:xinetd_services] = read_facts_xinetd_services(xinetd_services, 'ubuntu')
-  security_baseline[:inetd_services] = read_services_debian()
+  security_baseline[:inetd_services] = read_services_debian
   security_baseline[:sysctl] = read_facts_sysctl(sysctl_values)
   security_baseline[:aide] = read_facts_aide(os)
 

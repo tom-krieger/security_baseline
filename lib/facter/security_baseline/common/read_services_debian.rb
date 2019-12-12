@@ -6,14 +6,14 @@ def read_service_data(services, file_name)
   File.readlines(file_name).each do |line|
     next if line.match(%r{^$}) || line.match(%r{^#})
     if line =~ %r{^service}
-      m = line.match(%r{service\s*(?<name>\w)})
+      m = line.match(%r{service\s*(?<name>\w+)})
       srv_name = m[:name]
       srv = true
     elsif line =~ %r{disable\s*=} && srv
-      m = line.match(%r{disable\s*=\s*(?<status>\w)})
+      m = line.match(%r{disable\s*=\s*(?<status>\w+)})
       srv_status = m[:status]
     elsif line =~ %r{id\s*=} && srv
-      m = line.match(%r{id\s*=\s*(?<srvid>\w)})
+      m = line.match(%r{id\s*=\s*(?<srvid>\w+)})
       srv_id = m[:srvid]
     elsif line =~ %r{^\}} && srv
       if srv_id == ''

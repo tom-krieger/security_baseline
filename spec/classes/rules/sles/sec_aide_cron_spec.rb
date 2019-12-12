@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_aide_cron' do
+describe 'security_baseline::rules::sles::sec_aide_cron' do
   enforce_options.each do |enforce|
     on_supported_os.each do |os, _os_facts|
       context "on #{os} with enforce = #{enforce}" do

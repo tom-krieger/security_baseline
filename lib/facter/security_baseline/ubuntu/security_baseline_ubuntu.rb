@@ -33,7 +33,8 @@ def security_baseline_ubuntu(os, _distid, _release)
                'mcstrans' => '-s',
                'prelink' => '-s',
                'rsh' => '-s',
-               'libselinux' => '-s',
+               'selinux' => '-s',
+               'apparmor' => '-s',
                'setroubleshoot' => '-s',
                'talk' => '-s',
                'tcp_wrappers' => '-s',
@@ -61,12 +62,12 @@ def security_baseline_ubuntu(os, _distid, _release)
   security_baseline[:aide] = read_facts_aide(os)
 
   selinux = {}
-  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
   selinux['bootloader'] = (val.nil? || val.empty?)
   security_baseline[:selinux] = selinux
 
   apparmor = {}
-  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep "apparmor.*=.*0"')
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep "apparmor.*=.*0"')
   apparmor['bootloader'] = (val.nil? || val.empty?)
   val = Facter::Core::Execution.exec('apparmor_status | grep "profiles are loaded"')
   apparmor['profiles'] = if val.nil? || val.empty?
@@ -88,8 +89,8 @@ def security_baseline_ubuntu(os, _distid, _release)
                                   end
   security_baseline[:apparmor] = apparmor
 
-  seval = check_package_installed('libselinux1')
-  arval = check_package_installed('libapparmor1')
+  seval = check_package_installed('selinux')
+  arval = check_package_installed('apparmor')
   security_baseline['access_control'] = if seval || arval
                                           'installed'
                                         else
@@ -165,6 +166,7 @@ def security_baseline_ubuntu(os, _distid, _release)
   single_user_mode = {}
   val = Facter::Core::Execution.exec('grep ^root:[*\!]: /etc/shadow')
   single_user_mode['rootpw'] = check_value_string(val, 'none') != 'none'
+  single_user_mode['status'] = check_value_string(val, 'none') != 'none'
   security_baseline[:single_user_mode] = single_user_mode
 
   issue = {}
@@ -186,18 +188,31 @@ def security_baseline_ubuntu(os, _distid, _release)
   val = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
   security_baseline[:sticky_ww] = check_value_string(val, 'none')
 
-  val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
-  security_baseline[:security_patches] = check_value_string(val, 'none')
+  val = Facter::Core::Execution.exec('apt-get -s upgrade | grep "upgraded.*newly installed,.*to remove and.*not upgraded."')
+  security_baseline[:security_patches] = if val.nil? || val.empty?
+    'none'
+  else
+    m = val.match(%r{(?<update>\d+) upgraded, (?<new>\d+) newly installed})
+    if m[:update] > 0 || m[:new] > 0
+      'updates available'
+    else
+      'none'
+    end
+  end
 
   security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('dpkg -l | grep gnome') != ''
-  val1 = check_value_string(Facter::Core::Execution.exec('grep "user-db:user" /etc/dconf/profile/gdm'), 'none')
-  val2 = check_value_string(Facter::Core::Execution.exec('grep "system-db:gdm" /etc/dconf/profile/gdm'), 'none')
-  val3 = check_value_string(Facter::Core::Execution.exec('grep "file-db:/usr/share/gdm/greeter-dconf-defaults" /etc/dconf/profile/gdm'), 'none')
-  security_baseline[:gnome_gdm_conf] = if val1 == 'none' || val2 == 'none' || val3 == 'none'
-                                         false
-                                       else
-                                         true
-                                       end
+  if File.exist?('/etc/gdm3/greeter.dconf-defaults')
+    val1 = check_value_string(Facter::Core::Execution.exec('grep "[org/gnome/login-screen]" /etc/gdm3/greeter.dconf-defaults'), 'none')
+    val2 = check_value_string(Facter::Core::Execution.exec('grep "banner-message-enable=true" /etc/gdm3/greeter.dconf-defaults'), 'none')
+    val3 = check_value_string(Facter::Core::Execution.exec('grep "banner-message-text=" /etc/gdm3/greeter.dconf-defaults'), 'none')
+    security_baseline[:gnome_gdm_conf] = if val1 == 'none' || val2 == 'none' || val3 == 'none'
+                                           false
+                                         else
+                                           true
+                                         end
+  else
+    security_baseline[:gnome_gdm_conf] = false
+  end
 
   grub = {}
   val1 = check_value_string(Facter::Core::Execution.exec('grep "^set superusers" /boot/grub/grub.cfg'), 'none')
@@ -661,7 +676,7 @@ def security_baseline_ubuntu(os, _distid, _release)
                                   end
 
   auditd['srv_auditd'] = check_service_is_enabled('auditd')
-  val = Facter::Core::Execution.exec('grep "^\s*linux.*audit=1" /boot/grub2/grub.cfg')
+  val = Facter::Core::Execution.exec('grep "^\s*linux.*audit=1" /boot/grub/grub.cfg')
   auditd['auditing_process'] = if val.empty? || val.nil?
                                  'none'
                                else

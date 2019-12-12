@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_single_user_mode' do
+describe 'security_baseline::rules::debian::sec_single_user_mode' do
   enforce_options.each do |enforce|
     context "on Debian with enforce = #{enforce}" do
       let(:facts) do
@@ -13,6 +13,7 @@ describe 'security_baseline::rules::common::sec_single_user_mode' do
           security_baseline: {
             single_user_mode: {
               rootpw: false,
+              status: false,
             },
           },
           selinux_config_mode: 'disabled',

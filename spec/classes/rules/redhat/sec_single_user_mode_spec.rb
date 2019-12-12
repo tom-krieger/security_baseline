@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_single_user_mode' do
+describe 'security_baseline::rules::redhat::sec_single_user_mode' do
   enforce_options.each do |enforce|
     context "on RedHat with enforce = #{enforce}" do
       let(:facts) do

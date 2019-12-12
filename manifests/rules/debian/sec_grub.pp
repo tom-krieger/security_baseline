@@ -20,14 +20,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::redhat::sec_grub2 {
+#   class security_baseline::rules::debian::sec_grub {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::redhat::sec_grub2 (
+class security_baseline::rules::debian::sec_grub (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''
@@ -35,14 +35,7 @@ class security_baseline::rules::redhat::sec_grub2 (
 
   if($enforce) {
 
-    file { '/boot/grub2/grub.cfg':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0600',
-    }
-
-    file { '/boot/grub2/user.cfg':
+    file { '/boot/grub/grub.cfg':
       ensure => present,
       owner  => 'root',
       group  => 'root',
@@ -53,10 +46,7 @@ class security_baseline::rules::redhat::sec_grub2 (
     if(
       ($facts['security_baseline']['grub']['grub.cfg']['uid'] != 0) or
       ($facts['security_baseline']['grub']['grub.cfg']['gid'] != 0) or
-      ($facts['security_baseline']['grub']['grub.cfg']['mode'] != 384) or
-      ($facts['security_baseline']['grub']['user.cfg']['uid'] != 0) or
-      ($facts['security_baseline']['grub']['user.cfg']['gid'] != 0) or
-      ($facts['security_baseline']['grub']['user.cfg']['mode'] != 384)
+      ($facts['security_baseline']['grub']['grub.cfg']['mode'] != 384)
     ) {
       echo { 'grub-grub-cfg':
         message  => $message,

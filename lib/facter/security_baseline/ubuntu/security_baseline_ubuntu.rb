@@ -164,17 +164,9 @@ def security_baseline_ubuntu(os, distid, _release)
   security_baseline[:x11] = x11
 
   single_user_mode = {}
+  val = Facter::Core::Execution.exec('grep ^root:[*\!]: /etc/shadow')
+  singe_user_mode['rootpw'] = check_value_string(val, 'none')
   resc = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/rescue.service')
-  single_user_mode['rescue'] = check_value_boolean(resc, false)
-
-  emerg = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/emergency.service')
-  single_user_mode['emergency'] = check_value_boolean(emerg, false)
-
-  single_user_mode['status'] = if (single_user_mode['emergency'] == false) || (single_user_mode['rescue'] == false)
-                                 false
-                               else
-                                 true
-                               end
   security_baseline[:single_user_mode] = single_user_mode
 
   issue = {}
@@ -210,14 +202,14 @@ def security_baseline_ubuntu(os, distid, _release)
                                        end
 
   grub = {}
-  val1 = check_value_string(Facter::Core::Execution.exec('grep "^set superusers" /boot/grub2/grub.cfg'), 'none')
-  val2 = check_value_string(Facter::Core::Execution.exec('grep "^password" /boot/grub2/grub.cfg'), 'none')
+  val1 = check_value_string(Facter::Core::Execution.exec('grep "^set superusers" /boot/grub/grub.cfg'), 'none')
+  val2 = check_value_string(Facter::Core::Execution.exec('grep "^password" /boot/grub/grub.cfg'), 'none')
   grub['grub_passwd'] = if val1 == 'none' || val2 == 'none'
                           false
                         else
                           true
                         end
-  grub['grub.cfg'] = read_file_stats('/boot/grub2/grub.cfg')
+  grub['grub.cfg'] = read_file_stats('/boot/grub/grub.cfg')
   security_baseline[:grub] = grub
 
   tcp_wrapper = {}

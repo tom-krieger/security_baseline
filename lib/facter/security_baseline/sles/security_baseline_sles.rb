@@ -251,7 +251,11 @@ def security_baseline_sles(os, _distid, _release)
   security_baseline[:coredumps] = coredumps
 
   pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
-  security_baseline['x11-packages'] = pkgs.split("\n")
+  security_baseline['x11-packages'] = if pkgs.nil? || pkgs.empty?
+                                        []
+                                      else
+                                        pkgs.split("\n")
+                                      end
 
   cron = {}
   cron['/etc/crontab'] = read_file_stats('/etc/crontab')

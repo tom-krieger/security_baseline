@@ -35,10 +35,11 @@ class security_baseline::rules::sles::sec_access_control (
   Enum['libselinux1', 'libapparmor1'] $access_control_pkg = 'libselinux1'
 ) {
   if($enforce) {
-    package { $access_control_pkg:
-      ensure => present,
+    if(!defined(Package[$access_control_pkg])) {
+      package { $access_control_pkg:
+        ensure => present,
+      }
     }
-
   } else {
     if($facts['security_baseline']['access_control'] == 'none') {
       echo { 'selinux-apparmor-pkg':

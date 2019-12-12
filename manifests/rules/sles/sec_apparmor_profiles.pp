@@ -32,8 +32,10 @@ class security_baseline::rules::sles::sec_apparmor_profiles (
 ) {
   if($enforce) {
     if($facts['security_baseline']['apparmor']['profiles'] != $facts['security_baseline']['apparmor']['profiles_enforced']) {
-      package {'apparmor':
-        ensure => installed,
+      if(!defined(Package['apparmor'])) {
+        package { 'apparmor':
+          ensure => present,
+        }
       }
       package {'apparmor-utils':
         ensure  => installed,

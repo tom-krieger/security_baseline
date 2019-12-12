@@ -30,10 +30,16 @@ describe 'security_baseline::rules::sles::sec_apparmor_profiles' do
         it { is_expected.to compile }
         it do
           if enforce
+            is_expected.to contain_package('apparmor')
+              .with(
+                'ensure' => 'installed',
+              )
+
             is_expected.to contain_package('apparmor-utils')
               .with(
                 'ensure' => 'installed',
               )
+              .that_requires('Package[apparmor]')
 
             is_expected.to contain_exec('apparmor enforce')
               .with(
@@ -44,6 +50,7 @@ describe 'security_baseline::rules::sles::sec_apparmor_profiles' do
 
             is_expected.not_to contain_echo('apparmor-profiles')
           else
+            is_expected.not_to contain_package('apparmor')
             is_expected.not_to contain_package('apparmor-utils')
             is_expected.not_to contain_exec('apparmor enforce')
             is_expected.to contain_echo('apparmor-profiles')

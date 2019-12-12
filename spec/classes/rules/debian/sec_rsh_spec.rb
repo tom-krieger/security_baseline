@@ -2,18 +2,21 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_rsh' do
+describe 'security_baseline::rules::debian::sec_rsh' do
   on_supported_os.each do |os, os_facts|
     enforce_options.each do |enforce|
       context "on #{os} with enforce = #{enforce}" do
         let(:facts) do
-          os_facts.merge(
-            'security_baseline' => {
-              'services_enabled' => {
-                'srv_rsh' => 'enabled',
+          {
+            osfamily: 'Suse',
+            operatingsystem: 'SLES',
+            architecture: 'x86_64',
+            security_baseline: {
+              services_enabled: {
+                srv_rsh: 'enabled',
               },
             },
-          )
+          }
         end
         let(:params) do
           {

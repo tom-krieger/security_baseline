@@ -19,6 +19,7 @@ require 'facter/security_baseline/common/check_value_regex'
 require 'facter/security_baseline/common/read_file_stats'
 require 'facter/security_baseline/common/read_local_users'
 require 'facter/security_baseline/common/trim_string'
+require 'facter/security_baseline/common/read_services_debian'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'pp'
 
@@ -26,8 +27,8 @@ def security_baseline_ubuntu(os, _distid, _release)
   security_baseline = {}
   arch = Facter.value(:architecture)
 
-  services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
-              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond']
+  services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'talk', 'rhnsd', 'rsyncd', 'smb',
+              'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'crond']
   packages = { 'iptables' => '-s',
                'openldap-clients' => '-s',
                'mcstrans' => '-s',
@@ -42,7 +43,8 @@ def security_baseline_ubuntu(os, _distid, _release)
                'ypbind' => '-s',
                'openbsd-inetd' => '-s' }
   modules = ['cramfs', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'udf', 'dccp', 'rds', 'sctp', 'tipc']
-  xinetd_services = ['echo', 'echo-udp', 'time', 'time-udp', 'chargen', 'chargen-udp', 'tftp', 'tftp-udp', 'daytime', 'daytime-udp', 'discard', 'discard-udp']
+  xinetd_services = ['echo', 'echo-udp', 'time', 'time-udp', 'chargen', 'chargen-udp', 'tftp', 'tftp-udp', 'daytime', 'daytime-udp', 'discard', 'discard-udp',
+                     'exec', 'login', 'shell', 'talk', 'ntalk', 'telnet', 'tftp']
   sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
                    'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',
                    'net.ipv4.conf.default.accept_redirects', 'net.ipv4.conf.all.secure_redirects', 'net.ipv4.conf.all.log_martians',
@@ -58,6 +60,7 @@ def security_baseline_ubuntu(os, _distid, _release)
   security_baseline[:services_enabled] = read_facts_services_enabled(services)
 
   security_baseline[:xinetd_services] = read_facts_xinetd_services(xinetd_services, 'ubuntu')
+  security_baseline[:inetd_services] = read_services_debian()
   security_baseline[:sysctl] = read_facts_sysctl(sysctl_values)
   security_baseline[:aide] = read_facts_aide(os)
 

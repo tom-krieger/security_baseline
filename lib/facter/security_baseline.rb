@@ -2,6 +2,7 @@
 
 require 'facter/security_baseline/redhat/security_baseline_redhat'
 require 'facter/security_baseline/debian/security_baseline_debian'
+require 'facter/security_baseline/ubuntu/security_baseline_ubuntu'
 require 'facter/security_baseline/sles/security_baseline_sles'
 require 'facter/security_baseline/windows/security_baseline_windows'
 

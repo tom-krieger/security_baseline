@@ -6,20 +6,25 @@ require 'facter/security_baseline/sles/security_baseline_sles'
 require 'facter/security_baseline/windows/security_baseline_windows'
 
 Facter.add(:security_baseline) do
-  os = Facter.value(:osfamily).downcase
+  osfamily = Facter.value(:osfamily).downcase
+  osystem = Facter.value(:operatingsystem).downcase
   distid = Facter.value(:lsbdistid)
   release = Facter.value(:operatingsystemmajrelease)
   ret = {}
   setcode do
-    case os
+    case osfamily
     when 'redhat'
-      ret = security_baseline_redhat(os, distid, release)
+      ret = security_baseline_redhat(osfamily, distid, release)
     when 'debian'
-      ret = security_baseline_debian(os, distid, release)
+      if osystem == 'ubuntu'
+        ret = security_baseline_ubuntu(osfamily, distid, release)  
+      else
+        ret = security_baseline_debian(osfamily, distid, release)
+      end
     when 'suse'
-      ret = security_baseline_sles(os, distid, release)
+      ret = security_baseline_sles(osfamily, distid, release)
     when 'windows'
-      ret = security_baseline_windows(os, distid, release)
+      ret = security_baseline_windows(osfamily, distid, release)
     end
   end
 

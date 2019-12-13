@@ -35,14 +35,14 @@
 #    Indicates if a rule is scored or not
 #
 # @example
-#   class { 'security_baseline::rules::common::sec_auditd_system_locale':   
+#   class { 'security_baseline::rules::redhat::sec_auditd_system_locale':   
 #             enforce => true,
 #             message => 'What you want to log',
 #             log_level => 'warning',
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_auditd_system_locale (
+class security_baseline::rules::redhat::sec_auditd_system_locale (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''

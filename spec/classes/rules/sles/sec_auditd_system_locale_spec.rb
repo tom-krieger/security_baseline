@@ -3,7 +3,7 @@ require 'spec_helper'
 enforce_options = [true, false]
 arch_options = ['x86_64', 'i686']
 
-describe 'security_baseline::rules::common::sec_auditd_system_locale' do
+describe 'security_baseline::rules::sles::sec_auditd_system_locale' do
   on_supported_os.each do |os, _os_facts|
     enforce_options.each do |enforce|
       arch_options.each do |arch|

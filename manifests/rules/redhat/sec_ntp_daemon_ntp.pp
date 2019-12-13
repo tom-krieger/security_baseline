@@ -44,7 +44,7 @@
 #    Specifies whether to enable the iburst option for every NTP peer.
 #
 # @example
-#   class security_baseline::rules::common::sec_ntp_daemon_ntp {
+#   class security_baseline::rules::redhat::sec_ntp_daemon_ntp {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
@@ -54,7 +54,7 @@
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_ntp_daemon_ntp (
+class security_baseline::rules::redhat::sec_ntp_daemon_ntp (
   Boolean $enforce                        = true,
   String $message                         = '',
   String $log_level                       = '',

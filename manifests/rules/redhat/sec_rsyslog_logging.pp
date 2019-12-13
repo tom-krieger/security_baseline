@@ -31,7 +31,7 @@
 #   }
 #
 # @api private
-class security_baseline::rules::redht::sec_rsyslog_logging (
+class security_baseline::rules::redhat::sec_rsyslog_logging (
   Boolean $enforce   = true,
   String $message    = '',
   String $log_level  = '',

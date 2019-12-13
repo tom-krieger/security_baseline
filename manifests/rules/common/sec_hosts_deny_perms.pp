@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_hosts_deny_perms (
   String $log_level = ''
 ) {
   if($enforce) {
-    if($facts['security_baseline']['hosts_deny']['combined'] != '0-0-420') {
+    if($facts['security_baseline']['tcp_wrappers']['hosts_deny']['combined'] != '0-0-420') {
       exec { 'set hosts.deny owner permissions':
         command => 'chown root:root /etc/hosts.deny',
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
@@ -42,7 +42,7 @@ class security_baseline::rules::common::sec_hosts_deny_perms (
       }
     }
   } else {
-    if($facts['security_baseline']['hosts_deny']['combined'] != '0-0-420') {
+    if($facts['security_baseline']['tcp_wrappers']['hosts_deny']['combined'] != '0-0-420') {
       echo { 'hosts-deny-perms':
         message  => $message,
         loglevel => $log_level,

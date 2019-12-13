@@ -9,12 +9,14 @@ describe 'security_baseline::rules::common::sec_hosts_deny_perms' do
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {
-              'hosts_deny' => {
-                'status' => false,
-                'uid' => 1,
-                'gid' => 1,
-                'mode' => '777',
-                'combiined' => '1-1-777',
+              'tcp_wrappers' => {
+                'hosts_deny' => {
+                  'status' => false,
+                  'uid' => 1,
+                  'gid' => 1,
+                  'mode' => '777',
+                  'combiined' => '1-1-777',
+                },
               },
             },
             'networking' => {

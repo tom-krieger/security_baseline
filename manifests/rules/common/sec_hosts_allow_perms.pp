@@ -32,7 +32,7 @@ class security_baseline::rules::common::sec_hosts_allow_perms (
   String $log_level = ''
 ) {
   if($enforce) {
-    if($facts['security_baseline']['hosts_allow']['combined'] != '0-0-420') {
+    if($facts['security_baseline']['tcp_wrappers']['hosts_allow']['combined'] != '0-0-420') {
       exec { 'set hosts.allow owner permissions':
         command => 'chown root:root /etc/hosts.allow',
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
@@ -43,7 +43,7 @@ class security_baseline::rules::common::sec_hosts_allow_perms (
       }
     }
   } else {
-    if($facts['security_baseline']['hosts_allow']['combined'] != '0-0-420') {
+    if($facts['security_baseline']['tcp_wrappers']['hosts_allow']['combined'] != '0-0-420') {
       echo { 'hosts-allow-perms':
         message  => $message,
         loglevel => $log_level,

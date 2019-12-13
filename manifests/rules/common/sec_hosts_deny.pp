@@ -39,7 +39,7 @@ class security_baseline::rules::common::sec_hosts_deny (
       content => 'ALL:ALL',
     }
   } else {
-    if($facts['security_baseline']['hosts_deny']['status'] == false) {
+    if($facts['security_baseline']['tcp_wrappers']['hosts_deny']['status'] == false) {
       echo { 'hosts-deny':
         message  => $message,
         loglevel => $log_level,

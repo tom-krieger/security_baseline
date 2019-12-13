@@ -9,12 +9,14 @@ describe 'security_baseline::rules::common::sec_hosts_allow_perms' do
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {
-              'hosts_allow' => {
-                'status' => false,
-                'uid' => 1,
-                'gid' => 1,
-                'mode' => '777',
-                'combiined' => '1-1-777',
+              'tcp_wrappers' => {
+                'hosts_allow' => {
+                  'status' => false,
+                  'uid' => 1,
+                  'gid' => 1,
+                  'mode' => '777',
+                  'combiined' => '1-1-777',
+                },
               },
             },
             'networking' => {

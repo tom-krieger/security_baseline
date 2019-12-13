@@ -39,7 +39,7 @@ class security_baseline::rules::common::sec_hosts_allow (
       content => "ALL: ${facts['networking']['network']}/${facts['networking']['netmask']}",
     }
   } else {
-    if($facts['security_baseline']['hosts_allow']['status'] == false) {
+    if($facts['security_baseline']['tcp_wrappers']['hosts_allow']['status'] == false) {
       echo { 'hosts-allow':
         message  => $message,
         loglevel => $log_level,

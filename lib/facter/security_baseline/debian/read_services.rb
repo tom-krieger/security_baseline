@@ -16,9 +16,15 @@ def read_service_data(services, file_name)
       m = line.match(%r{id\s*=\s*(?<srvid>[A-Za-z0-9\-]+)})
       srv_id = m[:srvid]
     elsif line =~ %r{^\}} && srv
-      if srv && srv_id != ''
-        services["srv_#{srv_id}"] = !srv_status.casecmp('yes').zero?
+      if services.key?(srv_name)
+        if services["srv_#{srv_name}"]['status'] == false && !srv_status.casecmp('yes').zero?
+          services["srv_#{srv_name}"]['status'] = true
+        end
+      else
+        services["srv_#{srv_name}"]['status'] = !srv_status.casecmp('yes').zero?
+        services["srv_#{srv_name}"]['filename'] = file_name
       end
+
       srv_name = ''
       srv_status = ''
       srv_id = ''
@@ -38,7 +44,7 @@ def read_services_debian
 
   Dir['/etc/xinetd.d/*'].each do |file_name|
     next if File.directory? file_name
-    services = read_service_data(services, "#{file_name}")
+    services = read_service_data(services, file_name.to_s)
   end
 
   services

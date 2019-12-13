@@ -32,21 +32,23 @@ class security_baseline::rules::debian::sec_service_tftp (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-    if($facts['security_baseline']['inetd_services']['srv_tftp']['status']) {
-      file_line { 'tftp_disable':
-        line     => 'disable     = yes',
-        path     => $facts['security_baseline']['inetd_services']['srv_tftp']['filename'],
-        match    => 'disable.*=',
-        multiple => true,
+  if(has_key($facts['security_baseline']['inetd_services'], 'srv_chargen')) {
+    if($enforce) {
+      if($facts['security_baseline']['inetd_services']['srv_tftp']['status']) {
+        file_line { 'tftp_disable':
+          line     => 'disable     = yes',
+          path     => $facts['security_baseline']['inetd_services']['srv_tftp']['filename'],
+          match    => 'disable.*=',
+          multiple => true,
+        }
       }
-    }
-  } else {
-    if($facts['security_baseline']['inetd_services']['srv_tftp']['status']) {
-      echo { 'tftp-inetd':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+    } else {
+      if($facts['security_baseline']['inetd_services']['srv_tftp']['status']) {
+        echo { 'tftp-inetd':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

@@ -30,21 +30,23 @@ class security_baseline::rules::debian::sec_service_time (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-    if($facts['security_baseline']['inetd_services']['srv_time']['status']) {
-      file_line { 'time_disable':
-        line     => 'disable     = yes',
-        path     => $facts['security_baseline']['inetd_services']['srv_time']['filename'],
-        match    => 'disable.*=',
-        multiple => true,
+  if(has_key($facts['security_baseline']['inetd_services'], 'srv_time')) {
+    if($enforce) {
+      if($facts['security_baseline']['inetd_services']['srv_time']['status']) {
+        file_line { 'time_disable':
+          line     => 'disable     = yes',
+          path     => $facts['security_baseline']['inetd_services']['srv_time']['filename'],
+          match    => 'disable.*=',
+          multiple => true,
+        }
       }
-    }
-  } else {
-    if($facts['security_baseline']['inetd_services']['srv_time']['status']) {
-      echo { 'time-inetd':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+    } else {
+      if($facts['security_baseline']['inetd_services']['srv_time']['status']) {
+        echo { 'time-inetd':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

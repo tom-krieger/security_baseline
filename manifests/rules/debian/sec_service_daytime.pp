@@ -29,21 +29,23 @@ class security_baseline::rules::debian::sec_service_daytime (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-    if($facts['security_baseline']['inetd_services']['srv_daytime']['status']) {
-      file_line { 'daytime_disable':
-        line     => 'disable     = yes',
-        path     => $facts['security_baseline']['inetd_services']['srv_daytime']['filename'],
-        match    => 'disable.*=',
-        multiple => true,
+  if(has_key($facts['security_baseline']['inetd_services'], 'srv_daytime')) {
+    if($enforce) {
+      if($facts['security_baseline']['inetd_services']['srv_daytime']['status']) {
+        file_line { 'daytime_disable':
+          line     => 'disable     = yes',
+          path     => $facts['security_baseline']['inetd_services']['srv_daytime']['filename'],
+          match    => 'disable.*=',
+          multiple => true,
+        }
       }
-    }
-  } else {
-    if($facts['security_baseline']['inetd_services']['srv_daytime']['status']) {
-      echo { 'daytime-inetd':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+    } else {
+      if($facts['security_baseline']['inetd_services']['srv_daytime']['status']) {
+        echo { 'daytime-inetd':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

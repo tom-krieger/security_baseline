@@ -30,21 +30,23 @@ class security_baseline::rules::debian::sec_service_discard (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-    if($facts['security_baseline']['inetd_services']['srv_discard']['status']) {
-      file_line { 'discard_disable':
-        line     => 'disable     = yes',
-        path     => $facts['security_baseline']['inetd_services']['srv_discard']['filename'],
-        match    => 'disable.*=',
-        multiple => true,
+  if(has_key($facts['security_baseline']['inetd_services'], 'srv_discard')) {
+    if($enforce) {
+      if($facts['security_baseline']['inetd_services']['srv_discard']['status']) {
+        file_line { 'discard_disable':
+          line     => 'disable     = yes',
+          path     => $facts['security_baseline']['inetd_services']['srv_discard']['filename'],
+          match    => 'disable.*=',
+          multiple => true,
+        }
       }
-    }
-  } else {
-    if($facts['security_baseline']['inetd_services']['srv_discard']['status']) {
-      echo { 'discard-inetd':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+    } else {
+      if($facts['security_baseline']['inetd_services']['srv_discard']['status']) {
+        echo { 'discard-inetd':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

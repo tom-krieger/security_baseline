@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_hosts_deny' do
+describe 'security_baseline::rules::common::sec_hosts_deny_perms' do
   on_supported_os.each do |os, os_facts|
     enforce_options.each do |enforce|
       context "on #{os}" do
@@ -11,6 +11,10 @@ describe 'security_baseline::rules::common::sec_hosts_deny' do
             'security_baseline' => {
               'hosts_deny' => {
                 'status' => false,
+                'uid' => 1,
+                'gid' => 1,
+                'mode' => '777',
+                'combiined' => '1-1-777',
               },
             },
             'networking' => {
@@ -38,10 +42,10 @@ describe 'security_baseline::rules::common::sec_hosts_deny' do
                 'mode'    => '0644',
               )
 
-            is_expected.not_to contain_echo('hosts-deny')
+            is_expected.not_to contain_echo('hosts-deny-perms')
           else
             is_expected.not_to contain_file('/etc/hosts.deny')
-            is_expected.to contain_echo('hosts-deny')
+            is_expected.to contain_echo('hosts-deny-perms')
               .with(
                 'message'  => 'hosts.deny',
                 'loglevel' => 'warning',

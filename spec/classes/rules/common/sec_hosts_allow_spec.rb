@@ -9,7 +9,9 @@ describe 'security_baseline::rules::common::sec_hosts_allow' do
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {
-              'hosts_allow' => false,
+              'hosts_allow' => {
+                'status' => false,
+              },
             },
             'networking' => {
               'network' => '10.10.10.0',

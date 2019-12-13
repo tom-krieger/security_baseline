@@ -2,15 +2,19 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_hosts_deny' do
+describe 'security_baseline::rules::common::sec_hosts_allow_perms' do
   on_supported_os.each do |os, os_facts|
     enforce_options.each do |enforce|
       context "on #{os}" do
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {
-              'hosts_deny' => {
+              'hosts_allow' => {
                 'status' => false,
+                'uid' => 1,
+                'gid' => 1,
+                'mode' => '777',
+                'combiined' => '1-1-777',
               },
             },
             'networking' => {
@@ -22,7 +26,7 @@ describe 'security_baseline::rules::common::sec_hosts_deny' do
         let(:params) do
           {
             'enforce' => enforce,
-            'message' => 'hosts.deny',
+            'message' => 'hosts.allow',
             'log_level' => 'warning',
           }
         end
@@ -30,7 +34,7 @@ describe 'security_baseline::rules::common::sec_hosts_deny' do
         it { is_expected.to compile }
         it do
           if enforce
-            is_expected.to contain_file('/etc/hosts.deny')
+            is_expected.to contain_file('/etc/hosts.allow')
               .with(
                 'ensure'  => 'present',
                 'owner'   => 'root',
@@ -38,12 +42,12 @@ describe 'security_baseline::rules::common::sec_hosts_deny' do
                 'mode'    => '0644',
               )
 
-            is_expected.not_to contain_echo('hosts-deny')
+            is_expected.not_to contain_echo('hosts-allow-perms')
           else
-            is_expected.not_to contain_file('/etc/hosts.deny')
-            is_expected.to contain_echo('hosts-deny')
+            is_expected.not_to contain_file('/etc/hosts.allow')
+            is_expected.to contain_echo('hosts-allow-perms')
               .with(
-                'message'  => 'hosts.deny',
+                'message'  => 'hosts.allow',
                 'loglevel' => 'warning',
                 'withpath' => false,
               )

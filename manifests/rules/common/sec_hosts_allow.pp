@@ -31,7 +31,6 @@ class security_baseline::rules::common::sec_hosts_allow (
   String $log_level = ''
 ) {
   if($enforce) {
-
     file { '/etc/hosts.allow':
       ensure  => present,
       owner   => 'root',
@@ -39,10 +38,8 @@ class security_baseline::rules::common::sec_hosts_allow (
       mode    => '0644',
       content => "ALL: ${facts['networking']['network']}/${facts['networking']['netmask']}",
     }
-
   } else {
-
-    if($facts['security_baseline']['hosts_allow'] == false) {
+    if($facts['security_baseline']['hosts_allow']['status'] == false) {
       echo { 'hosts-allow':
         message  => $message,
         loglevel => $log_level,

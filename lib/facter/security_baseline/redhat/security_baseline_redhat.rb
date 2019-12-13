@@ -191,8 +191,12 @@ def security_baseline_redhat(os, _distid, _release)
   security_baseline[:grub] = grub
 
   tcp_wrapper = {}
-  tcp_wrapper['hosts_allow'] = File.exist?('/etc/hosts.allow')
-  tcp_wrapper['hosts_deny'] = File.exist?('/etc/hosts.deny')
+  hostsallow = read_file_stats('/etc/hosts.allow')
+  hostsdeny = read_file_stats('/etc/hosts.deny')
+  hostsallow['status'] = File.exist?('/etc/hosts.allow')
+  hostsdeny['status'] = File.exist?('/etc/hosts.deny')
+  tcp_wrapper['hosts_allow'] = hostsallow
+  tcp_wrapper['hosts_deny'] = hostsdeny
   security_baseline[:tcp_wrappers] = tcp_wrapper
 
   coredumps = {}

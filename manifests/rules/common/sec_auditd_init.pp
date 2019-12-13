@@ -31,12 +31,6 @@ class security_baseline::rules::common::sec_auditd_init (
   Integer $buffer_size = 8192,
 ) {
   if($enforce) {
-    if(!defined(Package['auditd'])) {
-      package { 'auditd':
-        ensure => installed,
-        before => File[$security_baseline::auditd_rules_file],
-      }
-    }
     file { $security_baseline::auditd_rules_file:
       ensure => present,
       owner  => 'root',

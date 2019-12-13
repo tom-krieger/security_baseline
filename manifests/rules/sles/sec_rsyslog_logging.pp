@@ -21,7 +21,7 @@
 #    Logfiles to configure
 #
 # @example
-#   class security_baseline::rules::common::sec_rsyslog_logging {
+#   class security_baseline::rules::sles::sec_rsyslog_logging {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
@@ -31,7 +31,7 @@
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_rsyslog_logging (
+class security_baseline::rules::sles::sec_rsyslog_logging (
   Boolean $enforce   = true,
   String $message    = '',
   String $log_level  = '',

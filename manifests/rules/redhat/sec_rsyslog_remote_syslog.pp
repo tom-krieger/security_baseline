@@ -24,7 +24,7 @@
 #    Flag if host is a remote log destination for rsyslog
 #
 # @example
-#   class security_baseline::rules::common::sec_rsyslog_remote_syslog {
+#   class security_baseline::rules::redhat::sec_rsyslog_remote_syslog {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
@@ -32,7 +32,7 @@
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_rsyslog_remote_syslog (
+class security_baseline::rules::redhat::sec_rsyslog_remote_syslog (
   Boolean $enforce    = true,
   String $message     = '',
   String $log_level   = '',

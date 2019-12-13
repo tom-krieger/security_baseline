@@ -21,7 +21,7 @@
 #    Remote syslog server to send logs to
 #
 # @example
-#   class security_baseline::rules::common::sec_rsyslog_remote_logs {
+#   class security_baseline::rules::sles::sec_rsyslog_remote_logs {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
@@ -29,7 +29,7 @@
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_rsyslog_remote_logs (
+class security_baseline::rules::sles::sec_rsyslog_remote_logs (
   Boolean $enforce        = true,
   String $message         = '',
   String $log_level       = '',

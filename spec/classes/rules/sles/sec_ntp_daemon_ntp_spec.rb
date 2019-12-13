@@ -6,7 +6,7 @@ describe 'security_baseline::rules::sles::sec_ntp_daemon_ntp' do
   enforce_options.each do |enforce|
     context "on Suse with enforce = #{enforce}" do
       let(:facts) do
-        os_facts.merge(
+        {
           'osfamily' => 'Suse',
           'operatingsystem' => 'SLES',
           'architecture' => 'x86_64',
@@ -17,8 +17,7 @@ describe 'security_baseline::rules::sles::sec_ntp_daemon_ntp' do
               'ntp_status' => false,
             },
           },
-        )
-        
+        }
       end
       let(:params) do
         {

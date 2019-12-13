@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_auditd_service' do
+describe 'security_baseline::rules::sles::sec_auditd_service' do
   enforce_options.each do |enforce|
     context "on Suse with enforce = #{enforce}" do
       let(:pre_condition) do

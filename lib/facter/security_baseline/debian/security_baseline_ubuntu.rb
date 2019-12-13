@@ -28,7 +28,7 @@ def security_baseline_ubuntu(os, _distid, _release)
   arch = Facter.value(:architecture)
 
   services = ['autofs', 'avahi-daemon', 'cups', 'isc-dhcp-server', 'bind9', 'dovecot', 'apache2', 'nis', 'ntalk', 'talk', 'rsync', 'smbd',
-              'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'crond', 'slapd', 'telnet', 'ldap-utils']
+              'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'crond', 'slapd', 'telnet']
   packages = { 'iptables' => '-s',
                'openldap-clients' => '-s',
                'mcstrans' => '-s',
@@ -42,6 +42,8 @@ def security_baseline_ubuntu(os, _distid, _release)
                'tcp_wrappers' => '-s',
                'telnet' => '-s',
                'nis' => '-s',
+               'rsh' => '-s',
+               'ldap-utils' => '-s',
                'openbsd-inetd' => '-s' }
   modules = ['cramfs', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'udf', 'dccp', 'rds', 'sctp', 'tipc']
   xinetd_services = ['echo', 'echo-udp', 'time', 'time-udp', 'chargen', 'chargen-udp', 'tftp', 'tftp-udp', 'daytime', 'daytime-udp', 'discard', 'discard-udp',

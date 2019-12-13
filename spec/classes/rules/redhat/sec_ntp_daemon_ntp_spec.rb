@@ -6,7 +6,7 @@ describe 'security_baseline::rules::redhat::sec_ntp_daemon_ntp' do
   enforce_options.each do |enforce|
     context "on RedHat with enforce = #{enforce}" do
       let(:facts) do
-        os_facts.merge(
+        {
           'osfamily' => 'RedHat',
           'operatingsystem' => 'CentOS',
           'architecture' => 'x86_64',
@@ -17,7 +17,7 @@ describe 'security_baseline::rules::redhat::sec_ntp_daemon_ntp' do
               'ntp_status' => false,
             },
           },
-        )
+        }
       end
       let(:params) do
         {

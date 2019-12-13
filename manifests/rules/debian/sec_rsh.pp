@@ -30,9 +30,36 @@ class security_baseline::rules::debian::sec_rsh (
   String $log_level = ''
 ) {
   if($enforce) {
-
+    if($facts['security_baseline']['inetd_services']['srv_rsh']['status']) {
+      file_line { 'rsh_disable':
+        line     => 'disable     = yes',
+        path     => $facts['security_baseline']['inetd_services']['srv_rsh']['filename'],
+        match    => 'disable.*=',
+        multiple => true,
+      }
+    }
+    if($facts['security_baseline']['inetd_services']['srv_rlogin']['status']) {
+      file_line { 'rlogin_disable':
+        line     => 'disable     = yes',
+        path     => $facts['security_baseline']['inetd_services']['srv_rlogin']['filename'],
+        match    => 'disable.*=',
+        multiple => true,
+      }
+    }
+    if($facts['security_baseline']['inetd_services']['srv_rexec']['status']) {
+      file_line { 'rexec_disable':
+        line     => 'disable     = yes',
+        path     => $facts['security_baseline']['inetd_services']['srv_rexec']['filename'],
+        match    => 'disable.*=',
+        multiple => true,
+      }
+    }
   } else {
-    if($facts['security_baseline']['services_enabled']['srv_rsh'] == 'enabled') {
+    if (
+      $facts['security_baseline']['inetd_services']['srv_rsh']['status'] or
+      $facts['security_baseline']['inetd_services']['srv_rlogin']['status'] or
+      $facts['security_baseline']['inetd_services']['srv_rexec']['status']
+    ) {
       echo { 'rsh-service':
         message  => $message,
         loglevel => $log_level,

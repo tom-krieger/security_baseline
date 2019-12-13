@@ -48,7 +48,6 @@ describe 'security_baseline::rules::common::sec_hosts_deny_perms' do
                 'path'    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
               )
 
-
             is_expected.not_to contain_echo('hosts-deny-perms')
           else
             is_expected.not_to contain_exec('set hosts.deny owner permissions')

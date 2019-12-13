@@ -47,7 +47,7 @@ describe 'security_baseline::rules::debian::sec_ntp_daemon_ntp' do
               'path'  => '/etc/init.d/ntp',
               'match' => '^RUNASUSER',
             )
-            
+
           is_expected.not_to contain_echo('ntp-daemon')
         else
           is_expected.not_to create_class('ntp')

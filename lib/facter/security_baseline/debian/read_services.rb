@@ -48,5 +48,33 @@ def read_services_debian
     services = read_service_data(services, file_name.to_s)
   end
 
+  unless services.key?('srv_rsh')
+    e = {}
+    e['status'] = false
+    e['filename'] = ''
+    services['srv_rsh'] = e
+  end
+
+  unless services.key?('srv_talk')
+    e = {}
+    e['status'] = false
+    e['filename'] = ''
+    services['srv_talk'] = e
+  end
+
+  unless services.key?('srv_telnet')
+    e = {}
+    e['status'] = false
+    e['filename'] = ''
+    services['srv_telnet'] = e
+  end
+
+  unless services.key?('srv_tftp')
+    e = {}
+    e['status'] = false
+    e['filename'] = ''
+    services['srv_tftp'] = e
+  end
+
   services
 end

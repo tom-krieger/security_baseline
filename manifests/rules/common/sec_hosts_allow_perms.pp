@@ -32,11 +32,15 @@ class security_baseline::rules::common::sec_hosts_allow_perms (
   String $log_level = ''
 ) {
   if($enforce) {
-    file { '/etc/hosts.allow':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644'
+    if($facts['security_baseline']['hosts_allow']['combined'] != '0-0-420') {
+      exec { 'set hosts.allow owner permissions':
+        command => 'chown root:root /etc/hosts.allow',
+        path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+      }
+      exec { 'set hosts.allow file permissions':
+        command => 'chmod 0644 /etc/hosts.allow',
+        path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+      }
     }
   } else {
     if($facts['security_baseline']['hosts_allow']['combined'] != '0-0-420') {

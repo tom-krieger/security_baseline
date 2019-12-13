@@ -34,17 +34,23 @@ describe 'security_baseline::rules::common::sec_hosts_deny_perms' do
         it { is_expected.to compile }
         it do
           if enforce
-            is_expected.to contain_file('/etc/hosts.deny')
+            is_expected.to contain_exec('set hosts.deny owner permissions')
               .with(
-                'ensure'  => 'present',
-                'owner'   => 'root',
-                'group'   => 'root',
-                'mode'    => '0644',
+                'command' => 'chown root:root /etc/hosts.deny',
+                'path'    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
               )
+
+            is_expected.to contain_exec('set hosts.deny file permissions')
+              .with(
+                'command' => 'chmod 0644 /etc/hosts.deny',
+                'path'    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+              )
+
 
             is_expected.not_to contain_echo('hosts-deny-perms')
           else
-            is_expected.not_to contain_file('/etc/hosts.deny')
+            is_expected.not_to contain_exec('set hosts.deny owner permissions')
+            is_expected.not_to contain_exec('set hosts.deny file permissions')
             is_expected.to contain_echo('hosts-deny-perms')
               .with(
                 'message'  => 'hosts.deny',

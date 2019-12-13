@@ -47,7 +47,6 @@ describe 'security_baseline::rules::common::sec_hosts_deny' do
                 'loglevel' => 'warning',
                 'withpath' => false,
               )
-
           end
         end
       end

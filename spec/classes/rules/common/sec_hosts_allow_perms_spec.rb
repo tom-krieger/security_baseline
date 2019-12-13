@@ -34,17 +34,22 @@ describe 'security_baseline::rules::common::sec_hosts_allow_perms' do
         it { is_expected.to compile }
         it do
           if enforce
-            is_expected.to contain_file('/etc/hosts.allow')
+            is_expected.to contain_exec('set hosts.allow owner permissions')
               .with(
-                'ensure'  => 'present',
-                'owner'   => 'root',
-                'group'   => 'root',
-                'mode'    => '0644',
+                'command' => 'chown root:root /etc/hosts.allow',
+                'path'    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+              )
+
+            is_expected.to contain_exec('set hosts.allow file permissions')
+              .with(
+                'command' => 'chmod 0644 /etc/hosts.allow',
+                'path'    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
               )
 
             is_expected.not_to contain_echo('hosts-allow-perms')
           else
-            is_expected.not_to contain_file('/etc/hosts.allow')
+            is_expected.not_to contain_exec('set hosts.allow owner permissions')
+            is_expected.not_to contain_exec('set hosts.allow file permissions')
             is_expected.to contain_echo('hosts-allow-perms')
               .with(
                 'message'  => 'hosts.allow',

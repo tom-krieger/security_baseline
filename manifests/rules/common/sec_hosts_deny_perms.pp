@@ -31,11 +31,15 @@ class security_baseline::rules::common::sec_hosts_deny_perms (
   String $log_level = ''
 ) {
   if($enforce) {
-    file { '/etc/hosts.deny':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
+    if($facts['security_baseline']['hosts_deny']['combined'] != '0-0-420') {
+      exec { 'set hosts.deny owner permissions':
+        command => 'chown root:root /etc/hosts.deny',
+        path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+      }
+      exec { 'set hosts.deny file permissions':
+        command => 'chmod 0644 /etc/hosts.deny',
+        path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+      }
     }
   } else {
     if($facts['security_baseline']['hosts_deny']['combined'] != '0-0-420') {

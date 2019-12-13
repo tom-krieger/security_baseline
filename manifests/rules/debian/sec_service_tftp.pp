@@ -32,7 +32,7 @@ class security_baseline::rules::debian::sec_service_tftp (
   String $message   = '',
   String $log_level = ''
 ) {
-  if(has_key($facts['security_baseline']['inetd_services'], 'srv_chargen')) {
+  if(has_key($facts['security_baseline']['inetd_services'], 'srv_tftp')) {
     if($enforce) {
       if($facts['security_baseline']['inetd_services']['srv_tftp']['status']) {
         file_line { 'tftp_disable':

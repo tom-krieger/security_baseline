@@ -26,6 +26,8 @@ describe 'security_baseline::rules::sles::sec_auditd_system_locale' do
           end
           let(:facts) do
             {
+              osfamily: 'Suse',
+              operatingsystem: 'SLES',
               architecture: arch.to_s,
               security_baseline: {
                 auditd: {

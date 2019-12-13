@@ -17,27 +17,29 @@
 #    Loglevel for the message
 #
 # @example
-#   class { 'security_baseline::rules::common::sec_auditd_service':
+#   class { 'security_baseline::rules::debian::sec_auditd_service':
 #             enforce => true,
 #             message => 'What you want to log',
 #             log_level => 'warning',
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_auditd_service (
+class security_baseline::rules::debian::sec_auditd_service (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'audit':
-      ensure => installed,
+    if(!defined(Package['auditd'])) {
+      package { 'auditd':
+        ensure => installed,
+      }
     }
 
     service { 'auditd':
       ensure  => running,
       enable  => true,
-      require => Package['audit']
+      require => Package['auditd']
     }
 
   } else {

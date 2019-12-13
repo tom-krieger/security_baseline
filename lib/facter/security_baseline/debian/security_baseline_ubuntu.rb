@@ -318,23 +318,19 @@ def security_baseline_ubuntu(os, _distid, _release)
     ntpdata['ntp_restrict'] = 'none'
     ntpdata['ntp_server'] = 'none'
   end
-  if File.exist?('/etc/sysconfig/ntp')
-    val = Facter::Core::Execution.exec('grep -h "^NTPD_OPTIONS" /etc/sysconfig/ntp')
+  if File.exist?('/etc/init.d/ntp')
+    val = Facter::Core::Execution.exec('grep -h "RUNASUSER" /etc/init.d/ntp')
     ntpdata['ntp_options'] = check_value_string(val, 'none')
   else
     ntpdata['ntp_options'] = 'none'
   end
   ntpdata['ntp_status'] = ntpdata['ntp_restrict'] != 'none' && ntpdata['ntp_server'] != 'none' && ntpdata['ntp_options'] == 'none'
 
-  if File.exist?('/etc/chrony.conf')
-    val = Facter::Core::Execution.exec('grep -h "^(server|pool)" /etc/chrony.conf')
+  if File.exist?('/etc/chrony/chrony.conf')
+    val = Facter::Core::Execution.exec('grep -h "^(server|pool)" /etc/chrony/chrony.conf')
     ntpdata['chrony_server'] = check_value_string(val, 'none')
   else
     ntpdata['chrony_server'] = 'none'
-  end
-  if File.exist?('/etc/sysconfig/chronyd')
-    val = Facter::Core::Execution.exec('grep -h ^OPTIONS /etc/sysconfig/chronyd')
-    ntpdata['chrony_options'] = check_value_string(val, 'none')
   end
   ntpdata['chrony_status'] = ntpdata['chrony_server'] != 'none' && ntpdata['chrony_options'] != 'none'
   security_baseline['ntp'] = ntpdata

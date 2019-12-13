@@ -29,7 +29,7 @@
 #    NTP servers to use, depends on the daemon used
 #
 # @example
-#   class ecurity_baseline::rules::redhat::sec_ntp_daemon_chrony {
+#   class ecurity_baseline::rules::common::sec_ntp_daemon_chrony {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',

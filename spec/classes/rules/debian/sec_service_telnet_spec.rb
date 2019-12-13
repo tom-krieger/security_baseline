@@ -32,12 +32,12 @@ describe 'security_baseline::rules::debian::sec_service_telnet' do
       it do
         if enforce
           is_expected.to contain_file_line('telnet_disable')
-          .with(
-            'line'     => 'disable     = yes',
-            'path'     => '/etc/xinetd.d/telnet',
-            'match'    => 'disable.*=',
-            'multiple' => true,
-          )
+            .with(
+              'line'     => 'disable     = yes',
+              'path'     => '/etc/xinetd.d/telnet',
+              'match'    => 'disable.*=',
+              'multiple' => true,
+            )
 
           is_expected.not_to contain_echo('telnet-inetd')
         else

@@ -30,7 +30,7 @@ class security_baseline::rules::debian::sec_service_echo (
   String $message   = '',
   String $log_level = ''
 ) {
-  if(has_key($facts['security_baseline']['inetd_services'], 'srv_chargen')) {
+  if(has_key($facts['security_baseline']['inetd_services'], 'srv_echo')) {
     if($enforce) {
       if($facts['security_baseline']['inetd_services']['srv_echo']['status']) {
         file_line { 'echo_disable':

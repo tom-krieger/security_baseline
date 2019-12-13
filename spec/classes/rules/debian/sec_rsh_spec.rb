@@ -14,15 +14,15 @@ describe 'security_baseline::rules::debian::sec_rsh' do
             inetd_services: {
               srv_rsh: {
                 status: true,
-                filename: '/etc/xinetd.d/rsh'
+                filename: '/etc/xinetd.d/rsh',
               },
               srv_rlogin: {
                 status: true,
-                filename: '/etc/xinetd.d/rsh'
+                filename: '/etc/xinetd.d/rsh',
               },
               srv_rexec: {
                 status: true,
-                filename: '/etc/xinetd.d/rsh'
+                filename: '/etc/xinetd.d/rsh',
               },
             },
           },
@@ -46,7 +46,7 @@ describe 'security_baseline::rules::debian::sec_rsh' do
               'match'    => 'disable.*=',
               'multiple' => true,
             )
-            
+
           is_expected.to contain_file_line('rlogin_disable')
             .with(
               'line'     => 'disable     = yes',

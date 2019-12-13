@@ -32,12 +32,12 @@ describe 'security_baseline::rules::debian::sec_service_chargen' do
       it do
         if enforce
           is_expected.to contain_file_line('chargen_disable')
-          .with(
-            'line'     => 'disable     = yes',
-            'path'     => '/etc/xinetd.d/chargen',
-            'match'    => 'disable.*=',
-            'multiple' => true,
-          )
+            .with(
+              'line'     => 'disable     = yes',
+              'path'     => '/etc/xinetd.d/chargen',
+              'match'    => 'disable.*=',
+              'multiple' => true,
+            )
 
           is_expected.not_to contain_echo('chargen-inetd')
         else

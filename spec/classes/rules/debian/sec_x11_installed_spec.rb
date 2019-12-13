@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::debian::sec_service_talk' do
+describe 'security_baseline::rules::debian::sec_x11_installed' do
   enforce_options.each do |enforce|
     context "on Debian with enforce = #{enforce}" do
       let(:facts) do
@@ -11,11 +11,9 @@ describe 'security_baseline::rules::debian::sec_service_talk' do
           operatingsystem: 'Ubuntu',
           architecture: 'x86_64',
           security_baseline: {
-            inetd_services: {
-              srv_talk: {
-                status: true,
-                filename: '/etc/xinetd.d/talk',
-              },
+            'x11-packages' => ['xorg-x11-libs'],
+            'x11' => {
+              'installed' => true,
             },
           },
         }
@@ -23,7 +21,7 @@ describe 'security_baseline::rules::debian::sec_service_talk' do
       let(:params) do
         {
           'enforce' => enforce,
-          'message' => 'service talk',
+          'message' => 'x11-packages',
           'log_level' => 'warning',
         }
       end
@@ -31,20 +29,17 @@ describe 'security_baseline::rules::debian::sec_service_talk' do
       it { is_expected.to compile }
       it do
         if enforce
-          is_expected.to contain_file_line('talk_disable')
+          is_expected.to contain_package('xorg-x11-libs')
             .with(
-              'line'     => 'disable     = yes',
-              'path'     => '/etc/xinetd.d/talk',
-              'match'    => 'disable.*=',
-              'multiple' => true,
+              'ensure' => 'absent',
             )
 
-          is_expected.not_to contain_echo('talk-inetd')
+          is_expected.not_to contain_echo('x11-installed')
         else
-          is_expected.not_to contain_service('talk_disable')
-          is_expected.to contain_echo('talk-inetd')
+          is_expected.not_to contain_package('xorg-x11-libs')
+          is_expected.to contain_echo('x11-installed')
             .with(
-              'message'  => 'service talk',
+              'message'  => 'x11-packages',
               'loglevel' => 'warning',
               'withpath' => false,
             )

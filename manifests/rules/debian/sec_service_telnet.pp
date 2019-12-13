@@ -31,7 +31,7 @@ class security_baseline::rules::debian::sec_service_telnet (
   String $message   = '',
   String $log_level = ''
 ) {
-  if(has_key($facts['security_baseline']['inetd_services'], 'srv_chargen')) {
+  if(has_key($facts['security_baseline']['inetd_services'], 'srv_telnet')) {
     if($enforce) {
       if($facts['security_baseline']['inetd_services']['srv_telnet']['status']) {
         file_line { 'telnet_disable':

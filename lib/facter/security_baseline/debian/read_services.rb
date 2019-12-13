@@ -21,6 +21,7 @@ def read_service_data(services, file_name)
           services["srv_#{srv_name}"]['status'] = true
         end
       else
+        services["srv_#{srv_name}"] = {}
         services["srv_#{srv_name}"]['status'] = !srv_status.casecmp('yes').zero?
         services["srv_#{srv_name}"]['filename'] = file_name
       end

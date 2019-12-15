@@ -24,19 +24,15 @@
 #
 # @api private
 class security_baseline::rules::common::sec_empty_passwords (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-
-  } else {
-    if ($facts['security_baseline']['empty_passwords'] != 'none') {
-      echo { 'empty-passwords':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
-      }
+  if ($facts['security_baseline']['empty_passwords'] != 'none') {
+    echo { 'empty-passwords':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
     }
   }
 }

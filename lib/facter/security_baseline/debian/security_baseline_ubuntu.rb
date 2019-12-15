@@ -911,5 +911,13 @@ def security_baseline_ubuntu(os, _distid, _release)
   syslog['log_status'] = log_status
   security_baseline['syslog'] = syslog
 
+  valgroup = Facter::Core::Execution.exec('grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group')
+  security_baseline['shadow_group'] = if volgroup.nil? || valgroup.empty?
+                                        []
+                                      else
+                                        valgroup.split("\n")
+                                      end
+  security_baseline['shadow_group_count'] = count(security_baseline['shadow_group'])
+
   security_baseline
 end

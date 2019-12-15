@@ -912,7 +912,7 @@ def security_baseline_ubuntu(os, _distid, _release)
   security_baseline['syslog'] = syslog
 
   valgroup = Facter::Core::Execution.exec('grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group')
-  security_baseline['shadow_group'] = if volgroup.nil? || valgroup.empty?
+  security_baseline['shadow_group'] = if valgroup.nil? || valgroup.empty?
                                         []
                                       else
                                         valgroup.split("\n")

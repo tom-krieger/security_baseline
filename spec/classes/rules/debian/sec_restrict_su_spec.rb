@@ -36,12 +36,12 @@ describe 'security_baseline::rules::debian::sec_restrict_su' do
               'type'      => 'auth',
               'control'   => 'required',
               'module'    => 'pam_wheel.so',
-              'arguments' => ['use_uid'],
+              'arguments' => [],
             )
           is_expected.to contain_exec('root_wheel')
             .with(
-              'command' => 'usermod -G wheel root',
-              'unless'  => 'grep wheel /etc/group | grep root',
+              'command' => 'usermod -G sudo root',
+              'unless'  => 'grep sudo /etc/group | grep root',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
 

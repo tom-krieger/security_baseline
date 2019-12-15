@@ -26,6 +26,7 @@ describe 'security_baseline::rules::common::sec_hosts_allow' do
             'enforce' => enforce,
             'message' => 'hosts.allow',
             'log_level' => 'warning',
+            'allowed' => ['sshd: ALL'],
           }
         end
 
@@ -40,9 +41,18 @@ describe 'security_baseline::rules::common::sec_hosts_allow' do
                 'mode'    => '0644',
               )
 
+            is_expected.to contain_file_line('host allow sshd: ALL')
+              .with(
+                'append_on_no_match' => true,
+                'match'              => 'sshd: ALL',
+                'line'               => 'sshd: ALL',
+                'path'               => '/etc/hosts.allow',
+              )
+
             is_expected.not_to contain_echo('hosts-allow')
           else
             is_expected.not_to contain_file('/etc/hosts.allow')
+            is_expected.not_to contain_file_line('host allow sshd:ALL')
             is_expected.to contain_echo('hosts-allow')
               .with(
                 'message'  => 'hosts.allow',

@@ -26,9 +26,10 @@
 #
 # @api private
 class security_baseline::rules::common::sec_hosts_allow (
-  Boolean $enforce = true,
-  String $message = '',
-  String $log_level = ''
+  Boolean $enforce  = true,
+  String $message   = '',
+  String $log_level = '',
+  Array $allowed    = [],
 ) {
   if($enforce) {
     file { '/etc/hosts.allow':
@@ -37,6 +38,14 @@ class security_baseline::rules::common::sec_hosts_allow (
       group   => 'root',
       mode    => '0644',
       content => "ALL: ${facts['networking']['network']}/${facts['networking']['netmask']}",
+    }
+    $allowed.each |$allow| {
+      file_line { "host allow ${allow}":
+        append_on_no_match => true,
+        match              => $allow,
+        line               => $allow,
+        path               => '/etc/hosts.allow',
+      }
     }
   } else {
     if($facts['security_baseline']['tcp_wrappers']['hosts_allow']['status'] == false) {

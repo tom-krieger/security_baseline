@@ -39,7 +39,7 @@ class security_baseline::rules::common::sec_hosts_deny (
       append_on_no_match => true,
       match              => 'ALL: ALL',
       line               => 'ALL: ALL',
-      path               => '/ec/hosts.deny',
+      path               => '/etc/hosts.deny',
     }
 
     $denied.each |$deny| {

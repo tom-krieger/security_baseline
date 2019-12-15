@@ -39,7 +39,7 @@ class security_baseline::rules::common::sec_hosts_allow (
       append_on_no_match => true,
       match              => "ALL: ${facts['networking']['network']}/${facts['networking']['netmask']}",
       line               => "ALL: ${facts['networking']['network']}/${facts['networking']['netmask']}",
-      path               => '/ec/hosts.allow',
+      path               => '/etc/hosts.allow',
     }
     $allowed.each |$allow| {
       file_line { "host allow ${allow}":

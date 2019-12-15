@@ -38,7 +38,7 @@ describe 'security_baseline::rules::common::sec_hosts_allow' do
                 'append_on_no_match' => true,
                 'match'              => 'ALL: 10.10.10.0/255.255.255.0',
                 'line'               => 'ALL: 10.10.10.0/255.255.255.0',
-                'path'               => '/ec/hosts.allow',
+                'path'               => '/etc/hosts.allow',
               )
 
             is_expected.to contain_file_line('host allow sshd: ALL')

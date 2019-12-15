@@ -32,12 +32,12 @@ describe 'security_baseline::rules::common::sec_hosts_deny' do
         it { is_expected.to compile }
         it do
           if enforce
-            is_expected.to contain_file('/etc/hosts.deny')
+            is_expected.to contain_file_line('deny all')
               .with(
-                'ensure'  => 'present',
-                'owner'   => 'root',
-                'group'   => 'root',
-                'mode'    => '0644',
+                'append_on_no_match' => true,
+                'match'              => 'ALL: ALL',
+                'line'               => 'ALL: ALL',
+                'path'               => '/etc/hosts.deny',
               )
 
             is_expected.not_to contain_echo('hosts-deny')

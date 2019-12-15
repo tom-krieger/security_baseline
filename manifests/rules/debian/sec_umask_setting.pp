@@ -26,14 +26,14 @@
 #    Password expires after days
 #
 # @example
-#   class security_baseline::rules::sles::sec_umask_setting {
+#   class security_baseline::rules::debian::sec_umask_setting {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
 #   }
 #
 # @api private
-class security_baseline::rules::sles::sec_umask_setting (
+class security_baseline::rules::debian::sec_umask_setting (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',

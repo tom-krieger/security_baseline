@@ -40,13 +40,13 @@ class security_baseline::rules::debian::sec_restrict_su (
 ) {
   if($enforce) {
     pam { 'pam-su-restrict':
-        ensure    => present,
-        service   => 'su',
-        type      => 'auth',
-        control   => 'required',
-        module    => 'pam_wheel.so',
-        arguments => [],
-      }
+      ensure    => present,
+      service   => 'su',
+      type      => 'auth',
+      control   => 'required',
+      module    => 'pam_wheel.so',
+      arguments => [],
+    }
 
     $wheel_users.each | $user | {
       exec { "${user}_wheel":

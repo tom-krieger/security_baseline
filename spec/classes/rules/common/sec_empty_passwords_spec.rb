@@ -4,7 +4,7 @@ enforce_options = [true, false]
 
 describe 'security_baseline::rules::common::sec_empty_passwords' do
   on_supported_os.each do |os, os_facts|
-    context "on #{os} with enforce = #{enforce}" do
+    context "on #{os}" do
       let(:facts) do
         os_facts.merge(
           'security_baseline' => {

@@ -19,14 +19,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_shadow_perms {
+#   class security_baseline::rules::sles::sec_shadow_perms {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_shadow_perms (
+class security_baseline::rules::sles::sec_shadow_perms (
   $enforce = true,
   String $message = '',
   String $log_level = ''

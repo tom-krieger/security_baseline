@@ -28,14 +28,14 @@
 #    Lockout the account for this number of seconds
 #
 # @example
-#   class security_baseline::rules::sles::sec_pam_lockout {
+#   class security_baseline::rules::debian::sec_pam_lockout {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sles::sec_pam_lockout (
+class security_baseline::rules::debian::sec_pam_lockout (
   Boolean $enforce     = true,
   String $message      = '',
   String $log_level    = '',
@@ -43,7 +43,6 @@ class security_baseline::rules::sles::sec_pam_lockout (
   Integer $lockouttime = 900,
 ) {
   if($enforce) {
-
     pam { 'pam_tally2 auth common-auth':
       ensure    => present,
       service   => 'common-auth',

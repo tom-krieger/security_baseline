@@ -20,14 +20,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::sles::sec_pam_passwd_sha512 {
+#   class security_baseline::rules::debian::sec_pam_passwd_sha512 {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::sles::sec_pam_passwd_sha512 (
+class security_baseline::rules::debian::sec_pam_passwd_sha512 (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''

@@ -410,7 +410,7 @@ def security_baseline_ubuntu(os, _distid, _release)
                         end
   val = Facter::Core::Execution.exec('grep pam_tally2\.so /etc/pam.d/common-auth')
   valauth = check_value_string(val, 'none')
-  pwquality['lockout'] = if (valauth == 'none')
+  pwquality['lockout'] = if valauth == 'none'
                            false
                          else
                            true

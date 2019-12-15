@@ -45,14 +45,14 @@
 #    Minimum number of lower case characters a password must contain
 #
 # @example
-#   class security_baseline::rules::sles::ssec_pam_pw_requirements {
+#   class security_baseline::rules::debian::ssec_pam_pw_requirements {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
 #   }
 #
 # @api private
-class security_baseline::rules::sles::sec_pam_pw_requirements (
+class security_baseline::rules::debian::sec_pam_pw_requirements (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',

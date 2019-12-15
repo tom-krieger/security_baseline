@@ -25,7 +25,7 @@
 #   }
 #
 # @api private
-class security_baseline::rules::debain::sec_gshadow_bak_perms (
+class security_baseline::rules::debian::sec_gshadow_bak_perms (
   $enforce = true,
   String $message = '',
   String $log_level = ''

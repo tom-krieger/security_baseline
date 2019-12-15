@@ -1,1 +1,1 @@
-3 5 * * * root /usr/local/sin/system-file-permissions.sh > /dev/null 2>&1
+3 5 * * * root /usr/local/sbin/system-file-permissions.sh > /dev/null 2>&1

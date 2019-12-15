@@ -20,7 +20,7 @@ describe 'security_baseline::rules::debian::sec_shadow_group' do
 
     it {
       is_expected.to compile
-      is_expected_to contain_echo('shadow_group')
+      is_expected_to contain_echo('shadow-group')
         .with(
           'message'  => 'shadow group',
           'loglevel' => 'warning',

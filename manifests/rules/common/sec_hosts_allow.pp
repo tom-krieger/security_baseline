@@ -17,6 +17,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param allowd
+#    Additional allow rules
+#
 # @example
 #   class security_baseline::rules::common::sec_hosts_allow {
 #       enforce => true,
@@ -32,12 +35,11 @@ class security_baseline::rules::common::sec_hosts_allow (
   Array $allowed    = [],
 ) {
   if($enforce) {
-    file { '/etc/hosts.allow':
-      ensure  => present,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => "ALL: ${facts['networking']['network']}/${facts['networking']['netmask']}",
+    file_line { 'allow network':
+      append_on_no_match => true,
+      match              => "ALL: ${facts['networking']['network']}/${facts['networking']['netmask']}",
+      line               => "ALL: ${facts['networking']['network']}/${facts['networking']['netmask']}",
+      path               => '/ec/hosts.allow',
     }
     $allowed.each |$allow| {
       file_line { "host allow ${allow}":

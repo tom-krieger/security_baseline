@@ -33,12 +33,12 @@ describe 'security_baseline::rules::common::sec_hosts_allow' do
         it { is_expected.to compile }
         it do
           if enforce
-            is_expected.to contain_file('/etc/hosts.allow')
+            is_expected.to contain_file_line('allow network')
               .with(
-                'ensure'  => 'present',
-                'owner'   => 'root',
-                'group'   => 'root',
-                'mode'    => '0644',
+                'append_on_no_match' => true,
+                'match'              => "ALL: 10.10.10.0/255.255.255.0",
+                'line'               => "ALL: 10.10.10.0/255.255.255.0",
+                'path'               => '/ec/hosts.allow',
               )
 
             is_expected.to contain_file_line('host allow sshd: ALL')
@@ -51,7 +51,7 @@ describe 'security_baseline::rules::common::sec_hosts_allow' do
 
             is_expected.not_to contain_echo('hosts-allow')
           else
-            is_expected.not_to contain_file('/etc/hosts.allow')
+            is_expected.not_to contain_file_line('allow network')
             is_expected.not_to contain_file_line('host allow sshd:ALL')
             is_expected.to contain_echo('hosts-allow')
               .with(

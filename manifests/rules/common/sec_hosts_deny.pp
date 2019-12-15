@@ -17,6 +17,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @ param denied
+#    Additional deny rules
+#
 # @example
 #   class security_baseline::rules::common::sec_hosts_deny {
 #       enforce => true,
@@ -26,17 +29,26 @@
 #
 # @api private
 class security_baseline::rules::common::sec_hosts_deny (
-  Boolean $enforce = true,
-  String $message = '',
-  String $log_level = ''
+  Boolean $enforce  = true,
+  String $message   = '',
+  String $log_level = '',
+  Array $denied     = [],
 ) {
   if($enforce) {
-    file { '/etc/hosts.deny':
-      ensure  => present,
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
-      content => 'ALL:ALL',
+    file_line { 'deny all':
+      append_on_no_match => true,
+      match              => 'ALL: ALL',
+      line               => 'ALL: ALL',
+      path               => '/ec/hosts.deny',
+    }
+
+    $denied.each |$deny| {
+      file_line { "host deny ${deny}":
+        append_on_no_match => true,
+        match              => $deny,
+        line               => $deny,
+        path               => '/etc/hosts.deny',
+      }
     }
   } else {
     if($facts['security_baseline']['tcp_wrappers']['hosts_deny']['status'] == false) {

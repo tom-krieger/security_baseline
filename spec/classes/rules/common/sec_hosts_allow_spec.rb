@@ -36,8 +36,8 @@ describe 'security_baseline::rules::common::sec_hosts_allow' do
             is_expected.to contain_file_line('allow network')
               .with(
                 'append_on_no_match' => true,
-                'match'              => "ALL: 10.10.10.0/255.255.255.0",
-                'line'               => "ALL: 10.10.10.0/255.255.255.0",
+                'match'              => 'ALL: 10.10.10.0/255.255.255.0',
+                'line'               => 'ALL: 10.10.10.0/255.255.255.0',
                 'path'               => '/ec/hosts.allow',
               )
 

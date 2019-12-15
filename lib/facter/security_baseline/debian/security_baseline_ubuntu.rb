@@ -918,7 +918,7 @@ def security_baseline_ubuntu(os, _distid, _release)
           valgroup.split("\n")
         end
   security_baseline['shadow_group'] = val
-  security_baseline['shadow_group_count'] = count(val)
+  security_baseline['shadow_group_count'] = val.count
 
   security_baseline
 end

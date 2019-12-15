@@ -2,18 +2,20 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::common::sec_restrict_su' do
-  on_supported_os.each do |os, os_facts|
+describe 'security_baseline::rules::debian::sec_restrict_su' do
     enforce_options.each do |enforce|
-      context "on #{os} with enforce = #{enforce}" do
+      context "on Debian with enforce = #{enforce}" do
         let(:facts) do
-          os_facts.merge(
+          {
+            osfamily: 'Debian',
+            operatingsystem: 'Ubuntu',
+            architecture: 'x86_64',
             'security_baseline' => {
               'pam' => {
                 'wheel' => 'none',
               },
             },
-          )
+          }
         end
         let(:params) do
           {

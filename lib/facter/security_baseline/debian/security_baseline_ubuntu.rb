@@ -433,7 +433,7 @@ def security_baseline_ubuntu(os, _distid, _release)
   pam['sha512'] = sha
   val = Facter::Core::Execution.exec('egrep pam_wheel.so /etc/pam.d/su')
   pam['wheel'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep wheel /etc/group | cut -d : -f 4')
+  val = Facter::Core::Execution.exec('grep sudo /etc/group | cut -d : -f 4')
   users = if val.nil? || val.empty?
             []
           else
@@ -503,7 +503,7 @@ def security_baseline_ubuntu(os, _distid, _release)
   end
   security_baseline['umask'] = ret
 
-  val = Facter::Core::Execution.exec('grep -h "^TMOUT" /etc/bash.bashrc /etc/profile')
+  val = Facter::Core::Execution.exec('grep -h "^TMOUT" /etc/bash.bashrc /etc/profile /etc/profile.d/*.sh')
   if val.nil? || val.empty?
     ret = true
   else

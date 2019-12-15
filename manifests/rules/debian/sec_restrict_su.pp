@@ -25,14 +25,14 @@
 #    Password expires after days
 #
 # @example
-#   class security_baseline::rules::common::sec_restrict_su {
+#   class security_baseline::rules::debian::sec_restrict_su {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_restrict_su (
+class security_baseline::rules::debian::sec_restrict_su (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',
@@ -45,13 +45,13 @@ class security_baseline::rules::common::sec_restrict_su (
         type      => 'auth',
         control   => 'required',
         module    => 'pam_wheel.so',
-        arguments => ['use_uid'],
+        arguments => [],
       }
 
     $wheel_users.each | $user | {
       exec { "${user}_wheel":
-        command => "usermod -G wheel ${user}",
-        unless  => "grep wheel /etc/group | grep ${user}",
+        command => "usermod -G sudo ${user}",
+        unless  => "grep sudo /etc/group | grep ${user}",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       }
     }

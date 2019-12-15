@@ -48,15 +48,6 @@ describe 'security_baseline::rules::debian::sec_pam_lockout' do
               ],
             )
 
-          is_expected.to contain_pam('pam_tally2 auth common-account')
-            .with(
-              'ensure'  => 'present',
-              'service' => 'common-account',
-              'type'    => 'account',
-              'control' => 'required',
-              'module'  => 'pam_tally2.so',
-            )
-
           is_expected.not_to contain_echo('pam-lockout')
         else
           is_expected.not_to contain_pam('pam_tally2 auth common-auth')

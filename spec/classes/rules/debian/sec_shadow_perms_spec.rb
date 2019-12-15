@@ -4,7 +4,7 @@ enforce_options = [true, false]
 
 describe 'security_baseline::rules::debian::sec_shadow_perms' do
   enforce_options.each do |enforce|
-    context "on #{os} with enforce = #{enforce}" do
+    context "on Debian with enforce = #{enforce}" do
       let(:facts) do
         {
           osfamily: 'Debian',

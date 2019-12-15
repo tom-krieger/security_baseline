@@ -379,7 +379,7 @@ def security_baseline_ubuntu(os, _distid, _release)
 
   pam = {}
   pwquality = {}
-  val = Facter::Core::Execution.exec('grep pam_cracklib.so /etc/pam.d/common-password')
+  val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/common-password')
   pwquality['try_first_pass'] = val.match(%r{try_first_pass})
   h = val.match(%r{retry\s*=\s*(?<rt>\d+)})
   val = if h.is_a?(Hash)
@@ -410,9 +410,7 @@ def security_baseline_ubuntu(os, _distid, _release)
                         end
   val = Facter::Core::Execution.exec('grep pam_tally2\.so /etc/pam.d/common-auth')
   valauth = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep pam_tally2\.so /etc/pam.d/common-account')
-  valaccount = check_value_string(val, 'none')
-  pwquality['lockout'] = if (valauth == 'none') || (valaccount == 'none')
+  pwquality['lockout'] = if (valauth == 'none')
                            false
                          else
                            true
@@ -430,10 +428,10 @@ def security_baseline_ubuntu(os, _distid, _release)
                       end
   pam['opasswd'] = opasswd
   sha = {}
-  val = Facter::Core::Execution.exec("egrep '^password\s+required\s+pam_unix.so' /etc/pam.d/common-password")
+  val = Facter::Core::Execution.exec("egrep '^password\s+(\S+\s+)+pam_unix\.so+(\S\s+)*sha512' /etc/pam.d/common-password")
   sha['status'] = check_value_regex(val, 'sha512')
   pam['sha512'] = sha
-  val = Facter::Core::Execution.exec('egrep "^auth\s+required\s+pam_wheel.so\s+use_uid" /etc/pam.d/su')
+  val = Facter::Core::Execution.exec('egrep pam_wheel.so /etc/pam.d/su')
   pam['wheel'] = check_value_string(val, 'none')
   val = Facter::Core::Execution.exec('grep wheel /etc/group | cut -d : -f 4')
   users = if val.nil? || val.empty?
@@ -474,7 +472,7 @@ def security_baseline_ubuntu(os, _distid, _release)
 
   accounts = {}
   wrong_shell = []
-  cmd = "egrep -v \"^\/+\" /etc/passwd | awk -F: '($1!=\"root\" && $1!=\"sync\" && $1!=\"shutdown\" && $1!=\"halt\" && $3<1000 && $7!=\"/sbin/nologin\" && $7!=\"/bin/false\") {print}'"
+  cmd = "egrep -v \"^\/+\" /etc/passwd | awk -F: '($1!=\"root\" && $1!=\"sync\" && $1!=\"shutdown\" && $1!=\"halt\" && $3<1000 && $7!=\"/usr/sbin/nologin\" && $7!=\"/bin/false\") {print}'"
   val = Facter::Core::Execution.exec(cmd)
   unless val.nil? || val.empty?
     val.split("\n").each do |line|

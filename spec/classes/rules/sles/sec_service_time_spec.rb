@@ -7,6 +7,12 @@ describe 'security_baseline::rules::sles::sec_service_time' do
         osfamily: 'Suse',
         operatingsystem: 'SLES',
         architecture: 'x86_64',
+        srv_time: true,
+        security_baseline: {
+          xinetd_services: {
+            srv_time: true,
+          },
+        },
       }
     end
     let(:params) do

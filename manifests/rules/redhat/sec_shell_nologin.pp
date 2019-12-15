@@ -23,14 +23,14 @@
 #    Password expires after days
 #
 # @example
-#   class security_baseline::rules::common::sec_shell_nologin {
+#   class security_baseline::rules::redhat::sec_shell_nologin {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_shell_nologin (
+class security_baseline::rules::redhat::sec_shell_nologin (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',

@@ -4,7 +4,7 @@ enforce_options = [true, false]
 
 describe 'security_baseline::rules::sles::sec_rsyslog_remote_logs' do
   enforce_options.each do |enforce|
-    context "on #{os} with enforce = #{enforce} with remote log host" do
+    context "on Suse with enforce = #{enforce} with remote log host" do
       let(:pre_condition) do
         <<-EOF
         exec { 'reload-rsyslog':
@@ -63,7 +63,7 @@ describe 'security_baseline::rules::sles::sec_rsyslog_remote_logs' do
       end
     end
 
-    context "on #{os} with enforce = #{enforce} without remote log host" do
+    context "on Suse with enforce = #{enforce} without remote log host" do
       let(:pre_condition) do
         <<-EOF
         exec { 'reload-rsyslog':
@@ -74,7 +74,10 @@ describe 'security_baseline::rules::sles::sec_rsyslog_remote_logs' do
         EOF
       end
       let(:facts) do
-        os_facts.merge(
+        {
+          osfamily: 'Suse',
+          operatingsystem: 'SLES',
+          architecture: 'x86_64',
           'security_baseline' => {
             'syslog' => {
               'rsyslog' => {
@@ -83,7 +86,7 @@ describe 'security_baseline::rules::sles::sec_rsyslog_remote_logs' do
               },
             },
           },
-        )
+        }
       end
       let(:params) do
         {

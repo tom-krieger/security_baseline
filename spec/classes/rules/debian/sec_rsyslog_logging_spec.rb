@@ -15,7 +15,10 @@ describe 'security_baseline::rules::debian::sec_rsyslog_logging' do
         EOF
       end
       let(:facts) do
-        os_facts.merge(
+        {
+          osfamily: 'Debian',
+          operatingsystem: 'Ubuntu',
+          architecture: 'x86_64',
           'security_baseline' => {
             'syslog' => {
               'rsyslog' => {
@@ -23,7 +26,7 @@ describe 'security_baseline::rules::debian::sec_rsyslog_logging' do
               },
             },
           },
-        )
+        }
       end
       let(:params) do
         {

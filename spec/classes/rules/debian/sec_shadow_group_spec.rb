@@ -2,14 +2,16 @@ require 'spec_helper'
 
 describe 'security_baseline::rules::debian::sec_shadow_group' do
   context 'on Debian' do
-    {
-      osfamily: 'Debian',
-      operatingsystem: 'Ubuntu',
-      architecture: 'x86_64',
-      security_baseline: {
-        shadow_group_count: 5,
-      },
-    }
+    let(:facts) do
+      {
+        osfamily: 'Debian',
+        operatingsystem: 'Ubuntu',
+        architecture: 'x86_64',
+        security_baseline: {
+          shadow_group_count: 5,
+        },
+      }
+    end
     let(:params) do
       {
         'enforce' => true,
@@ -20,7 +22,7 @@ describe 'security_baseline::rules::debian::sec_shadow_group' do
 
     it {
       is_expected.to compile
-      is_expected_to contain_echo('shadow-group')
+      is_expected.to contain_echo('shadow-group')
         .with(
           'message'  => 'shadow group',
           'loglevel' => 'warning',

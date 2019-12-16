@@ -1,7 +1,5 @@
 require 'spec_helper'
 
-enforce_options = [true, false]
-
 describe 'security_baseline::rules::common::sec_empty_passwords' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do

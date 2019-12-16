@@ -935,44 +935,43 @@ def security_baseline_redhat(os, _distid, _release)
 
   iptables = {}
   lines = Facter::Core::Execution.exec('/sbin/iptables -L -n')
-  if lines.nil? || lines.empty?
-    rules = []
-  else
-    rules = lines.split("\n")
-  end
+  rules = if lines.nil? || lines.empty?
+            []
+          else
+            lines.split("\n")
+          end
   default_policies = {}
   policy = {}
   nr = 0
   chain = ''
   rules.each do |rule|
     next if rule =~ %r{^target} || rule =~ %r{^$} || rule =~ %r{^#}
-    unless rule.nil?
-      m = rule.match(%r{^Chain\s*(?<chain>\w*)\s*\(policy\s*(?<policy>\w*)\)})
+    next if rule.nil?
+    m = rule.match(%r{^Chain\s*(?<chain>\w*)\s*\(policy\s*(?<policy>\w*)\)})
+    if m.nil?
+      m = rule.match(%r{^Chain\s*(?<chain>\w*)})
       unless m.nil?
         chain = m[:chain]
-        def_policy = m[:policy]
-        default_policies[chain] = def_policy
-      else
-        m = rule.match(%r{^Chain\s*(?<chain>\w*)})
-        unless m.nil?
-          chain = m[:chain]
-        end
       end
-
-      m = rule.match(%r{^(?<target>\w*)\s*(?<prot>\w*)\s*(?<opt>[0-9a-zA-Z\-_\.]*)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<info>.*)})
-      unless m.nil?
-        nr = nr + 1
-        policy["rule #{nr}"] = {}
-        policy["rule #{nr}"]['chain'] = chain
-        policy["rule #{nr}"]['target'] = m[:target]
-        policy["rule #{nr}"]['proto'] = m[:prot]
-        policy["rule #{nr}"]['opts'] = m[:opt]
-        policy["rule #{nr}"]['src'] = m[:source]
-        policy["rule #{nr}"]['dst'] = m[:dest]
-        policy["rule #{nr}"]['info'] = m[:info]
-      end
+    else
+      chain = m[:chain]
+      def_policy = m[:policy]
+      default_policies[chain] = def_policy
     end
+
+    m = rule.match(%r{^(?<target>\w*)\s*(?<prot>\w*)\s*(?<opt>[0-9a-zA-Z\-_\.]*)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<info>.*)})
+    next if m.nil?
+    nr += 1
+    policy["rule #{nr}"] = {}
+    policy["rule #{nr}"]['chain'] = chain
+    policy["rule #{nr}"]['target'] = m[:target]
+    policy["rule #{nr}"]['proto'] = m[:prot]
+    policy["rule #{nr}"]['opts'] = m[:opt]
+    policy["rule #{nr}"]['src'] = m[:source]
+    policy["rule #{nr}"]['dst'] = m[:dest]
+    policy["rule #{nr}"]['info'] = m[:info]
   end
+  iptables['policy_status'] = default_policies['INPUT'].lowercase == 'drop' && default_policies['OUTPUT'].lowercase == 'drop' && default_policies['FORWARD'].lowercase == 'drop'
   iptables['default_policies'] = default_policies
   iptables['policy'] = policy
   security_baseline['iptables'] = iptables

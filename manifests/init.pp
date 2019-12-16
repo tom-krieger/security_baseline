@@ -35,6 +35,7 @@ class security_baseline (
   Hash $rules,
   Boolean $debug                              = false,
   Boolean $log_info                           = false,
+  String $base_directory                      = '/usr/share/security_baseline',
   String $logfile                             = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
   Boolean $set_postrun                        = true,
   Array $auditd_suid_include                  = [],
@@ -61,6 +62,7 @@ class security_baseline (
     update_postrun_command => $update_postrun_command,
     fact_upload_command    => $fact_upload_command,
     reporting_type         => $reporting_type,
+    base_directory         => $base_directory,
     before                 => Concat[$logfile],
   }
 

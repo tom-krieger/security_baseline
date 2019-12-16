@@ -116,7 +116,16 @@ def security_baseline_redhat(os, _distid, _release)
   security_baseline[:partitions] = partitions
 
   yum = {}
-  yum['repolist'] = Facter::Core::Execution.exec('yum repolist')
+  val = Facter::Core::Execution.exec('yum repolist -q | grep -v "^repo id"')
+  if val.nil? || val.empty?
+    repos = 'none'
+    repocount = 0
+  else
+    repos = val.split("\n")
+    repocount = repos.count
+  end
+  yum['repolist_config'] = repocount > 0
+  yum['repolist'] = repos
   value = Facter::Core::Execution.exec('grep ^gpgcheck /etc/yum.conf')
   yum['gpgcheck'] = if value.empty?
                       false
@@ -162,7 +171,9 @@ def security_baseline_redhat(os, _distid, _release)
   motd['content'] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
   security_baseline[:motd] = motd
 
-  security_baseline[:rpm_gpg_keys] = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
+  val = Facter::Core::Execution.exec("rpm -q gpg-pubkey --qf '%{name}-%{version}-%{release} --> %{summary}\n'")
+  security_baseline[:rpm_gpg_keys] = val
+  security_baseline[:rpm_gpg_keys_config] = !(val.nil? || val.empty?)
 
   val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
   security_baseline[:unconfigured_daemons] = check_value_string(val, 'none')

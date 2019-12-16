@@ -149,7 +149,16 @@ def security_baseline_ubuntu(os, _distid, _release)
   security_baseline[:partitions] = partitions
 
   apt = {}
-  apt['repolist'] = Facter::Core::Execution.exec('apt-cache policy')
+  val = Facter::Core::Execution.exec('apt-cache policy | grep -v "^Package files"')
+  if val.nil? || val.empty?
+    repos = 'none'
+    repocount = 0
+  else
+    repos = val.split("\n")
+    repocount = repos.count
+  end
+  apt['repolist_config'] = repocount > 0
+  apt['repolist'] = repos
   value = Facter::Core::Execution.exec('apt-key list')
   apt['gpgcheck'] = if value .nil? || value.empty?
                       false
@@ -186,7 +195,9 @@ def security_baseline_ubuntu(os, _distid, _release)
   motd['content'] = Facter::Core::Execution.exec("egrep '(\\\\v|\\\\r|\\\\m|\\\\s)' /etc/motd")
   security_baseline[:motd] = motd
 
-  security_baseline[:apt_gpg_keys] = Facter::Core::Execution.exec('apt-key list')
+  val = Facter::Core::Execution.exec('apt-key list')
+  security_baseline[:apt_gpg_keys] = val
+  security_baseline[:apt_gpg_keys_config] = !(val.nil? || val.empty?)
 
   val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
   security_baseline[:unconfigured_daemons] = check_value_string(val, 'none')

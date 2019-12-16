@@ -931,5 +931,49 @@ def security_baseline_ubuntu(os, _distid, _release)
   security_baseline['shadow_group'] = val
   security_baseline['shadow_group_count'] = val.count
 
+  iptables = {}
+  lines = Facter::Core::Execution.exec('/sbin/iptables -L -n')
+  if lines.nil? || lines.empty?
+    rules = []
+  else
+    rules = lines.split("\n")
+  end
+  default_policies = {}
+  policy = {}
+  nr = 0
+  chain = ''
+  rules.each do |rule|
+    next if rule =~ %r{^target} || rule =~ %r{^$} || rule =~ %r{^#}
+    unless rule.nil?
+      m = rule.match(%r{^Chain\s*(?<chain>\w*)\s*\(policy\s*(?<policy>\w*)\)})
+      unless m.nil?
+        chain = m[:chain]
+        def_policy = m[:policy]
+        default_policies[chain] = def_policy
+      else
+        m = rule.match(%r{^Chain\s*(?<chain>\w*)})
+        unless m.nil?
+          chain = m[:chain]
+        end
+      end
+
+      m = rule.match(%r{^(?<target>\w*)\s*(?<prot>\w*)\s*(?<opt>[0-9a-zA-Z\-_\.]*)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<info>.*)})
+      unless m.nil?
+        nr = nr + 1
+        policy["rule #{nr}"] = {}
+        policy["rule #{nr}"]['chain'] = chain
+        policy["rule #{nr}"]['target'] = m[:target]
+        policy["rule #{nr}"]['proto'] = m[:prot]
+        policy["rule #{nr}"]['opts'] = m[:opt]
+        policy["rule #{nr}"]['src'] = m[:source]
+        policy["rule #{nr}"]['dst'] = m[:dest]
+        policy["rule #{nr}"]['info'] = m[:info]
+      end
+    end
+  end
+  iptables['default_policies'] = default_policies
+  iptables['policy'] = policy
+  security_baseline['iptables'] = iptables
+
   security_baseline
 end

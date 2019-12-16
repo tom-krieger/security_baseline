@@ -943,38 +943,37 @@ def security_baseline_redhat(os, _distid, _release)
   default_policies = {}
   policy = {}
   nr = 0
+  chain = ''
   rules.each do |rule|
-    next if rule =~ %r{^target} || rule =~ %r{^$} || rule = ~ %r{^#}
-
+    next if rule =~ %r{^target} || rule =~ %r{^$} || rule =~ %r{^#}
     unless rule.nil?
-      m = rule.match(%r{^Chain\s*(?<chain>\w)\s*\(policy\s*(?<policy>\w)\)})
+      m = rule.match(%r{^Chain\s*(?<chain>\w*)\s*\(policy\s*(?<policy>\w*)\)})
       unless m.nil?
         chain = m[:chain]
-        policy = m[:policy]
-        default_policies[chain] = policy
+        def_policy = m[:policy]
+        default_policies[chain] = def_policy
+      else
+        m = rule.match(%r{^Chain\s*(?<chain>\w*)})
+        unless m.nil?
+          chain = m[:chain]
+        end
       end
 
-      m = rule.match(%r{^(?<target>\w)\s*(?<prot>\w)\s*(?<opt>\w)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\s*(?<info>.*)})
+      m = rule.match(%r{^(?<target>\w*)\s*(?<prot>\w*)\s*(?<opt>[0-9a-zA-Z\-_\.]*)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<info>.*)})
       unless m.nil?
-        target = m[:target]
-        proto = m[:prot]
-        opts = m[:opt]
-        src = m[:source]
-        dst = m[:dest]
-        info = m[:info]
-        nr++
-        policy[nr] = {}
-        policy[nr]['chain'] = chain
-        policy[nr]['target'] = target
-        policy[nr]['proto'] = proto
-        policy[nr]['opts'] = opts
-        policy[nr]['src'] = src
-        policy[nr]['dst'] = dst
-        policy[nr]['info'] = info
+        nr = nr + 1
+        policy["rule #{nr}"] = {}
+        policy["rule #{nr}"]['chain'] = chain
+        policy["rule #{nr}"]['target'] = m[:target]
+        policy["rule #{nr}"]['proto'] = m[:prot]
+        policy["rule #{nr}"]['opts'] = m[:opt]
+        policy["rule #{nr}"]['src'] = m[:source]
+        policy["rule #{nr}"]['dst'] = m[:dest]
+        policy["rule #{nr}"]['info'] = m[:info]
       end
     end
   end
-  iütables['default_policies'] = default_policies
+  iptables['default_policies'] = default_policies
   iptables['policy'] = policy
   security_baseline['iptables'] = iptables
 

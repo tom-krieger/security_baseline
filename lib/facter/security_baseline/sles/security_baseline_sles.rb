@@ -1000,7 +1000,7 @@ def security_baseline_sles(os, _distid, _release)
     policy["rule #{nr}"]['state'] = state
     policy["rule #{nr}"]['icmptype'] = icmptype
   end
-  iptables['policy_status'] = default_policies['INPUT'].lowercase == 'drop' && default_policies['OUTPUT'].lowercase == 'drop' && default_policies['FORWARD'].lowercase == 'drop'
+  iptables['policy_status'] = default_policies['INPUT'].downcase == 'drop' && default_policies['OUTPUT'].downcase == 'drop' && default_policies['FORWARD'].downcase == 'drop'
   iptables['default_policies'] = default_policies
   iptables['policy'] = policy
   security_baseline['iptables'] = iptables

@@ -38,7 +38,7 @@ class security_baseline::rules::common::sec_iptables_outbound_established (
       firewall { '004 accept outbound tcp state new, established':
         chain  => 'OUTPUT',
         proto  => 'tcp',
-        state  => ['NEW', 'ESTABLSHED'],
+        state  => ['NEW', 'ESTABLISHED'],
         action => 'accept',
       }
     }
@@ -46,7 +46,7 @@ class security_baseline::rules::common::sec_iptables_outbound_established (
       firewall { '005 accept outbound udp state new, established':
         chain   => 'OUTPUT',
         proto   => 'udp',
-        state   => ['NEW', 'ESTABLSHED'],
+        state   => ['NEW', 'ESTABLISHED'],
         action  => 'accept',
         require => Firewall['004 accept outbound tcp state new, established'],
       }
@@ -55,7 +55,7 @@ class security_baseline::rules::common::sec_iptables_outbound_established (
       firewall { '006 accept outbound icmp state new, established':
         chain   => 'OUTPUT',
         proto   => 'icmp',
-        state   => ['NEW', 'ESTABLSHED'],
+        state   => ['NEW', 'ESTABLISHED'],
         action  => 'accept',
         require => Firewall['005 accept outbound udp state new, established'],
       }

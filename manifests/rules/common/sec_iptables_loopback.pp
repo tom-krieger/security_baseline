@@ -47,30 +47,25 @@ class security_baseline::rules::common::sec_iptables_loopback (
     $data['src'] == '127.0.0.0/8' and $data['dst'] == '0.0.0.0/0' and $data['target'] == 'DROPI'
   }
   if ($enforce) {
-    # if($rule1.empty) {
-      firewall { '001 accept all incoming traffic to local interface':
-        chain   => 'INPUT',
-        proto   => 'all',
-        iniface => 'lo',
-        action  => 'accept',
-      }
-    # }
-    # if($rule2.empty) {
-      firewall { '002 accept all outgoing traffic to local interface':
-        chain    => 'OUTPUT',
-        proto    => 'all',
-        outiface => 'lo',
-        action   => 'accept',
-      }
-    # }
-    # if($rule3.empty) {
-      firewall { '003 drop all traffic to lo 127.0.0.1/8':
-        chain  => 'INPUT',
-        proto  => 'all',
-        source => '127.0.0.1/8',
-        action => 'drop',
-      }
-    # }
+    firewall { '001 accept all incoming traffic to local interface':
+      chain   => 'INPUT',
+      proto   => 'all',
+      iniface => 'lo',
+      action  => 'accept',
+    }
+    firewall { '002 accept all outgoing traffic to local interface':
+      chain    => 'OUTPUT',
+      proto    => 'all',
+      outiface => 'lo',
+      action   => 'accept',
+    }
+
+    firewall { '003 drop all traffic to lo 127.0.0.1/8':
+      chain  => 'INPUT',
+      proto  => 'all',
+      source => '127.0.0.1/8',
+      action => 'drop',
+    }
   } else {
     if $rule1.empty or $rule2.empty or $rule3.empty {
       echo { 'iptables-loopback':

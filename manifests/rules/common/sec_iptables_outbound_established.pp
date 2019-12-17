@@ -34,53 +34,42 @@ class security_baseline::rules::common::sec_iptables_outbound_established (
       $data['chain'] == 'INPUT' and $data['proto'] == 'tcp' and
       $data['state'] == 'ESTABLISHED' and $data['target'] == 'ACCEPT'
     }
-    if ($rule4.empty) {
-      firewall { '004 accept outbound tcp state new, established':
-        chain  => 'OUTPUT',
-        proto  => 'tcp',
-        state  => ['NEW', 'ESTABLISHED'],
-        action => 'accept',
-      }
+
+    firewall { '004 accept outbound tcp state new, established':
+      chain  => 'OUTPUT',
+      proto  => 'tcp',
+      state  => ['NEW', 'ESTABLISHED'],
+      action => 'accept',
     }
-    if ($rule5.empty) {
-      firewall { '005 accept outbound udp state new, established':
-        chain  => 'OUTPUT',
-        proto  => 'udp',
-        state  => ['NEW', 'ESTABLISHED'],
-        action => 'accept',
-      }
+    firewall { '005 accept outbound udp state new, established':
+      chain  => 'OUTPUT',
+      proto  => 'udp',
+      state  => ['NEW', 'ESTABLISHED'],
+      action => 'accept',
     }
-    if ($rule6.empty) {
-      firewall { '006 accept outbound icmp state new, established':
-        chain  => 'OUTPUT',
-        proto  => 'icmp',
-        state  => ['NEW', 'ESTABLISHED'],
-        action => 'accept',
-      }
+    firewall { '006 accept outbound icmp state new, established':
+      chain  => 'OUTPUT',
+      proto  => 'icmp',
+      state  => ['NEW', 'ESTABLISHED'],
+      action => 'accept',
     }
-    if ($rule7.empty) {
-      firewall { '007 accept inbound tcp state established':
-        chain  => 'INPUT',
-        proto  => 'tcp',
-        state  => 'ESTABLISHED',
-        action => 'accept',
-      }
+    firewall { '007 accept inbound tcp state established':
+      chain  => 'INPUT',
+      proto  => 'tcp',
+      state  => 'ESTABLISHED',
+      action => 'accept',
     }
-    if ($rule8.empty) {
-      firewall { '008 accept inbound udp state established':
-        chain  => 'INPUT',
-        proto  => 'udp',
-        state  => 'ESTABLISHED',
-        action => 'accept',
-      }
+    firewall { '008 accept inbound udp state established':
+      chain  => 'INPUT',
+      proto  => 'udp',
+      state  => 'ESTABLISHED',
+      action => 'accept',
     }
-    if ($rule9.empty) {
-      firewall { '009 accept inbound icmp state established':
-        chain  => 'INPUT',
-        proto  => 'icmp',
-        state  => 'ESTABLISHED',
-        action => 'accept',
-      }
+    firewall { '009 accept inbound icmp state established':
+      chain  => 'INPUT',
+      proto  => 'icmp',
+      state  => 'ESTABLISHED',
+      action => 'accept',
     }
   } else {
     if ($rule4.empty or $rule5.empty or $rule6.empty or $rule7.empty or $rule8.empty or $rule9.empty) {

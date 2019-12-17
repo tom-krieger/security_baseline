@@ -44,47 +44,42 @@ class security_baseline::rules::common::sec_iptables_outbound_established (
     }
     if ($rule5.empty) {
       firewall { '005 accept outbound udp state new, established':
-        chain   => 'OUTPUT',
-        proto   => 'udp',
-        state   => ['NEW', 'ESTABLISHED'],
-        action  => 'accept',
-        require => Firewall['004 accept outbound tcp state new, established'],
+        chain  => 'OUTPUT',
+        proto  => 'udp',
+        state  => ['NEW', 'ESTABLISHED'],
+        action => 'accept',
       }
     }
     if ($rule6.empty) {
       firewall { '006 accept outbound icmp state new, established':
-        chain   => 'OUTPUT',
-        proto   => 'icmp',
-        state   => ['NEW', 'ESTABLISHED'],
-        action  => 'accept',
-        require => Firewall['005 accept outbound udp state new, established'],
+        chain  => 'OUTPUT',
+        proto  => 'icmp',
+        state  => ['NEW', 'ESTABLISHED'],
+        action => 'accept',
       }
     }
     if ($rule7.empty) {
       firewall { '007 accept inbound tcp state established':
-        chain   => 'INPUT',
-        proto   => 'tcp',
-        state   => 'ESTABLISHED',
-        action  => 'accept',
-        require => Firewall['006 accept outbound icmp state new, established'],
+        chain  => 'INPUT',
+        proto  => 'tcp',
+        state  => 'ESTABLISHED',
+        action => 'accept',
       }
     }
     if ($rule8.empty) {
       firewall { '008 accept inbound udp state established':
-        chain   => 'INPUT',
-        proto   => 'udp',
-        state   => 'ESTABLISHED',
-        action  => 'accept',
-        require => Firewall['007 accept inbound tcp state established'],
+        chain  => 'INPUT',
+        proto  => 'udp',
+        state  => 'ESTABLISHED',
+        action => 'accept',
       }
     }
     if ($rule9.empty) {
       firewall { '009 accept inbound icmp state established':
-        chain   => 'INPUT',
-        proto   => 'icmp',
-        state   => 'ESTABLISHED',
-        action  => 'accept',
-        require => Firewall['008 accept inbound udp state established'],
+        chain  => 'INPUT',
+        proto  => 'icmp',
+        state  => 'ESTABLISHED',
+        action => 'accept',
       }
     }
   } else {

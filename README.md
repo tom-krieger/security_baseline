@@ -3,6 +3,7 @@
 #### Table of Contents
 
 1. [Description](#description)
+2. [CIS Benchmark Reference](#CIS-Benchmark-Reference)
 2. [Setup - The basics of getting started with security_baseline](#setup)
     * [What security_baseline affects](#what-security_baseline-affects)
     * [Setup requirements](#setup-requirements)
@@ -20,6 +21,30 @@
 Define a complete security baseline and monitor the baseline's rules. The definition of the baseline can be done in Hiera. The purpose of the module is to give the ability to setup complete security baseline which not necessarily have to stick to industry security guides like the CIS benchmarks.
 
 One main purpose is to ensure the module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
+
+## CIS Benchmark Reference
+
+The code of this security baseline module is based on the following CIS Benchmarks
+
+### SLES 12
+
+CIS SUSE Linux Enterprise 12 Benchmark
+v2.1.0 - 12-28-2017
+
+### Redhat 7
+
+CIS Red Hat Enterprise Linux 7 Benchmark
+v2.2.0 - 12-27-2017
+
+### CentOS 7
+
+CIS CentOS Linux 7 Benchmark
+v2.2.0 - 12-27-2017
+
+### Ubuntu 18.04
+
+CIS Ubuntu Linux 18.04 LTS Benchmark
+v1.0.0 - 08-13-2018
 
 ## Setup
 

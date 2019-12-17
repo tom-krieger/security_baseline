@@ -969,7 +969,38 @@ def security_baseline_redhat(os, _distid, _release)
     policy["rule #{nr}"]['opts'] = m[:opt]
     policy["rule #{nr}"]['src'] = m[:source]
     policy["rule #{nr}"]['dst'] = m[:dest]
-    policy["rule #{nr}"]['info'] = m[:info]
+    info = m[:info]
+    policy["rule #{nr}"]['info'] = info
+    
+    m = info.match(%r{(?<proto>[tcp|udp])\s*spt:(?<spt>\d*)})
+    unless m.nil?
+      spt = "#{m[:proto]}:#{m[:spt]}"
+    else
+      spt = ''
+    end
+    m = info.match(%r{(?<proto>[tcp|udp])\s*dpt:(?<dpt>\d*)})
+    unless m.nil?
+      dpt = "#{m[:proto]}:#{m[:dpt]}"
+    else
+      dpt = ''
+    end
+    m = info.match(%r{state\s*(?<state>[a-zA-Z0-9_\-\,]*)})
+    unless m.nil?
+      state = m[:state]
+    else
+      state = ''
+    end
+    m = info.match(%r{icmptype\s*(?<icmptype>\d+)})
+    unless m.nil?
+      icmptype = m[:icmptype]
+    else
+      icmptype = ''
+    end
+
+    policy["rule #{nr}"]['spt'] = spt
+    policy["rule #{nr}"]['dpt'] = dpt
+    policy["rule #{nr}"]['state'] = state
+    policy["rule #{nr}"]['icmptype'] = icmptype
   end
   iptables['policy_status'] = default_policies['INPUT'].lowercase == 'drop' && default_policies['OUTPUT'].lowercase == 'drop' && default_policies['FORWARD'].lowercase == 'drop'
   iptables['default_policies'] = default_policies

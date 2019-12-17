@@ -74,10 +74,12 @@ class security_baseline::rules::common::sec_iptables_loopback (
       }
     }
   } else {
-    echo { "iptables-loopback ${rule1}":
-      message  => "${message} ${rule1}",
-      loglevel => $log_level,
-      withpath => false,
+    if $rule1.empty or $rule2.empty or $rule3.empty {
+      echo { 'iptables-loopback':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
+      }
     }
   }
 }

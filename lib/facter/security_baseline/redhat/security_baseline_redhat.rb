@@ -973,38 +973,51 @@ def security_baseline_redhat(os, _distid, _release)
     policy["rule #{nr}"]['out'] = m[:out]
     info = m[:info]
     policy["rule #{nr}"]['info'] = info
-    
+
     m = info.match(%r{(?<proto>[tcp|udp])\s*spt:(?<spt>\d*)})
-    unless m.nil?
-      spt = "#{m[:proto]}:#{m[:spt]}"
+    if m.nil?
+      m = info.match(%r{sports\s*(?<spt>[0-9\,]*)})
+      spt = if m.nil?
+              ''
+            else
+              (m[:spt]).to_s
+            end
     else
-      spt = ''
+      spt = (m[:spt]).to_s
     end
+
     m = info.match(%r{(?<proto>[tcp|udp]*)\s*dpt:(?<dpt>\d*)})
-    unless m.nil?
-      dpt = "#{m[:proto]}:#{m[:dpt]}"
+    if m.nil?
+      m = info.match(%r{dports\s*(?<dpt>[0-9\,]*)})
+      dpt = if m.nil?
+              ''
+            else
+              (m[:dpt]).to_s
+            end
     else
-      dpt = ''
+      dpt = (m[:dpt]).to_s
     end
+
     m = info.match(%r{state\s*(?<state>[a-zA-Z0-9_\-\,]*)})
-    unless m.nil?
-      state = m[:state]
-    else
-      state = ''
-    end
+    state = if m.nil?
+              ''
+            else
+              m[:state]
+            end
+
     m = info.match(%r{icmptype\s*(?<icmptype>\d+)})
-    unless m.nil?
-      icmptype = m[:icmptype]
-    else
-      icmptype = ''
-    end
+    icmptype = if m.nil?
+                 ''
+               else
+                 m[:icmptype]
+               end
 
     policy["rule #{nr}"]['spt'] = spt
     policy["rule #{nr}"]['dpt'] = dpt
     policy["rule #{nr}"]['state'] = state
     policy["rule #{nr}"]['icmptype'] = icmptype
   end
-  iptables['policy_status'] = default_policies['INPUT'].downcase == 'drop' && default_policies['OUTPUT'].downcase == 'drop' && default_policies['FORWARD'].downcase == 'drop'
+  iptables['policy_status'] = default_policies['INPUT'].casecmp('drop').zero? && default_policies['OUTPUT'].casecmp('drop').zero? && default_policies['FORWARD'].casecmp('drop').zero?
   iptables['default_policies'] = default_policies
   iptables['policy'] = policy
   security_baseline['iptables'] = iptables

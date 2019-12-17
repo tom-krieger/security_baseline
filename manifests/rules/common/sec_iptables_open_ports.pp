@@ -1,9 +1,32 @@
-# @summary A short summary of the purpose of this class
+# @summary 
+#    Ensure firewall rules exist for all open ports (Scored)
 #
-# A description of what this class does
+# Any ports that have been opened on non-loopback addresses need firewall rules to govern traffic.
+#
+# Rationale:
+# Without a firewall rule configured for open ports default firewall policy will drop all packets to these ports.
+#
+# @param enforce
+#    Enforce the rule or just test and log
+#
+# @param message
+#    Message to print into the log
+#
+# @param log_level
+#    The log_level for the above message
+#
+# @param firewall_rules
+#    Additional firewall rules to setup
 #
 # @example
-#   include security_baseline::rules::common::sec_iptables_open_ports
+#   class security_baseline::rules::common::sec_iptables_outbound_established {
+#       enforce => true,
+#       message => 'Test',
+#       log_level => 'info',
+#       firewall_rules => {},
+#   }
+#
+# @api private
 class security_baseline::rules::common::sec_iptables_open_ports (
   Boolean $enforce     = true,
   String $message      = '',
@@ -11,7 +34,7 @@ class security_baseline::rules::common::sec_iptables_open_ports (
   Hash $firewall_rules = {},
 ) {
   $rule10 = $facts['security_baseline']['iptables']['policy'].filter |$rule, $data| {
-    $data['chain'] == 'INPUT' and $data['proto'] == 'tcp' and $data['dpt'] == 'tcp:22' and
+    $data['chain'] == 'INPUT' and $data['proto'] == 'tcp' and $data['dpt'] == '22' and
     $data['state'] == 'NEW' and $data['target'] == 'ACCEPT'
   }
   if ($enforce) {

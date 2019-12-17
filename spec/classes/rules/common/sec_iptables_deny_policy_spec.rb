@@ -26,46 +26,46 @@ describe 'security_baseline::rules::common::sec_iptables_deny_policy' do
           }
         end
 
-        it { 
-          is_expected.to compile 
-        
+        it {
+          is_expected.to compile
+
           if enforce
             is_expected.to contain_firewallchain('OUTPUT:filter:IPv4')
               .with(
                 'ensure' => 'present',
                 'policy' => 'drop',
               )
-            
+
             is_expected.to contain_firewallchain('FORWARD:filter:IPv4')
               .with(
                 'ensure' => 'present',
                 'policy' => 'drop',
               )
-            
+
             is_expected.to contain_firewallchain('INPUT:filter:IPv4')
               .with(
                 'ensure' => 'present',
                 'policy' => 'drop',
               )
-            
+
             is_expected.to contain_firewallchain('OUTPUT:filter:IPv6')
               .with(
                 'ensure' => 'present',
                 'policy' => 'drop',
               )
-          
+
             is_expected.to contain_firewallchain('FORWARD:filter:IPv6')
               .with(
                 'ensure' => 'present',
                 'policy' => 'drop',
               )
-           
+
             is_expected.to contain_firewallchain('INPUT:filter:IPv6')
               .with(
                 'ensure' => 'present',
                 'policy' => 'drop',
               )
-            
+
             is_expected.not_to contain_echo('iptables-policy-status')
           else
             is_expected.not_to contain_firewallchain('OUTPUT:filter:IPv4')

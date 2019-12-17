@@ -23,9 +23,6 @@
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
-#       input_policy => 'drop',
-#       output_policy => 'accept',
-#       forward_policy => 'drop',
 #   }
 #
 # @api private

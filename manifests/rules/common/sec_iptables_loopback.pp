@@ -47,39 +47,35 @@ class security_baseline::rules::common::sec_iptables_loopback (
     $data['src'] == '127.0.0.0/8' and $data['dst'] == '0.0.0.0/0' and $data['target'] == 'DROPI'
   }
   if ($enforce) {
-    firewall { '001 accept all incoming traffic to local interface':
-      chain   => 'INPUT',
-      proto   => 'all',
-      iniface => 'lo',
-      action  => 'accept',
+    if($rule1.empty) {
+      firewall { '001 accept all incoming traffic to local interface':
+        chain   => 'INPUT',
+        proto   => 'all',
+        iniface => 'lo',
+        action  => 'accept',
+      }
     }
-    firewall { '002 accept all outgoing traffic to local interface':
-      chain    => 'OUTPUT',
-      proto    => 'all',
-      outiface => 'lo',
-      action   => 'accept',
-      require  => Firewall['001 accept all incoming traffic to local interface'],
+    if($rule2.empty) {
+      firewall { '002 accept all outgoing traffic to local interface':
+        chain    => 'OUTPUT',
+        proto    => 'all',
+        outiface => 'lo',
+        action   => 'accept',
+        require  => Firewall['001 accept all incoming traffic to local interface'],
+      }
     }
-    firewall { '003 drop all traffic to lo 127.0.0.1/8':
-      chain   => 'INPUT',
-      proto   => 'all',
-      source  => '127.0.0.1/8',
-      action  => 'drop',
-      require => Firewall['002 accept all outgoing traffic to local interface'],
+    if($rule3.empty) {
+      firewall { '003 drop all traffic to lo 127.0.0.1/8':
+        chain   => 'INPUT',
+        proto   => 'all',
+        source  => '127.0.0.1/8',
+        action  => 'drop',
+        require => Firewall['002 accept all outgoing traffic to local interface'],
+      }
     }
   } else {
     echo { "iptables-loopback ${rule1}":
       message  => "${message} ${rule1}",
-      loglevel => $log_level,
-      withpath => false,
-    }
-    echo { "iptables-loopback ${rule2}":
-      message  => "${message} ${rule2}",
-      loglevel => $log_level,
-      withpath => false,
-    }
-    echo { "iptables-loopback ${rule3}":
-      message  => "${message} ${rule3}",
       loglevel => $log_level,
       withpath => false,
     }

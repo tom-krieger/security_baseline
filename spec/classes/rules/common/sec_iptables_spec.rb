@@ -26,14 +26,13 @@ describe 'security_baseline::rules::common::sec_iptables' do
         it { is_expected.to compile }
         it do
           if enforce
-            is_expected.to contain_package('iptables')
-              .with(
-                'ensure' => 'installed',
-              )
+            is_expected.to create_class('firewall')
+            is_expected.to contain_resources('firewall').with('purge' => true)
 
             is_expected.not_to contain_echo('iptables')
           else
-            is_expected.not_to contain_package('iptables')
+            is_expected.not_to create_class('firewall')
+            is_expected.not_to contain_resources('firewall')
             is_expected.to contain_echo('iptables')
               .with(
                 'message'  => 'iptables package',

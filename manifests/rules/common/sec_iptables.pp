@@ -25,26 +25,23 @@
 #
 # @api private
 class security_baseline::rules::common::sec_iptables (
-  Boolean $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if($enforce) {
+    class { '::firewall': }
 
-    package { 'iptables':
-      ensure => installed,
+    resources { 'firewall':
+      purge => true,
     }
-
   } else {
-
     if($facts['security_baseline']['packages_installed']['iptables'] == false) {
-
       echo { 'iptables':
         message  => $message,
         loglevel => $log_level,
         withpath => false,
       }
-
     }
   }
 }

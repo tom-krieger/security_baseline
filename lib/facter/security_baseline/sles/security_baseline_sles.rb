@@ -976,7 +976,7 @@ def security_baseline_sles(os, _distid, _release)
     else
       spt = ''
     end
-    m = info.match(%r{(?<proto>[tcp|udp])\s*dpt:(?<dpt>\d*)})
+    m = info.match(%r{(?<proto>[tcp|udp]*)\s*dpt:(?<dpt>\d*)})
     unless m.nil?
       dpt = "#{m[:proto]}:#{m[:dpt]}"
     else

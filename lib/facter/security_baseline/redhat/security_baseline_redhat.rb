@@ -934,7 +934,7 @@ def security_baseline_redhat(os, _distid, _release)
   security_baseline['syslog'] = syslog
 
   iptables = {}
-  lines = Facter::Core::Execution.exec('/sbin/iptables -L -n')
+  lines = Facter::Core::Execution.exec('/sbin/iptables -L -n -v')
   rules = if lines.nil? || lines.empty?
             []
           else
@@ -945,9 +945,9 @@ def security_baseline_redhat(os, _distid, _release)
   nr = 0
   chain = ''
   rules.each do |rule|
-    next if rule =~ %r{^target} || rule =~ %r{^$} || rule =~ %r{^#}
+    next if rule =~ %r{^\s*pkts} || rule =~ %r{^$} || rule =~ %r{^#}
     next if rule.nil?
-    m = rule.match(%r{^Chain\s*(?<chain>\w*)\s*\(policy\s*(?<policy>\w*)\)})
+    m = rule.match(%r{^Chain\s*(?<chain>\w*)\s*\(policy\s*(?<policy>\w*).*\)})
     if m.nil?
       m = rule.match(%r{^Chain\s*(?<chain>\w*)})
       unless m.nil?
@@ -959,7 +959,7 @@ def security_baseline_redhat(os, _distid, _release)
       default_policies[chain] = def_policy
     end
 
-    m = rule.match(%r{^(?<target>\w*)\s*(?<prot>\w*)\s*(?<opt>[0-9a-zA-Z\-_\.]*)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<info>.*)})
+    m = rule.match(%r{(?<pkts>\d+)\s*(?<bytes>\d+)\s*(?<target>\w*)\s*(?<prot>\w*)\s*(?<opt>[0-9a-zA-Z\-_\.]*)\s*(?<in>[a-zA-Z0-9\*_\-]*)\s*(?<out>[a-zA-Z0-9\*_\-]*)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<info>.*)})
     next if m.nil?
     nr += 1
     policy["rule #{nr}"] = {}
@@ -969,6 +969,8 @@ def security_baseline_redhat(os, _distid, _release)
     policy["rule #{nr}"]['opts'] = m[:opt]
     policy["rule #{nr}"]['src'] = m[:source]
     policy["rule #{nr}"]['dst'] = m[:dest]
+    policy["rule #{nr}"]['in'] = m[:in]
+    policy["rule #{nr}"]['out'] = m[:out]
     info = m[:info]
     policy["rule #{nr}"]['info'] = info
     
@@ -978,7 +980,7 @@ def security_baseline_redhat(os, _distid, _release)
     else
       spt = ''
     end
-    m = info.match(%r{(?<proto>[tcp|udp])\s*dpt:(?<dpt>\d*)})
+    m = info.match(%r{(?<proto>[tcp|udp]*)\s*dpt:(?<dpt>\d*)})
     unless m.nil?
       dpt = "#{m[:proto]}:#{m[:dpt]}"
     else

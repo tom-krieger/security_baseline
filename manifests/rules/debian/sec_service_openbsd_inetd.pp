@@ -1,9 +1,29 @@
-# @summary A short summary of the purpose of this class
+# @summary 
+#    Ensure openbsd-inetd is not installed (Scored)
 #
-# A description of what this class does
+# The inetd daemon listens for well known services and dispatches the appropriate daemon to properly 
+# respond to service requests.
+#
+# Rationale:
+# If there are no inetd services required, it is recommended that the daemon be removed.
+#
+# @param enforce
+#    Enforce the rule or just test and log
+#
+# @param message
+#    Message to print into the log
+#
+# @param log_level
+#    The log_level for the above message
 #
 # @example
-#   include security_baseline::rules::debian::sec_service_openbsd_inetd
+#   class security_baseline::rules::debian::sec_service_echo {
+#       enforce => true,
+#       message => 'Test',
+#       log_level => 'info'
+#   }
+#
+# @api private
 class security_baseline::rules::debian::sec_service_openbsd_inetd (
   Boolean $enforce  = true,
   String $message   = '',

@@ -1020,5 +1020,17 @@ def security_baseline_sles(os, _distid, _release)
   iptables['policy'] = policy
   security_baseline['iptables'] = iptables
 
+  wlan = []
+  cnt = 0
+  nw = Facter.value(:networking)
+  nw['interfaces'].each do |ifname, _data|
+    if ifname =~ %r{wlan}
+      cnt += 1
+      wlan.push(ifname)
+    end
+  end
+  security_baseline['wlan_interfaces'] = wlan
+  security_baseline['wlan_interfaces_count'] = cnt
+
   security_baseline
 end

@@ -33,6 +33,7 @@ def security_baseline_redhat(os, _distid, _release)
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
               'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond']
   packages = { 'iptables' => '-q',
+               'wireless-tools' => '-q',
                'openldap-clients' => '-q',
                'logrotate' => '-q',
                'mcstrans' => '-q',
@@ -1021,6 +1022,18 @@ def security_baseline_redhat(os, _distid, _release)
   iptables['default_policies'] = default_policies
   iptables['policy'] = policy
   security_baseline['iptables'] = iptables
+
+  wlan = []
+  cnt = 0
+  nw = Facter.value(:networking)
+  nw['interfaces'].each do |ifname, _data|
+    if ifname =~ %r{wlan}
+      cnt += 1
+      wlan.push(ifname)
+    end
+  end
+  security_baseline['wlan_interfaces'] = wlan
+  security_baseline['wlan_interfaces_count'] = cnt
 
   security_baseline
 end

@@ -56,6 +56,14 @@ describe 'security_baseline::config' do
             'mode'   => '0700',
           )
 
+        is_expected.to contain_file('/usr/share/security_baseline/data/')
+          .with(
+            'ensure' => 'directory',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
         is_expected.to contain_file('/usr/share/security_baseline/bin/root_path_integrity.sh')
           .with(
             'ensure' => 'present',

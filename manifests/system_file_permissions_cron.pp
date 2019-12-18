@@ -5,7 +5,7 @@
 # @example
 #   include security_baseline::system_file_permissions_cron
 class security_baseline::system_file_permissions_cron {
-  $filename = '/root/system-file-permissions.txt'
+  $filename = '/usr/share/security_baseline/data/system-file-permissions.txt'
 
   if($facts['osfamily'] == 'RedHat') or ($facts['osfamily'] == 'Suse') {
     $cmd = 'rpm -Va --nomtime --nosize --nomd5 --nolinkto'

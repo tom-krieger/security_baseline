@@ -549,8 +549,8 @@ def security_baseline_sles(os, _distid, _release)
   file_permissions['world_writable_count'] = files.count
 
   files = []
-  if File.exist?('/root/system-file-permissions.txt')
-    text = File.open('/root/system-file-permissions.txt').read
+  if File.exist?('/usr/share/security_baseline/data/system-file-permissions.txt')
+    text = File.open('/usr/share/security_baseline/data/system-file-permissions.txt').read
     text.gsub!(%r{\r\n?}, "\n")
     files = text.split("\n")
   end
@@ -558,8 +558,8 @@ def security_baseline_sles(os, _distid, _release)
   file_permissions['system_files_count'] = files.count
 
   files = []
-  if File.exist?('/root/unowned_files_user.txt')
-    text = File.open('/root/unowned_files_user.txt').read
+  if File.exist?('/usr/share/security_baseline/data/unowned_files_user.txt')
+    text = File.open('/usr/share/security_baseline/data/unowned_files_user.txt').read
     text.gsub!(%r{\r\n?}, "\n")
     files = text.split("‘\n")
   end
@@ -567,8 +567,8 @@ def security_baseline_sles(os, _distid, _release)
   file_permissions['unowned_count'] = files.count
 
   files = []
-  if File.exist?('/root/unowned_files_group.txt')
-    text = File.open('/root/unowned_files_group.txt').read
+  if File.exist?('/usr/share/security_baseline/data/unowned_files_group.txt')
+    text = File.open('/usr/share/security_baseline/data/unowned_files_group.txt').read
     text.gsub!(%r{\r\n?}, "\n")
     files = text.split("‘\n")
   end

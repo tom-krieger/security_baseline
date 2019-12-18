@@ -5,8 +5,8 @@
 # @example
 #   include security_baseline::unowned_files_cron
 class security_baseline::unowned_files_cron {
-  $unowned_user = '/root/unowned_files_user.txt'
-  $unowned_group = '/root/unowned_files_group.txt'
+  $unowned_user = '/usr/share/security_baseline/data/unowned_files_user.txt'
+  $unowned_group = '/usr/share/security_baseline/data/unowned_files_group.txt'
 
   file { '/usr/local/sbin/unowned_files.sh':
     ensure  => present,

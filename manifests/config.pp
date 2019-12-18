@@ -31,6 +31,12 @@ class security_baseline::config(
     group  => 'root',
     mode   => '0700',
   }
+  file { '/usr/share/security_baseline/data':
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0700',
+  }
   file { '/usr/share/security_baseline/bin':
     ensure => directory,
     owner  => 'root',

@@ -37,7 +37,7 @@ describe 'security_baseline::rules::sles::sec_pam_passwd_sha512' do
               'type'      => 'password',
               'control'   => 'required',
               'module'    => 'pam_unix.so',
-              'arguments' => ['sha512'],
+              'arguments' => ['use_authtok', 'nullok', 'shadow', 'try_first_pass', 'sha512'],
             )
 
           is_expected.not_to contain_echo('password-sha512')

@@ -38,7 +38,7 @@ class security_baseline::rules::common::sec_issue (
   String $message = '',
   String $log_level = ''
 ) {
-  if(!$facts['security_baseline']['issue']['os']['content'] != '') {
+  if($facts['security_baseline']['issue']['os']['content'] != '') {
     echo { 'issue-os':
       message  => $message,
       loglevel => $log_level,

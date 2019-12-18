@@ -37,7 +37,7 @@ class security_baseline::rules::common::sec_issue_net (
   String $message = '',
   String $log_level = ''
 ) {
-  if(!$facts['security_baseline']['issue']['net']['content'] != '') {
+  if($facts['security_baseline']['issue']['net']['content'] != '') {
     echo { 'issue-net':
       message  => $message,
       loglevel => $log_level,

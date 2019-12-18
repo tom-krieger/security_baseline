@@ -25,17 +25,23 @@
 #
 # @api private
 class security_baseline::rules::common::sec_var_tmp_noexec (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
-  if (has_key($facts, 'security_baseline')) {
-
-    if $facts['security_baseline']['partitions']['var_tmp']['noexec'] == false {
-      echo { 'var-tmp-noexec':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+  if ($enforce) {
+    security_baseline::mount_options { '/var/tmp-noexec':
+      mountpoint => '/var/tmp',
+      mountoptions => 'noexec',
+    }
+  } else {
+    if (has_key($facts, 'security_baseline')) {
+      if $facts['security_baseline']['partitions']['var_tmp']['noexec'] == false {
+        echo { 'var-tmp-noexec':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

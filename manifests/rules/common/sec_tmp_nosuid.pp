@@ -25,16 +25,23 @@
 #
 # @api private
 class security_baseline::rules::common::sec_tmp_nosuid (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
-  if (has_key($facts, 'security_baseline')) {
-    if $facts['security_baseline']['partitions']['tmp']['nosuid'] == false {
-      echo { 'tmp-nosuid':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+  if ($enforce) {
+    security_baseline::mount_options { '/tmp-nosuid':
+      mountpoint => '/tmp',
+      mountoptions => 'nosuid',
+    }
+  } else {
+    if (has_key($facts, 'security_baseline')) {
+      if $facts['security_baseline']['partitions']['tmp']['nosuid'] == false {
+        echo { 'tmp-nosuid':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

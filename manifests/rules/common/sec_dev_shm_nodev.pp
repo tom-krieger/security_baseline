@@ -25,20 +25,21 @@
 #
 # @api private
 class security_baseline::rules::common::sec_dev_shm_nodev (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if $enforce {
-
-    unless $facts['security_baseline']['partitions']['shm']['partition'].empty {
-
-      if $facts['security_baseline']['partitions']['shm']['nodev'] == false {
-        echo { 'dev-shm-nodev':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+    security_baseline::mount_options { '/dev/shm-nodev':
+      mountpoint   => '/dev/shm',
+      mountoptions => 'nodev',
+    }
+  } else {
+    if $facts['security_baseline']['partitions']['shm']['nosuid'] == false {
+      echo { 'dev-shm-nodev':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

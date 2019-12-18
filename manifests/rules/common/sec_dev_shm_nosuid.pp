@@ -25,20 +25,21 @@
 #
 # @api private
 class security_baseline::rules::common::sec_dev_shm_nosuid (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if $enforce {
-
-    unless $facts['security_baseline']['partitions']['shm']['partition'].empty {
-
-      if $facts['security_baseline']['partitions']['shm']['nosuid'] == false {
-        echo { 'dev-shm-nosuid':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+    security_baseline::mount_options { '/dev/shm-nosuid':
+      mountpoint => '/dev/shm',
+      mountoptions => 'nosuid',
+    }
+  } else {
+    if $facts['security_baseline']['partitions']['shm']['nosuid'] == false {
+      echo { 'dev-shm-nosuid':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

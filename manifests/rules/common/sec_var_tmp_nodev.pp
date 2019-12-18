@@ -25,17 +25,23 @@
 #
 # @api private
 class security_baseline::rules::common::sec_var_tmp_nodev (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
-  if (has_key($facts, 'security_baseline')) {
-
-    if $facts['security_baseline']['partitions']['var_tmp']['nodev'] == false {
-      echo { 'var-tmp-nodev':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+  if ($enforce) {
+    security_baseline::mount_options { '/var/tmp-nodev':
+      mountpoint => '/var/tmp',
+      mountoptions => 'nodeb',
+    }
+  } else {
+    if (has_key($facts, 'security_baseline')) {
+      if $facts['security_baseline']['partitions']['var_tmp']['nodev'] == false {
+        echo { 'var-tmp-nodev':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

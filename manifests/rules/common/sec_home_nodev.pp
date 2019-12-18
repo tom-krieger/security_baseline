@@ -25,17 +25,23 @@
 #
 # @api private
 class security_baseline::rules::common::sec_home_nodev (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
-  if (has_key($facts, 'security_baseline')) {
-
-    if $facts['security_baseline']['partitions']['home']['nodev'] == false {
-      echo { 'home-nodev':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+  if ($enforce) {
+    security_baseline::mount_options { '/home-nodev':
+      mountpoint => '/home',
+      mountoptions => 'node',
+    }
+  } else {
+    if (has_key($facts, 'security_baseline')) {
+      if $facts['security_baseline']['partitions']['home']['nodev'] == false {
+        echo { 'home-nodev':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

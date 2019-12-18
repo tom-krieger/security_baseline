@@ -47,6 +47,10 @@
       "version_requirement": ">= 3.0.0 < 4.0.0"
     },
     {
+      "name": "herculesteam/augeasproviders_mounttab",
+      "version_requirement": "2.1.1"
+    },
+    {
       "name": "purplehazech-syslogng",
       "version_requirement": "0.7.1"
     },
@@ -73,6 +77,10 @@
     {
       "name": "puppetlabs-firewall",
       "version_requirement": "2.2.0"
+    },
+    {
+      "name": "puppetlabs-mount_providers",
+      "version_requirement": "2.0.1"
     }
   ],
   "operatingsystem_support": [

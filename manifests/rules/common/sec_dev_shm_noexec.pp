@@ -25,20 +25,21 @@
 #
 # @api private
 class security_baseline::rules::common::sec_dev_shm_noexec (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if $enforce {
-
-    unless $facts['security_baseline']['partitions']['shm']['partition'].empty {
-
-      if $facts['security_baseline']['partitions']['shm']['noexec'] == false {
-        echo { 'dev-shm-noexec':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+    security_baseline::mount_options { '/dev/shm-noexec':
+      mountpoint   => '/dev/shm',
+      mountoptions => 'noexec',
+    }
+  } else {
+    if $facts['security_baseline']['partitions']['shm']['nosuid'] == false {
+      echo { 'dev-shm-noexec':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

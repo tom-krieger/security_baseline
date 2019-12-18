@@ -24,8 +24,29 @@
 # @param logfile
 #    Logfile to write messages to
 #
-# @param set_postrun
-#    Set postrun_command in pupet agent
+# @param auditd_suid_include
+#    Directories to search for suid and sgid programs. Can not be set together with auditd_suid_exclude
+#
+# @param auditd_suid_exclude
+#    Directories to exclude from search for suid and sgid programs. Can not be set together with auditd_suid_include
+#
+# @param reporting_type
+#    Select to type of reporting. ca currently be set to csv or fact.
+#
+# @param auditd_rules_fact_file
+#    The file where to store the facts for auditd rules
+#
+# @param suid_fact_file
+#    The file where to store the suid programms
+#
+# @param sgid_fact_file
+#    The file where to store the sgid programs
+#
+# @param update_postrun_command
+#    Update Puppet agent post run command
+#
+# @param fact_upload_command
+#    Command to use to upload facts to Puppet master
 #
 # @example
 #   include security_baseline
@@ -35,14 +56,14 @@ class security_baseline (
   Hash $rules,
   Boolean $debug                              = false,
   Boolean $log_info                           = false,
-  String $base_directory                      = '/usr/share/security_baseline',
   String $logfile                             = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
-  Boolean $set_postrun                        = true,
   Array $auditd_suid_include                  = [],
   Array $auditd_suid_exclude                  = [],
   String $auditd_rules_file                   = '/etc/audit/rules.d/sec_baseline_auditd.rules',
   Enum['fact', 'csv_file'] $reporting_type    = 'fact',
   String $auditd_rules_fact_file              = '/opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml',
+  String $suid_fact_file                      = '/opt/puppetlabs/facter/facts.d/security_baseline_suid_programs.yaml',
+  String $sgid_fact_file                      = '/opt/puppetlabs/facter/facts.d/security_baseline_sgid_programs.yaml',
   Boolean $update_postrun_command             = true,
   String $fact_upload_command                 = '/usr/local/bin/puppet facts upload',
 ) {
@@ -62,7 +83,6 @@ class security_baseline (
     update_postrun_command => $update_postrun_command,
     fact_upload_command    => $fact_upload_command,
     reporting_type         => $reporting_type,
-    base_directory         => $base_directory,
     before                 => Concat[$logfile],
   }
 
@@ -70,6 +90,8 @@ class security_baseline (
     include                => $auditd_suid_include,
     exclude                => $auditd_suid_exclude,
     auditd_rules_fact_file => $auditd_rules_fact_file,
+    suid_fact_file         => $suid_fact_file,
+    sgid_fact_file         => $sgid_fact_file,
     before                 => Concat[$logfile],
   }
 

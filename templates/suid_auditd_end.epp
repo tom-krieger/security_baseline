@@ -6,6 +6,24 @@ uniq /tmp/auditd.rules.$$ | while read rule ; do
   echo "  - ${rule}"
 done >> <%= $auditd_rules_fact_file %>
 
+echo "---" > <%= $suid_fact_file %>
+echo "security_baseline_suid_programs:" >> <%= $suid_fact_file %>
+
+echo "---" > <%= $sgid_fact_file %>
+echo "security_baseline_sgid_programs:" >> <%= $sgid_fact_file %>
+
+cat /tmp/suid_programs.$$ | while read line ; do
+  echo "  - ${line}" >> <%= $suid_fact_file %>
+done
+
+cat  /tmp/sgid_programs.$$ | while read line ; do
+  echo "  - ${line}" >> <%= $sgid_fact_file %>
+done
+
+rm -f /tmp/suid_programs.$$
+rm -f /tmp/sgid_programs.$$
+rm -f /tmp/auditd.rules.$$
+
 logger -p daemon.info -t $prog "finished auditd suid progs rule creation"
 
 exit 0

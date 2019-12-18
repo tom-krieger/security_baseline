@@ -4,3 +4,5 @@ prog=`basename $0`
 logger -p daemon.info -t $prog "started auditd suid progs rule creation ..."
 
 rm -f /tmp/auditd.rules.$$
+rm -f /tmp/suid_programs.$$
+rm -f /tmp/sgid_programs.$$

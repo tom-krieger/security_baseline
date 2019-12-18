@@ -8,7 +8,9 @@
 class security_baseline::auditd_suid_rules_cron (
   Array $include                 = [],
   Array $exclude                 = [],
-  String $auditd_rules_fact_file = '/tmp/auditd.facts.yaml'
+  String $auditd_rules_fact_file = '/tmp/auditd.facts.yaml',
+  String $suid_fact_file         = '/tmp/suid_programs.yaml',
+  String $sgid_fact_file         = '/tmp/sgid_progras.yaml',
 ) {
   if(!empty($include) and !empty($exclude)) {
     fail('Please include directories or exclude them but you can not do both!')
@@ -43,7 +45,7 @@ class security_baseline::auditd_suid_rules_cron (
     }
 
   } else {
-    $tmp_include = "-e ${include.join(' ')}"
+    $tmp_include = "${include.join(' ')}"
       concat::fragment {'suid_cron_body':
       target  => '/etc/cron.daily/suid-audit',
       content => epp('security_baseline/suid_auditd_include.epp', { 'include' => $tmp_include}),
@@ -53,7 +55,11 @@ class security_baseline::auditd_suid_rules_cron (
 
   concat::fragment {'suid_cron_end':
     target  => '/etc/cron.daily/suid-audit',
-    content => epp('security_baseline/suid_auditd_end.epp', { 'auditd_rules_fact_file' => $auditd_rules_fact_file}),
+    content => epp('security_baseline/suid_auditd_end.epp', {
+      'auditd_rules_fact_file' => $auditd_rules_fact_file,
+      'suid_fact_file'         => $suid_fact_file,
+      'sgid_fact_file'         => $sgid_fact_file
+    }),
     order   => 99,
   }
 }

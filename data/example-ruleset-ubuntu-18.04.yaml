@@ -5,8 +5,8 @@ security_baseline::log_info: true
 security_baseline::auditd_suid_include:
   - /usr
 security_baseline::update_postrun_command: true
-security_baseline::reporting_type: csv_file
-security_baseline::logfile: /usr/share/security_baseline/logs/security_baseline_findings.csv
+security_baseline::reporting_type: fact
+security_baseline::logfile: /opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml
 security_baseline::auditd_rules_file: /etc/audit/rules.d/sec_baseline_auditd.rules
 security_baseline::auditd_rules_fact_file: /opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml
 security_baseline::rules:
@@ -410,13 +410,55 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 1.1.17. /dev/shm should be mounted with noexec option.'
     log_level: 'warning'
+  '1.1.18':
+    rulename: 'removable_noexec'
+    active: true
+    scored: false
+    level: 1
+    description: 'The nodev mount option specifies that the filesystem cannot contain special devices.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_nodev_removable'
+    check:
+      fact_hash: security_baseline
+      fact_name: ''
+      fact_value: ''
+    message: 'Rule 1.1.18. Removable media should be mounted with the nodev option.'
+    log_level: 'warning'
+  '1.1.19':
+    rulename: 'removable_nosuid'
+    active: true
+    scored: false
+    level: 1
+    description: 'The nosuid mount option specifies that the filesystem cannot contain setuid files.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_nosuid_removable'
+    check:
+      fact_hash: security_baseline
+      fact_name: ''
+      fact_value: ''
+    message: 'Rule 1.1.19. Removable media should be mounted with the nonosuiddev option.'
+    log_level: 'warning'
+  '1.1.20':
+    rulename: 'removable_noexec'
+    active: true
+    scored: false
+    level: 1
+    description: 'The noexec mount option specifies that the filesystem cannot contain executable binaries.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_noexec_removable'
+    check:
+      fact_hash: security_baseline
+      fact_name: ''
+      fact_value: ''
+    message: 'Rule 1.1.20.Removable media should be mounted with the noexec option.'
+    log_level: 'warning'
   '1.1.21':
     rulename: 'sticky_ww'
     active: true
     scored: true
     level: 1
     description: 'Setting the sticky bit on world writable directories prevents users from deleting or renaming files in that directory that are not owned by them.'
-    enforce: false
+    enforce: true
     class: '::security_baseline::rules::common::sec_sticky_world_writeable'
     check:
       fact_hash: security_baseline
@@ -440,38 +482,37 @@ security_baseline::rules:
       fact_value: 'disabled'
     message: 'Rule 1.1.22. Automounting should be disabled.'
     log_level: 'warning'
-  '1.2.2':
-    rulename: 'yum_gpgcheck'
-    active: true
-    scored: true
-    level: 1
-    description: 'The gpgcheck option, found in the main section of the /etc/yum.conf and individual /etc/yum/repos.d/* files determines if an RPM packages signature is checked prior to its installation.'
-    enforce: true
-    class: '::security_baseline::rules::redhat::sec_yum_gpgcheck'
-    check:
-      fact_hash: security_baseline
-      fact_name: 
-        - yum
-        - gpgcheck
-      fact_value: true
-    message: 'Rule 1.2.2. Yum gpgcheck should be  enabled in /etc/yum.conf.'
-    log_level: 'warning'
-  '1.2.5':
-    rulename: 'rhnsd'
+  '1.2.1':
+    rulename: 'zypper_repos'
     active: true
     scored: false
-    level: 2
-    description: 'The rhnsd daemon polls the Red Hat Network web site for scheduled actions and, if there are, executes those actions.'
-    enforce: false
-    class: '::security_baseline::rules::redhat::sec_rhnsd'
+    level: 1
+    description: 'Systems need to have package manager repositories configured to ensure they receive the latest patches and updates.'
+    enforce: true
+    class: '::security_baseline::rules::sles::sec_zypper_repolist'
     check:
       fact_hash: security_baseline
       fact_name: 
-        - services_enabled
-        - srv_rhnsd
-      fact_value: disabled
-    message: 'Rule 1.2.5. rhnsd should be disabled.'
-    log_level: 'info'
+        - zypper
+        - repolist_config
+      fact_value: true
+    message: 'Rule 1.2.1. Zypper repositories should be configured.'
+    log_level: 'warning'
+  '1.2.2':
+    rulename: 'zypper_gpg_keys'
+    active: true
+    scored: false
+    level: 1
+    description: 'Most packages managers implement GPG key signing to verify package integrity during installation.'
+    enforce: true
+    class: '::security_baseline::rules::sles::sec_zypper_gpg_keys'
+    check:
+      fact_hash: security_baseline
+      fact_name: 
+        - rpm_gpg_keys_config
+      fact_value: true
+    message: 'Rule 1.2.2. Zypper GPG keys should be configured.'
+    log_level: 'warning'
   '1.3.1':
     rulename: 'aide'
     active: true
@@ -479,7 +520,7 @@ security_baseline::rules:
     level: 1
     description: 'AIDE takes a snapshot of filesystem state including modification times, permissions, and file hashes which can then be used to compare against the current state of the filesystem to detect modifications to the system.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_aide'
+    class: '::security_baseline::rules::sles::sec_aide'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -495,7 +536,7 @@ security_baseline::rules:
     level: 1
     description: 'Periodic checking of the filesystem integrity is needed to detect changes to the filesystem.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_aide_cron'
+    class: '::security_baseline::rules::sles::sec_aide_cron'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -511,7 +552,7 @@ security_baseline::rules:
     level: 1
     description: 'The grub configuration file contains information on boot settings and passwords for unlocking boot options. The grub configuration is usually located at /boot/grub2/grub.cfg and linked as /etc/grub2.cfg. Additional settings can be found in the /boot/grub2/user.cfg file.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_grub2'
+    class: '::security_baseline::rules::sles::sec_grub2'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -544,7 +585,7 @@ security_baseline::rules:
     level: 1
     description: 'Single user mode (rescue mode) is used for recovery when the system detects an issue during boot or by manual selection from the bootloader.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_single_user_mode'
+    class: '::security_baseline::rules::sles::sec_single_user_mode'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -567,7 +608,7 @@ security_baseline::rules:
         - coredumps
         - status
       fact_value: true
-    message: 'Rule 1.4.3. /sbin/sulogin should be used propperly to configure core dumps.'
+    message: 'Rule 1.5.1. Core dumps should be restricted.'
     log_level: 'warning'
   '1.5.2':
     rulename: 'nx_protection'
@@ -607,7 +648,7 @@ security_baseline::rules:
     level: 1
     description: 'prelinkis a program that modifies ELF shared libraries and ELF dynamically linked binaries in such a way that the time needed for the dynamic linker to perform relocations at startup significantly decreases.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_prelink'
+    class: '::security_baseline::rules::sles::sec_prelink'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -618,12 +659,12 @@ security_baseline::rules:
     log_level: 'warning'
   '1.6.1.1':
     rulename: 'selinux-bootloader'
-    active: true
+    active: false
     scored: true
     level: 2
     description: 'Configure SELINUX to be enabled at boot time and verify that it has not been overwritten by the grub boot parameters.'
     enforce: false
-    class: '::security_baseline::rules::common::sec_selinux_bootloader'
+    class: '::security_baseline::rules::sles::sec_selinux_bootloader'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -634,7 +675,7 @@ security_baseline::rules:
     log_level: 'warning'
   '1.6.1.2':
     rulename: 'selinux'
-    active: true
+    active: false
     scored: true
     level: 2
     description: 'Set SELinux to enable when the system is booted.'
@@ -648,7 +689,7 @@ security_baseline::rules:
     log_level: 'warning'
   '1.6.1.3':
     rulename: 'selinux-policy'
-    active: true
+    active: false
     scored: true
     level: 2
     description: 'Configure SELinux to meet or exceed the default targeted policy, which constrains daemons and system software only.'
@@ -667,7 +708,7 @@ security_baseline::rules:
     level: 2
     description: 'The SETroubleshoot service notifies desktop users of SELinux denials through a user- friendly interface. The service provides important information around configuration errors, unauthorized intrusions, and other potential errors..'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_setroubleshoot'
+    class: '::security_baseline::rules::sles::sec_setroubleshoot'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -683,7 +724,7 @@ security_baseline::rules:
     level: 2
     description: 'The mcstransd daemon provides category label information to client processes requesting information. The label translations are defined in /etc/selinux/targeted/setrans.conf.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_mcstrans'
+    class: '::security_baseline::rules::sles::sec_mcstrans'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -694,7 +735,7 @@ security_baseline::rules:
     log_level: 'warning'
   '1.6.1.6':
     rulename: 'unconf-daemons'
-    active: true
+    active: false
     scored: true
     level: 2
     description: 'Daemons that are not defined in SELinux policy will inherit the security context of their parent process.'
@@ -706,22 +747,55 @@ security_baseline::rules:
       fact_value: 'none'
     message: 'Rule 1.6.1.6. Unconfigured daemons should not run on system.'
     log_level: 'warning'
-  '1.6.2':
-    rulename: 'selinux-pkg'
+  '1.6.2.1':
+    rulename: 'apparmor-bootloader'
     active: true
     scored: true
     level: 2
-    description: 'SELinux provides Mandatory Access Controls.'
+    description: 'Configure AppArmor to be enabled at boot time and verify that it has not been overwritten by the bootloader boot parameters.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_selinux'
+    class: '::security_baseline::rules::sles::sec_apparmor_bootloader'
     check:
       fact_hash: security_baseline
       fact_name:
-        - packages_installed
-        - libselinux
+        - apparmor
+        - bootloader
       fact_value: true
-    message: 'Rule 1.6.2. SElinux should be installed.'
+    message: 'Rule 1.6.2.1. All linux bootloader entries should enforce apparmor.'
     log_level: 'warning'
+  '1.6.2.2':
+    rulename: 'apparmor-profiles'
+    active: true
+    scored: true
+    level: 2
+    description: 'AppArmor profiles define what resources applications are able to access.'
+    enforce: true
+    class: '::security_baseline::rules::sles::sec_apparmor_profiles'
+    check:
+      fact_hash: security_baseline
+      fact_name:
+        - apparmor
+        - profiles
+      fact_value: true
+    message: 'Rule 1.6.2.2. AppArmor profiles should be enforcing.'
+    log_level: 'warning'
+  '1.6.3':
+    rulename: 'selinux-apparmor-pkg'
+    active: true
+    scored: true
+    level: 2
+    description: 'SELinux and AppArmor provide Mandatory Access Control.'
+    enforce: true
+    class: '::security_baseline::rules::sles::sec_access_control'
+    check:
+      fact_hash: security_baseline
+      fact_name:
+        - access_control
+      fact_value: installed
+    message: 'Rule 1.6.3. SElinux or AppArmor should be installed.'
+    log_level: 'warning'
+    config_data:
+      access_control_pkg: libapparmor1
   '1.7.1.1':
     rulename: 'motd'
     active: true
@@ -857,12 +931,12 @@ security_baseline::rules:
     level: 1
     description: 'chargen is a network service that responds with 0 to 512 ASCII characters for each connection it receives. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_service_chargen'
+    class: '::security_baseline::rules::sles::sec_service_chargen'
     check:
       fact_hash: security_baseline
       fact_name:
         - xinetd_services
-        - srv_chargen-dgram
+        - srv_chargen
       fact_value: false
     message: 'Rule 2.1.1. chargen service should be switched off.'
     log_level: 'warning'
@@ -873,12 +947,12 @@ security_baseline::rules:
     level: 1
     description: 'daytime is a network service that responds with the servers current date and time. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_service_daytime'
+    class: '::security_baseline::rules::sles::sec_service_daytime'
     check:
       fact_hash: security_baseline
       fact_name:
         - xinetd_services
-        - srv_daytime-dgram
+        - srv_daytime
       fact_value: false
     message: 'Rule 2.1.2. daytime service should be switched off.'
     log_level: 'warning'
@@ -889,12 +963,12 @@ security_baseline::rules:
     level: 1
     description: 'discard is a network service that simply discards all data it receives. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_service_discard'
+    class: '::security_baseline::rules::sles::sec_service_discard'
     check:
       fact_hash: security_baseline
       fact_name:
         - xinetd_services
-        - srv_discard-dgram
+        - srv_discard
       fact_value: false
     message: 'Rule 2.1.3. discard service should be switched off.'
     log_level: 'warning'
@@ -905,12 +979,12 @@ security_baseline::rules:
     level: 1
     description: 'echo is a network service that responds to clients with the data sent to it by the client. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_service_echo'
+    class: '::security_baseline::rules::sles::sec_service_echo'
     check:
       fact_hash: security_baseline
       fact_name:
         - xinetd_services
-        - srv_echo-dgram
+        - srv_echo
       fact_value: false
     message: 'Rule 2.1.4. echo service should be switched off.'
     log_level: 'warning'
@@ -921,12 +995,12 @@ security_baseline::rules:
     level: 1
     description: 'time is a network service that responds with the servers current date and time as a 32 bit integer. This service is intended for debugging and testing purposes. It is recommended that this service be disabled.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_service_time'
+    class: '::security_baseline::rules::sles::sec_service_time'
     check:
       fact_hash: security_baseline
       fact_name:
         - xinetd_services
-        - srv_time-dgram
+        - srv_time
       fact_value: false
     message: Rule 2.1.5. time service should be switched off.'
     log_level: 'warning'
@@ -936,8 +1010,8 @@ security_baseline::rules:
     scored: true
     level: 1
     description: 'Trivial File Transfer Protocol (TFTP) is a simple file transfer protocol, typically used to automatically transfer configuration or boot machines from a boot server. The package tftp-server is used to define and support a TFTP server.'
-    enforce: false
-    class: '::security_baseline::rules::redhat::sec_service_tftp'
+    enforce: true
+    class: '::security_baseline::rules::sles::sec_service_tftp'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -985,7 +1059,7 @@ security_baseline::rules:
     level: 1
     description: 'ntp is a daemon which implements the Network Time Protocol (NTP). It is designed to synchronize system clocks across a variety of systems and use a source that is highly accurate. More information on NTP can be found at http://www.ntp.org. ntp can be configured to be a client and/or a server. This recommendation only applies if ntp is in use on the system.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_ntp_daemon_ntp'
+    class: '::security_baseline::rules::sles::sec_ntp_daemon_ntp'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -1035,10 +1109,10 @@ security_baseline::rules:
     level: 1
     description: 'The X Window System provides a Graphical User Interface (GUI) where users can have multiple windows in which to run programs and various add on. The X Windows system is typically used on workstations where users login, but not on servers where users typically do not login.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_x11_installed'
+    class: '::security_baseline::rules::sles::sec_x11_installed'
     check:
       fact_hash: security_baseline
-      fact_name: 
+      fact_name:
         - x11
         - installed
       fact_value: false
@@ -1275,7 +1349,7 @@ security_baseline::rules:
     level: 1
     description: 'The Berkeley rsh-server ( rsh , rlogin , rexec ) package contains legacy services that exchange credentials in clear-text.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_rsh'
+    class: '::security_baseline::rules::sles::sec_rsh'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -1339,7 +1413,7 @@ security_baseline::rules:
     level: 1
     description: 'The rsyncd service can be used to synchronize files between systems over network links.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_rsyncd'
+    class: '::security_baseline::rules::sles::sec_rsyncd'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -1355,7 +1429,7 @@ security_baseline::rules:
     level: 1
     description: 'The Network Information Service (NIS), formerly known as Yellow Pages, is a client-server directory service protocol used to distribute system configuration files. The NIS client ( ypbind ) was used to bind a machine to an NIS server and receive the distributed configuration files.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_nis_client'
+    class: '::security_baseline::rules::sles::sec_nis_client'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -1371,7 +1445,7 @@ security_baseline::rules:
     level: 1
     description: 'The rsh package contains the client commands for the rsh services.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_rsh_client'
+    class: '::security_baseline::rules::sles::sec_rsh_client'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -1387,7 +1461,7 @@ security_baseline::rules:
     level: 1
     description: 'The talk software makes it possible for users to send and receive messages across systems through a terminal session. The talk client, which allows initialization of talk sessions, is installed by default.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_talk_client'
+    class: '::security_baseline::rules::sles::sec_talk_client'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -1403,7 +1477,7 @@ security_baseline::rules:
     level: 1
     description: 'The telnet package contains the telnet client, which allows users to start connections to other systems via the telnet protocol.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_telnet_client'
+    class: '::security_baseline::rules::sles::sec_telnet_client'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -1419,7 +1493,7 @@ security_baseline::rules:
     level: 1
     description: 'The Lightweight Directory Access Protocol (LDAP) was introduced as a replacement for NIS/YP. It is a service that provides a method for looking up information from a central database.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_openldap_client'
+    class: '::security_baseline::rules::sles::sec_openldap_client'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -1643,12 +1717,12 @@ security_baseline::rules:
     level: 1
     description: 'TCP Wrappers provides a simple access list and standardized logging method for services capable of supporting it. In the past, services that were called from inetd and xinetd supported the use of tcp wrappers. As inetd and xinetd have been falling in disuse, any service that can support tcp wrappers will have the libwrap.so library attached to it.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_tcp_wrappers'
+    class: '::security_baseline::rules::sles::sec_tcp_wrappers'
     check:
       fact_hash: security_baseline
       fact_name:
         - packages_installed
-        - tcp_wrappers
+        - tcpd
       fact_value: true
     message: 'Rule 3.4.1. TCP wrappers should be installed.'
     log_level: 'warning'
@@ -1665,9 +1739,13 @@ security_baseline::rules:
       fact_name: 
         - tcp_wrappers
         - hosts_allow
+        - status
       fact_value: true
     message: 'Rule 3.4.2. /etc/hosts.allow should be configured.'
     log_level: 'warning'
+    config_data:
+      allowed:
+        - 'sshd: ALL'
   '3.4.3':
     rulename: 'hosts-deny'
     active: true
@@ -1681,8 +1759,43 @@ security_baseline::rules:
       fact_name: 
         - tcp_wrappers
         - hosts_deny
+        - status
       fact_value: true
     message: 'Rule 3.4.3. /etc/hosts.deny should be configured.'
+    log_level: 'warning'
+  '3.4.4':
+    rulename: 'hosts-allow-perms'
+    active: true
+    scored: true
+    level: 1
+    description: 'The /etc/hosts.allow file contains networking information that is used by many applications and therefore must be readable for these applications to operate.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_hosts_allow_perms'
+    check:
+      fact_hash: security_baseline
+      fact_name: 
+        - tcp_wrappers
+        - hosts_allow
+        - combined
+      fact_value: '0-0-420'
+    message: 'Rule 3.4.4. /etc/hosts.allow file permissions should be configured.'
+    log_level: 'warning'
+  '3.4.5':
+    rulename: 'hosts-deny-perms'
+    active: true
+    scored: true
+    level: 1
+    description: 'The /etc/hosts.deny file contains network information that is used by many system applications and therefore must be readable for these applications to operate.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_hosts_deny_perms'
+    check:
+      fact_hash: security_baseline
+      fact_name: 
+        - tcp_wrappers
+        - hosts_deny
+        - combined
+      fact_value: '0-0-420'
+    message: 'Rule 3.4.5. /etc/hosts.deny file permissions should be configured.'
     log_level: 'warning'
   '3.5.1':
     rulename: 'net-dccp'
@@ -1764,6 +1877,115 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 3.6.1. Iptables package should be installed.'
     log_level: 'warning'
+  '3.6.2':
+    rulename: 'iptables-default-policy'
+    active: false
+    scored: true
+    level: 1
+    description: 'A default deny all policy on connections ensures that any unconfigured network usage will be rejected.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_iptables_deny_policy'
+    check:
+      fact_hash: security_baseline
+      fact_name: 
+        - iptables
+        - policy_status
+      fact_value: true
+    message: 'Rule 3.6.2. Iptables default deny policy should be configured.'
+    log_level: 'warning'
+    config_data:
+      input_policy: drop
+      output_policy: accept
+      forward_policy: accept
+  '3.6.3':
+    rulename: 'iptables-loopback'
+    active: false
+    scored: true
+    level: 1
+    description: 'Configure the loopback interface to accept traffic. Configure all other interfaces to deny traffic to the loopback network (127.0.0.0/8).'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_iptables_loopback'
+    check:
+      fact_hash: security_baseline
+      fact_name: ''
+      fact_value: ''
+    message: 'Rule 3.6.3. Iptables loobpack traffic should be configured.'
+    log_level: 'warning'
+  '3.6.4':
+    rulename: 'iptables-outbound-established'
+    active: false
+    scored: false
+    level: 1
+    description: 'Configure the firewall rules for new outbound, and established connections.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_iptables_outbound_established'
+    check:
+      fact_hash: security_baseline
+      fact_name: ''
+      fact_value: ''
+    message: 'Rule 3.6.4. Iptables outbound and established connections should be configured.'
+    log_level: 'warning'
+  '3.6.5':
+    rulename: 'iptables-ports'
+    active: false
+    scored: true
+    level: 1
+    description: 'Any ports that have been opened on non-loopback addresses need firewall rules to govern traffic.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_iptables_open_ports'
+    check:
+      fact_hash: security_baseline
+      fact_name: ''
+      fact_value: ''
+    message: 'Rule 3.6.5. Iptables additional ports should be configured.'
+    log_level: 'warning'
+    config_data:
+      firewall_rules:
+        '100 ssh inbound':
+          chain: INPUT
+          proto: tcp
+          dport: 22
+          state: NEW
+          action: accept
+        '101 httpd inbound':
+          chain: INPUT
+          proto: tcp
+          dport: 443
+          state: NEW
+          action: accept
+        '102 dns udp inbound':
+          chain: INPUT
+          proto: udp
+          dport: 53
+          state: NEW
+          action: accept
+        '103 dns udp outbound':
+          chain: OUTPUT
+          proto: udp
+          dport: 53
+          state: NEW
+          action: accept
+        '104 dns tcp inbound':
+          chain: OUTPUT
+          proto: tcp
+          dport: 53
+          state: NEW
+          action: accept
+  '3.7':
+    rulename: 'wlan-interfaces'
+    active: true
+    scored: false
+    level: 1
+    description: 'Wireless networking is used when wired networks are unavailable. Ubuntu contains a wireless tool kit to allow system administrators to configure and use wireless networks.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_wlan_interfaces'
+    check:
+      fact_hash: security_baseline
+      fact_name:
+        - wlan_interfaces_count
+      fact_value: 0
+    message: 'Rule 3.7. Wireless networking should be switched off.'
+    log_level: 'warning'
   '4.1.1':
     rulename: 'auditd-init'
     active: true
@@ -1843,7 +2065,7 @@ security_baseline::rules:
     level: 2
     description: 'Turn on the auditd daemon to record system events.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_auditd_service'
+    class: '::security_baseline::rules::sles::sec_auditd_service'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -1907,7 +2129,7 @@ security_baseline::rules:
     level: 2
     description: 'Record changes to network environment files or system calls. The below parameters monitor the sethostname (set the systems host name) or setdomainname (set the systems domainname) system calls, and write an audit event on system call exit. The other parameters monitor the /etc/issue and /etc/issue.net files (messages displayed pre- login), /etc/hosts (file containing host names and associated IP addresses), /etc/sysconfig/network file and /etc/sysconfig/network-scripts/ directory (containing network interface scripts and configurations).'
     enforce: true
-    class: '::security_baseline::rules::common::sec_auditd_system_locale'
+    class: '::security_baseline::rules::sles::sec_auditd_system_locale'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -2148,7 +2370,7 @@ security_baseline::rules:
     level: 1
     description: 'The /etc/rsyslog.conf and /etc/rsyslog.d/*.conf files specifies rules for logging and which files are to be used to log certain classes of messages.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_rsyslog_logging'
+    class: '::security_baseline::rules::sles::sec_rsyslog_logging'
     check:
       fact_hash: security_baseline
       fact_name: ''
@@ -2209,7 +2431,7 @@ security_baseline::rules:
     level: 1
     description: 'rsyslog will create logfiles that do not already exist on the system. This setting controls what permissions will be applied to these newly created files.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_rsyslog_default_file_perms'
+    class: '::security_baseline::rules::sles::sec_rsyslog_default_file_perms'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -2226,7 +2448,7 @@ security_baseline::rules:
     level: 1
     description: 'The rsyslog utility supports the ability to send logs it gathers to a remote log host running syslogd(8) or to receive messages from remote hosts, reducing administrative overhead.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_rsyslog_remote_logs'
+    class: '::security_baseline::rules::sles::sec_rsyslog_remote_logs'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -2237,7 +2459,7 @@ security_baseline::rules:
     message: 'Rule 4.2.1.4 Rsyslog service should send logs to a remote syslog host.'
     log_level: 'warning'
     config_data:
-      remote_log_host: '10.10.54.2'
+      remote_log_host: ''
   '4.2.1.5':
     rulename: 'rsyslog-remote-syslog'
     active: true
@@ -2245,18 +2467,18 @@ security_baseline::rules:
     level: 1
     description: 'By default, rsyslog does not listen for log messages coming in from remote systems. The ModLoad tells rsyslog to load the imtcp.so module so it can listen over a network via TCP. The InputTCPServerRun option instructs rsyslogd to listen on the specified TCP port.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_rsyslog_remote_syslog'
+    class: '::security_baseline::rules::sles::sec_rsyslog_remote_syslog'
     check:
       fact_hash: security_baseline
       fact_name: 
         - syslog
         - rsyslog
         - loghost
-      fact_value: true
+      fact_value: false
     message: 'Rule 4.2.1.5 Rsyslog should not accept log messages from other hosts.'
     log_level: 'warning'
     config_data:
-      is_loghost: false
+      is_loghost: true
   '4.2.2.1':
     rulename: 'syslogng-service'
     active: false
@@ -2275,11 +2497,11 @@ security_baseline::rules:
     message: 'Rule 4.2.2.1 Syslog-ng service should be enabled.'
     log_level: 'warning'
   '4.2.2.2':
-    rulename: 'rsyslog-logging'
+    rulename: 'syslogng-logging'
     active: false
     scored: false
     level: 1
-    description: 'The /etc/rsyslog.conf and /etc/rsyslog.d/*.conf files specifies rules for logging and which files are to be used to log certain classes of messages.'
+    description: 'The /etc/syslog-ng/syslog-ng.conf file specifies rules for logging and which files are to be used to log certain classes of messages.'
     enforce: true
     class: '::security_baseline::rules::common::sec_syslogng_logging'
     check:
@@ -2320,7 +2542,7 @@ security_baseline::rules:
       fact_name: 
         - syslog
         - syslog-ng
-        - filepermissions
+        - filepermisions
       fact_value: '0640'
     message: 'Rule 4.2.2.3 Syslog-ng service should be creating files with pmissions 0640.'
     log_level: 'warning'
@@ -2419,12 +2641,12 @@ security_baseline::rules:
     level: 1
     description: 'The cron daemon is used to execute batch jobs on the system.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_crond'
+    class: '::security_baseline::rules::sles::sec_crond'
     check:
       fact_hash: security_baseline
       fact_name:
         - services_enabled
-        - srv_crond
+        - srv_cron
       fact_value: enabled
     message: 'Rule 5.1.1. Crond should run.'
     log_level: warning
@@ -2494,7 +2716,7 @@ security_baseline::rules:
         - '/etc/cron.weekly'
         - uid
       fact_value: 0
-    message: 'Rule 5.1.5. /etc/cron.daily should be uid 0, gid 0 and permissions 0700.'
+    message: 'Rule 5.1.5. /etc/cron.weekly should be uid 0, gid 0 and permissions 0700.'
     log_level: warning
   '5.1.6':
     rulename: etc-cron-monthly
@@ -2762,7 +2984,7 @@ security_baseline::rules:
     message: 'Rule 5.2.13. The sshd parameter LoginGraceTime should be 60.'
     log_level: warning
   '5.2.14':
-    rulename: sshd-linit-access
+    rulename: sshd-limit-access
     active: true
     scored: true
     level: 1
@@ -2781,6 +3003,7 @@ security_baseline::rules:
         - kriegeth
         - centos
         - ec2-user
+        - ubuntu
   '5.2.15':
     rulename: sshd-banner
     active: true
@@ -2804,7 +3027,7 @@ security_baseline::rules:
     level: 1
     description: 'The pam_pwquality.so module checks the strength of passwords. It performs checks such as making sure a password is not a dictionary word, it is a certain length, contains a mix of characters (e.g. alphabet, numeric, other) and more. The following are definitions of the pam_pwquality .so options.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_pam_pw_requirements'
+    class: '::security_baseline::rules::sles::sec_pam_pw_requirements'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -2827,7 +3050,7 @@ security_baseline::rules:
     level: 1
     description: 'Lock out users after n unsuccessful consecutive login attempts. The first sets of changes are made to the PAM configuration files. The second set of changes are applied to the program specific PAM configuration file. The second set of changes must be applied to each program that will lock out users. Check the documentation for each secondary program for instructions on how to configure them to work with PAM. Set the lockout number to the policy in effect at your site.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_pam_lockout'
+    class: '::security_baseline::rules::sles::sec_pam_lockout'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -2847,7 +3070,7 @@ security_baseline::rules:
     level: 1
     description: 'The /etc/security/opasswd file stores the users old passwords and can be checked to ensure that users are not recycling recent passwords.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_pam_old_passwords'
+    class: '::security_baseline::rules::sles::sec_pam_old_passwords'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -2859,15 +3082,14 @@ security_baseline::rules:
     log_level: warning
     config_data:
       oldpasswords: 10
-      sha512: true
   '5.3.4':
     rulename: password-sha512
     active: true
     scored: true
     level: 1
     description: 'The commands below change password encryption from md5 to sha512 (a much stronger hashing algorithm). All existing accounts will need to perform a password change to upgrade the stored hashes to the new algorithm.'
-    enforce: false
-    class: '::security_baseline::rules::redhat::sec_pam_passwd_sha512'
+    enforce: true
+    class: '::security_baseline::rules::sles::sec_pam_passwd_sha512'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -2972,7 +3194,7 @@ security_baseline::rules:
     level: 1
     description: 'There are a number of accounts provided with Red Hat 7 that are used to manage applications and are not intended to provide an interactive shell.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_shell_nologin'
+    class: '::security_baseline::rules::sles::sec_shell_nologin'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -3004,7 +3226,7 @@ security_baseline::rules:
     level: 1
     description: 'The default umask determines the permissions of files created by users. The user creating the file has the discretion of making their files and directories readable by others via the chmod command. Users who wish to allow their files and directories to be readable by others by default may choose a different default umask by inserting the umask command into the standard shell configuration files ( .profile , .bashrc , etc.) in their home directories.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_umask_setting'
+    class: '::security_baseline::rules::sles::sec_umask_setting'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -3021,7 +3243,7 @@ security_baseline::rules:
     level: 1
     description: 'The default umask determines the permissions of files created by users. The user creating the file has the discretion of making their files and directories readable by others via the chmod command. Users who wish to allow their files and directories to be readable by others by default may choose a different default umask by inserting the umask command into the standard shell configuration files ( .profile , .bashrc , etc.) in their home directories.'
     enforce: true
-    class: '::security_baseline::rules::redhat::sec_timeout_setting'
+    class: '::security_baseline::rules::sles::sec_timeout_setting'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -3031,6 +3253,30 @@ security_baseline::rules:
     log_level: warning
     config_data:
       default_timeout: 900
+  '5.5':
+    rulename: restrict-root-tty
+    active: true
+    scored: false
+    level: 1
+    description: 'The file /etc/securetty contains a list of valid terminals that may be logged in directly as root.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_tty_root_login'
+    check:
+      fact_hash: security_baseline
+      fact_name: ''
+      fact_value: ''
+    message: 'Rule 5.5. Add only secure locations consoles to /etc/securtty. This has to be done manually!'
+    log_level: info
+    config_data:
+      ttys:
+        - console
+        - tty1
+        - tty2
+        - tty3
+        - tty4
+        - tty5
+        - tty6
+        - ttyS0
   '5.6':
     rulename: restrict-su
     active: true
@@ -3038,7 +3284,7 @@ security_baseline::rules:
     level: 1
     description: 'The su command allows a user to run a command or shell as another user. The program has been superseded by sudo , which allows for more granular control over privileged access. Normally, the su command can be executed by any user. By uncommenting the pam_wheel.so statement in /etc/pam.d/su , the su command will only allow users in the wheel group to execute su .'
     enforce: true
-    class: '::security_baseline::rules::common::sec_restrict_su'
+    class: '::security_baseline::rules::sles::sec_restrict_su'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -3050,7 +3296,7 @@ security_baseline::rules:
     config_data:
       wheel_users:
         - root
-        - centos
+        - ec2-user
   '6.1.1':
     rulename: system-file-perms
     active: true
@@ -3091,7 +3337,7 @@ security_baseline::rules:
     level: 1
     description: 'The /etc/shadow file is used to store the information about user accounts that is critical to the security of those accounts, such as the hashed password and other security information.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_shadow_perms'
+    class: '::security_baseline::rules::sles::sec_shadow_perms'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -3125,7 +3371,7 @@ security_baseline::rules:
     level: 1
     description: 'The /etc/gshadow file is used to store the information about groups that is critical to the security of those accounts, such as the hashed password and other security information.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_gshadow_perms'
+    class: '::security_baseline::rules::sles::sec_gshadow_perms'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -3159,7 +3405,7 @@ security_baseline::rules:
     level: 1
     description: 'The /etc/shadow- file is used to store backup information about user accounts that is critical to the security of those accounts, such as the hashed password and other security information.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_shadow_bak_perms'
+    class: '::security_baseline::rules::sles::sec_shadow_bak_perms'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -3193,7 +3439,7 @@ security_baseline::rules:
     level: 1
     description: 'The /etc/gshadow- file is used to store backup information about groups that is critical to the security of those accounts, such as the hashed password and other security information.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_gshadow_bak_perms'
+    class: '::security_baseline::rules::sles::sec_gshadow_bak_perms'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -3251,6 +3497,61 @@ security_baseline::rules:
       fact_value: 0
     message: 'Rule 6.1.12. There should be no ungrouped files.'
     log_level: warning
+  '6.1.13':
+    rulename: suid-programs
+    active: true
+    scored: false
+    level: 1
+    description: 'The owner of a file can set the files permissions to run with the owners or groups permissions, even if the user running the program is not the owner or a member of the group. The most common reason for a SUID program is to enable users to perform functions (such as changing their password) that require root privileges.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_audit_suid_programs'
+    check:
+      fact_hash: security_baseline
+      fact_name: ''
+      fact_value: ''
+    message: 'Rule 6.1.13. Please check the fact security_baseline_suid_programs.'
+    log_level: info
+    config_data:
+      suid_expected:
+        - '/usr/bin/at'
+        - '/usr/bin/chfn'
+        - '/usr/bin/chsh'
+        - '/usr/bin/expiry'
+        - '/usr/bin/crontab'
+        - '/usr/bin/gpasswd'
+        - '/usr/bin/mount'
+        - '/usr/bin/newgrp'
+        - '/usr/bin/opiepasswd'
+        - '/usr/bin/passwd'
+        - '/usr/bin/pkexec'
+        - '/usr/bin/su'
+        - '/usr/bin/sudo'
+        - '/usr/bin/umount'
+        - '/usr/bin/fusermount'
+        - '/usr/lib/polkit-1/polkit-agent-helper-1'
+  '6.1.14':
+    rulename: sgid-programs
+    active: true
+    scored: false
+    level: 1
+    description: 'The owner of a file can set the files permissions to run with the owners or groups permissions, even if the user running the program is not the owner or a member of the group. The most common reason for a SGID program is to enable users to perform functions (such as changing their password) that require root privileges.'
+    enforce: true
+    class: '::security_baseline::rules::common::sec_audit_sgid_programs'
+    check:
+      fact_hash: security_baseline
+      fact_name: ''
+      fact_value: ''
+    message: 'Rule 6.1.14. Please check the fact security_baseline_sgid_programs.'
+    log_level: warning
+    config_data:
+      sgid_expected:
+        - '/usr/bin/chage'
+        - '/usr/bin/wall'
+        - '/usr/bin/write'
+        - '/usr/lib/utempter/utempter'
+        - '/usr/sbin/lockdev'
+        - '/usr/sbin/postdrop'
+        - '/usr/sbin/postqueue'
   '6.2.1':
     rulename: empty-password-fields
     active: true
@@ -3538,4 +3839,19 @@ security_baseline::rules:
         - duplicate_groups
       fact_value: none
     message: 'Rule 6.2.19. There should be no duplicate groups.'
+    log_level: warning
+  '6.2.20':
+    rulename: shadow-group
+    active: true
+    scored: true
+    level: 1
+    description: 'The shadow group allows system programs which require access the ability to read the /etc/shadow file. No users should be assigned to the shadow group.'
+    enforce: true
+    class: '::security_baseline::rules::sles::sec_shadow_group'
+    check:
+      fact_hash: security_baseline
+      fact_name:
+        - shadow_group_count
+      fact_value: 0
+    message: 'Rule 6.2.20. The shadow group should be empty.'
     log_level: warning

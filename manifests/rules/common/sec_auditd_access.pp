@@ -23,7 +23,7 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_aauditd_access {
+#   class security_baseline::rules::common::sec_auditd_access {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',

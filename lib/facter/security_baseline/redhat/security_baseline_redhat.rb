@@ -77,7 +77,7 @@ def security_baseline_redhat(os, _distid, _release)
   shm['nodev'] = check_value_regex(mounted, 'nodev')
   shm['noexec'] = check_value_regex(mounted, 'noexec')
   shm['nosuid'] = check_value_regex(mounted, 'nosuid')
-  shm['partition'] = Facter::Core::Execution.exec('mount | grep /dev/shm')
+  shm['partition'] = Facter::Core::Execution.exec('mount | grep "on /dev/shm "|awk \'{print $3;}\'')
   partitions['shm'] = shm
 
   home = {}

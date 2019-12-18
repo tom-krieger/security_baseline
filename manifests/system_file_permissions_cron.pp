@@ -13,7 +13,7 @@ class security_baseline::system_file_permissions_cron {
     $cmd = 'dpkg --verify'
   }
 
-  file { '/usr/local/sbin/system-file-permissions.sh':
+  file { '/usr/share/security_baseline/bin/system-file-permissions.sh':
     ensure  => present,
     owner   => 'root',
     group   => 'root',

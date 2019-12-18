@@ -8,7 +8,7 @@ class security_baseline::unowned_files_cron {
   $unowned_user = '/usr/share/security_baseline/data/unowned_files_user.txt'
   $unowned_group = '/usr/share/security_baseline/data/unowned_files_group.txt'
 
-  file { '/usr/local/sbin/unowned_files.sh':
+  file { '/usr/share/security_baseline/bin/unowned_files.sh':
     ensure  => present,
     content => epp('security_baseline/unowned-files.epp', {
       unowned_user  => $unowned_user,

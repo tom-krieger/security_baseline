@@ -1,1 +1,1 @@
-5 1 * * * root /usr/local/sbin/world-writeable-files.sh > /dev/null 2>&1
+5 1 * * * root /usr/share/security_baseline/bin/world-writeable-files.sh > /dev/null 2>&1

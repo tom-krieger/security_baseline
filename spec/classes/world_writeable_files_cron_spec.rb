@@ -8,7 +8,7 @@ describe 'security_baseline::world_writeable_files_cron' do
       it { is_expected.to compile }
 
       it do
-        is_expected.to contain_file('/usr/local/sbin/world-writable-files.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/world-writable-files.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',

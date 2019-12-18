@@ -7,7 +7,7 @@ describe 'security_baseline::unowned_files_cron' do
 
       it { is_expected.to compile }
       it do
-        is_expected.to contain_file('/usr/local/sbin/unowned_files.sh')
+        is_expected.to contain_file('/usr/share/security_baseline/bin/unowned_files.sh')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',

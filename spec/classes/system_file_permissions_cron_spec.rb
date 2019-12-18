@@ -13,7 +13,7 @@ describe 'security_baseline::system_file_permissions_cron' do
     it { is_expected.to compile }
 
     it do
-      is_expected.to contain_file('/usr/local/sbin/system-file-permissions.sh')
+      is_expected.to contain_file('/usr/share/security_baseline/bin/system-file-permissions.sh')
         .with(
           'ensure' => 'present',
           'owner'  => 'root',
@@ -43,7 +43,7 @@ describe 'security_baseline::system_file_permissions_cron' do
     it { is_expected.to compile }
 
     it do
-      is_expected.to contain_file('/usr/local/sbin/system-file-permissions.sh')
+      is_expected.to contain_file('/usr/share/security_baseline/bin/system-file-permissions.sh')
         .with(
           'ensure' => 'present',
           'owner'  => 'root',
@@ -73,7 +73,7 @@ describe 'security_baseline::system_file_permissions_cron' do
     it { is_expected.to compile }
 
     it do
-      is_expected.to contain_file('/usr/local/sbin/system-file-permissions.sh')
+      is_expected.to contain_file('/usr/share/security_baseline/bin/system-file-permissions.sh')
         .with(
           'ensure' => 'present',
           'owner'  => 'root',

@@ -18,7 +18,7 @@
 
 ## Description
 
-Define a complete security baseline and monitor the baseline's rules. The definition of the baseline can be done in Hiera. The purpose of the module is to give the ability to setup complete security baseline which not necessarily have to stick to industry security guides like the CIS benchmarks.
+Define a complete security baseline and monitor the baseline's rules. The definition of the baseline should be done in Hiera. The purpose of the module is to give the ability to setup a complete security baseline which not necessarily have to stick to industry security guides like the CIS benchmarks.
 
 One main purpose is to ensure the module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
 
@@ -199,7 +199,7 @@ See [REFERENCE.md](https://github.com/tom-krieger/security_baseline/blob/master/
 
 ## Limitations
 
-CVurrently the module is tested with redHat 7 only. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
+CVurrently the module is tested with RedHat 7, CentOS 7, Suse SLES 12 and Ubunto 18.04. Other OSes may work but thereÄs no guarantee. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
 
 ## Development
 

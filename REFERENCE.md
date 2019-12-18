@@ -8,112 +8,342 @@
 _Public Classes_
 
 * [`security_baseline`](#security_baseline): Security baseline enforcement and monitoring
+* [`security_baseline::auditd_suid_rules_cron`](#security_baselineauditd_suid_rules_cron): Create a cron job to search binaries with s-bit
+* [`security_baseline::config`](#security_baselineconfig): Configuration stuff
+* [`security_baseline::rules::debian::sec_service_openbsd_inetd`](#security_baselinerulesdebiansec_service_openbsd_inetd): A short summary of the purpose of this class
+* [`security_baseline::services`](#security_baselineservices): Additional services
+* [`security_baseline::system_file_permissions_cron`](#security_baselinesystem_file_permissions_cron): A short summary of the purpose of this class
+* [`security_baseline::unowned_files_cron`](#security_baselineunowned_files_cron): A short summary of the purpose of this class
+* [`security_baseline::world_writeable_files_cron`](#security_baselineworld_writeable_files_cron): A short summary of the purpose of this class
 
 _Private Classes_
 
-* `security_baseline::rules::sec_aide`: Ensure AIDE is installed (Scored)
-* `security_baseline::rules::sec_aide_cron`: Ensure filesystem integrity is regularly checked (Scored)
-* `security_baseline::rules::sec_automounting`: Disable Automounting (Scored)
-* `security_baseline::rules::sec_avahi`: Ensure Avahi Server is not enabled (Scored)
-* `security_baseline::rules::sec_core_dump`: Ensure core dumps are restricted (Scored)
-* `security_baseline::rules::sec_cramfs`: Ensure mounting of cramfs filesystems is disabled (Scored)
-* `security_baseline::rules::sec_cups`: Ensure CUPS is not enabled (Scored)
-* `security_baseline::rules::sec_dev_shm_nodev`: Ensure nodev option set on /dev/shm partition (Scored)
-* `security_baseline::rules::sec_dev_shm_noexec`: Ensure noexec option set on /dev/shm partition (Scored)
-* `security_baseline::rules::sec_dev_shm_nosuid`: Ensure nosuid option set on /dev/shm partition (Scored)
-* `security_baseline::rules::sec_dhcpd`: Ensure DHCP Server is not enabled (Scored)
-* `security_baseline::rules::sec_dns`: Ensure DNS Server is not enabled (Scored)
-* `security_baseline::rules::sec_dovecot`: Ensure IMAP and POP3 server is not enabled (Scored)
-* `security_baseline::rules::sec_freevxfs`: Ensure mounting of freevxfs filesystems is disabled (Scored)
-* `security_baseline::rules::sec_gdm`: 
-* `security_baseline::rules::sec_grub2`: Ensure permissions on bootloader config are configured (Scored)
-* `security_baseline::rules::sec_grub_passwd`: Ensure bootloader password is set (Scored)
-* `security_baseline::rules::sec_hfs`: Ensure mounting of hfs filesystems is disabled (Scored)
-* `security_baseline::rules::sec_hfsplus`: Ensure mounting of hfsplus filesystems is disabled (Scored)
-* `security_baseline::rules::sec_home_nodev`: Ensure nodev option set on /home partition (Scored)
-* `security_baseline::rules::sec_home_partition`: Ensure separate partition exists for /home (Scored)
-* `security_baseline::rules::sec_hosts_allow`: Ensure /etc/hosts.allow is configured (Scored)
-* `security_baseline::rules::sec_hosts_deny`: Ensure /etc/hosts.deny is configured (Scored)
-* `security_baseline::rules::sec_httpd`: Ensure HTTP server is not enabled (Scored)
-* `security_baseline::rules::sec_iptables`: Ensure iptables is installed (Scored)
-* `security_baseline::rules::sec_issue`: Ensure local login warning banner is configured properly (Not Scored)
-* `security_baseline::rules::sec_issue_net`: Ensure remote login warning banner is configured properly (Not Scored)
-* `security_baseline::rules::sec_issue_net_permissions`: Ensure permissions on /etc/issue.net are configured (Not Scored)
-* `security_baseline::rules::sec_issue_permissions`: Ensure permissions on /etc/issue are configured (Scored)
-* `security_baseline::rules::sec_jffs2`: Ensure mounting of jffs2 filesystems is disabled (Scored)
-* `security_baseline::rules::sec_kernel_aslr`: Ensure address space layout randomization (ASLR) is enabled (Scored)
-* `security_baseline::rules::sec_ldap`: Ensure LDAP server is not enabled (Scored)
-* `security_baseline::rules::sec_mcstrans`: Ensure the MCS Translation Service (mcstrans) is not installed (Scored)
-* `security_baseline::rules::sec_motd`: Ensure message of the day is configured properly (Scored)
-* `security_baseline::rules::sec_motd_permissions`: A short summary of the purpose of this class
-* `security_baseline::rules::sec_net_dccp`: Ensure DCCP is disabled (Not Scored)
-* `security_baseline::rules::sec_net_rds`: Ensure RDS is disabled (Not Scored)
-* `security_baseline::rules::sec_net_sctp`: Ensure SCTP is disabled (Not Scored)
-* `security_baseline::rules::sec_net_tipc`: Ensure TIPC is disabled (Not Scored)
-* `security_baseline::rules::sec_network_bogus_icmp_responses`: Ensure bogus ICMP responses are ignored (Scored)
-* `security_baseline::rules::sec_network_broadcast_icmp_requests`: Ensure broadcast ICMP requests are ignored (Scored)
-* `security_baseline::rules::sec_network_icmp_redirect`: Ensure ICMP redirects are not accepted (Scored)
-* `security_baseline::rules::sec_network_ip_forward`: Ensure IP forwarding is disabled (Scored)
-* `security_baseline::rules::sec_network_ipv6_disable`: Ensure IPv6 is disabled (Not Scored)
-* `security_baseline::rules::sec_network_ipv6_redirects`: Ensure ICMP redirects are not accepted (Scored)
-* `security_baseline::rules::sec_network_ipv6_router_advertisements`: Ensure IPv6 router advertisements are not accepted (Not Scored)
-* `security_baseline::rules::sec_network_log_suspicious_packets`: Ensure secure ICMP redirects are not accepted (Scored)
-* `security_baseline::rules::sec_network_packet_redirect`: Ensure packet redirect sending is disabled (Scored)
-* `security_baseline::rules::sec_network_reverse_path_filtering`: Ensure Reverse Path Filtering is enabled (Scored)
-* `security_baseline::rules::sec_network_secure_icmp_redirect`: Ensure secure ICMP redirects are not accepted (Scored)
-* `security_baseline::rules::sec_network_source_route`: Ensure source routed packets are not accepted (Scored)
-* `security_baseline::rules::sec_network_tcp_syn_cookies`: Ensure TCP SYN Cookies is enabled (Scored)
-* `security_baseline::rules::sec_nfs_rpcbind`: Ensure NFS and RPC are not enabled (Scored)
-* `security_baseline::rules::sec_nis`: Ensure NIS Server is not enabled (Scored)
-* `security_baseline::rules::sec_nis_client`: Ensure NIS Client is not installed (Scored)
-* `security_baseline::rules::sec_ntalk`: Ensure talk server is not enabled (Scored)
-* `security_baseline::rules::sec_openldap_client`: Ensure LDAP client is not installed (Scored)
-* `security_baseline::rules::sec_prelink`: Ensure prelink is disabled (Scored)
-* `security_baseline::rules::sec_rhnsd`: Disable the rhnsd Daemon (Not Scored)
-* `security_baseline::rules::sec_rsh`: Ensure rsh server is not enabled (Scored)
-* `security_baseline::rules::sec_rsh_client`: Ensure rsh client is not installed (Scored)
-* `security_baseline::rules::sec_rsyncd`: Ensure talk server is not enabled (Scored)
-* `security_baseline::rules::sec_security_patches`: Ensure updates, patches, and additional security software are installed (Scored)
-* `security_baseline::rules::sec_selinux`: Ensure SELinux is installed (Scored)
-* `security_baseline::rules::sec_selinux_bootloader`: Ensure SELinux is not disabled in bootloader configuration (Scored)
-* `security_baseline::rules::sec_selinux_policy`: 1.6.1.3
-* `security_baseline::rules::sec_selinux_state`: Ensure the SELinux state is enforcing (Scored)
-* `security_baseline::rules::sec_service_chargen`: Ensure chargen services are not enabled (Scored)
-* `security_baseline::rules::sec_service_daytime`: Ensure daytime services are not enabled (Scored)
-* `security_baseline::rules::sec_service_discard`: Ensure discard services are not enabled (Scored)
-* `security_baseline::rules::sec_service_echo`: Ensure echo services are not enabled (Scored)
-* `security_baseline::rules::sec_service_tftp`: Ensure tftp server is not enabled (Scored)
-* `security_baseline::rules::sec_service_time`: Ensure time services are not enabled (Scored)
-* `security_baseline::rules::sec_service_xinetd`: Ensure xinetd is not enabled (Scored)
-* `security_baseline::rules::sec_setroubleshoot`: Ensure SETroubleshoot is not installed (Scored)
-* `security_baseline::rules::sec_single_user_mode`: Ensure authentication required for single user mode (Scored)
-* `security_baseline::rules::sec_smb`: Ensure DHCP Server is not enabled (Scored)
-* `security_baseline::rules::sec_snmpd`: Ensure SNMP Server is not enabled (Scored)
-* `security_baseline::rules::sec_squashfs`: Ensure mounting of squashfs filesystems is disabled (Scored)
-* `security_baseline::rules::sec_squid`: Ensure HTTP Proxy Server is not enabled (Scored)
-* `security_baseline::rules::sec_sticky_world_writeable`: Ensure sticky bit is set on all world-writable directories (Scored)
-* `security_baseline::rules::sec_talk_client`: Ensure talk client is not installed (Scored)
-* `security_baseline::rules::sec_tcp_wrappers`: Ensure TCP Wrappers is installed (Scored)
-* `security_baseline::rules::sec_telnet`: Ensure telnet server is not enabled (Scored)
-* `security_baseline::rules::sec_telnet_client`: Ensure telnet client is not installed (Scored)
-* `security_baseline::rules::sec_tftp`: Ensure telnet server is not enabled (Scored)
-* `security_baseline::rules::sec_tmp_nodev`: Ensure nodev option set on /tmp partition (Scored)
-* `security_baseline::rules::sec_tmp_noexec`: Ensure noexec option set on /tmp partition (Scored)
-* `security_baseline::rules::sec_tmp_nosuid`: Ensure nosuid option set on /tmp partition (Scored)
-* `security_baseline::rules::sec_tmp_partition`: Ensure separate partition exists for /tmp (Scored)
-* `security_baseline::rules::sec_udf`: Ensure mounting of udf filesystems is disabled (Scored)
-* `security_baseline::rules::sec_unconfigured_daemons`: Ensure no unconfined daemons exist (Scored)
-* `security_baseline::rules::sec_var_log_audit_partition`: Ensure separate partition exists for /var/log/audit (Scored)
-* `security_baseline::rules::sec_var_log_partition`: Ensure separate partition exists for /var/log (Scored)
-* `security_baseline::rules::sec_var_partition`: Ensure separate partition exists for /var (Scored)
-* `security_baseline::rules::sec_var_tmp_nodev`: Ensure nodev option set on /var/tmp partition (Scored)
-* `security_baseline::rules::sec_var_tmp_noexec`: Ensure noexec option set on /var/tmp partition (Scored)
-* `security_baseline::rules::sec_var_tmp_nosuid`: Ensure nosuid option set on /var/tmp partition (Scored)
-* `security_baseline::rules::sec_var_tmp_partition`: Ensure separate partition exists for /var/tmp (Scored)
-* `security_baseline::rules::sec_vfat`: Ensure mounting of FAT filesystems is disabled (Scored)
-* `security_baseline::rules::sec_vsftpd`: Ensure FTP Server is not enabled (Scored)
-* `security_baseline::rules::sec_x11_installed`: Ensure X Window System is not installed (Scored)
-* `security_baseline::rules::sec_yum_gpgcheck`: Ensure gpgcheck is globally activated (Scored)
+* `security_baseline::rules::common::sec_audit_sgid_programs`: A short summary of the purpose of this class
+* `security_baseline::rules::common::sec_audit_suid_programs`: A short summary of the purpose of this class
+* `security_baseline::rules::common::sec_auditd_access`: Ensure unsuccessful unauthorized file access attempts are collected (Scored)
+* `security_baseline::rules::common::sec_auditd_actions`: Ensure system administrator actions (sudolog) are collected (Scored)
+* `security_baseline::rules::common::sec_auditd_delete`: Ensure file deletion events by users are collected (Scored)
+* `security_baseline::rules::common::sec_auditd_identity`: Ensure events that modify user/group information are collected (Scored)
+* `security_baseline::rules::common::sec_auditd_immutable`: Ensure the audit configuration is immutable (Scored)
+* `security_baseline::rules::common::sec_auditd_init`: Initialize auditd rules file
+* `security_baseline::rules::common::sec_auditd_logins`: Ensure login and logout events are collected (Scored)
+* `security_baseline::rules::common::sec_auditd_mac_policy`: Ensure events that modify the system's Mandatory Access Controls are collected (Scored)
+* `security_baseline::rules::common::sec_auditd_max_log_file`: Ensure audit log storage size is configured (Not Scored)
+* `security_baseline::rules::common::sec_auditd_max_logfile_action`: Ensure audit logs are not automatically deleted (Scored)
+* `security_baseline::rules::common::sec_auditd_modules`: Ensure kernel module loading and unloading is collected (Scored)
+* `security_baseline::rules::common::sec_auditd_mounts`: Ensure successful file system mounts are collected (Scored)
+* `security_baseline::rules::common::sec_auditd_perm_mod`: Ensure discretionary access control permission modification events are collected (Scored)
+* `security_baseline::rules::common::sec_auditd_privileged_commands`: Ensure use of privileged commands is collected (Scored)
+* `security_baseline::rules::common::sec_auditd_process`: Ensure auditing for processes that start prior to auditd is enabled (Scored)
+* `security_baseline::rules::common::sec_auditd_scope`: Ensure changes to system administration scope (sudoers) is collected (Scored)
+* `security_baseline::rules::common::sec_auditd_session`: Ensure session initiation information is collected (Scored)
+* `security_baseline::rules::common::sec_auditd_session_logins`: Ensure session initiation information is collected (Scored)
+* `security_baseline::rules::common::sec_auditd_time_change`: Ensure events that modify date and time information are collected (Scored)
+* `security_baseline::rules::common::sec_auditd_when_full`: Ensure system is disabled when audit logs are full (Scored)
+* `security_baseline::rules::common::sec_automounting`: Disable Automounting (Scored)
+* `security_baseline::rules::common::sec_avahi`: Ensure Avahi Server is not enabled (Scored)
+* `security_baseline::rules::common::sec_core_dump`: Ensure core dumps are restricted (Scored)
+* `security_baseline::rules::common::sec_cramfs`: Ensure mounting of cramfs filesystems is disabled (Scored)
+* `security_baseline::rules::common::sec_cron_daily`: Ensure permissions on /etc/cron.daily are configured (Scored)
+* `security_baseline::rules::common::sec_cron_hourly`: Ensure permissions on /etc/cron.hourly are configured (Scored)
+* `security_baseline::rules::common::sec_cron_monthly`: Ensure permissions on /etc/cron.monthly are configured (Scored)
+* `security_baseline::rules::common::sec_cron_restrict`: Ensure at/cron is restricted to authorized users (Scored)
+* `security_baseline::rules::common::sec_cron_weekly`: Ensure permissions on /etc/cron.weekly are configured (Scored)
+* `security_baseline::rules::common::sec_cups`: Ensure CUPS is not enabled (Scored)
+* `security_baseline::rules::common::sec_dev_shm_nodev`: Ensure nodev option set on /dev/shm partition (Scored)
+* `security_baseline::rules::common::sec_dev_shm_noexec`: Ensure noexec option set on /dev/shm partition (Scored)
+* `security_baseline::rules::common::sec_dev_shm_nosuid`: Ensure nosuid option set on /dev/shm partition (Scored)
+* `security_baseline::rules::common::sec_dhcpd`: Ensure DHCP Server is not enabled (Scored)
+* `security_baseline::rules::common::sec_dns`: Ensure DNS Server is not enabled (Scored)
+* `security_baseline::rules::common::sec_dovecot`: Ensure IMAP and POP3 server is not enabled (Scored)
+* `security_baseline::rules::common::sec_duplicate_gids`: Ensure no duplicate GIDs exist (Scored)
+* `security_baseline::rules::common::sec_duplicate_groups`: Ensure no duplicate group names exist (Scored)
+* `security_baseline::rules::common::sec_duplicate_uids`: Ensure no duplicate UIDs exist (Scored)
+* `security_baseline::rules::common::sec_duplicate_users`: Ensure no duplicate user names exist (Scored)
+* `security_baseline::rules::common::sec_empty_passwords`: Ensure password fields are not empty (Scored)
+* `security_baseline::rules::common::sec_etc_crond`: Ensure permissions on /etc/cron.d are configured (Scored)
+* `security_baseline::rules::common::sec_etc_crontab`: Ensure permissions on /etc/crontab are configured (Scored)
+* `security_baseline::rules::common::sec_freevxfs`: Ensure mounting of freevxfs filesystems is disabled (Scored)
+* `security_baseline::rules::common::sec_gdm`: 
+* `security_baseline::rules::common::sec_group_bak_perms`: Ensure permissions on /etc/group- are configured (Scored)
+* `security_baseline::rules::common::sec_group_passwd`: Ensure all groups in /etc/passwd exist in /etc/group (Scored)
+* `security_baseline::rules::common::sec_group_perms`: Ensure permissions on /etc/group are configured (Scored)
+* `security_baseline::rules::common::sec_grub_passwd`: Ensure bootloader password is set (Scored)
+* `security_baseline::rules::common::sec_hfs`: Ensure mounting of hfs filesystems is disabled (Scored)
+* `security_baseline::rules::common::sec_hfsplus`: Ensure mounting of hfsplus filesystems is disabled (Scored)
+* `security_baseline::rules::common::sec_home_dirs_exist`: Ensure all users' home directories exist (Scored)
+* `security_baseline::rules::common::sec_home_dirs_owner`: Ensure users own their home directories (Scored)
+* `security_baseline::rules::common::sec_home_dirs_perms`: Ensure users' home directories permissions are 750 or more restrictive (Scored)
+* `security_baseline::rules::common::sec_home_nodev`: Ensure nodev option set on /home partition (Scored)
+* `security_baseline::rules::common::sec_home_partition`: Ensure separate partition exists for /home (Scored)
+* `security_baseline::rules::common::sec_hosts_allow`: Ensure /etc/hosts.allow is configured (Scored)
+* `security_baseline::rules::common::sec_hosts_allow_perms`: Ensure permissions on /etc/hosts.allow are configured (Scored)
+* `security_baseline::rules::common::sec_hosts_deny`: Ensure /etc/hosts.deny is configured (Scored)
+* `security_baseline::rules::common::sec_hosts_deny_perms`: Ensure /etc/hosts.deny is configured (Scored)
+* `security_baseline::rules::common::sec_httpd`: Ensure HTTP server is not enabled (Scored)
+* `security_baseline::rules::common::sec_iptables`: Ensure iptables is installed (Scored)
+* `security_baseline::rules::common::sec_iptables_deny_policy`: Ensure default deny firewall policy (Scored)
+* `security_baseline::rules::common::sec_iptables_loopback`: Ensure loopback traffic is configured (Scored)
+* `security_baseline::rules::common::sec_iptables_open_ports`: Ensure firewall rules exist for all open ports (Scored)
+* `security_baseline::rules::common::sec_iptables_outbound_established`: Ensure outbound and established connections are configured (Not Scored)
+* `security_baseline::rules::common::sec_issue`: Ensure local login warning banner is configured properly (Not Scored)
+* `security_baseline::rules::common::sec_issue_net`: Ensure remote login warning banner is configured properly (Not Scored)
+* `security_baseline::rules::common::sec_issue_net_permissions`: Ensure permissions on /etc/issue.net are configured (Not Scored)
+* `security_baseline::rules::common::sec_issue_permissions`: Ensure permissions on /etc/issue are configured (Scored)
+* `security_baseline::rules::common::sec_jffs2`: Ensure mounting of jffs2 filesystems is disabled (Scored)
+* `security_baseline::rules::common::sec_kernel_aslr`: Ensure address space layout randomization (ASLR) is enabled (Scored)
+* `security_baseline::rules::common::sec_ldap`: Ensure LDAP server is not enabled (Scored)
+* `security_baseline::rules::common::sec_legacy_plus_group`: Ensure no legacy "+" entries exist in /etc/group (Scored)
+* `security_baseline::rules::common::sec_legacy_plus_passwd`: Ensure no legacy "+" entries exist in /etc/passwd (Scored)
+* `security_baseline::rules::common::sec_legacy_plus_shadow`: Ensure no legacy "+" entries exist in /etc/shadow (Scored)
+* `security_baseline::rules::common::sec_logrotate`: Ensure logrotate is configured (Not Scored)
+* `security_baseline::rules::common::sec_motd`: Ensure message of the day is configured properly (Scored)
+* `security_baseline::rules::common::sec_motd_permissions`: A short summary of the purpose of this class
+* `security_baseline::rules::common::sec_net_dccp`: Ensure DCCP is disabled (Not Scored)
+* `security_baseline::rules::common::sec_net_rds`: Ensure RDS is disabled (Not Scored)
+* `security_baseline::rules::common::sec_net_sctp`: Ensure SCTP is disabled (Not Scored)
+* `security_baseline::rules::common::sec_net_tipc`: Ensure TIPC is disabled (Not Scored)
+* `security_baseline::rules::common::sec_network_bogus_icmp_responses`: Ensure bogus ICMP responses are ignored (Scored)
+* `security_baseline::rules::common::sec_network_broadcast_icmp_requests`: Ensure broadcast ICMP requests are ignored (Scored)
+* `security_baseline::rules::common::sec_network_icmp_redirect`: Ensure ICMP redirects are not accepted (Scored)
+* `security_baseline::rules::common::sec_network_ip_forward`: Ensure IP forwarding is disabled (Scored)
+* `security_baseline::rules::common::sec_network_ipv6_disable`: Ensure IPv6 is disabled (Not Scored)
+* `security_baseline::rules::common::sec_network_ipv6_redirects`: Ensure ICMP redirects are not accepted (Scored)
+* `security_baseline::rules::common::sec_network_ipv6_router_advertisements`: Ensure IPv6 router advertisements are not accepted (Not Scored)
+* `security_baseline::rules::common::sec_network_log_suspicious_packets`: Ensure secure ICMP redirects are not accepted (Scored)
+* `security_baseline::rules::common::sec_network_packet_redirect`: Ensure packet redirect sending is disabled (Scored)
+* `security_baseline::rules::common::sec_network_reverse_path_filtering`: Ensure Reverse Path Filtering is enabled (Scored)
+* `security_baseline::rules::common::sec_network_secure_icmp_redirect`: Ensure secure ICMP redirects are not accepted (Scored)
+* `security_baseline::rules::common::sec_network_source_route`: Ensure source routed packets are not accepted (Scored)
+* `security_baseline::rules::common::sec_network_tcp_syn_cookies`: Ensure TCP SYN Cookies is enabled (Scored)
+* `security_baseline::rules::common::sec_nfs_rpcbind`: Ensure NFS and RPC are not enabled (Scored)
+* `security_baseline::rules::common::sec_nis`: Ensure NIS Server is not enabled (Scored)
+* `security_baseline::rules::common::sec_nodev_removable`: Ensure nodev option set on removable media partitions (Not Scored)
+* `security_baseline::rules::common::sec_noexec_removable`: Ensure noexec option set on removable media partitions (Not Scored)
+* `security_baseline::rules::common::sec_nosuid_removable`: Ensure nosuid option set on removable media partitions (Not Scored)
+* `security_baseline::rules::common::sec_ntalk`: Ensure talk server is not enabled (Scored)
+* `security_baseline::rules::common::sec_ntp_daemon_chrony`: Ensure chrony is configured (Scored)
+* `security_baseline::rules::common::sec_ntp_usage`: Ensure time synchronization is in use (Not Scored)
+* `security_baseline::rules::common::sec_nx_support`: Ensure XD/NX support is enabled (Not Scored)
+* `security_baseline::rules::common::sec_passwd_bak_perms`: Ensure permissions on /etc/passwd- are configured (Scored)
+* `security_baseline::rules::common::sec_passwd_expiration`: Ensure password expiration is 365 days or less (Scored)
+* `security_baseline::rules::common::sec_passwd_inactive_days`: Ensure inactive password lock is 30 days or less (Scored)
+* `security_baseline::rules::common::sec_passwd_last_change_in_past`: Ensure all users last password change date is in the past (Scored)
+* `security_baseline::rules::common::sec_passwd_min_days`: Ensure minimum days between password changes is 7 or more (Scored)
+* `security_baseline::rules::common::sec_passwd_perms`: Ensure permissions on /etc/passwd are configured (Scored)
+* `security_baseline::rules::common::sec_passwd_warn_days`: Ensure password expiration warning days is 7 or more (Scored)
+* `security_baseline::rules::common::sec_root_gid`: Ensure default group for the root account is GID 0 (Scored)
+* `security_baseline::rules::common::sec_root_path_integrity`: Ensure root PATH Integrity (Scored)
+* `security_baseline::rules::common::sec_rsyslog_service`: Ensure rsyslog Service is enabled (Scored)
+* `security_baseline::rules::common::sec_security_patches`: Ensure updates, patches, and additional security software are installed (Scored)
+* `security_baseline::rules::common::sec_selinux_policy`: 1.6.1.3
+* `security_baseline::rules::common::sec_selinux_state`: Ensure the SELinux state is enforcing (Scored)
+* `security_baseline::rules::common::sec_service_xinetd`: Ensure xinetd is not enabled (Scored)
+* `security_baseline::rules::common::sec_smb`: Ensure DHCP Server is not enabled (Scored)
+* `security_baseline::rules::common::sec_snmpd`: Ensure SNMP Server is not enabled (Scored)
+* `security_baseline::rules::common::sec_squashfs`: Ensure mounting of squashfs filesystems is disabled (Scored)
+* `security_baseline::rules::common::sec_squid`: Ensure HTTP Proxy Server is not enabled (Scored)
+* `security_baseline::rules::common::sec_sshd_banner`: Ensure SSH warning banner is configured (Scored)
+* `security_baseline::rules::common::sec_sshd_config_file`: Ensure permissions on /etc/ssh/sshd_config are configured (Scored)
+* `security_baseline::rules::common::sec_sshd_empty_passwords`: A short summary of the purpose of this class
+* `security_baseline::rules::common::sec_sshd_hostbased_authentication`: Ensure SSH HostbasedAuthentication is disabled (Scored)
+* `security_baseline::rules::common::sec_sshd_ignore_rhosts`: Ensure SSH IgnoreRhosts is enabled (Scored)
+* `security_baseline::rules::common::sec_sshd_limit_access`: Ensure SSH access is limited (Scored)
+* `security_baseline::rules::common::sec_sshd_login_gracetime`: Ensure SSH LoginGraceTime is set to one minute or less (Scored)
+* `security_baseline::rules::common::sec_sshd_loglevel`: Ensure SSH LogLevel is set to INFO (Scored)
+* `security_baseline::rules::common::sec_sshd_macs`: Ensure only approved MAC algorithms are used (Scored)
+* `security_baseline::rules::common::sec_sshd_max_auth_tries`: Ensure SSH MaxAuthTries is set to 4 or less (Scored)
+* `security_baseline::rules::common::sec_sshd_protocol`: Ensure SSH Protocol is set to 2 (Scored)
+* `security_baseline::rules::common::sec_sshd_root_login`: Ensure SSH root login is disabled (Scored)
+* `security_baseline::rules::common::sec_sshd_timeouts`: Ensure SSH Idle Timeout Interval is configured (Scored)
+* `security_baseline::rules::common::sec_sshd_user_environment`: Ensure SSH PermitUserEnvironment is disabled (Scored)
+* `security_baseline::rules::common::sec_sshd_x11_forward`: Ensure SSH X11 forwarding is disabled (Scored)
+* `security_baseline::rules::common::sec_sticky_world_writeable`: Ensure sticky bit is set on all world-writable directories (Scored)
+* `security_baseline::rules::common::sec_syslog_installed`: Ensure rsyslog or syslog-ng is installed (Scored)
+* `security_baseline::rules::common::sec_syslog_logfile_perms`: Ensure permissions on all logfiles are configured (Scored)
+* `security_baseline::rules::common::sec_syslogng_default_file_perms`: Ensure syslog-ng default file permissions configured (Scored)
+* `security_baseline::rules::common::sec_syslogng_logging`: Ensure logging is configured (Not Scored)
+* `security_baseline::rules::common::sec_syslogng_remote_logs`: Ensure syslog-ng is configured to send logs to a remote log host (Not Scored)
+* `security_baseline::rules::common::sec_syslogng_remote_syslog`: Ensure remote syslog-ng messages are only accepted on designated log hosts (Not Scored)
+* `security_baseline::rules::common::sec_syslogng_service`: Ensure syslog-ng service is enabled (Scored)
+* `security_baseline::rules::common::sec_system_file_perms`: Audit system file permissions (Not Scored)
+* `security_baseline::rules::common::sec_telnet`: Ensure telnet server is not enabled (Scored)
+* `security_baseline::rules::common::sec_tftp`: Ensure telnet server is not enabled (Scored)
+* `security_baseline::rules::common::sec_tmp_nodev`: Ensure nodev option set on /tmp partition (Scored)
+* `security_baseline::rules::common::sec_tmp_noexec`: Ensure noexec option set on /tmp partition (Scored)
+* `security_baseline::rules::common::sec_tmp_nosuid`: Ensure nosuid option set on /tmp partition (Scored)
+* `security_baseline::rules::common::sec_tmp_partition`: Ensure separate partition exists for /tmp (Scored)
+* `security_baseline::rules::common::sec_tty_root_login`: Ensure root login is restricted to system console (Not Scored)
+* `security_baseline::rules::common::sec_udf`: Ensure mounting of udf filesystems is disabled (Scored)
+* `security_baseline::rules::common::sec_uid_0_root`: Ensure root is the only UID 0 account (Scored)
+* `security_baseline::rules::common::sec_unconfigured_daemons`: Ensure no unconfined daemons exist (Scored)
+* `security_baseline::rules::common::sec_ungrouped_files`: Ensure no ungrouped files or directories exist (Scored)
+* `security_baseline::rules::common::sec_unowned_files`: Ensure no unowned files or directories exist (Scored)
+* `security_baseline::rules::common::sec_users_dot_files`: Ensure users' dot files are not group or world writable (Scored)
+* `security_baseline::rules::common::sec_users_forward_files`: Ensure no users have .forward files (Scored)
+* `security_baseline::rules::common::sec_users_netrc_files`: Ensure no users have .netrc files (Scored)
+* `security_baseline::rules::common::sec_users_netrc_files_write`: Ensure users' .netrc Files are not group or world accessible (Scored)
+* `security_baseline::rules::common::sec_users_rhosts`: Ensure no users have .rhosts files (Scored)
+* `security_baseline::rules::common::sec_var_log_audit_partition`: Ensure separate partition exists for /var/log/audit (Scored)
+* `security_baseline::rules::common::sec_var_log_partition`: Ensure separate partition exists for /var/log (Scored)
+* `security_baseline::rules::common::sec_var_partition`: Ensure separate partition exists for /var (Scored)
+* `security_baseline::rules::common::sec_var_tmp_nodev`: Ensure nodev option set on /var/tmp partition (Scored)
+* `security_baseline::rules::common::sec_var_tmp_noexec`: Ensure noexec option set on /var/tmp partition (Scored)
+* `security_baseline::rules::common::sec_var_tmp_nosuid`: Ensure nosuid option set on /var/tmp partition (Scored)
+* `security_baseline::rules::common::sec_var_tmp_partition`: Ensure separate partition exists for /var/tmp (Scored)
+* `security_baseline::rules::common::sec_vfat`: Ensure mounting of FAT filesystems is disabled (Scored)
+* `security_baseline::rules::common::sec_vsftpd`: Ensure FTP Server is not enabled (Scored)
+* `security_baseline::rules::common::sec_wlan_interfaces`: Ensure wireless interfaces are disabled (Not Scored)
+* `security_baseline::rules::common::sec_world_writable_files`: Ensure no world writable files exist (Scored)
+* `security_baseline::rules::debian::sec_access_control`: Ensure SELinux or AppArmor are installed (Scored)
+* `security_baseline::rules::debian::sec_aide`: Ensure AIDE is installed (Scored)
+* `security_baseline::rules::debian::sec_aide_cron`: Ensure filesystem integrity is regularly checked (Scored)
+* `security_baseline::rules::debian::sec_apparmor_bootloader`: Ensure AppArmor is not disabled in bootloader configuration (Scored)
+* `security_baseline::rules::debian::sec_apparmor_profiles`: Ensure all AppArmor Profiles are enforcing (Scored)
+* `security_baseline::rules::debian::sec_apt_gpg_keys`: Ensure GPG keys are configured (Not Scored)
+* `security_baseline::rules::debian::sec_apt_gpgcheck`: Ensure GPG keys are configured (Not Scored)
+* `security_baseline::rules::debian::sec_apt_repolist`: Ensure package manager repositories are configured (Not Scored)
+* `security_baseline::rules::debian::sec_auditd_service`: Ensure auditd service is enabled (Scored).
+* `security_baseline::rules::debian::sec_auditd_system_locale`: Ensure events that modify the system's network environment are collected (Scored)
+* `security_baseline::rules::debian::sec_crond`: Ensure cron daemon is enabled (Scored)
+* `security_baseline::rules::debian::sec_grub`: Ensure permissions on bootloader config are configured (Scored)
+* `security_baseline::rules::debian::sec_gshadow_bak_perms`: Ensure permissions on /etc/gshadow- are configured (Scored)
+* `security_baseline::rules::debian::sec_gshadow_perms`: Ensure permissions on /etc/gshadow are configured (Scored)
+* `security_baseline::rules::debian::sec_nis_client`: Ensure NIS Client is not installed (Scored)
+* `security_baseline::rules::debian::sec_ntp_daemon_ntp`: Ensure ntp is configured (Scored)
+* `security_baseline::rules::debian::sec_openldap_client`: Ensure LDAP client is not installed (Scored)
+* `security_baseline::rules::debian::sec_pam_lockout`: Ensure lockout for failed password attempts is configured (Scored)
+* `security_baseline::rules::debian::sec_pam_old_passwords`: Ensure password reuse is limited (Scored)
+* `security_baseline::rules::debian::sec_pam_passwd_sha512`: Ensure password hashing algorithm is SHA-512 (Scored)
+* `security_baseline::rules::debian::sec_pam_pw_requirements`: Ensure password creation requirements are configured (Scored)
+* `security_baseline::rules::debian::sec_prelink`: Ensure prelink is disabled (Scored)
+* `security_baseline::rules::debian::sec_restrict_su`: Ensure access to the su command is restricted (Scored)
+* `security_baseline::rules::debian::sec_rsh`: Ensure rsh server is not enabled (Scored)
+* `security_baseline::rules::debian::sec_rsh_client`: Ensure rsh client is not installed (Scored)
+* `security_baseline::rules::debian::sec_rsyncd`: Ensure talk server is not enabled (Scored)
+* `security_baseline::rules::debian::sec_rsyslog_default_file_perms`: Ensure rsyslog default file permissions configured (Scored)
+* `security_baseline::rules::debian::sec_rsyslog_logging`: Ensure logging is configured (Not Scored)
+* `security_baseline::rules::debian::sec_rsyslog_remote_logs`: Ensure rsyslog is configured to send logs to a remote log host (Scored)
+* `security_baseline::rules::debian::sec_rsyslog_remote_syslog`: Ensure remote rsyslog messages are only accepted on designated log hosts. (Not Scored)
+* `security_baseline::rules::debian::sec_selinux_bootloader`: Ensure SELinux is not disabled in bootloader configuration (Scored)
+* `security_baseline::rules::debian::sec_service_chargen`: Ensure chargen services are not enabled (Scored)
+* `security_baseline::rules::debian::sec_service_daytime`: Ensure daytime services are not enabled (Scored)
+* `security_baseline::rules::debian::sec_service_discard`: Ensure discard services are not enabled (Scored)
+* `security_baseline::rules::debian::sec_service_echo`: Ensure echo services are not enabled (Scored)
+* `security_baseline::rules::debian::sec_service_talk`: Ensure talk server is not enabled (Scored)
+* `security_baseline::rules::debian::sec_service_telnet`: Ensure telnet server is not enabled (Scored)
+* `security_baseline::rules::debian::sec_service_tftp`: Ensure tftp server is not enabled (Scored)
+* `security_baseline::rules::debian::sec_service_time`: Ensure time services are not enabled (Scored)
+* `security_baseline::rules::debian::sec_shadow_bak_perms`: Ensure permissions on /etc/shadow- are configured (Scored)
+* `security_baseline::rules::debian::sec_shadow_group`: Ensure shadow group is empty (Scored)
+* `security_baseline::rules::debian::sec_shadow_perms`: Ensure permissions on /etc/shadow are configured (Scored)
+* `security_baseline::rules::debian::sec_shell_nologin`: Ensure system accounts are non-login (Scored)
+* `security_baseline::rules::debian::sec_single_user_mode`: Ensure authentication required for single user mode (Scored)
+* `security_baseline::rules::debian::sec_talk_client`: Ensure talk client is not installed (Scored)
+* `security_baseline::rules::debian::sec_tcp_wrappers`: Ensure TCP Wrappers is installed (Scored)
+* `security_baseline::rules::debian::sec_telnet_client`: Ensure telnet client is not installed (Scored)
+* `security_baseline::rules::debian::sec_timeout_setting`: Ensure default user shell timeout is 900 seconds or less (Scored)
+* `security_baseline::rules::debian::sec_umask_setting`: Ensure default user umask is 027 or more restrictive (Scored)
+* `security_baseline::rules::debian::sec_x11_installed`: Ensure X Window System is not installed (Scored)
+* `security_baseline::rules::redhat::sec_aide`: Ensure AIDE is installed (Scored)
+* `security_baseline::rules::redhat::sec_aide_cron`: Ensure filesystem integrity is regularly checked (Scored)
+* `security_baseline::rules::redhat::sec_auditd_service`: Ensure auditd service is enabled (Scored).
+* `security_baseline::rules::redhat::sec_auditd_system_locale`: Ensure events that modify the system's network environment are collected (Scored)
+* `security_baseline::rules::redhat::sec_crond`: Ensure cron daemon is enabled (Scored)
+* `security_baseline::rules::redhat::sec_grub2`: Ensure permissions on bootloader config are configured (Scored)
+* `security_baseline::rules::redhat::sec_gshadow_bak_perms`: Ensure permissions on /etc/gshadow- are configured (Scored)
+* `security_baseline::rules::redhat::sec_gshadow_perms`: Ensure permissions on /etc/gshadow are configured (Scored)
+* `security_baseline::rules::redhat::sec_mcstrans`: Ensure the MCS Translation Service (mcstrans) is not installed (Scored)
+* `security_baseline::rules::redhat::sec_nis_client`: Ensure NIS Client is not installed (Scored)
+* `security_baseline::rules::redhat::sec_ntp_daemon_ntp`: Ensure ntp is configured (Scored)
+* `security_baseline::rules::redhat::sec_openldap_client`: Ensure LDAP client is not installed (Scored)
+* `security_baseline::rules::redhat::sec_pam_lockout`: Ensure lockout for failed password attempts is configured (Scored)
+* `security_baseline::rules::redhat::sec_pam_old_passwords`: Ensure password reuse is limited (Scored)
+* `security_baseline::rules::redhat::sec_pam_passwd_sha512`: Ensure password hashing algorithm is SHA-512 (Scored)
+* `security_baseline::rules::redhat::sec_pam_pw_requirements`: Ensure password creation requirements are configured (Scored)
+* `security_baseline::rules::redhat::sec_prelink`: Ensure prelink is disabled (Scored)
+* `security_baseline::rules::redhat::sec_restrict_su`: Ensure access to the su command is restricted (Scored)
+* `security_baseline::rules::redhat::sec_rhnsd`: Disable the rhnsd Daemon (Not Scored)
+* `security_baseline::rules::redhat::sec_rhsm_identity`: Ensure Red Hat Subscription Manager connection is configured (Not Scored)
+* `security_baseline::rules::redhat::sec_rsh`: Ensure rsh server is not enabled (Scored)
+* `security_baseline::rules::redhat::sec_rsh_client`: Ensure rsh client is not installed (Scored)
+* `security_baseline::rules::redhat::sec_rsyncd`: Ensure talk server is not enabled (Scored)
+* `security_baseline::rules::redhat::sec_rsyslog_default_file_perms`: Ensure rsyslog default file permissions configured (Scored)
+* `security_baseline::rules::redhat::sec_rsyslog_logging`: Ensure logging is configured (Not Scored)
+* `security_baseline::rules::redhat::sec_rsyslog_remote_logs`: Ensure rsyslog is configured to send logs to a remote log host (Scored)
+* `security_baseline::rules::redhat::sec_rsyslog_remote_syslog`: Ensure remote rsyslog messages are only accepted on designated log hosts. (Not Scored)
+* `security_baseline::rules::redhat::sec_selinux`: Ensure SELinux is installed (Scored)
+* `security_baseline::rules::redhat::sec_selinux_bootloader`: Ensure SELinux is not disabled in bootloader configuration (Scored)
+* `security_baseline::rules::redhat::sec_service_chargen`: Ensure chargen services are not enabled (Scored)
+* `security_baseline::rules::redhat::sec_service_daytime`: Ensure daytime services are not enabled (Scored)
+* `security_baseline::rules::redhat::sec_service_discard`: Ensure discard services are not enabled (Scored)
+* `security_baseline::rules::redhat::sec_service_echo`: Ensure echo services are not enabled (Scored)
+* `security_baseline::rules::redhat::sec_service_tftp`: Ensure tftp server is not enabled (Scored)
+* `security_baseline::rules::redhat::sec_service_time`: Ensure time services are not enabled (Scored)
+* `security_baseline::rules::redhat::sec_setroubleshoot`: Ensure SETroubleshoot is not installed (Scored)
+* `security_baseline::rules::redhat::sec_shadow_bak_perms`: Ensure permissions on /etc/shadow- are configured (Scored)
+* `security_baseline::rules::redhat::sec_shadow_perms`: Ensure permissions on /etc/shadow are configured (Scored)
+* `security_baseline::rules::redhat::sec_shell_nologin`: Ensure system accounts are non-login (Scored)
+* `security_baseline::rules::redhat::sec_single_user_mode`: Ensure authentication required for single user mode (Scored)
+* `security_baseline::rules::redhat::sec_talk_client`: Ensure talk client is not installed (Scored)
+* `security_baseline::rules::redhat::sec_tcp_wrappers`: Ensure TCP Wrappers is installed (Scored)
+* `security_baseline::rules::redhat::sec_telnet_client`: Ensure telnet client is not installed (Scored)
+* `security_baseline::rules::redhat::sec_timeout_setting`: Ensure default user shell timeout is 900 seconds or less (Scored)
+* `security_baseline::rules::redhat::sec_umask_setting`: Ensure default user umask is 027 or more restrictive (Scored)
+* `security_baseline::rules::redhat::sec_x11_installed`: Ensure X Window System is not installed (Scored)
+* `security_baseline::rules::redhat::sec_yum_gpg_keys`: Ensure GPG keys are configured (Not Scored)
+* `security_baseline::rules::redhat::sec_yum_gpgcheck`: Ensure gpgcheck is globally activated (Scored)
+* `security_baseline::rules::redhat::sec_yum_repolist`: Ensure package manager repositories are configured (Not Scored)
+* `security_baseline::rules::sles::sec_access_control`: Ensure SELinux or AppArmor are installed (Scored)
+* `security_baseline::rules::sles::sec_aide`: Ensure AIDE is installed (Scored)
+* `security_baseline::rules::sles::sec_aide_cron`: Ensure filesystem integrity is regularly checked (Scored)
+* `security_baseline::rules::sles::sec_apparmor_bootloader`: Ensure AppArmor is not disabled in bootloader configuration (Scored)
+* `security_baseline::rules::sles::sec_apparmor_profiles`: Ensure all AppArmor Profiles are enforcing (Scored)
+* `security_baseline::rules::sles::sec_auditd_service`: Ensure auditd service is enabled (Scored).
+* `security_baseline::rules::sles::sec_auditd_system_locale`: Ensure events that modify the system's network environment are collected (Scored)
+* `security_baseline::rules::sles::sec_crond`: Ensure cron daemon is enabled (Scored)
+* `security_baseline::rules::sles::sec_grub2`: Ensure permissions on bootloader config are configured (Scored)
+* `security_baseline::rules::sles::sec_gshadow_bak_perms`: Ensure permissions on /etc/gshadow- are configured (Scored)
+* `security_baseline::rules::sles::sec_gshadow_perms`: Ensure permissions on /etc/gshadow are configured (Scored)
+* `security_baseline::rules::sles::sec_mcstrans`: Ensure the MCS Translation Service (mcstrans) is not installed (Scored)
+* `security_baseline::rules::sles::sec_nis_client`: Ensure NIS Client is not installed (Scored)
+* `security_baseline::rules::sles::sec_ntp_daemon_ntp`: Ensure ntp is configured (Scored)
+* `security_baseline::rules::sles::sec_openldap_client`: Ensure LDAP client is not installed (Scored)
+* `security_baseline::rules::sles::sec_pam_lockout`: Ensure lockout for failed password attempts is configured (Scored)
+* `security_baseline::rules::sles::sec_pam_old_passwords`: Ensure password reuse is limited (Scored)
+* `security_baseline::rules::sles::sec_pam_passwd_sha512`: Ensure password hashing algorithm is SHA-512 (Scored)
+* `security_baseline::rules::sles::sec_pam_pw_requirements`: Ensure password creation requirements are configured (Scored)
+* `security_baseline::rules::sles::sec_prelink`: Ensure prelink is disabled (Scored)
+* `security_baseline::rules::sles::sec_restrict_su`: Ensure access to the su command is restricted (Scored)
+* `security_baseline::rules::sles::sec_rsh`: Ensure rsh server is not enabled (Scored)
+* `security_baseline::rules::sles::sec_rsh_client`: Ensure rsh client is not installed (Scored)
+* `security_baseline::rules::sles::sec_rsyncd`: Ensure talk server is not enabled (Scored)
+* `security_baseline::rules::sles::sec_rsyslog_default_file_perms`: Ensure rsyslog default file permissions configured (Scored)
+* `security_baseline::rules::sles::sec_rsyslog_logging`: Ensure logging is configured (Not Scored)
+* `security_baseline::rules::sles::sec_rsyslog_remote_logs`: Ensure rsyslog is configured to send logs to a remote log host (Scored)
+* `security_baseline::rules::sles::sec_rsyslog_remote_syslog`: Ensure remote rsyslog messages are only accepted on designated log hosts. (Not Scored)
+* `security_baseline::rules::sles::sec_selinux_bootloader`: Ensure SELinux is not disabled in bootloader configuration (Scored)
+* `security_baseline::rules::sles::sec_service_chargen`: Ensure chargen services are not enabled (Scored)
+* `security_baseline::rules::sles::sec_service_daytime`: Ensure daytime services are not enabled (Scored)
+* `security_baseline::rules::sles::sec_service_discard`: Ensure discard services are not enabled (Scored)
+* `security_baseline::rules::sles::sec_service_echo`: Ensure echo services are not enabled (Scored)
+* `security_baseline::rules::sles::sec_service_tftp`: Ensure tftp server is not enabled (Scored)
+* `security_baseline::rules::sles::sec_service_time`: Ensure time services are not enabled (Scored)
+* `security_baseline::rules::sles::sec_setroubleshoot`: Ensure SETroubleshoot is not installed (Scored)
+* `security_baseline::rules::sles::sec_shadow_bak_perms`: Ensure permissions on /etc/shadow- are configured (Scored)
+* `security_baseline::rules::sles::sec_shadow_group`: Ensure shadow group is empty (Scored)
+* `security_baseline::rules::sles::sec_shadow_perms`: Ensure permissions on /etc/shadow are configured (Scored)
+* `security_baseline::rules::sles::sec_shell_nologin`: Ensure system accounts are non-login (Scored)
+* `security_baseline::rules::sles::sec_single_user_mode`: Ensure authentication required for single user mode (Scored)
+* `security_baseline::rules::sles::sec_talk_client`: Ensure talk client is not installed (Scored)
+* `security_baseline::rules::sles::sec_tcp_wrappers`: Ensure TCP Wrappers is installed (Scored)
+* `security_baseline::rules::sles::sec_telnet_client`: Ensure telnet client is not installed (Scored)
+* `security_baseline::rules::sles::sec_timeout_setting`: Ensure default user shell timeout is 900 seconds or less (Scored)
+* `security_baseline::rules::sles::sec_umask_setting`: Ensure default user umask is 027 or more restrictive (Scored)
+* `security_baseline::rules::sles::sec_x11_installed`: Ensure X Window System is not installed (Scored)
+* `security_baseline::rules::sles::sec_zypper_gpg_keys`: Ensure GPG keys are configured (Not Scored)
+* `security_baseline::rules::sles::sec_zypper_gpgcheck`: Ensure GPG keys are configured (Not Scored)
+* `security_baseline::rules::sles::sec_zypper_repolist`: Ensure package manager repositories are configured (Not Scored)
 
 **Defined types**
 
@@ -178,7 +408,263 @@ Data type: `String`
 
 Logfile to write messages to
 
-Default value: '/opt/puppetlabs/facter/facts.d/security_baseline.yaml'
+Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml'
+
+##### `auditd_suid_include`
+
+Data type: `Array`
+
+Directories to search for suid and sgid programs. Can not be set together with auditd_suid_exclude
+
+Default value: []
+
+##### `auditd_suid_exclude`
+
+Data type: `Array`
+
+Directories to exclude from search for suid and sgid programs. Can not be set together with auditd_suid_include
+
+Default value: []
+
+##### `reporting_type`
+
+Data type: `Enum['fact', 'csv_file']`
+
+Select to type of reporting. ca currently be set to csv or fact.
+
+Default value: 'fact'
+
+##### `auditd_rules_fact_file`
+
+Data type: `String`
+
+The file where to store the facts for auditd rules
+
+Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml'
+
+##### `suid_fact_file`
+
+Data type: `String`
+
+The file where to store the suid programms
+
+Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_suid_programs.yaml'
+
+##### `sgid_fact_file`
+
+Data type: `String`
+
+The file where to store the sgid programs
+
+Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_sgid_programs.yaml'
+
+##### `update_postrun_command`
+
+Data type: `Boolean`
+
+Update Puppet agent post run command
+
+Default value: `true`
+
+##### `fact_upload_command`
+
+Data type: `String`
+
+Command to use to upload facts to Puppet master
+
+Default value: '/usr/local/bin/puppet facts upload'
+
+##### `auditd_rules_file`
+
+Data type: `String`
+
+
+
+Default value: '/etc/audit/rules.d/sec_baseline_auditd.rules'
+
+### security_baseline::auditd_suid_rules_cron
+
+Create a fact with all auditd rules needed to monitor the usage of s-bit programs.
+
+#### Examples
+
+##### 
+
+```puppet
+include security_baseline::auditd_suid_rules_cron
+```
+
+#### Parameters
+
+The following parameters are available in the `security_baseline::auditd_suid_rules_cron` class.
+
+##### `include`
+
+Data type: `Array`
+
+
+
+Default value: []
+
+##### `exclude`
+
+Data type: `Array`
+
+
+
+Default value: []
+
+##### `auditd_rules_fact_file`
+
+Data type: `String`
+
+
+
+Default value: '/tmp/auditd.facts.yaml'
+
+##### `suid_fact_file`
+
+Data type: `String`
+
+
+
+Default value: '/tmp/suid_programs.yaml'
+
+##### `sgid_fact_file`
+
+Data type: `String`
+
+
+
+Default value: '/tmp/sgid_progras.yaml'
+
+### security_baseline::config
+
+Run configuration stuff
+
+#### Examples
+
+##### 
+
+```puppet
+include security_baseline::config
+```
+
+#### Parameters
+
+The following parameters are available in the `security_baseline::config` class.
+
+##### `update_postrun_command`
+
+Data type: `Boolean`
+
+Update the post run command of Puppet agent
+
+Default value: `true`
+
+##### `fact_upload_command`
+
+Data type: `String`
+
+Command to use to upload facts to Puppet master
+
+Default value: '/usr/local/bin/puppet facts upload'
+
+##### `reporting_type`
+
+Data type: `Enum['fact', 'csv_file']`
+
+Selects the report type to be written
+
+Default value: 'fact'
+
+### security_baseline::rules::debian::sec_service_openbsd_inetd
+
+A description of what this class does
+
+#### Examples
+
+##### 
+
+```puppet
+include security_baseline::rules::debian::sec_service_openbsd_inetd
+```
+
+#### Parameters
+
+The following parameters are available in the `security_baseline::rules::debian::sec_service_openbsd_inetd` class.
+
+##### `enforce`
+
+Data type: `Boolean`
+
+
+
+Default value: `true`
+
+##### `message`
+
+Data type: `String`
+
+
+
+Default value: ''
+
+##### `log_level`
+
+Data type: `String`
+
+
+
+Default value: ''
+
+### security_baseline::services
+
+Services e. g. reload sshd
+
+#### Examples
+
+##### 
+
+```puppet
+include security_baseline::services
+```
+
+### security_baseline::system_file_permissions_cron
+
+A description of what this class does
+
+#### Examples
+
+##### 
+
+```puppet
+include security_baseline::system_file_permissions_cron
+```
+
+### security_baseline::unowned_files_cron
+
+A description of what this class does
+
+#### Examples
+
+##### 
+
+```puppet
+include security_baseline::unowned_files_cron
+```
+
+### security_baseline::world_writeable_files_cron
+
+A description of what this class does
+
+#### Examples
+
+##### 
+
+```puppet
+include security_baseline::world_writeable_files_cron
+```
 
 ## Defined types
 
@@ -247,7 +733,7 @@ Data type: `Any`
 
 
 
-##### `level`
+##### `log_level`
 
 Data type: `Any`
 
@@ -264,6 +750,26 @@ Data type: `Any`
 Data type: `Any`
 
 
+
+##### `level`
+
+Data type: `Any`
+
+
+
+##### `scored`
+
+Data type: `Any`
+
+
+
+##### `reporting_type`
+
+Data type: `Enum['fact', 'csv_file']`
+
+
+
+Default value: 'fact'
 
 ### security_baseline::sec_check
 
@@ -285,7 +791,7 @@ security_baseline::sec_check { '1.1.2':
       fact_value => '/tmp',
     },
     message     => 'Not in compliance with rule 1.1.2. No seperate directory for /tmp.',
-    loglevel    => 'warning',
+    log_level   => 'warning',
 }
 ```
 
@@ -304,6 +810,22 @@ Name of the rule for loggting
 Data type: `Boolean`
 
 Sets a rule active or inactive. Inactive rules will not be used
+
+Default value: `true`
+
+##### `level`
+
+Data type: `Integer`
+
+Profile level
+
+Default value: 1
+
+##### `scored`
+
+Data type: `Boolean`
+
+Indicates if a ruile is scored or not
 
 Default value: `true`
 
@@ -340,7 +862,7 @@ Message to print into the log
 
 Default value: ''
 
-##### `loglevel`
+##### `log_level`
 
 Data type: `String`
 

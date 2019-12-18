@@ -21,10 +21,10 @@ define security_baseline::set_mount_options (
   augeas{ "/etc/fstab - work on ${mountpoint} with ${mountoptions}":
     context => '/files/etc/fstab',
     changes => [
-      "ins opt after /files/etc/fstab/*[file = '${mountpoint}']/opt[last()]",
-      "set *[file = ‘${mountpoint}‘]/opt[last()] ${mountoptions}",
+      "ins mountopt after /files/etc/fstab/*[file = '${mountpoint}']/mountopt[last()]",
+      "set *[file = '${mountpoint}'']/mountopt[last()] ${mountoptions}",
     ],
-    onlyif  => "match *[file = '${mountpoint}']/opt[. = '${mountoptions}'] size == 0",
+    onlyif  => "match *[file = '${mountpoint}']/mountopt[. = '${mountoptions}'] size == 0",
     notify  => Exec["remount ${mountpoint} with ${mountoptions}"],
   }
 

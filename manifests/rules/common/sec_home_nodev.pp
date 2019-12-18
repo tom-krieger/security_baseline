@@ -30,9 +30,14 @@ class security_baseline::rules::common::sec_home_nodev (
   String $log_level = ''
 ) {
   if ($enforce) {
-    security_baseline::set_mount_options { '/home-nodev':
-      mountpoint => '/home',
-      mountoptions => 'node',
+    if (
+      ($facts['security_baseline']['partitions']['home']['nodev'] == false) and
+      (has_key($facts['mountpoints'], '/home'))
+    ) {
+      security_baseline::set_mount_options { '/home-nodev':
+        mountpoint   => '/home',
+        mountoptions => 'node',
+      }
     }
   } else {
     if (has_key($facts, 'security_baseline')) {

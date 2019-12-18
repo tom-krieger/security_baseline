@@ -30,12 +30,17 @@ class security_baseline::rules::common::sec_dev_shm_noexec (
   String $log_level = ''
 ) {
   if $enforce {
-    security_baseline::set_mount_options { '/dev/shm-noexec':
-      mountpoint   => '/dev/shm',
-      mountoptions => 'noexec',
+    if (
+      ($facts['security_baseline']['partitions']['shm']['noexec'] == false) and
+      (has_key($facts['mountpoints'], '/dev/shm'))
+    ) {
+      security_baseline::set_mount_options { '/dev/shm-noexec':
+        mountpoint   => '/dev/shm',
+        mountoptions => 'noexec',
+      }
     }
   } else {
-    if $facts['security_baseline']['partitions']['shm']['nosuid'] == false {
+    if $facts['security_baseline']['partitions']['shm']['noexec'] == false {
       echo { 'dev-shm-noexec':
         message  => $message,
         loglevel => $log_level,

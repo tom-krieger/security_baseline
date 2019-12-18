@@ -30,9 +30,14 @@ class security_baseline::rules::common::sec_var_tmp_nodev (
   String $log_level = ''
 ) {
   if ($enforce) {
-    security_baseline::set_mount_options { '/var/tmp-nodev':
-      mountpoint => '/var/tmp',
-      mountoptions => 'nodeb',
+    if (
+      ($facts['security_baseline']['partitions']['var_tmp']['nodev'] == false) and
+      (has_key($facts['mountpoints'], '/var/tmp'))
+    ) {
+      security_baseline::set_mount_options { '/var/tmp-nodev':
+        mountpoint   => '/var/tmp',
+        mountoptions => 'nodev',
+      }
     }
   } else {
     if (has_key($facts, 'security_baseline')) {

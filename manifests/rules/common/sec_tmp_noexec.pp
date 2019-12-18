@@ -30,9 +30,14 @@ class security_baseline::rules::common::sec_tmp_noexec (
   String $log_level = ''
 ) {
   if ($enforce) {
-    security_baseline::set_mount_options { '/tmp-noexec':
-      mountpoint => '/tmp',
-      mountoptions => 'noexec',
+    if (
+      ($facts['security_baseline']['partitions']['tmp']['noexec'] == false) and
+      (has_key($facts['mountpoints'], '/tmp'))
+    ) {
+      security_baseline::set_mount_options { '/tmp-noexec':
+        mountpoint   => '/tmp',
+        mountoptions => 'noexec',
+      }
     }
   } else {
     if (has_key($facts, 'security_baseline')) {

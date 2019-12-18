@@ -30,12 +30,17 @@ class security_baseline::rules::common::sec_dev_shm_nodev (
   String $log_level = ''
 ) {
   if $enforce {
-    security_baseline::set_mount_options { '/dev/shm-nodev':
-      mountpoint   => '/dev/shm',
-      mountoptions => 'nodev',
+    if (
+      ($facts['security_baseline']['partitions']['shm']['nodev'] == false) and
+      (has_key($facts['mountpoints'], '/dev/shm'))
+    ) {
+      security_baseline::set_mount_options { '/dev/shm-nodev':
+        mountpoint   => '/dev/shm',
+        mountoptions => 'nodev',
+      }
     }
   } else {
-    if $facts['security_baseline']['partitions']['shm']['nosuid'] == false {
+    if $facts['security_baseline']['partitions']['shm']['nodev'] == false {
       echo { 'dev-shm-nodev':
         message  => $message,
         loglevel => $log_level,

@@ -30,18 +30,21 @@ class security_baseline::rules::common::sec_var_tmp_nosuid (
   String $log_level = ''
 ) {
   if ($enforce) {
-    security_baseline::set_mount_options { '/var/tmp-nosuid':
-      mountpoint => '/var/tmp',
-      mountoptions => 'nosuid',
+    if (
+      ($facts['security_baseline']['partitions']['var_tmp']['nosuid'] == false) and
+      (has_key($facts['mountpoints'], '/var/tmp'))
+    ) {
+      security_baseline::set_mount_options { '/var/tmp-nosuid':
+        mountpoint   => '/var/tmp',
+        mountoptions => 'nosuid',
+      }
     }
   } else {
-    if (has_key($facts, 'security_baseline')) {
-      if $facts['security_baseline']['partitions']['var_tmp']['nosuid'] == false {
-        echo { 'var-tmp-nosuid':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+    if $facts['security_baseline']['partitions']['var_tmp']['nosuid'] == false {
+      echo { 'var-tmp-nosuid':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

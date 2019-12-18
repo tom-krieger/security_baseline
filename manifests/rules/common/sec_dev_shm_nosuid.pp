@@ -30,9 +30,14 @@ class security_baseline::rules::common::sec_dev_shm_nosuid (
   String $log_level = ''
 ) {
   if $enforce {
-    security_baseline::set_mount_options { '/dev/shm-nosuid':
-      mountpoint => '/dev/shm',
-      mountoptions => 'nosuid',
+    if (
+      ($facts['security_baseline']['partitions']['shm']['nosuid'] == false) and
+      (has_key($facts['mountpoints'], '/dev/shm'))
+    ) {
+      security_baseline::set_mount_options { '/dev/shm-nosuid':
+        mountpoint   => '/dev/shm',
+        mountoptions => 'nosuid',
+      }
     }
   } else {
     if $facts['security_baseline']['partitions']['shm']['nosuid'] == false {

@@ -12,8 +12,8 @@ describe 'security_baseline::rules::common::sec_audit_suid_programs' do
         }
       end
 
-      it { 
-        is_expected.to compile 
+      it {
+        is_expected.to compile
         is_expected.to contain_echo('suid-programs')
           .with(
             'message'  => 'Audit suid programs',

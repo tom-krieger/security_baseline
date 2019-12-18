@@ -236,6 +236,12 @@ describe 'security_baseline::rules::common::sec_iptables_loopback' do
             is_expected.not_to contain_firewall('001 accept all incoming traffic to local interface')
             is_expected.not_to contain_firewall('002 accept all outgoing traffic to local interface')
             is_expected.not_to contain_firewall('003 drop all traffic to lo 127.0.0.1/8')
+            is_expected.to contain_echo('iptables-loopback')
+              .with(
+                'message'  => 'loopback traffic',
+                'loglevel' => 'warning',
+                'withpath' => false,
+              )
           end
         }
       end

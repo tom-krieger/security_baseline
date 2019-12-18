@@ -15,7 +15,7 @@ class security_baseline::world_writeable_files_cron {
     mode    => '0700',
   }
 
-  file { '/etc/cron.d/woirld-writebale-files.cron':
+  file { '/etc/cron.d/world-writebale-files.cron':
     ensure => present,
     source => 'puppet:///modules/security_baseline/world-writeable-files.cron',
     owner  => 'root',

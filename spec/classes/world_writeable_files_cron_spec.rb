@@ -16,7 +16,7 @@ describe 'security_baseline::world_writeable_files_cron' do
             'mode'   => '0700',
           )
 
-        is_expected.to contain_file('/etc/cron.d/woirld-writebale-files.cron')
+        is_expected.to contain_file('/etc/cron.d/world-writebale-files.cron')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',

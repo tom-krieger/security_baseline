@@ -18,7 +18,11 @@ def check_values_expected(val, expected, reverse = false, debug = false)
       if debug
         pp expected - output
       end
-      ret = (expected - output).empty?
+      ret = if expected.nil? || output.nil?
+              false
+            else
+              (expected - output).empty?
+            end
     else
       if debug
         pp output - expected

@@ -30,7 +30,7 @@ class security_baseline::rules::common::sec_dev_shm_noexec (
   String $log_level = ''
 ) {
   if $enforce {
-    security_baseline::mount_options { '/dev/shm-noexec':
+    security_baseline::set_mount_options { '/dev/shm-noexec':
       mountpoint   => '/dev/shm',
       mountoptions => 'noexec',
     }

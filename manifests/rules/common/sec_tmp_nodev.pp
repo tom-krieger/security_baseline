@@ -30,7 +30,7 @@ class security_baseline::rules::common::sec_tmp_nodev (
   String $log_level = ''
 ) {
   if ($enforce) {
-    security_baseline::mount_options { '/tmp-nodev':
+    security_baseline::set_mount_options { '/tmp-nodev':
       mountpoint => '/tmp',
       mountoptions => 'nodev',
     }

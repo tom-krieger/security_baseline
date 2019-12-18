@@ -1,7 +1,7 @@
 # @summary 
 #    Change mount options
 #
-# Change the mount options of a mountpoint using mounttab module.
+# Change the mount options of a mountpoint.
 #
 # @param mountpoint
 #    Mountpoint to work on
@@ -10,19 +10,22 @@
 #    Options to set
 #
 # @example
-#   security_baseline::mount_options { 
+#   security_baseline::set_mount_options { 
 #     mountpoint => '/home',
 #     mountoptions => 'nodev', 
 # }
-define security_baseline::mount_options (
+define security_baseline::set_mount_options (
   String $mountpoint,
   String $mountoptions,
 ) {
-  mounttab { $mountpoint:
-    ensure   => present,
-    options  => $mountoptions,
-    provider => augeas,
-    notify   => Exec["remount ${mountpoint} with ${mountoptions}"],
+  augeas{ "/etc/fstab - work on ${mountpoint} with ${mountoptions}":
+    context => '/files/etc/fstab',
+    changes => [
+      "ins opt after /files/etc/fstab/*[file = '${mountpoint}']/opt[last()]",
+      "set *[file = ‘${mountpoint}‘]/opt[last()] ${mountoptions}",
+    ],
+    onlyif  => "match *[file = '${mountpoint}']/opt[. = '${mountoptions}'] size == 0",
+    notify  => Exec["remount ${mountpoint} with ${mountoptions}"],
   }
 
   exec { "remount ${mountpoint} with ${mountoptions}":

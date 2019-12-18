@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'security_baseline::mount_options' do
+describe 'security_baseline::set_mount_options' do
   let(:title) { 'namevar' }
   let(:params) do
     {}

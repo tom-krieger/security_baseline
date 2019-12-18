@@ -30,7 +30,7 @@ class security_baseline::rules::common::sec_var_tmp_noexec (
   String $log_level = ''
 ) {
   if ($enforce) {
-    security_baseline::mount_options { '/var/tmp-noexec':
+    security_baseline::set_mount_options { '/var/tmp-noexec':
       mountpoint => '/var/tmp',
       mountoptions => 'noexec',
     }

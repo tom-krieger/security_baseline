@@ -30,7 +30,7 @@ class security_baseline::rules::common::sec_home_nodev (
   String $log_level = ''
 ) {
   if ($enforce) {
-    security_baseline::mount_options { '/home-nodev':
+    security_baseline::set_mount_options { '/home-nodev':
       mountpoint => '/home',
       mountoptions => 'node',
     }

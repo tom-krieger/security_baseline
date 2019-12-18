@@ -30,7 +30,7 @@ class security_baseline::rules::common::sec_dev_shm_nodev (
   String $log_level = ''
 ) {
   if $enforce {
-    security_baseline::mount_options { '/dev/shm-nodev':
+    security_baseline::set_mount_options { '/dev/shm-nodev':
       mountpoint   => '/dev/shm',
       mountoptions => 'nodev',
     }

@@ -30,7 +30,7 @@ class security_baseline::rules::common::sec_tmp_nosuid (
   String $log_level = ''
 ) {
   if ($enforce) {
-    security_baseline::mount_options { '/tmp-nosuid':
+    security_baseline::set_mount_options { '/tmp-nosuid':
       mountpoint => '/tmp',
       mountoptions => 'nosuid',
     }

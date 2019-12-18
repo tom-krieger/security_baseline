@@ -931,6 +931,15 @@ def security_baseline_sles(os, _distid, _release)
   syslog['log_status'] = log_status
   security_baseline['syslog'] = syslog
 
+  valgroup = Facter::Core::Execution.exec('grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group')
+  val = if valgroup.nil? || valgroup.empty?
+          []
+        else
+          valgroup.split("\n")
+        end
+  security_baseline['shadow_group'] = val
+  security_baseline['shadow_group_count'] = val.count
+
   iptables = {}
   lines = Facter::Core::Execution.exec('/usr/sbin/iptables -L -n')
   rules = if lines.nil? || lines.empty?

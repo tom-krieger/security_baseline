@@ -22,7 +22,7 @@ define security_baseline::set_mount_options (
     context => '/files/etc/fstab',
     changes => [
       "ins opt after /files/etc/fstab/*[file = '${mountpoint}']/opt[last()]",
-      "set *[file = '${mountpoint}'']/opt[last()] ${mountoptions}",
+      "set *[file = '${mountpoint}']/opt[last()] ${mountoptions}",
     ],
     onlyif  => "match *[file = '${mountpoint}']/opt[. = '${mountoptions}'] size == 0",
     notify  => Exec["remount ${mountpoint} with ${mountoptions}"],

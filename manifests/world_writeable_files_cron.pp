@@ -7,7 +7,7 @@
 class security_baseline::world_writeable_files_cron {
   $filename = '/root/world-writable-files.txt'
 
-  file { '/usr/local/sbin/world-wrirable-files.sh':
+  file { '/usr/local/sbin/world-writable-files.sh':
     ensure  => present,
     content => epp('security_baseline/world-writeable-files.epp', { filename => $filename }),
     owner   => 'root',

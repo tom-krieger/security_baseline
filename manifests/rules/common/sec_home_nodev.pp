@@ -40,13 +40,11 @@ class security_baseline::rules::common::sec_home_nodev (
       }
     }
   } else {
-    if (has_key($facts, 'security_baseline')) {
-      if $facts['security_baseline']['partitions']['home']['nodev'] == false {
-        echo { 'home-nodev':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+    if $facts['security_baseline']['partitions']['home']['nodev'] == false {
+      echo { 'home-nodev':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

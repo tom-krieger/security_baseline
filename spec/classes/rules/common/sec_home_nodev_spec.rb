@@ -1,39 +1,53 @@
 require 'spec_helper'
 
+enforce_options = [true, false]
+
 describe 'security_baseline::rules::common::sec_home_nodev' do
   on_supported_os.each do |os, os_facts|
-    context "on #{os}" do
-      let(:facts) do
-        os_facts.merge(
-          'security_baseline' => {
-            'partitions' => {
-              'home' => {
-                'nodev' => false,
-                'noexec' => false,
-                'nosuid' => false,
-                'partition' => '/home',
+    enforce_options.each do |enforce|
+      context "on #{os} with enforce = #{enforce}" do
+        let(:facts) do
+          os_facts.merge(
+            'mountpoints' => {
+              '/home' => {
+                'options' => ['nodev'],
               },
             },
-          },
-        )
-      end
-      let(:params) do
-        {
-          'enforce' => true,
-          'message' => 'home nodev',
-          'log_level' => 'warning',
+            'security_baseline' => {
+              'partitions' => {
+                'home' => {
+                  'nodev' => false,
+                  'noexec' => false,
+                  'nosuid' => false,
+                  'partition' => '/home',
+                },
+              },
+            },
+          )
+        end
+        let(:params) do
+          {
+            'enforce' => enforce,
+            'message' => 'home nodev',
+            'log_level' => 'warning',
+          }
+        end
+
+        it {
+          is_expected.to compile
+          if enforce
+            is_expected.to contain_security_baseline__set_mount_options('/home-nodev')
+            is_expected.not_to contain_echo('home-nodev')
+          else
+            is_expected.to contain_echo('home-nodev')
+              .with(
+                'message'  => 'home nodev',
+                'loglevel' => 'warning',
+                'withpath' => false,
+              )
+          end
         }
       end
-
-      it {
-        is_expected.to compile
-        is_expected.to contain_echo('home-nodev')
-          .with(
-            'message'  => 'home nodev',
-            'loglevel' => 'warning',
-            'withpath' => false,
-          )
-      }
     end
   end
 end

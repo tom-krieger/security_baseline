@@ -13,7 +13,7 @@
 #    Version of the security ruleset
 #
 # @param rules
-#    Hash containing the wholw ruleset
+#    Hash containing the whole ruleset
 #
 # @param debug
 #    Switch debug output on

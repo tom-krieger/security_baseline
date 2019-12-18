@@ -9,6 +9,7 @@ describe 'security_baseline::rules::common::sec_tty_root_login' do
           'enforce' => true,
           'message' => 'root console login',
           'log_level' => 'info',
+          'ttys' => ['console'],
         }
       end
 

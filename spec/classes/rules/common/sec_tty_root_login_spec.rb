@@ -6,7 +6,7 @@ describe 'security_baseline::rules::common::sec_tty_root_login' do
       let(:facts) { os_facts }
       let(:params) do
         {
-          'enforce' => enforce,
+          'enforce' => true,
           'message' => 'root console login',
           'log_level' => 'info',
         }

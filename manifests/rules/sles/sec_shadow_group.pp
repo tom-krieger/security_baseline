@@ -20,14 +20,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::debian::sec_shadow_group {
+#   class security_baseline::rules::sles::sec_shadow_group {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::debian::sec_shadow_group (
+class security_baseline::rules::sles::sec_shadow_group (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''

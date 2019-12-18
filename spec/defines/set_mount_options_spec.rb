@@ -1,9 +1,12 @@
 require 'spec_helper'
 
 describe 'security_baseline::set_mount_options' do
-  let(:title) { 'namevar' }
+  let(:title) { '/tmp-noexec' }
   let(:params) do
-    {}
+    {
+      'mountpoint'   => '/tmp',
+      'mountoptions' => 'noexec',
+    }
   end
 
   on_supported_os.each do |os, os_facts|

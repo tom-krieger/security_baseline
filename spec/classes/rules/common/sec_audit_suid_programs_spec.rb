@@ -6,7 +6,7 @@ describe 'security_baseline::rules::common::sec_audit_suid_programs' do
       let(:facts) { os_facts }
       let(:params) do
         {
-          'enforce' => enforce,
+          'enforce' => true,
           'message' => 'Audit suid programs',
           'log_level' => 'warning',
         }

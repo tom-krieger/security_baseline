@@ -22,11 +22,26 @@
 class security_baseline::rules::common::sec_audit_suid_programs (
   Boolean $enforce  = true,
   String $message   = '',
-  String $log_level = ''
+  String $log_level = '',
+  Array $suid_expected = [],
 ) {
-  echo { 'suid-programs':
-    message  => $message,
-    loglevel => $log_level,
-    withpath => false,
+  if ($enforce) {
+    if('security_baseline_suid_programs' in $facts) {
+      $facts['security_baseline_suid_programs'].each |$suid| {
+        unless($suid in $suid_expected) {
+          echo { "unexpected-suid-program-${suid}":
+            message  => "unexpected suid program ${suid}",
+            loglevel => 'warning',
+            withpath => false,
+          }
+        }
+      }
+    }
+  } else {
+    echo { 'suid-programs':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
+    }
   }
 }

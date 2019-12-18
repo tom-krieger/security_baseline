@@ -20,13 +20,28 @@
 #
 # @api private
 class security_baseline::rules::common::sec_audit_sgid_programs (
-  Boolean $enforce  = true,
-  String $message   = '',
-  String $log_level = ''
+  Boolean $enforce     = true,
+  String $message      = '',
+  String $log_level    = '',
+  Array $sgid_expected = [],
 ) {
-  echo { 'sgid-programs':
-    message  => $message,
-    loglevel => $log_level,
-    withpath => false,
+  if ($enforce) {
+    if('security_baseline_sgid_programs' in $facts) {
+      $facts['security_baseline_sgid_programs'].each |$sgid| {
+        unless($sgid in $sgid_expected) {
+          echo { "unexpected-sgid-program-${sgid}":
+            message  => "unexpected sgid program ${sgid}",
+            loglevel => 'warning',
+            withpath => false,
+          }
+        }
+      }
+    }
+  } else {
+    echo { 'sgid-programs':
+      message  => $message,
+      loglevel => $log_level,
+      withpath => false,
+    }
   }
 }

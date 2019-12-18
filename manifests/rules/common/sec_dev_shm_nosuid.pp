@@ -34,6 +34,15 @@ class security_baseline::rules::common::sec_dev_shm_nosuid (
       ($facts['security_baseline']['partitions']['shm']['nosuid'] == false) and
       (has_key($facts['mountpoints'], '/dev/shm'))
     ) {
+      if(!defined(File_line['add /dev/shm to fstab'])) {
+        file_line { 'add /dev/shm to fstab':
+          ensure             => present,
+          append_on_no_match => true,
+          path               => '/etc/fstab',
+          match              => 'tmpfs\s*on\s*/dev/shm\s*type\s*tmpfs',
+          replace            => 'tmpfs        /dev/shm        tmpfs        defaults,nodev,nosuid,noexec        0 0',
+        }
+      }
       security_baseline::set_mount_options { '/dev/shm-nosuid':
         mountpoint   => '/dev/shm',
         mountoptions => 'nosuid',

@@ -36,7 +36,7 @@ class security_baseline::rules::common::sec_home_nodev (
     ) {
       security_baseline::set_mount_options { '/home-nodev':
         mountpoint   => '/home',
-        mountoptions => 'node',
+        mountoptions => 'nodev',
       }
     }
   } else {

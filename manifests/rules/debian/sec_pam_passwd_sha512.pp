@@ -38,9 +38,9 @@ class security_baseline::rules::debian::sec_pam_passwd_sha512 (
       ensure    => present,
       service   => 'common-password',
       type      => 'password',
-      control   => ['success=1', 'default=ignore'],
+      control   => '[success=1, default=ignore]',
       module    => 'pam_unix.so',
-      arguments => ['sha512'],
+      arguments => ['obscure', 'use_authtok', 'try_first_pass', 'sha512'],
     }
   } else {
     unless ($facts['security_baseline']['pam']['sha512']['status']) {

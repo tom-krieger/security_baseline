@@ -4,8 +4,7 @@ describe 'security_baseline::rules::common::sec_tty_root_login' do
   on_supported_os.each do |os, os_facts|
     context "on #{os}" do
       let(:facts) { os_facts }
-
-      et(:params) do
+      let(:params) do
         {
           'enforce' => enforce,
           'message' => 'root console login',

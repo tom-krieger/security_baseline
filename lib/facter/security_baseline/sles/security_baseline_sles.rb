@@ -112,13 +112,13 @@ def security_baseline_sles(os, _distid, _release)
 
   home = {}
   home['partition'] = Facter::Core::Execution.exec('mount | grep "on /home "|awk \'{print $3;}\'')
-  mounted = Facter::Core::Execution.exec('mount | grep /home')
+  mounted = Facter::Core::Execution.exec('mount | grep "on /home "')
   home['nodev'] = check_value_regex(mounted, 'nodev')
   partitions['home'] = home
 
   tmp = {}
   tmp['partition'] = Facter::Core::Execution.exec('mount | grep "on /tmp "|awk \'{print $3;}\'')
-  mounted = Facter::Core::Execution.exec('mount | grep "/tmp "|awk \'{print $3;}\'')
+  mounted = Facter::Core::Execution.exec('mount | grep "on /tmp "')
   tmp['nodev'] = check_value_regex(mounted, 'nodev')
   tmp['noexec'] = check_value_regex(mounted, 'noexec')
   tmp['nosuid'] = check_value_regex(mounted, 'nosuid')
@@ -126,7 +126,7 @@ def security_baseline_sles(os, _distid, _release)
 
   var_tmp = {}
   var_tmp['partition'] = Facter::Core::Execution.exec('mount | grep " on /var/tmp "|awk \'{print $3;}\'')
-  mounted = Facter::Core::Execution.exec('mount | grep /var/tmp')
+  mounted = Facter::Core::Execution.exec('mount | grep "on /var/tmp "')
   var_tmp['nodev'] = check_value_regex(mounted, 'nodev')
   var_tmp['noexec'] = check_value_regex(mounted, 'noexec')
   var_tmp['nosuid'] = check_value_regex(mounted, 'nosuid')

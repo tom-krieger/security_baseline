@@ -3,6 +3,21 @@
 #
 # Create a fact with all auditd rules needed to monitor the usage of s-bit programs.
 #
+# @param include 
+#     Directories to include into search. Can not be set together with parameter exclude.
+#
+# @param exclude 
+#     Directories to exclude from search. Can not be set together with parameter include.
+#
+# @param auditd_rules_fact_file
+#    File to write the auditd rules facts into.
+#
+# @param suid_fact_file 
+#    File to write the suid program facts into.
+#
+# @param  sgid_fact_file
+#    File to etite the sgid program facts into.
+#
 # @example
 #   include security_baseline::auditd_suid_rules_cron
 class security_baseline::auditd_suid_rules_cron (

@@ -19,6 +19,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param syslog_daemon
+#    Syslog daemon to use, can be rsyslog or syslog-ng.
+#
 # @example
 #   class security_baseline::rules::common::sec_syslog_installed {
 #       enforce => true,

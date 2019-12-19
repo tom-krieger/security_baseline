@@ -10,7 +10,6 @@ _Public Classes_
 * [`security_baseline`](#security_baseline): Security baseline enforcement and monitoring
 * [`security_baseline::auditd_suid_rules_cron`](#security_baselineauditd_suid_rules_cron): Create a cron job to search binaries with s-bit
 * [`security_baseline::config`](#security_baselineconfig): Configuration stuff
-* [`security_baseline::rules::debian::sec_service_openbsd_inetd`](#security_baselinerulesdebiansec_service_openbsd_inetd): A short summary of the purpose of this class
 * [`security_baseline::services`](#security_baselineservices): Additional services
 * [`security_baseline::system_file_permissions_cron`](#security_baselinesystem_file_permissions_cron): A short summary of the purpose of this class
 * [`security_baseline::unowned_files_cron`](#security_baselineunowned_files_cron): A short summary of the purpose of this class
@@ -230,6 +229,7 @@ _Private Classes_
 * `security_baseline::rules::debian::sec_service_daytime`: Ensure daytime services are not enabled (Scored)
 * `security_baseline::rules::debian::sec_service_discard`: Ensure discard services are not enabled (Scored)
 * `security_baseline::rules::debian::sec_service_echo`: Ensure echo services are not enabled (Scored)
+* `security_baseline::rules::debian::sec_service_openbsd_inetd`: Ensure openbsd-inetd is not installed (Scored)
 * `security_baseline::rules::debian::sec_service_talk`: Ensure talk server is not enabled (Scored)
 * `security_baseline::rules::debian::sec_service_telnet`: Ensure telnet server is not enabled (Scored)
 * `security_baseline::rules::debian::sec_service_tftp`: Ensure tftp server is not enabled (Scored)
@@ -349,6 +349,7 @@ _Private Classes_
 
 * [`security_baseline::logging`](#security_baselinelogging): Write concat fragments to a logfile
 * [`security_baseline::sec_check`](#security_baselinesec_check): Check a security rule.
+* [`security_baseline::set_mount_options`](#security_baselineset_mount_options): Change mount options
 
 ## Classes
 
@@ -384,7 +385,7 @@ Version of the security ruleset
 
 Data type: `Hash`
 
-Hash containing the wholw ruleset
+Hash containing the whole ruleset
 
 ##### `debug`
 
@@ -425,6 +426,14 @@ Data type: `Array`
 Directories to exclude from search for suid and sgid programs. Can not be set together with auditd_suid_include
 
 Default value: []
+
+##### `auditd_rules_file`
+
+Data type: `String`
+
+Files to write the auditd rules facts into.
+
+Default value: '/etc/audit/rules.d/sec_baseline_auditd.rules'
 
 ##### `reporting_type`
 
@@ -474,14 +483,6 @@ Command to use to upload facts to Puppet master
 
 Default value: '/usr/local/bin/puppet facts upload'
 
-##### `auditd_rules_file`
-
-Data type: `String`
-
-
-
-Default value: '/etc/audit/rules.d/sec_baseline_auditd.rules'
-
 ### security_baseline::auditd_suid_rules_cron
 
 Create a fact with all auditd rules needed to monitor the usage of s-bit programs.
@@ -502,7 +503,7 @@ The following parameters are available in the `security_baseline::auditd_suid_ru
 
 Data type: `Array`
 
-
+Directories to include into search. Can not be set together with parameter exclude.
 
 Default value: []
 
@@ -510,7 +511,7 @@ Default value: []
 
 Data type: `Array`
 
-
+Directories to exclude from search. Can not be set together with parameter include.
 
 Default value: []
 
@@ -518,7 +519,7 @@ Default value: []
 
 Data type: `String`
 
-
+File to write the auditd rules facts into.
 
 Default value: '/tmp/auditd.facts.yaml'
 
@@ -526,7 +527,7 @@ Default value: '/tmp/auditd.facts.yaml'
 
 Data type: `String`
 
-
+File to write the suid program facts into.
 
 Default value: '/tmp/suid_programs.yaml'
 
@@ -534,7 +535,7 @@ Default value: '/tmp/suid_programs.yaml'
 
 Data type: `String`
 
-
+File to etite the sgid program facts into.
 
 Default value: '/tmp/sgid_progras.yaml'
 
@@ -577,46 +578,6 @@ Data type: `Enum['fact', 'csv_file']`
 Selects the report type to be written
 
 Default value: 'fact'
-
-### security_baseline::rules::debian::sec_service_openbsd_inetd
-
-A description of what this class does
-
-#### Examples
-
-##### 
-
-```puppet
-include security_baseline::rules::debian::sec_service_openbsd_inetd
-```
-
-#### Parameters
-
-The following parameters are available in the `security_baseline::rules::debian::sec_service_openbsd_inetd` class.
-
-##### `enforce`
-
-Data type: `Boolean`
-
-
-
-Default value: `true`
-
-##### `message`
-
-Data type: `String`
-
-
-
-Default value: ''
-
-##### `log_level`
-
-Data type: `String`
-
-
-
-Default value: ''
 
 ### security_baseline::services
 
@@ -691,83 +652,59 @@ security_baseline::logging { '1.1.1.1':
 
 The following parameters are available in the `security_baseline::logging` defined type.
 
-##### `$rulenr`
-
-Number of the rule to be written into the log
-
-##### `$rule`
-
-A name for the rule to be written into the logfile
-
-##### `$desc`
-
-Description of the rule
-
-##### `$level`
-
-Log level for the messyage in the log
-
-##### `$msg`
-
-The log message
-
-##### `$rulesate`
-
-Status of the rule, e. g. compliant or not compliant
-
 ##### `rulenr`
 
 Data type: `Any`
 
-
+Number of the rule to be written into the log
 
 ##### `rule`
 
 Data type: `Any`
 
-
+A name for the rule to be written into the logfile
 
 ##### `desc`
 
 Data type: `Any`
 
-
+Description of the rule
 
 ##### `log_level`
 
 Data type: `Any`
 
-
+Log level for the messyage in the log
 
 ##### `msg`
 
 Data type: `Any`
 
-
+The log message
 
 ##### `rulestate`
 
 Data type: `Any`
 
-
+Status of the rule, e. g. compliant or not compliant
 
 ##### `level`
 
 Data type: `Any`
 
-
+The level from the CIS benchmark
 
 ##### `scored`
 
 Data type: `Any`
 
-
+Flag if rule is scored
 
 ##### `reporting_type`
 
 Data type: `Enum['fact', 'csv_file']`
 
-
+Type of report.
 
 Default value: 'fact'
 
@@ -878,4 +815,36 @@ Additional configuration data, especially if external security modules are used 
 to those modules
 
 Default value: {}
+
+### security_baseline::set_mount_options
+
+Change the mount options of a mountpoint.
+
+}
+
+#### Examples
+
+##### 
+
+```puppet
+security_baseline::set_mount_options {
+  mountpoint => '/home',
+  mountoptions => 'nodev',
+```
+
+#### Parameters
+
+The following parameters are available in the `security_baseline::set_mount_options` defined type.
+
+##### `mountpoint`
+
+Data type: `String`
+
+Mountpoint to work on
+
+##### `mountoptions`
+
+Data type: `String`
+
+Options to set
 

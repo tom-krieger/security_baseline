@@ -21,8 +21,8 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param max_pass_days
-#    Password expires after days
+# @param wheel_users
+#    Users to be added to the wheel group
 #
 # @example
 #   class security_baseline::rules::sles::sec_restrict_su {

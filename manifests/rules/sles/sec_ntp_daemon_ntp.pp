@@ -25,7 +25,7 @@
 # @param scored
 #    Indicates if a rule is scored or not
 #
-# @param ntp_server
+# @param ntp_servers
 #    NTP servers to use, depends on the daemon used
 #
 # @param ntp_restrict
@@ -60,7 +60,6 @@ class security_baseline::rules::sles::sec_ntp_daemon_ntp (
   String $log_level                       = '',
   Integer $level                          = 1,
   Boolean $scored                         = true,
-  String $logfile                         = '',
   Array $ntp_servers                      = [],
   Array $ntp_restrict                     = [],
   String $ntp_driftfile                   = '',

@@ -17,8 +17,8 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param max_pass_days
-#    Password expires after days
+# @param default_timeout
+#    Dfault timeout to set.
 #
 # @example
 #   class security_baseline::rules::sles::sec_timeout_setting {

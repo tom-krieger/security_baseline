@@ -22,8 +22,8 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param max_pass_days
-#    Password expires after days
+# @param default_umask
+#    Default umask to set.
 #
 # @example
 #   class security_baseline::rules::redhat::sec_umask_setting {

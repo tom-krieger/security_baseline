@@ -30,6 +30,9 @@
 # @param auditd_suid_exclude
 #    Directories to exclude from search for suid and sgid programs. Can not be set together with auditd_suid_include
 #
+# @param auditd_rules_file
+#    Files to write the auditd rules facts into.
+#
 # @param reporting_type
 #    Select to type of reporting. ca currently be set to csv or fact.
 #

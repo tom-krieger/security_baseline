@@ -19,9 +19,6 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param max_pass_days
-#    Password expires after days
-#
 # @example
 #   class security_baseline::rules::sles::sec_shell_nologin {
 #       enforce => true,

@@ -18,8 +18,8 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param max_pass_days
-#    Password expires after days
+# @param warn_pass_days
+#    Minimum dfays before a expiration warning is given.
 #
 # @example
 #   class security_baseline::rules::common::sec_passwd_warn_days {

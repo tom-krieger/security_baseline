@@ -3,23 +3,32 @@
 #
 # Logging resource to write parts of the log.
 #
-# @param $rulenr
+# @param rulenr
 #     Number of the rule to be written into the log
 #
-# @param $rule
+# @param rule
 #    A name for the rule to be written into the logfile
 #
-# @param $desc
+# @param desc
 #    Description of the rule
 #
-# @param $level
+# @param log_level
 #    Log level for the messyage in the log
 #
-# @param $msg
+# @param msg
 #    The log message
 #
-# @param $rulesate 
+# @param rulestate 
 #    Status of the rule, e. g. compliant or not compliant 
+#
+# @param level
+#    The level from the CIS benchmark
+#
+# @param scored
+#    Flag if rule is scored
+#
+# @param reporting_type
+#    Type of report.
 #
 # @example
 #   security_baseline::logging { '1.1.1.1': 

@@ -11,6 +11,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param suid_expected
+#    Array with expected suid programs.
+#
 # @example
 #   class security_baseline::rules::common::sec_audit_suid_programs {
 #       enforce => true,

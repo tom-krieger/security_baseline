@@ -19,13 +19,7 @@
 # @param log_level
 #    The loglevel for the above message
 #
-# @param level
-#    Profile level
-#
-# @param scored
-#    Indicates if a rule is scored or not
-#
-# @param ntp_server
+# @param ntp_servers
 #    NTP servers to use, depends on the daemon used
 #
 # @example
@@ -42,9 +36,6 @@ class security_baseline::rules::common::sec_ntp_daemon_chrony (
   Boolean $enforce                        = true,
   String $message                         = '',
   String $log_level                       = '',
-  Integer $level                          = 1,
-  Boolean $scored                         = true,
-  String $logfile                         = '',
   Array $ntp_servers                      = [],
 ) {
   if($enforce) {

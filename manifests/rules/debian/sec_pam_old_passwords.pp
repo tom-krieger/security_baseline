@@ -22,9 +22,6 @@
 # @param oldpasswords
 #    Number of old passwords to remember
 #
-# @param sha512
-#    Enable or disable sha512 password encryption
-#
 # @example
 #   class security_baseline::rules::debian::ssec_pam_pw_requirements {
 #       enforce => true,

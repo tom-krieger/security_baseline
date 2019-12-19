@@ -17,7 +17,7 @@
 # @param log_level
 #    Loglevel for the message
 #
-# @param max_log_file
+# @param max_log_size
 #    Maximal log file size, defaults to 26 MB
 #
 # @example

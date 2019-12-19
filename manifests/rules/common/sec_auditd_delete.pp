@@ -21,12 +21,6 @@
 # @param log_level
 #    Loglevel for the message
 #
-# @param level
-#    Profile level
-#
-# @param scored
-#    Indicates if a rule is scored or not
-#
 # @example
 #   class { 'security_baseline::rules::common::sec_auditd_delete':
 #             enforce => true,

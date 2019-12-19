@@ -21,7 +21,7 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param attemps
+# @param attempts
 #    Lock account after this number of failed logins
 #
 # @param lockouttime

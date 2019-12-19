@@ -11,6 +11,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param sgid_expected
+#    Array with expected sgid programs
+#
 # @example
 #   class security_baseline::rules::common::sec_audit_sgid_programs {
 #       enforce => true,

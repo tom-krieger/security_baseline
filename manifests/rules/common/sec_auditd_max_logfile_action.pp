@@ -17,8 +17,8 @@
 # @param log_level
 #    Loglevel for the message
 #
-# @param max_log_file
-#    Maximal log file size, defaults to 26 MB
+# @param max_log_file_action
+#    Action to be taken of lofs reach max. size.
 #
 # @example
 #   class { 'security_baseline::rules::common::sec_auditd_max_logfile_action':

@@ -17,8 +17,8 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param max_pass_days
-#    Password expires after days
+# @param inactive_pass_days
+#    Days after an inactive account is locked
 #
 # @example
 #   class security_baseline::rules::common::sec_passwd_inactive_days {

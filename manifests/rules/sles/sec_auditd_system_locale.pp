@@ -28,12 +28,6 @@
 # @param log_level
 #    Loglevel for the message
 #
-# @param level
-#    Profile level
-#
-# @param scored
-#    Indicates if a rule is scored or not
-#
 # @example
 #   class { 'security_baseline::rules::sles::sec_auditd_system_locale':   
 #             enforce => true,

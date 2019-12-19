@@ -17,7 +17,7 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param allowd
+# @param allowed
 #    Additional allow rules
 #
 # @example

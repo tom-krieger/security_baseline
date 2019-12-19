@@ -26,8 +26,8 @@
 #
 # @api private
 class security_baseline::rules::common::sec_sticky_world_writeable (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
 
@@ -37,15 +37,12 @@ class security_baseline::rules::common::sec_sticky_world_writeable (
       exec { "df --local -P | awk {'if (NR!=1) print \$6'} | xargs -I '{}' find '{}' -xdev -type d -perm -0002 2>/dev/null|xargs chmod a+t":
         path => '/bin/',
       }
-
     } else {
-
       echo { 'sticky-ww':
         message  => $message,
         loglevel => $log_level,
         withpath => false,
       }
-
     }
   }
 }

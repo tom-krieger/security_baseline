@@ -49,7 +49,8 @@ def security_baseline_redhat(os, _distid, release)
                'talk' => '-q',
                'tcp_wrappers' => '-q',
                'telnet' => '-q',
-               'ypbind' => '-q' }
+               'ypbind' => '-q',
+               'sudo' => '-q' }
   modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat', 'usb-storage']
   xinetd_services = ['echo-dgram', 'echo-stream', 'time-dgram', 'time-stream', 'chargen-dgram', 'chargen-stream', 'tftp',
                      'daytime-dgram', 'daytime-stream', 'discard-dgram', 'discard-stream']
@@ -1044,6 +1045,19 @@ def security_baseline_redhat(os, _distid, release)
   end
   security_baseline['wlan_interfaces'] = wlan
   security_baseline['wlan_interfaces_count'] = cnt
+
+  sudo = {}
+  val = Facter::Core::Execution.exec("grep -Ehi '^\s*Defaults\s+(\[^#]+,\s*)?use_pty' /etc/sudoers /etc/sudoers.d/*")
+  sudo['use_pty'] = check_value_string(val, 'none')
+  if sudo['use_pty'] != 'none'
+    sudo['use_pty'] = 'used'
+  end
+  val = Facter::Core::Execution.exec("grep -Ei '^\s*Defaults\s+([^#]+,\s*)?logfile=' /etc/sudoers /etc/sudoers.d/*")
+  sudo['logfile'] = check_value_string(val, 'none')
+  if sudo['logfile'] != 'none'
+    sudo['logfile'] = 'configured'
+  end
+  security_baseline['sudo'] = sudo
 
   security_baseline
 end

@@ -29,7 +29,7 @@ require 'pp'
 def security_baseline_redhat(os, _distid, release)
   security_baseline = {}
   arch = Facter.value(:architecture)
-  if release >= 8
+  if release >= '8'
     pkgMgr = 'dnf'
   else
     pkgMgr = 'yum'

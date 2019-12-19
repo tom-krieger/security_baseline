@@ -50,7 +50,7 @@ def security_baseline_redhat(os, _distid, release)
                'tcp_wrappers' => '-q',
                'telnet' => '-q',
                'ypbind' => '-q' }
-  modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat']
+  modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat', 'usb-storage']
   xinetd_services = ['echo-dgram', 'echo-stream', 'time-dgram', 'time-stream', 'chargen-dgram', 'chargen-stream', 'tftp',
                      'daytime-dgram', 'daytime-stream', 'discard-dgram', 'discard-stream']
   sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',

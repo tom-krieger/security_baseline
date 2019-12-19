@@ -184,6 +184,9 @@ def security_baseline_redhat(os, _distid, release)
   val = Facter::Core::Execution.exec("ps -eZ | egrep \"initrc\" | egrep -vw \"tr|ps|egrep|bash|awk\" | tr ':' ' ' | awk '{ print $NF }'")
   security_baseline[:unconfigured_daemons] = check_value_string(val, 'none')
 
+  val = Facter::Core::Execution.exec('ps -eZ | grep unconfined_service_t')
+  security_baseline[:unconfigured_services] = check_value_string(val, 'none')
+
   val = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
   security_baseline[:sticky_ww] = check_value_string(val, 'none')
 

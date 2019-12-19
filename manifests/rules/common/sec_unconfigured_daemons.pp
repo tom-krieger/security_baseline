@@ -25,12 +25,11 @@
 #
 # @api private
 class security_baseline::rules::common::sec_unconfigured_daemons (
-  Boolean $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if($facts['security_baseline']['unconfigured_daemons'] != 'none') {
-
     echo { 'unconfigured-daemons':
       message  => $message,
       loglevel => $log_level,

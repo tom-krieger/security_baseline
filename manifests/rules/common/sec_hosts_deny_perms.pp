@@ -35,10 +35,12 @@ class security_baseline::rules::common::sec_hosts_deny_perms (
       exec { 'set hosts.deny owner permissions':
         command => 'chown root:root /etc/hosts.deny',
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+        onlyif  => 'test -f /etc/hosts.deny',
       }
       exec { 'set hosts.deny file permissions':
         command => 'chmod 0644 /etc/hosts.deny',
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+        onlyif  => 'test -f /etc/hosts.deny',
       }
     }
   } else {

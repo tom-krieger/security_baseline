@@ -36,10 +36,12 @@ class security_baseline::rules::common::sec_hosts_allow_perms (
       exec { 'set hosts.allow owner permissions':
         command => 'chown root:root /etc/hosts.allow',
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+        onlyif  => 'test -f /etc/hosts.allow',
       }
       exec { 'set hosts.allow file permissions':
         command => 'chmod 0644 /etc/hosts.allow',
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
+        onlyif  => 'test -f /etc/hosts.allow',
       }
     }
   } else {

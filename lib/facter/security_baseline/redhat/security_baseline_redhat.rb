@@ -26,9 +26,14 @@ require 'pp'
 # security_baseline_redhat.rb
 # collect facts about the security baseline
 
-def security_baseline_redhat(os, _distid, _release)
+def security_baseline_redhat(os, _distid, release)
   security_baseline = {}
   arch = Facter.value(:architecture)
+  if release >= 8
+    pkgMgr = 'dnf'
+  else
+    pkgMgr = 'yum'
+  end
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
               'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond']
@@ -196,7 +201,7 @@ def security_baseline_redhat(os, _distid, _release)
                                        end
 
   grub = {}
-  val = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg')
+  val = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg /boot/grub2/user.cfg')
   grub['grub_passwd'] = check_value_boolean(val, false)
   grub['grub.cfg'] = read_file_stats('/boot/grub2/grub.cfg')
   grub['user.cfg'] = read_file_stats('/boot/grub2/user.cfg')
@@ -935,7 +940,11 @@ def security_baseline_redhat(os, _distid, _release)
   security_baseline['syslog'] = syslog
 
   iptables = {}
-  lines = Facter::Core::Execution.exec('/sbin/iptables -L -n -v')
+  lines = if File.exist?('/sbin/iptables')
+            Facter::Core::Execution.exec('/sbin/iptables -L -n -v')
+          else
+            ''
+          end
   rules = if lines.nil? || lines.empty?
             []
           else

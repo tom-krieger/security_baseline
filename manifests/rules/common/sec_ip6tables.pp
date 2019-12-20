@@ -17,14 +17,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_iptables {
+#   class security_baseline::rules::common::sec_ip6tables {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_iptables (
+class security_baseline::rules::common::sec_ip6tables (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''

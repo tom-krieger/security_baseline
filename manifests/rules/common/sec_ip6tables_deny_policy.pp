@@ -26,7 +26,7 @@
 # The default policy for the forward chain
 #
 # @example
-#   class security_baseline::rules::common::sec_iptables_deny_policy {
+#   class security_baseline::rules::common::sec_ip6tables_deny_policy {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
@@ -36,7 +36,7 @@
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_iptables_deny_policy (
+class security_baseline::rules::common::sec_ip6tables_deny_policy (
   Boolean $enforce                       = true,
   String $message                        = '',
   String $log_level                      = '',
@@ -45,23 +45,23 @@ class security_baseline::rules::common::sec_iptables_deny_policy (
   Enum['drop', 'accept'] $forward_policy = 'drop',
 ) {
   if ($enforce) {
-    firewallchain { 'OUTPUT:filter:IPv4':
+    firewallchain { 'OUTPUT:filter:IPv6':
       ensure => present,
       policy => $output_policy,
     }
 
-    firewallchain { 'FORWARD:filter:IPv4':
+    firewallchain { 'FORWARD:filter:IPv6':
       ensure => present,
       policy => $forward_policy,
     }
 
-    firewallchain { 'INPUT:filter:IPv4':
+    firewallchain { 'INPUT:filter:IPv6':
       ensure => present,
       policy => $input_policy,
     }
   } else {
-    if($facts['security_baseline']['iptables']['policy_status'] == false) {
-      echo { 'iptables-policy-status':
+    if($facts['security_baseline']['ip6tables']['policy_status'] == false) {
+      echo { 'ip6tables-policy-status':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

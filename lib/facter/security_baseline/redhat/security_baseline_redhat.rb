@@ -19,6 +19,7 @@ require 'facter/security_baseline/common/read_local_users'
 require 'facter/security_baseline/common/trim_string'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'facter/security_baseline/common/check_values_expected'
+require 'facter/security_baseline/common/read_iptables_rules'
 require 'pp'
 
 # frozen_string_literal: true
@@ -26,14 +27,9 @@ require 'pp'
 # security_baseline_redhat.rb
 # collect facts about the security baseline
 
-def security_baseline_redhat(os, _distid, release)
+def security_baseline_redhat(os, _distid, _release)
   security_baseline = {}
   arch = Facter.value(:architecture)
-  pkgMgr = if release >= '8'
-             'dnf'
-           else
-             'yum'
-           end
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
               'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond', 'firewalld', 'iptables', 'nftables']
@@ -945,106 +941,27 @@ def security_baseline_redhat(os, _distid, release)
   syslog['log_status'] = log_status
   security_baseline['syslog'] = syslog
 
-  iptables = {}
-  if File.exist?('/sbin/iptables')
-    lines = Facter::Core::Execution.exec('/sbin/iptables -L -n -v')
-    rules = if lines.nil? || lines.empty?
-              []
-            else
-              lines.split("\n")
-            end
-    default_policies = {}
-    policy = {}
-    nr = 0
-    chain = ''
-    rules.each do |rule|
-      next if rule =~ %r{^\s*pkts} || rule =~ %r{^$} || rule =~ %r{^#}
-      next if rule.nil?
-      m = rule.match(%r{^Chain\s*(?<chain>\w*)\s*\(policy\s*(?<policy>\w*).*\)})
-      if m.nil?
-        m = rule.match(%r{^Chain\s*(?<chain>\w*)})
-        unless m.nil?
-          chain = m[:chain]
-        end
-      else
-        chain = m[:chain]
-        def_policy = m[:policy]
-        default_policies[chain] = def_policy
-      end
-
-      m = rule.match(%r{(?<pkts>\d+)\s*(?<bytes>\d+)\s*(?<target>\w*)\s*(?<prot>\w*)\s*(?<opt>[0-9a-zA-Z\-_\.]*)\s*(?<in>[a-zA-Z0-9\*_\-]*)\s*(?<out>[a-zA-Z0-9\*_\-]*)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<info>.*)})
-      next if m.nil?
-      nr += 1
-      policy["rule #{nr}"] = {}
-      policy["rule #{nr}"]['chain'] = chain
-      policy["rule #{nr}"]['target'] = m[:target]
-      policy["rule #{nr}"]['proto'] = m[:prot]
-      policy["rule #{nr}"]['opts'] = m[:opt]
-      policy["rule #{nr}"]['src'] = m[:source]
-      policy["rule #{nr}"]['dst'] = m[:dest]
-      policy["rule #{nr}"]['in'] = m[:in]
-      policy["rule #{nr}"]['out'] = m[:out]
-      info = m[:info]
-      policy["rule #{nr}"]['info'] = info
-
-      m = info.match(%r{(?<proto>[tcp|udp])\s*spt:(?<spt>\d*)})
-      if m.nil?
-        m = info.match(%r{sports\s*(?<spt>[0-9\,]*)})
-        spt = if m.nil?
-                ''
-              else
-                (m[:spt]).to_s
-              end
-      else
-        spt = (m[:spt]).to_s
-      end
-
-      m = info.match(%r{(?<proto>[tcp|udp]*)\s*dpt:(?<dpt>\d*)})
-      if m.nil?
-        m = info.match(%r{dports\s*(?<dpt>[0-9\,]*)})
-        dpt = if m.nil?
-                ''
-              else
-                (m[:dpt]).to_s
-              end
-      else
-        dpt = (m[:dpt]).to_s
-      end
-
-      m = info.match(%r{state\s*(?<state>[a-zA-Z0-9_\-\,]*)})
-      state = if m.nil?
-                ''
-              else
-                m[:state]
-              end
-
-      m = info.match(%r{icmptype\s*(?<icmptype>\d+)})
-      icmptype = if m.nil?
-                   ''
-                 else
-                   m[:icmptype]
-                end
-
-      policy["rule #{nr}"]['spt'] = spt
-      policy["rule #{nr}"]['dpt'] = dpt
-      policy["rule #{nr}"]['state'] = state
-      policy["rule #{nr}"]['icmptype'] = icmptype
-    end
-    iptables['policy_status'] = default_policies['INPUT'].casecmp('drop').zero? && default_policies['OUTPUT'].casecmp('drop').zero? && default_policies['FORWARD'].casecmp('drop').zero?
-    iptables['default_policies'] = default_policies
-    iptables['policy'] = policy
-  end
-  security_baseline['iptables'] = iptables
+  security_baseline['iptables'] = read_iptables_rules('4')
+  security_baseline['ip6tables'] = read_iptables_rules('6')
 
   if File.exist?('/usr/bin/firewall-cmd')
     firewalld = {}
     val = Facter::Core::Execution.exec('firewall-cmd --get-default-zone')
     firewalld['default_zone'] = check_value_string(val, 'none')
+    firewalld['default_zone_status'] = if check_value_string(val, 'none') == 'none'
+                                         false
+                                       else
+                                         true
+                                       end
+
     if File.exist?('/usr/bin/nmcli')
       val = Facter::Core::Execution.exec("nmcli -t connection show | awk -F: '{if($4){print $4}}' | while read INT; do firewall-cmd --get-active-zones | grep -B1 $INT; done")
       if val.nil? || val.empty?
         firewalld['zone_iface'] = {}
+        firewalld['zone_iface_assigned'] = false
       else
+        zone = 'undef'
+        iface_assigned = false
         val.split("\n").each do |line|
           if line =~ %r{^[a-zA-Z0-9]}
             zone = line
@@ -1054,12 +971,14 @@ def security_baseline_redhat(os, _distid, release)
               ifaces = m[:ifaces]
               firewalld['zone_iface'] = {}
               firewalld['zone_iface'][zone] = ifaces
+              iface_assigned = true
             end
           end
         end
+        firewalld['zone_iface_assigned_status'] = iface_assigned
       end
     end
-    
+
     val = Facter::Core::Execution.exec("firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do firewall-cmd --list-all --zone=$ZN; done")
     if val.nil? || val.empty?
       firewalld['ports'] = []
@@ -1070,21 +989,139 @@ def security_baseline_redhat(os, _distid, release)
           m = line.match(%r{services:\s*(?<srvs>.*)})
           unless m.nil?
             firewalld['services'] = m[:srvs].split("\s*")
+            firewalld['services_count'] = firewalld['services'].count
           end
         elsif line =~ %r{ports:}
           m = line.match(%r{ports:\s*(?<ports>.*)})
           unless m.nil?
             firewalld['ports'] = m[:ports].split("\s*")
+            firewalld['ports_count'] = firewalld['ports'].count
           end
         end
       end
+      firewalld['ports_and_services_status'] = firewalld['ports_count'] != 0 || firewalld['services_count'] != 0
     end
     security_baseline['firewalld'] = firewalld
   end
 
   if File.exist?('/usr/sbin/nft')
-    if File.exist?('/usr/bin/nmcli')
+    nft = {}
+    val = Facter::Core::Execution.exec('/usr/sbin/nft list tables')
+    if val.nil? || val.empty?
+      nft['tables'] = []
+      nft['tables_count'] = 0
+      nft['tables_count_status'] = false
+    else
+      nft['tables'] = val.split("\n")
+      nft['tables_count'] = nft['tables'].count
+      nft['tables_count_status'] = nft['tables_count'] > 0
     end
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook input'")
+    nft['base_chain_input'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook forward'")
+    nft['base_chain_forward'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook output'")
+    nft['base_chain_output'] = check_value_string(val, 'none')
+    nft['base_chain_status'] = nft['base_chain_input'] != 'none' && nft['base_chain_forward'] != 'none' && nft['base_chain_output'] != 'none'
+
+    loopback = {}
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep 'iif \"lo\" accept'")
+    loopback['lo_iface'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep 'ip sddr'")
+    loopback['lo_network'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'")
+    loopback['ip6_saddr'] = check_value_string(val, 'none')
+    loopback['status'] = loopback['lo_iface'] != 'none' && loopback['lo_network'] != 'none' && loopback['ip6_saddr'] != 'none'
+    nft['loopback'] = loopback
+
+    conns = {}
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol tcp ct state'")
+    conns['in_tcp'] = if val.nil? || val.empty?
+                        false
+                      elsif val =~ %r{tcp\s*ct\s*state\s*established\s*accept}
+                        true
+                      else
+                        false
+                      end
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol udp ct state'")
+    conns['in_udp'] = if val.nil? || val.empty?
+                        false
+                      elsif val =~ %r{udp\s*ct\s*state\s*established\s*accept}
+                        true
+                      else
+                        false
+                      end
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol icmp ct state'")
+    conns['in_icmp'] = if val.nil? || val.empty?
+                         false
+                       elsif val =~ %r{icmp\s*ct\s*state\s*established\s*accept}
+                         true
+                       else
+                         false
+                       end
+
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol tcp ct state'")
+    conns['out_tcp'] = if val.nil? || val.empty?
+                         false
+                       elsif val =~ %r{tcp\s*ct\s*state\s*established,related,new\s*accept}
+                         true
+                       else
+                         false
+                       end
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol udp ct state'")
+    conns['out_udp'] = if val.nil? || val.empty?
+                         false
+                       elsif val =~ %r{udp\s*ct\s*state\s*established,related,new\s*accept}
+                         true
+                       else
+                         false
+                       end
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol icmp ct state'")
+    conns['out_icmp'] = if val.nil? || val.empty?
+                          false
+                        elsif val =~ %r{icmp\s*ct\s*state\s*established,related,new\s*accept}
+                          true
+                        else
+                          false
+                        end
+    conns['status'] = conns['in_tcp'] && conns['in_udp'] && conns['in_icmp'] && conns['out_tcp'] && conns['out_udp'] && conns['out_icmp']
+    nft['conns'] = conns
+
+    policy = {}
+    val Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook input'")
+    if val.nil? || val.empty?
+      policy['input'] = 'none'
+    else
+      m = val.match(%r{policy\s*(?<policy>\w);})
+      unless m.nil?
+        policy['input'] = m[:policy].downcase
+      end
+    end
+
+    val Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook forward'")
+    if val.nil? || val.empty?
+      policy['forward'] = 'none'
+    else
+      m = val.match(%r{policy\s*(?<policy>\w);})
+      unless m.nil?
+        policy['forward'] = m[:policy].downcase
+      end
+    end
+
+    val Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook output'")
+    if val.nil? || val.empty?
+      policy['output'] = 'none'
+    else
+      m = val.match(%r{policy\s*(?<policy>\w);})
+      unless m.nil?
+        policy['output'] = m[:policy].downcase
+      end
+    end
+
+    policy['status'] = policy['input'] == 'drop' && policy['forward'] == 'drop' && policy['output'] == 'drop'
+    nft['policy'] = policy
+
+    security_baseline['nftables'] = nft
   end
 
   wlan = []
@@ -1126,6 +1163,15 @@ def security_baseline_redhat(os, _distid, release)
     crypto_policy['policy'] = 'none'
   end
   security_baseline['crypto_policy'] = crypto_policy
+
+  val = Facter::Cire::Execution.exec('grep -E "^\s*kernelopts=(\S+\s+)*ipv6\.disable=1\b\s*(\S+\s*)*$" /boot/grub2/grubenv')
+  security_baseline['grub_ipv6_disabled'] = if val.nil? || val.empty?
+                                              false
+                                            elsif val =~ %r{ipv6.disable=1}
+                                              true
+                                            else
+                                              false
+                                            end
 
   security_baseline
 end

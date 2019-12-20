@@ -48,7 +48,7 @@ class security_baseline::rules::common::sec_network_ipv6_router_advertisements (
     } else {
       $fact = ''
     }
-    if(has_key($facts['security_baseline']['sysctl'], 'nenet.ipv6.conf.default.accept_ra')) {
+    if(has_key($facts['security_baseline']['sysctl'], 'net.ipv6.conf.default.accept_ra')) {
       $fact_default = $facts['security_baseline']['sysctl']['net.ipv6.conf.default.accept_ra']
     } else {
       $fact_default = ''

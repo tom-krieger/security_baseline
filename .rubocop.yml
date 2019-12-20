@@ -115,6 +115,9 @@ Metrics/ParameterLists:
   Enabled: false
 Metrics/PerceivedComplexity:
   Enabled: false
+Metrics/BlockNesting:
+  CountBlocks: false
+  Max: 4
 RSpec/DescribeClass:
   Enabled: false
 RSpec/ExampleLength:

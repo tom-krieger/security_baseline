@@ -40,13 +40,11 @@ class security_baseline::rules::common::sec_tmp_nosuid (
       }
     }
   } else {
-    if (has_key($facts, 'security_baseline')) {
-      if $facts['security_baseline']['partitions']['tmp']['nosuid'] == false {
-        echo { 'tmp-nosuid':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
-        }
+    if $facts['security_baseline']['partitions']['tmp']['nosuid'] == false {
+      echo { 'tmp-nosuid':
+        message  => $message,
+        loglevel => $log_level,
+        withpath => false,
       }
     }
   }

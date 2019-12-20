@@ -1037,6 +1037,49 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline['iptables'] = iptables
 
   if File.exist?('/usr/bin/firewall-cmd')
+    firewalld = {}
+    val = Facter::Core::Execution.exec('firewall-cmd --get-default-zone')
+    firewalld['default_zone'] = check_value_string(val, 'none')
+    if File.exist?('/usr/bin/nmcli')
+      val = Facter::Core::Execution.exec("nmcli -t connection show | awk -F: '{if($4){print $4}}' | while read INT; do firewall-cmd --get-active-zones | grep -B1 $INT; done")
+      if val.nil? || val.empty?
+        firewalld['zone_iface'] = {}
+      else
+        val.split("\n").each do |line|
+          if line =~ %r{^[a-zA-Z0-9]}
+            zone = line
+          elsif line =~ %r{interfaces:}
+            m = line.match(%r{interfaces:\s*(?<ifaces>[a-zA-Z0-9_\-]*)})
+            unless m.nil?
+              ifaces = m[:ifaces]
+              firewalld['zone_iface'] = {}
+              firewalld['zone_iface'][zone] = ifaces
+            end
+          end
+        end
+      end
+    end
+    
+    val = Facter::Core::Execution.exec("firewall-cmd --get-active-zones | awk '!/:/ {print $1}' | while read ZN; do firewall-cmd --list-all --zone=$ZN; done")
+    if val.nil? || val.empty?
+      firewalld['ports'] = []
+      firewalld['services'] = []
+    else
+      val.split("\n").each do |line|
+        if line =~ %r{services:}
+          m = line.match(%r{services:\s*(?<srvs>.*)})
+          unless m.nil?
+            firewalld['services'] = m[:srvs].split("\s*")
+          end
+        elsif line =~ %r{ports:}
+          m = line.match(%r{ports:\s*(?<ports>.*)})
+          unless m.nil?
+            firewalld['ports'] = m[:ports].split("\s*")
+          end
+        end
+      end
+    end
+    security_baseline['firewalld'] = firewalld
   end
 
   if File.exist?('/usr/sbin/nft')

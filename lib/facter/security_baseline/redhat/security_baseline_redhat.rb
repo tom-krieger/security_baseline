@@ -947,7 +947,7 @@ def security_baseline_redhat(os, _distid, release)
 
   iptables = {}
   if File.exist?('/sbin/iptables')
-    Facter::Core::Execution.exec('/sbin/iptables -L -n -v')
+    lines = Facter::Core::Execution.exec('/sbin/iptables -L -n -v')
     rules = if lines.nil? || lines.empty?
               []
             else

@@ -1164,7 +1164,7 @@ def security_baseline_redhat(os, _distid, _release)
   end
   security_baseline['crypto_policy'] = crypto_policy
 
-  val = Facter::Cire::Execution.exec('grep -E "^\s*kernelopts=(\S+\s+)*ipv6\.disable=1\b\s*(\S+\s*)*$" /boot/grub2/grubenv')
+  val = Facter::Core::Execution.exec('grep -E "^\s*kernelopts=(\S+\s+)*ipv6\.disable=1\b\s*(\S+\s*)*$" /boot/grub2/grubenv')
   security_baseline['grub_ipv6_disabled'] = if val.nil? || val.empty?
                                               false
                                             elsif val =~ %r{ipv6.disable=1}

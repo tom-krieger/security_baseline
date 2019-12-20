@@ -58,6 +58,7 @@ describe 'security_baseline::rules::redhat::sec_firewall_package' do
           operatingsystemrelease: '8',
           architecture: 'x86_64',
           kernel: 'Linux',
+          selinux: true,
           'security_baseline' => {
             'packages_installed' => {
               'firewalld' => false,

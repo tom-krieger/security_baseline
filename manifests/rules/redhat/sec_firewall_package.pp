@@ -44,15 +44,12 @@ class security_baseline::rules::redhat::sec_firewall_package (
         resources { 'firewall':
           purge => true,
         }
-        package { 'iptables':
-          ensure => absent,
-        }
         package { 'nftables':
           ensure => absent,
         }
       }
       'firewalld': {
-        package { 'firewalls':
+        package { 'firewalld':
           ensure => installed,
         }
         package { 'iptables':
@@ -69,7 +66,7 @@ class security_baseline::rules::redhat::sec_firewall_package (
         package { 'iptables':
           ensure => absent,
         }
-        package { 'iptables':
+        package { 'firewalld':
           ensure => absent,
         }
       }

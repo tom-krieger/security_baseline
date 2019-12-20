@@ -29,15 +29,17 @@ require 'pp'
 def security_baseline_redhat(os, _distid, release)
   security_baseline = {}
   arch = Facter.value(:architecture)
-  if release >= '8'
-    pkgMgr = 'dnf'
-  else
-    pkgMgr = 'yum'
-  end
+  pkgMgr = if release >= '8'
+             'dnf'
+           else
+             'yum'
+           end
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
-              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond']
+              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond', 'firewalld', 'iptables', 'nftables']
   packages = { 'iptables' => '-q',
+               'nftables' => '-q',
+               'firewalld' => '-q',
                'wireless-tools' => '-q',
                'openldap-clients' => '-q',
                'logrotate' => '-q',
@@ -1018,9 +1020,9 @@ def security_baseline_redhat(os, _distid, release)
 
       m = info.match(%r{icmptype\s*(?<icmptype>\d+)})
       icmptype = if m.nil?
-                  ''
-                else
-                  m[:icmptype]
+                   ''
+                 else
+                   m[:icmptype]
                 end
 
       policy["rule #{nr}"]['spt'] = spt
@@ -1033,6 +1035,14 @@ def security_baseline_redhat(os, _distid, release)
     iptables['policy'] = policy
   end
   security_baseline['iptables'] = iptables
+
+  if File.exist?('/usr/bin/firewall-cmd')
+  end
+
+  if File.exist?('/usr/sbin/nft')
+    if File.exist?('/usr/bin/nmcli')
+    end
+  end
 
   wlan = []
   cnt = 0
@@ -1065,13 +1075,13 @@ def security_baseline_redhat(os, _distid, release)
     crypto_policy['legacy'] = check_value_string(val, 'none')
   else
     crypto_policy['legacy'] = 'none'
-  end  
+  end
   if File.exist?('/etc/crypto-policies/config')
     val = Facter::Core::Execution.exec("grep -E -h -i '^\s*(FUTURE|FIPS)\s*(\s+#.*)?$' /etc/crypto-policies/config")
     crypto_policy['policy'] = check_value_string(val, 'none')
   else
     crypto_policy['policy'] = 'none'
-  end    
+  end
   security_baseline['crypto_policy'] = crypto_policy
 
   security_baseline

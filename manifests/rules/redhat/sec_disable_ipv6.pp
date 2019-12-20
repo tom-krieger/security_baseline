@@ -29,7 +29,7 @@ class security_baseline::rules::redhat::sec_disable_ipv6 (
   String $log_level = '',
 ) {
   if($enforce) {
-    grub_config { 'ipv6.disable':
+    grub_config { 'ipv6_disable':
       value => '1'
     }
   } else {

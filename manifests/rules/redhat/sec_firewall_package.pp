@@ -39,35 +39,19 @@ class security_baseline::rules::redhat::sec_firewall_package (
       'iptables': {
         if(!defined(Class['firewall'])) {
           class { '::firewall': }
-        }
-
-        resources { 'firewall':
-          purge => true,
-        }
-        package { 'nftables':
-          ensure => absent,
+          resources { 'firewall':
+            purge => true,
+          }
         }
       }
       'firewalld': {
         package { 'firewalld':
           ensure => installed,
         }
-        package { 'iptables':
-          ensure => absent,
-        }
-        package { 'nftables':
-          ensure => absent,
-        }
       }
       'nftables': {
         package { 'nftables':
           ensure => installed,
-        }
-        package { 'iptables':
-          ensure => absent,
-        }
-        package { 'firewalld':
-          ensure => absent,
         }
       }
       default: {

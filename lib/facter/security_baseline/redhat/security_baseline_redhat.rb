@@ -988,7 +988,7 @@ def security_baseline_redhat(os, _distid, _release)
         if line =~ %r{services:}
           m = line.match(%r{services:\s*(?<srvs>.*)})
           unless m.nil?
-            firewalld['services'] = m[:srvs].split("\s*")
+            firewalld['services'] = m[:srvs].split("\s+")
             firewalld['services_count'] = firewalld['services'].count
           end
         elsif line =~ %r{ports:}

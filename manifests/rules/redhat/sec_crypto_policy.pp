@@ -49,7 +49,7 @@ class security_baseline::rules::redhat::sec_crypto_policy (
 ) {
   if ($enforce) {
     if ($facts['security_baseline']['crypto_policy']['policy'] != $crypto_policy) {
-      exec { 'set crypto policy':
+      exec { "set crypto policy to ${crypto_policy}":
         command => "update-crypto-policies --set ${crypto_policy}",
         path    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
       }
@@ -62,7 +62,7 @@ class security_baseline::rules::redhat::sec_crypto_policy (
         (($enable == 'enable') and ($facts['security_baseline']['crypto_policy']['fips_mode'] != 'disabled')) or
         (($enable == 'disable') and ($facts['security_baseline']['crypto_policy']['fips_mode'] != 'enabled'))
       ) {
-        exec { 'set FIPS':
+        exec { "set FIPS to ${enable}":
           command => "fips-mode-setup --${enable}",
           path    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
         }

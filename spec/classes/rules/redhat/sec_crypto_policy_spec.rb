@@ -14,6 +14,7 @@ describe 'security_baseline::rules::redhat::sec_crypto_policy' do
             'crypto_policy' => {
               'legacy' => 'LEGACY',
               'policy' => 'DEFAULT',
+              'fips_mode' => 'enabled',
             },
           },
         }

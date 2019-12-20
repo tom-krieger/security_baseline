@@ -54,13 +54,18 @@ class security_baseline::rules::redhat::sec_crypto_policy (
         path    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
       }
       if($crypto_policy == 'FUTURE') {
-        $enable = '--disable'
+        $enable = 'disable'
       } elsif($crypto_policy == 'FIPS') {
-        $enable = '--enable'
+        $enable = 'enable'
       }
-      exec { 'set FIPS':
-        command => "fips-mode-setup ${enable}",
-        path    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
+      if (
+        (($enable == 'enable') and ($facts['security_baseline']['crypto_policy']['fips_mode'] != 'disabled')) or
+        (($enable == 'disable') and ($facts['security_baseline']['crypto_policy']['fips_mode'] != 'enabled'))
+      ) {
+        exec { 'set FIPS':
+          command => "fips-mode-setup --${enable}",
+          path    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
+        }
       }
     }
   } else {

@@ -1153,14 +1153,24 @@ def security_baseline_redhat(os, _distid, _release)
   if File.exist?('/etc/crypto-policies/config')
     val = Facter::Core::Execution.exec("grep -E -h -i '^\s*LEGACY\s*(\s+#.*)?$' /etc/crypto-policies/config")
     crypto_policy['legacy'] = check_value_string(val, 'none')
-  else
-    crypto_policy['legacy'] = 'none'
-  end
-  if File.exist?('/etc/crypto-policies/config')
     val = Facter::Core::Execution.exec("grep -E -h -i '^\s*(FUTURE|FIPS)\s*(\s+#.*)?$' /etc/crypto-policies/config")
     crypto_policy['policy'] = check_value_string(val, 'none')
   else
+    crypto_policy['legacy'] = 'none'
     crypto_policy['policy'] = 'none'
+  end
+  if File.exist?('/usr/bin/fips-mode-setup')
+    val = Facter::Core::Execution.exec('fips-mode-setup --check')
+    crypto_policy['fips_mode'] = if val.nil? || val.empty?
+                                   'none'
+                                 else
+                                   m = val.match(%r{FIPS mode is\s*(?<mode>\w)\.})
+                                   unless m.nil?
+                                     m[:mode]
+                                   else
+                                     'none'
+                                   end
+                                 end
   end
   security_baseline['crypto_policy'] = crypto_policy
 

@@ -26,14 +26,14 @@ describe 'security_baseline::rules::redhat::sec_disable_ipv6' do
       it {
         is_expected.to compile
         if enforce
-          is_expected.to contain_grub_config('ipv6.disable')
+          is_expected.to contain_kernel_parameter('ipv6.disable')
             .with(
               'value' => '1',
             )
 
           is_expected.not_to contain_echo('grub-disable-ipv6')
         else
-          is_expected.not_to contain_grub_config('ipv6.disable')
+          is_expected.not_to contain_kernel_parameter('ipv6.disable')
           is_expected.to contain_echo('grub-disable-ipv6')
             .with(
               'message'  => 'grub disable ipv6',

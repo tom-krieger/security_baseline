@@ -1160,11 +1160,11 @@ def security_baseline_redhat(os, _distid, _release)
     crypto_policy['policy'] = 'none'
   end
   if File.exist?('/usr/bin/fips-mode-setup')
-    val = Facter::Core::Execution.exec('fips-mode-setup --check')
+    val = Facter::Core::Execution.exec('/usr/bin/fips-mode-setup --check')
     crypto_policy['fips_mode'] = if val.nil? || val.empty?
                                    'none'
                                  else
-                                   m = val.match(%r{FIPS mode is\s*(?<mode>\w)\.})
+                                   m = val.match(%r{FIPS mode is\s*(?<mode>\w*)\.})
                                    unless m.nil?
                                      m[:mode]
                                    else

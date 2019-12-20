@@ -35,12 +35,8 @@ class security_baseline::rules::redhat::sec_firewall_package (
   Enum['iptables', 'nftables', 'firewalld'] $firewall_package = 'iptables',
 ) {
   if($enforce) {
-    if (
-      ($facts['security_baseline']['packages_installed']['firewalld'] == false) and
-      ($facts['security_baseline']['packages_installed']['nftables'] == false) and
-      ($facts['security_baseline']['packages_installed']['iptables'] == false)
-    ) {
-      if($firewall_package == 'iptables') {
+    case $firewall_package {
+      'iptables': {
         if(!defined(Class['firewall'])) {
           class { '::firewall': }
         }
@@ -48,10 +44,37 @@ class security_baseline::rules::redhat::sec_firewall_package (
         resources { 'firewall':
           purge => true,
         }
-      } elsif(!defined(Package[$firewall_package])) {
-        package { $firewall_package:
+        package { 'iptables':
+          ensure => absent,
+        }
+        package { 'nftables':
+          ensure => absent,
+        }
+      }
+      'firewalld': {
+        package { 'firewalls':
           ensure => installed,
         }
+        package { 'iptables':
+          ensure => absent,
+        }
+        package { 'nftables':
+          ensure => absent,
+        }
+      }
+      'nftables': {
+        package { 'nftables':
+          ensure => installed,
+        }
+        package { 'iptables':
+          ensure => absent,
+        }
+        package { 'iptables':
+          ensure => absent,
+        }
+      }
+      default: {
+        fail("invalid firewall ackage selected: ${firewall_package}")
       }
     }
   } else {

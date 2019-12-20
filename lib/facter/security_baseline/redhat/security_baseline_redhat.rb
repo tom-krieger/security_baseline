@@ -1088,7 +1088,7 @@ def security_baseline_redhat(os, _distid, _release)
     nft['conns'] = conns
 
     policy = {}
-    val Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook input'")
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook input'")
     if val.nil? || val.empty?
       policy['input'] = 'none'
     else
@@ -1098,7 +1098,7 @@ def security_baseline_redhat(os, _distid, _release)
       end
     end
 
-    val Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook forward'")
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook forward'")
     if val.nil? || val.empty?
       policy['forward'] = 'none'
     else
@@ -1108,7 +1108,7 @@ def security_baseline_redhat(os, _distid, _release)
       end
     end
 
-    val Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook output'")
+    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook output'")
     if val.nil? || val.empty?
       policy['output'] = 'none'
     else

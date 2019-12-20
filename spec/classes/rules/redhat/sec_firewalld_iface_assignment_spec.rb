@@ -14,7 +14,7 @@ describe 'security_baseline::rules::redhat::sec_firewalld_iface_assignment' do
             'firewalld' => {
               'default_zone_status' => false,
               'zone_iface_assigned_status' => false,
-              'zone_iface_assigned' => {
+              'zone_iface' => {
                 'public' => 'eth1',
               },
             },

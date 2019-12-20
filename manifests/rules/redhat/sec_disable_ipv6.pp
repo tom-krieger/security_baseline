@@ -29,7 +29,7 @@ class security_baseline::rules::redhat::sec_disable_ipv6 (
   String $log_level = '',
 ) {
   if($enforce) {
-    kernel_parameter { 'ipv6_disable':
+    kernel_parameter { 'ipv6.disable':
       value => '1',
     }
   } else {

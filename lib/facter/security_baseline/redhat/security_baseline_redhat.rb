@@ -1230,7 +1230,7 @@ def security_baseline_redhat(os, _distid, _release)
     journald['compress'] = if val.nil? || val.empty?
                              'none'
                            else
-                             m = val.match(%r{Storage=(?<flag>\w*)})
+                             m = val.match(%r{Compress=(?<flag>\w*)})
                              if m.nil?
                                'none'
                              else

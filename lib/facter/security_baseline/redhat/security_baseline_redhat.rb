@@ -342,7 +342,7 @@ def security_baseline_redhat(os, _distid, _release)
   sshd['allowgroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^AllowGroups" | awk \'{print $2;}\'').strip.split("\n")
   sshd['denyusers'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^DenyUsers" | awk \'{print $2;}\'').strip.split("\n")
   sshd['denygroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^DenyGroups" | awk \'{print $2;}\'').strip.split("\n")
-  sshd['protocol'] = check_vaue_string(Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip, 'none')
+  sshd['protocol'] = check_value_string(Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip, 'none')
 
   val = Facter::Core::Execution.exec("find /etc/ssh -xdev -type f -name 'ssh_host_*_key'")
   sshd['priv_key_files'] = if val.nil? || val.empty?

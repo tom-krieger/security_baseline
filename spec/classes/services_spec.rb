@@ -21,6 +21,13 @@ describe 'security_baseline::services' do
             'refreshonly' => true,
           )
 
+        is_expected.to contain_exec('reload-rsyslog')
+          .with(
+            'command'     => 'pkill -HUP rsyslog',
+            'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+            'refreshonly' => true,
+          )
+
         is_expected.to contain_exec('reload-syslog-ng')
           .with(
             'command'     => 'pkill -HUP syslog-ng',

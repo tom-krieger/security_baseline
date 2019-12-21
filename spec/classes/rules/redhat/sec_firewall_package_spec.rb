@@ -128,13 +128,10 @@ describe 'security_baseline::rules::redhat::sec_firewall_package' do
       it {
         is_expected.to compile
         if enforce
-          is_expected.to contain_package('iptables')
-            .with(
-              'ensure' => 'installed',
-            )
+          is_expected.to contain_class('firewall')
           is_expected.not_to contain_echo('firewall-package')
         else
-          is_expected.not_to contain_package('iptables')
+          is_expected.not_to contain_class('firewall')
           is_expected.to contain_echo('firewall-package')
             .with(
               'message'  => 'firewall package',

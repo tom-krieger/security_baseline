@@ -1959,7 +1959,7 @@ security_baseline::rules:
     active: true
     scored: false
     level: 1
-    description: 'Wireless networking is used when wired networks are unavailable. Ubuntu contains a wireless tool kit to allow system administrators to configure and use wireless networks.'
+    description: 'Wireless networking is used when wired networks are unavailable. Red Hat Enterprise Linux 7 contains a wireless tool kit to allow system administrators to configure and use wireless networks.'
     enforce: true
     class: '::security_baseline::rules::redhat::sec_wlan_interfaces'
     check:

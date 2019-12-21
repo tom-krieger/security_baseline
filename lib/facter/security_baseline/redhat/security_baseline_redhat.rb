@@ -45,6 +45,8 @@ def security_baseline_redhat(os, _distid, _release)
                'libselinux' => '-q',
                'setroubleshoot' => '-q',
                'talk' => '-q',
+               'audit' => '-q',
+               'audit-libs' => '-q',
                'tcp_wrappers' => '-q',
                'telnet' => '-q',
                'ypbind' => '-q',
@@ -704,7 +706,19 @@ def security_baseline_redhat(os, _distid, _release)
                                else
                                  'audit=1'
                                end
-
+  
+  val = Facter::Core::Execution.exec("grep -E 'kernelopts=(\S+\s+)*audit_backlog_limit=\S+\b' /boot/grub2/grubenv")
+  auditd['backlog_limit'] = if val.nil? || val.empty?
+                              'none'
+                            else
+                              m = val.match(%r{audit_backlog_limit=(?<limit>\d+)})
+                              if m.nil?
+                                'none'
+                              else
+                                m[:limit]
+                              end
+                            end
+  
   val = Facter::Core::Execution.exec('auditctl -l | grep time-change')
   expected = [
     '-a always,exit -F arch=b32 -S stime,settimeofday,adjtimex -F key=time-change',

@@ -1,7 +1,8 @@
 # @summary 
-#    Ensure auditd service is enabled (Scored).
+#    Ensure auditd is installed (Scored)
 #
-# Turn on the auditd daemon to record system events.
+# auditd is the userspace component to the Linux Auditing System. It's responsible for writing audit 
+# records to the disk.
 #
 # Rationale:
 # The capturing of system events provides system administrators with information to allow them to 
@@ -17,36 +18,36 @@
 #    Loglevel for the message
 #
 # @example
-#   class { 'security_baseline::rules::redhat::sec_auditd_service':
+#   class { 'security_baseline::rules::redhat::sec_auditd_package':
 #             enforce => true,
 #             message => 'What you want to log',
 #             log_level => 'warning',
 #   }
 #
 # @api private
-class security_baseline::rules::redhat::sec_auditd_service (
+class security_baseline::rules::redhat::sec_auditd_package (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = ''
 ) {
-  if($enforce) {
-    if($facts['operatingsystemmajrelease'] < 8) {
-      if(!defined(Package['audit'])) {
-        package { 'audit':
-          ensure => installed,
-        }
+  if ($enforce) {
+    if(!defined(Package['audit'])) {
+      package { 'audit':
+        ensure => installed,
       }
     }
-
-    service { 'auditd':
-      ensure => running,
-      enable => true,
+    if(!defined(Package['audit-libs'])) {
+      package { 'audit-libs':
+        ensure => installed,
+      }
     }
-
   } else {
-    if($facts['security_baseline']['auditd']['srv_auditd'] == false) {
-      echo { 'auditd-service':
-        message  => 'Auditd servive should be enabled and running.',
+    if(
+      ($facts['security_baseline']['packages_installed']['audit'] == false) or
+      ($facts['security_baseline']['packages_installed']['audit-libs'] == false)
+    ) {
+      echo { 'auditd-packages':
+        message  => $message,
         loglevel => $log_level,
         withpath => false,
       }

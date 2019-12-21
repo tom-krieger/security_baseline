@@ -2032,7 +2032,7 @@ security_baseline::rules:
         - auditd
         - time-change
       fact_value: true
-    message: 'Rule 4.1.5. Auditd should have a rule to collect events changing date and time.'
+    message: 'Rule 4.1.4. Auditd should have a rule to collect events changing date and time.'
     log_level: 'warning'
   '4.1.5':
     rulename: 'auditd-identity'
@@ -2224,7 +2224,7 @@ security_baseline::rules:
         - auditd
         - scope
       fact_value: true
-    message: 'Rule 4.1.11. Auditd should have a rule to collect unsuccessful unauthorized file access attempts.'
+    message: 'Rule 4.1.15. Auditd should have a rule to collect unsuccessful unauthorized file access attempts.'
     log_level: 'warning'
   '4.1.16':
     rulename: 'auditd-actions'

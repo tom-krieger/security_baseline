@@ -35,7 +35,7 @@ describe 'security_baseline::rules::redhat::sec_auditd_package' do
         if enforce
           is_expected.to contain_package('audit-libs').with('ensure' => 'installed')
           is_expected.not_to contain_echo('auditd-packages')
-          is_expected.not_to contain_package('audit')
+          is_expected.to contain_package('audit').with('ensure' => 'installed')
         else
           is_expected.not_to contain_package('audit-libs')
           is_expected.not_to contain_package('audit')

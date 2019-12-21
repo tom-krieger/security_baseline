@@ -29,12 +29,12 @@ describe 'security_baseline::rules::common::sec_auditd_backlog_limit' do
           if enforce
             is_expected.to contain_kernel_parameter('audit_backlog_limit=8192')
               .with(
-                'ensure' => present,
+                'ensure' => 'present',
               )
-            is_expected.not_to conatin_echo('auditd-backlog-limit')
+            is_expected.not_to contain_echo('auditd-backlog-limit')
           else
             is_expected.not_to contain_kernel_parameter('audit_backlog_limit=8192')
-            is_expected.to conatin_echo('auditd-backlog-limit')
+            is_expected.to contain_echo('auditd-backlog-limit')
               .with(
                 'message'  => 'set backlog limit',
                 'loglevel' => 'warning',

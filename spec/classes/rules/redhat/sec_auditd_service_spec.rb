@@ -25,7 +25,7 @@ describe 'security_baseline::rules::redhat::sec_auditd_service' do
         {
           osfamily: 'RedHat',
           operatingsystem: 'CentOS',
-          operatingsystemmajrelease: 7,
+          operatingsystemmajrelease: '7',
           architecture: 'x86_64',
           security_baseline: {
             auditd: {
@@ -85,7 +85,7 @@ describe 'security_baseline::rules::redhat::sec_auditd_service' do
         {
           osfamily: 'RedHat',
           operatingsystem: 'CentOS',
-          operatingsystemmajrelease: 8,
+          operatingsystemmajrelease: '8',
           architecture: 'x86_64',
           security_baseline: {
             auditd: {
@@ -104,8 +104,8 @@ describe 'security_baseline::rules::redhat::sec_auditd_service' do
 
       it { is_expected.to compile }
       it {
+        is_expected.not_to contain_package('audit')
         if enforce
-          is_expected.not_to contain_package('audit')
           is_expected.to contain_service('auditd')
             .with(
               'ensure'  => 'running',
@@ -114,7 +114,6 @@ describe 'security_baseline::rules::redhat::sec_auditd_service' do
 
           is_expected.not_to contain_echo('auditd-service')
         else
-          is_expected.not_to contain_package('audit')
           is_expected.to contain_echo('auditd-service')
             .with(
               'message'  => 'Auditd servive should be enabled and running.',

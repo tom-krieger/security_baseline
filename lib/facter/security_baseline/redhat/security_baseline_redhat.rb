@@ -706,7 +706,7 @@ def security_baseline_redhat(os, _distid, _release)
                                else
                                  'audit=1'
                                end
-  
+
   val = Facter::Core::Execution.exec("grep -E 'kernelopts=(\S+\s+)*audit_backlog_limit=\S+\b' /boot/grub2/grubenv")
   auditd['backlog_limit'] = if val.nil? || val.empty?
                               'none'
@@ -718,7 +718,7 @@ def security_baseline_redhat(os, _distid, _release)
                                 m[:limit]
                               end
                             end
-  
+
   val = Facter::Core::Execution.exec('auditctl -l | grep time-change')
   expected = [
     '-a always,exit -F arch=b32 -S stime,settimeofday,adjtimex -F key=time-change',
@@ -1211,6 +1211,47 @@ def security_baseline_redhat(os, _distid, _release)
                                             else
                                               false
                                             end
+
+  if File.exist?('/etc/systemd/journald.conf')
+    journald = {}
+    val = Facter::Core::Execution.exec('grep -e ^\s*ForwardToSyslog /etc/systemd/journald.conf')
+    journald['forward_to_syslog'] = if val.nil? || val.empty?
+                                      'none'
+                                    else
+                                      m = val.match(%r{ForwardToSyslog=(?<flag>\w*)})
+                                      if m.nil?
+                                        'none'
+                                      else
+                                        m[:flag]
+                                      end
+                                    end
+
+    val = Facter::Core::Execution.exec('grep -e ^\s*Compress /etc/systemd/journald.conf')
+    journald['compress'] = if val.nil? || val.empty?
+                             'none'
+                           else
+                             m = val.match(%r{Storage=(?<flag>\w*)})
+                             if m.nil?
+                               'none'
+                             else
+                               m[:flag]
+                             end
+                           end
+
+    val = Facter::Core.execution.exec('grep -e ^\s*Storage /etc/systemd/journald.conf')
+    journald['storage_persistent'] = if val.nil? || val.empty?
+                                       'none'
+                                     else
+                                       m = val.match(%r{Storage=(?<flag>\w*)})
+                                       if m.nil?
+                                         'none'
+                                       else
+                                         m[:flag]
+                                       end
+                                     end
+
+    security_baseline['journald'] = journald
+  end
 
   security_baseline
 end

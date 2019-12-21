@@ -30,7 +30,7 @@ class security_baseline::rules::redhat::sec_auditd_service (
   String $log_level = ''
 ) {
   if($enforce) {
-    if($facts['operatingsystemmajrelease'] < 8) {
+    if($facts['operatingsystemmajrelease'] < '8') {
       if(!defined(Package['audit'])) {
         package { 'audit':
           ensure => installed,

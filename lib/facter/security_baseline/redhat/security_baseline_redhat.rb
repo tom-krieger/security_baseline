@@ -1238,7 +1238,7 @@ def security_baseline_redhat(os, _distid, _release)
                              end
                            end
 
-    val = Facter::Core.execution.exec('grep -e ^\s*Storage /etc/systemd/journald.conf')
+    val = Facter::Core.Execution.exec('grep -e ^\s*Storage /etc/systemd/journald.conf')
     journald['storage_persistent'] = if val.nil? || val.empty?
                                        'none'
                                      else

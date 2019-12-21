@@ -988,7 +988,7 @@ def security_baseline_redhat(os, _distid, _release)
         if line =~ %r{services:}
           m = line.match(%r{services:\s*(?<srvs>.*)})
           unless m.nil?
-            firewalld['services'] = m[:srvs].gsub(/\s+/m, ' ').strip.split(" ")
+            firewalld['services'] = m[:srvs].gsub(%r{\s+}m, ' ').strip.split(' ')
             firewalld['services_count'] = firewalld['services'].count
           end
         elsif line =~ %r{ports:}
@@ -1125,16 +1125,31 @@ def security_baseline_redhat(os, _distid, _release)
   end
 
   wlan = []
-  cnt = 0
-  nw = Facter.value(:networking)
-  nw['interfaces'].each do |ifname, _data|
-    if ifname =~ %r{wlan}
-      cnt += 1
-      wlan.push(ifname)
+  if File.exist?('/usr/bin/nmcli')
+    val = Facter::Core::Execution.exec('/usr/bin/nmcli radio all | grep -v WIFI')
+    if val.nil? || val.empty?
+      status = 'none'
+    else
+      m = val.match(%r{^(enabled|disabled)\s*(?<wifi>\w*)\s*(enabled|disabled)})
+      status = if m.nil?
+                 'none'
+               else
+                 m[:wifi]
+               end
     end
+    security_baseline['wlan_status'] = status
+  else
+    cnt = 0
+    nw = Facter.value(:networking)
+    nw['interfaces'].each do |ifname, _data|
+      if ifname =~ %r{wlan}
+        cnt += 1
+        wlan.push(ifname)
+      end
+    end
+    security_baseline['wlan_interfaces'] = wlan
+    security_baseline['wlan_interfaces_count'] = cnt
   end
-  security_baseline['wlan_interfaces'] = wlan
-  security_baseline['wlan_interfaces_count'] = cnt
 
   sudo = {}
   val = Facter::Core::Execution.exec("grep -Ehi '^\s*Defaults\s+(\[^#]+,\s*)?use_pty' /etc/sudoers /etc/sudoers.d/*")
@@ -1165,10 +1180,10 @@ def security_baseline_redhat(os, _distid, _release)
                                    'none'
                                  else
                                    m = val.match(%r{FIPS mode is\s*(?<mode>\w*)\.})
-                                   unless m.nil?
-                                     m[:mode]
-                                   else
+                                   if m.nil?
                                      'none'
+                                   else
+                                     m[:mode]
                                    end
                                  end
   end

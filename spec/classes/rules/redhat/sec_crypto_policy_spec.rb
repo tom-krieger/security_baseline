@@ -31,13 +31,13 @@ describe 'security_baseline::rules::redhat::sec_crypto_policy' do
       it {
         is_expected.to compile
         if enforce
-          is_expected.to contain_exec('set crypto policy')
+          is_expected.to contain_exec('set crypto policy to FUTURE')
             .with(
               'command' => 'update-crypto-policies --set FUTURE',
               'path'    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
             )
 
-          is_expected.to contain_exec('set FIPS')
+          is_expected.to contain_exec('set FIPS to disable')
             .with(
               'command' => 'fips-mode-setup --disable',
               'path'    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
@@ -45,8 +45,8 @@ describe 'security_baseline::rules::redhat::sec_crypto_policy' do
 
           is_expected.not_to contain_echo('crypto-policy')
         else
-          is_expected.not_to contain_exec('set crypto policy')
-          is_expected.not_to contain_exec('set FIPS')
+          is_expected.not_to contain_exec('set crypto policy to FUTURE')
+          is_expected.not_to contain_exec('set FIPS to disable')
           is_expected.to contain_echo('crypto-policy')
             .with(
               'message'  => 'crypto policy',
@@ -67,6 +67,7 @@ describe 'security_baseline::rules::redhat::sec_crypto_policy' do
             'crypto_policy' => {
               'legacy' => 'LEGACY',
               'policy' => 'DEFAULT',
+              'fips_mode' => 'disabled',
             },
           },
         }
@@ -83,13 +84,13 @@ describe 'security_baseline::rules::redhat::sec_crypto_policy' do
       it {
         is_expected.to compile
         if enforce
-          is_expected.to contain_exec('set crypto policy')
+          is_expected.to contain_exec('set crypto policy to FIPS')
             .with(
               'command' => 'update-crypto-policies --set FIPS',
               'path'    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
             )
 
-          is_expected.to contain_exec('set FIPS')
+          is_expected.to contain_exec('set FIPS to enable')
             .with(
               'command' => 'fips-mode-setup --enable',
               'path'    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
@@ -97,8 +98,8 @@ describe 'security_baseline::rules::redhat::sec_crypto_policy' do
 
           is_expected.not_to contain_echo('crypto-policy')
         else
-          is_expected.not_to contain_exec('set crypto policy')
-          is_expected.not_to contain_exec('set FIPS')
+          is_expected.not_to contain_exec('set crypto policy to FIPS')
+          is_expected.not_to contain_exec('set FIPSto enable')
           is_expected.to contain_echo('crypto-policy')
             .with(
               'message'  => 'crypto policy',

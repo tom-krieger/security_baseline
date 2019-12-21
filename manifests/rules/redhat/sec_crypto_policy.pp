@@ -59,8 +59,8 @@ class security_baseline::rules::redhat::sec_crypto_policy (
         $enable = 'enable'
       }
       if (
-        (($enable == 'enable') and ($facts['security_baseline']['crypto_policy']['fips_mode'] != 'disabled')) or
-        (($enable == 'disable') and ($facts['security_baseline']['crypto_policy']['fips_mode'] != 'enabled'))
+        (($enable == 'enable') and ($facts['security_baseline']['crypto_policy']['fips_mode'] == 'disabled')) or
+        (($enable == 'disable') and ($facts['security_baseline']['crypto_policy']['fips_mode'] == 'enabled'))
       ) {
         exec { "set FIPS to ${enable}":
           command => "fips-mode-setup --${enable}",

@@ -327,7 +327,7 @@ def security_baseline_redhat(os, _distid, _release)
   sshd['package'] = check_package_installed('openssh-server')
   sshd['/etc/ssh/sshd_config'] = read_file_stats('/etc/ssh/sshd_config')
 
-  sshd_values = ['loglevel', 'x11forwarding', 'maxauthtries', 'maxstartups', 'maxsessions', 'protocol',
+  sshd_values = ['loglevel', 'x11forwarding', 'maxauthtries', 'maxstartups', 'maxsessions',
                  'ignorerhosts', 'hostbasedauthentication', 'permitrootlogin', 'permitemptypasswords', 'permituserenvironment',
                  'clientaliveinterval', 'clientalivecountmax', 'logingracetime', 'banner', 'usepam', 'allowtcpforwarding']
 
@@ -337,11 +337,12 @@ def security_baseline_redhat(os, _distid, _release)
     sshd[value] = check_value_string(val, 'none')
   end
 
-  sshd['macs'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^MACs" | awk \'{print $2;}\'').strip.split(%r{\,})
-  sshd['allowusers'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^AllowUsers" | awk \'{print $2;}\'').strip.split("\n")
-  sshd['allowgroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^AllowGroups" | awk \'{print $2;}\'').strip.split("\n")
-  sshd['denyusers'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^DenyUsers" | awk \'{print $2;}\'').strip.split("\n")
-  sshd['denygroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^DenyGroups" | awk \'{print $2;}\'').strip.split("\n")
+  sshd['macs'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^MACs" | awk \'{print $2;}\'').strip.split(%r{\,})
+  sshd['allowusers'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^AllowUsers" | awk \'{print $2;}\'').strip.split("\n")
+  sshd['allowgroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^AllowGroups" | awk \'{print $2;}\'').strip.split("\n")
+  sshd['denyusers'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^DenyUsers" | awk \'{print $2;}\'').strip.split("\n")
+  sshd['denygroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^DenyGroups" | awk \'{print $2;}\'').strip.split("\n")
+  sshd['protocol'] = check_vaue_string(Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip, 'none')
 
   val = Facter::Core::Execution.exec("find /etc/ssh -xdev -type f -name 'ssh_host_*_key'")
   sshd['priv_key_files'] = if val.nil? || val.empty?

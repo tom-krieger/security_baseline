@@ -327,7 +327,7 @@ def security_baseline_redhat(os, _distid, _release)
   sshd['package'] = check_package_installed('openssh-server')
   sshd['/etc/ssh/sshd_config'] = read_file_stats('/etc/ssh/sshd_config')
 
-  sshd_values = ['loglevel', 'x11forwarding', 'maxauthtries', 'maxstartups', 'maxsessions', 'protocol'
+  sshd_values = ['loglevel', 'x11forwarding', 'maxauthtries', 'maxstartups', 'maxsessions', 'protocol',
                  'ignorerhosts', 'hostbasedauthentication', 'permitrootlogin', 'permitemptypasswords', 'permituserenvironment',
                  'clientaliveinterval', 'clientalivecountmax', 'logingracetime', 'banner', 'usepam', 'allowtcpforwarding']
 
@@ -336,7 +336,7 @@ def security_baseline_redhat(os, _distid, _release)
     val = Facter::Core::Execution.exec("/sbin/sshd -T | grep -i #{value} | awk '{print $2;}'").strip.split("\n")
     sshd[value] = check_value_string(val, 'none')
   end
-  
+
   sshd['macs'] = Facter::Core::Execution.exec('grep "^MACs" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split(%r{\,})
   sshd['allowusers'] = cFacter::Core::Execution.exec('grep "^AllowUsers" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split("\n")
   sshd['allowgroups'] = Facter::Core::Execution.exec('grep "^AllowGroups" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split("\n")

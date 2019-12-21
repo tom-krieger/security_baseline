@@ -333,15 +333,15 @@ def security_baseline_redhat(os, _distid, _release)
 
 
   sshd_values.each do |value|
-    val = Facter::Core::Execution.exec("/sbin/sshd -T | grep -i #{value} | awk '{print $2;}'").strip.split("\n")
+    val = Facter::Core::Execution.exec("/sbin/sshd -T | grep -i #{value} | awk '{print $2;}'").strip
     sshd[value] = check_value_string(val, 'none')
   end
 
-  sshd['macs'] = Facter::Core::Execution.exec('grep "^MACs" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split(%r{\,})
-  sshd['allowusers'] = Facter::Core::Execution.exec('grep "^AllowUsers" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split("\n")
-  sshd['allowgroups'] = Facter::Core::Execution.exec('grep "^AllowGroups" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split("\n")
-  sshd['denyusers'] = Facter::Core::Execution.exec('grep "^DenyUsers" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split("\n")
-  sshd['denygroups'] = Facter::Core::Execution.exec('grep "^DenyGroups" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split("\n")
+  sshd['macs'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^MACs" | awk \'{print $2;}\'').strip.split(%r{\,})
+  sshd['allowusers'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^AllowUsers" | awk \'{print $2;}\'').strip.split("\n")
+  sshd['allowgroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^AllowGroups" | awk \'{print $2;}\'').strip.split("\n")
+  sshd['denyusers'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^DenyUsers" | awk \'{print $2;}\'').strip.split("\n")
+  sshd['denygroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep "^DenyGroups" | awk \'{print $2;}\'').strip.split("\n")
 
   val = Facter::Core::Execution.exec("find /etc/ssh -xdev -type f -name 'ssh_host_*_key'")
   sshd['priv_key_files'] = if val.nil? || val.empty?

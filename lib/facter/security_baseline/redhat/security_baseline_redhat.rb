@@ -1272,5 +1272,39 @@ def security_baseline_redhat(os, _distid, _release)
     security_baseline['journald'] = journald
   end
 
+  if File.exist?('/usr/bin/authselect')
+    authselect = {}
+    val = Facter::Core::Execution.exec('/usr/bin/authselect current | grep "Profile ID: custom/"')
+    authselect['profile'] = if val.nil? || val.empty?
+                              'none'
+                            elsif val =~ %r{No existing configuration detected}
+                              'unconfigured'
+                            else
+                              m = val.match(%r{Profile ID: custom\/(?<profile>\w*)})
+                              if m.nil
+                                'none'
+                              else
+                                m[:profile]
+                              end
+                            end
+
+    val = Facter::Core::Execution.exec('/usr/binauthselect current')
+    options = []
+    unless val.nil? || val.empty?
+      val.split("\n").each do |line|
+        if line =~ %r{^\-}
+          m = line.match(%r{^\-\s*(?<option>)[a-zA-Z0\-_]*})
+          unless m.nil?
+            options.push(m[:option])
+          end
+        end
+      end
+    end
+    authselect['current_options'] = options
+    val = Facter::Core::Execution.exec('/usr/binauthselect current | grep with-faillock')
+    authselect['faillock'] = check_value_string(val, 'none')
+    security_baseline['authselect'] = authselect
+  end
+
   security_baseline
 end

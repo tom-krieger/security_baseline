@@ -1281,7 +1281,7 @@ def security_baseline_redhat(os, _distid, _release)
                               'unconfigured'
                             else
                               m = val.match(%r{Profile ID: custom\/(?<profile>\w*)})
-                              if m.nil
+                              if m.nil?
                                 'none'
                               else
                                 m[:profile]

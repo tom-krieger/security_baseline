@@ -2842,7 +2842,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - sshd
-        - x11forwading
+        - x11forwarding
       fact_value: 'no'
     message: 'Rule 5.2.4. The sshd parameter X11Forward should be no.'
     log_level: warning

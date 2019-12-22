@@ -43,7 +43,7 @@ class security_baseline::rules::redhat::sec_authselect_profile (
     exec { 'set custom profile':
       command => "authselect create-profile ${custom_profile} -b ${base_profile} --symlink-meta",
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      onlyif  => "test $(authselect current | grep \"Profile ID: custom/\" | cut -f 2 -d '/') != '${custom_profile}'"
+      onlyif  => "test $(authselect current | grep -c \"Profile ID: custom/${custom_profile}\") -gt 0"
     }
   } else {
     if ($facts['security_baseline']['authselect']['profile'] == 'none') {

@@ -37,7 +37,7 @@ describe 'security_baseline::rules::redhat::sec_authselect_profile' do
             .with(
               'command' => "authselect create-profile testprofile -b sssd --symlink-meta",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => "test $(authselect current | grep -c \"Profile ID: custom/testprofile\") -gt 0"
+              'onlyif'  => 'test ! -d /etc/authselect/custom/testprofile',
             )
             
           is_expected.not_to contain_echo('authselect-profile')

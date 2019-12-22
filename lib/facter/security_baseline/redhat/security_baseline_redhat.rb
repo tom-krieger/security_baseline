@@ -1287,7 +1287,7 @@ def security_baseline_redhat(os, _distid, _release)
                               end
                             end
 
-    val = Facter::Core::Execution.exec('/usr/binauthselect current')
+    val = Facter::Core::Execution.exec('/usr/bin/authselect current')
     options = []
     unless val.nil? || val.empty?
       val.split("\n").each do |line|
@@ -1299,7 +1299,7 @@ def security_baseline_redhat(os, _distid, _release)
       end
     end
     authselect['current_options'] = options
-    val = Facter::Core::Execution.exec('/usr/binauthselect current | grep with-faillock')
+    val = Facter::Core::Execution.exec('/usr/bin/authselect current | grep with-faillock')
     authselect['faillock'] = check_value_string(val, 'none')
     val = Facter::Core::Execution.exec('grep with-faillock /etc/authselect/authselect.conf')
     authselect['faillock_global'] = check_value_string(val, 'none')

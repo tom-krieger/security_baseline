@@ -41,31 +41,23 @@ class security_baseline::rules::redhat::sec_authselect_profile_select (
   String $custom_profile = '',
   Array $profile_options = [],
 ) {
-  $profile_options.each |$opt| {
-    if(!($opt in $facts['security_baseline']['authselect']['current_options'])) and (!$work){
-      $work = true
-    }
-  }
-  $facts['security_baseline']['authselect']['current_options'].each |$opt| {
-    if(!($opt in $profile_options)) and (!$work){
-      $work = true
-    }
-  }
-
   if ($enforce) {
     $options = join($profile_options, ' ')
-    if($work) {
-      exec { 'select authselect profile':
-        command => "authselect select custom/${custom_profile} ${options}",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      }
+    exec { 'select authselect profile':
+      command => "authselect select custom/${custom_profile} ${options}",
+      path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      returns => [0, 1],
     }
   } else {
-    if($work) {
-      echo { 'authselect-profile-select':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+    $profile_options.each |$opt| {
+      unless ($opt in $facts['security_baseline']['authselect']['current_options']) {
+        if(!defined(Echo['authselect-profile-select'])) {
+          echo { 'authselect-profile-select':
+            message  => $message,
+            loglevel => $log_level,
+            withpath => false,
+          }
+        }
       }
     }
   }

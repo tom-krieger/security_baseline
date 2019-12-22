@@ -42,17 +42,13 @@ class security_baseline::rules::redhat::sec_authselect_profile_select (
   Array $profile_options = [],
 ) {
   $profile_options.each |$opt| {
-    if(!($opt in $facts['security_baseline']['authselect']['current_options'])) {
-      if(!defined($work)) {
-        $work = true
-      }
+    if(!($opt in $facts['security_baseline']['authselect']['current_options'])) and (!$work){
+      $work = true
     }
   }
   $facts['security_baseline']['authselect']['current_options'].each |$opt| {
-    if(!($opt in $profile_options)) {
-      if(!defined($work)) {
-        $work = true
-      }
+    if(!($opt in $profile_options)) and (!$work){
+      $work = true
     }
   }
 

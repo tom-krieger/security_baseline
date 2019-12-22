@@ -44,7 +44,7 @@ class security_baseline::rules::redhat::sec_authselect_profile_select (
   if ($enforce) {
     $options = join($profile_options, ' ')
     exec { 'select authselect profile':
-      command => "authselect select custom/${custom_profile} ${options}",
+      command => "authselect select custom/${custom_profile} ${options} -f",
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       returns => [0, 1],
     }

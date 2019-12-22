@@ -35,7 +35,7 @@ describe 'security_baseline::rules::redhat::sec_authselect_profile_select' do
         if enforce
           is_expected.to contain_exec('select authselect profile')
             .with(
-              'command' => 'authselect select custom/testprofile with-sudo with-faillock without-nullok',
+              'command' => 'authselect select custom/testprofile with-sudo with-faillock without-nullok -f',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
               'returns' => [0, 1],
             )

@@ -1292,7 +1292,7 @@ def security_baseline_redhat(os, _distid, _release)
     unless val.nil? || val.empty?
       val.split("\n").each do |line|
         next unless line =~ %r{^\-}
-        m = line.match(%r{^\-\s*(?<option>)[a-zA-Z0-9\-_]*})
+        m = line.match(%r{^-\s*(?<option>)[a-zA-Z0-9-_]*})
         unless m.nil?
           options.push(m[:option])
         end

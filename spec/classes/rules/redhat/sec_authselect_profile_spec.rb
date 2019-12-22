@@ -35,11 +35,11 @@ describe 'security_baseline::rules::redhat::sec_authselect_profile' do
         if enforce
           is_expected.to contain_exec('set custom profile')
             .with(
-              'command' => "authselect create-profile testprofile -b sssd --symlink-meta",
+              'command' => 'authselect create-profile testprofile -b sssd --symlink-meta',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
               'onlyif'  => 'test ! -d /etc/authselect/custom/testprofile',
             )
-            
+
           is_expected.not_to contain_echo('authselect-profile')
         else
           is_expected.not_to contain_exec('set custom profile')

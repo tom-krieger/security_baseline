@@ -331,7 +331,6 @@ def security_baseline_redhat(os, _distid, _release)
                  'ignorerhosts', 'hostbasedauthentication', 'permitrootlogin', 'permitemptypasswords', 'permituserenvironment',
                  'clientaliveinterval', 'clientalivecountmax', 'logingracetime', 'banner', 'usepam', 'allowtcpforwarding']
 
-
   sshd_values.each do |value|
     val = Facter::Core::Execution.exec("/sbin/sshd -T | grep -i #{value} | awk '{print $2;}'").strip
     sshd[value] = check_value_string(val, 'none')
@@ -355,7 +354,7 @@ def security_baseline_redhat(os, _distid, _release)
                              key_files
                            end
   status = true
-  sshd['priv_key_files'].each do |ssh_key_file, data|
+  sshd['priv_key_files'].each do |_ssh_key_file, data|
     if data['combined'] != '0-0-384'
       status = false
     end
@@ -372,7 +371,7 @@ def security_baseline_redhat(os, _distid, _release)
                             key_files
                           end
   status = true
-  sshd['pub_key_files'].each do |ssk_key_file, data|
+  sshd['pub_key_files'].each do |_ssk_key_file, data|
     if data['combined'] != '0-0-420'
       status = false
     end
@@ -1292,11 +1291,10 @@ def security_baseline_redhat(os, _distid, _release)
     options = []
     unless val.nil? || val.empty?
       val.split("\n").each do |line|
-        if line =~ %r{^\-}
-          m = line.match(%r{^\-\s*(?<option>)[a-zA-Z0-9\-_]*})
-          unless m.nil?
-            options.push(m[:option])
-          end
+        next unless line =~ %r{^\-}
+        m = line.match(%r{^\-\s*(?<option>)[a-zA-Z0-9\-_]*})
+        unless m.nil?
+          options.push(m[:option])
         end
       end
     end

@@ -26,7 +26,7 @@ describe 'security_baseline::rules::redhat::sec_authselect_profile_select' do
           'message' => 'authselect profile select',
           'log_level' => 'warning',
           'custom_profile' => 'testprofile',
-          'profile_options' => ['with-sudo', 'with-faillock', 'without-nullok' ],
+          'profile_options' => ['with-sudo', 'with-faillock', 'without-nullok'],
         }
       end
 
@@ -40,7 +40,7 @@ describe 'security_baseline::rules::redhat::sec_authselect_profile_select' do
               'onlyif'  => 'test ! -d /etc/authselect/custom/testprofile',
               'returns' => [0, 1],
             )
-            
+
           is_expected.not_to contain_echo('authselect-profile-select')
         else
           is_expected.not_to contain_exec('select authselect profile')

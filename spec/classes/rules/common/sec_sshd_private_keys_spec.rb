@@ -67,7 +67,7 @@ describe 'security_baseline::rules::common::sec_sshd_private_keys' do
             is_expected.not_to contain_echo('sshd-priv-keys')
           else
             is_expected.not_to contain_file('/etc/ssh/ssh_host_ecdsa_key')
-            is_expected.to contain_echo('sshd-protocol')
+            is_expected.to contain_echo('sshd-priv-keys')
               .with(
                 'message'  => 'sshd private keys',
                 'loglevel' => 'warning',

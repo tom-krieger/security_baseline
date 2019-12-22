@@ -22,7 +22,7 @@ describe 'security_baseline::rules::common::sec_sshd_public_keys' do
                 'pub_key_files_status' => false,
                 'pub_key_files' => {
                   '/etc/ssh/ssh_host_ecdsa_key.pub' => {
-                    "combined" => '0-0-420',
+                    'combined' => '0-0-420',
                     'gid' => '0',
                     'mode' => '420',
                     'uid' => '0',

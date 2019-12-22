@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'security_baseline::rules::redhat::sec_authselect_with_faillock' do
-  context "on RedHat" do
+  context 'on RedHat' do
     let(:facts) do
       {
         osfamily: 'RedHat',

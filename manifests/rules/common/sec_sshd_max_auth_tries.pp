@@ -27,8 +27,8 @@
 #
 # @api private
 class security_baseline::rules::common::sec_sshd_max_auth_tries (
-  Boolean $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if($facts['security_baseline']['sshd']['package']) {

@@ -116,10 +116,10 @@ class security_baseline::rules::common::sec_sshd_limit_access (
       }
     } else {
       if(
-        ($facts['security_baseline']['sshd']['allowusers'] == 'none') and
-        ($facts['security_baseline']['sshd']['allowgroups'] == 'none') and
-        ($facts['security_baseline']['sshd']['denyusers'] == 'none') and
-        ($facts['security_baseline']['sshd']['denygroups'] == 'none')
+        (count($facts['security_baseline']['sshd']['allowusers']) == 0) and
+        (count($facts['security_baseline']['sshd']['allowgroups']) == 0) and
+        (count($facts['security_baseline']['sshd']['denyusers']) == 0) and
+        (count($facts['security_baseline']['sshd']['denygroups']) == 0)
       ) {
         echo { 'sshd-limit-access':
           message  => $message,

@@ -2676,8 +2676,8 @@ security_baseline::rules:
       fact_name:
         - cron
         - '/etc/crontab'
-        - uid
-      fact_value: 0
+        - combined
+      fact_value: '0-0-384'
     message: 'Rule 5.1.2. /etc/crontab should be uid 0, gid 0 and permissions 0600.'
     log_level: warning
   '5.1.3':
@@ -2693,8 +2693,8 @@ security_baseline::rules:
       fact_name:
         - cron
         - '/etc/cron.hourly'
-        - uid
-      fact_value: 0
+        - combined
+      fact_value: '0-0-448'
     message: 'Rule 5.1.3. /etc/cron.hourly should be uid 0, gid 0 and permissions 0700.'
     log_level: warning
   '5.1.4':
@@ -2710,8 +2710,8 @@ security_baseline::rules:
       fact_name:
         - cron
         - '/etc/cron.daily'
-        - uid
-      fact_value: 0
+        - combined
+      fact_value: '0-0-448'
     message: 'Rule 5.1.4. /etc/cron.daily should be uid 0, gid 0 and permissions 0700.'
     log_level: warning
   '5.1.5':
@@ -2727,8 +2727,8 @@ security_baseline::rules:
       fact_name:
         - cron
         - '/etc/cron.weekly'
-        - uid
-      fact_value: 0
+        - combined
+      fact_value: '0-0-448'
     message: 'Rule 5.1.5. /etc/cron.weekly should be uid 0, gid 0 and permissions 0700.'
     log_level: warning
   '5.1.6':
@@ -2744,8 +2744,8 @@ security_baseline::rules:
       fact_name:
         - cron
         - '/etc/cron.monthly'
-        - uid
-      fact_value: 0
+        - combined
+      fact_value: '0-0-448'
     message: 'Rule 5.1.6. /etc/cron.monthly should be uid 0, gid 0 and permissions 0700.'
     log_level: warning
   '5.1.7':
@@ -2761,8 +2761,8 @@ security_baseline::rules:
       fact_name:
         - cron
         - '/etc/cron.d'
-        - uid
-      fact_value: 0
+        - combined
+      fact_value: '0-0-448'
     message: 'Rule 5.1.7. /etc/cron.d should be uid 0, gid 0 and permissions 0700.'
     log_level: warning
   '5.1.8':
@@ -2794,8 +2794,8 @@ security_baseline::rules:
       fact_name:
         - sshd
         - '/etc/ssh/sshd_config'
-        - uid
-      fact_value: 0
+        - combined
+      fact_value: '0-0-384'
     message: 'Rule 5.2.1. The file /etc/ssh/sshd_conf should be owned by uid 0, gid 0 and should have permissions 0600.'
     log_level: warning
   '5.2.2':

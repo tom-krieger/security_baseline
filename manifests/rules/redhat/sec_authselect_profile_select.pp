@@ -54,14 +54,14 @@ class security_baseline::rules::redhat::sec_authselect_profile_select (
 
   if ($enforce) {
     $options = join($profile_options, ' ')
-    if(defined($work)) {
+    if($work) {
       exec { 'select authselect profile':
         command => "authselect select custom/${custom_profile} ${options}",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       }
     }
   } else {
-    if(defined($work)) {
+    if($work) {
       echo { 'authselect-profile-select':
         message  => $message,
         loglevel => $log_level,

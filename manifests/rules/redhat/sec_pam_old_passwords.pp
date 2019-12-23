@@ -47,6 +47,7 @@ class security_baseline::rules::redhat::sec_pam_old_passwords (
 
   if($enforce) {
     if (
+      (has_key($facts['security_baseline'], 'authselect')) and
       ($facts['security_baseline']['authselect']['profile'] != '')
     ) {
       $pf_path = "/etc/authselect/custom/${facts['security_baseline']['authselect']['profile']}"

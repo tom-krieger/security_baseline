@@ -49,6 +49,7 @@ class security_baseline::rules::redhat::sec_pam_lockout (
 
   if($enforce) {
     if (
+      (has_key($facts['security_baseline'], 'authselect')) and
       ($facts['security_baseline']['authselect']['profile'] != '')
     ) {
       $pf_path = "/etc/authselect/custom/${facts['security_baseline']['authselect']['profile']}"

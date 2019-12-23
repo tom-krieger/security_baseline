@@ -34,6 +34,13 @@ describe 'security_baseline::services' do
             'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             'refreshonly' => true,
           )
+        
+        is_expected.to contain_exec('authselect-apply-changes')
+          .with(
+            'command'     => 'authselect apply-changes',
+            'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+            'refreshonly' => true,
+          )
       }
     end
   end

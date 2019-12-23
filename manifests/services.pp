@@ -29,4 +29,10 @@ class security_baseline::services {
     path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
     refreshonly => true,
   }
+
+  exec { 'authselect-apply-changes':
+    command     => 'authselect apply-changes',
+    path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+    refreshonly => true,
+  }
 }

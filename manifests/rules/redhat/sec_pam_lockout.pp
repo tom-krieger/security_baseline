@@ -64,15 +64,9 @@ class security_baseline::rules::redhat::sec_pam_lockout (
       if ($facts['operatingsystemmajrelease'] > '7') {
 
         exec { "update authselect pam lockout config retry ${service}":
-          command => "sed - ri \"/pam_faillock.so/s/deny=\S+/deny=${attempts}/g\" ${pf_file} || sed -ri \"s/^\^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 deny=${attempts} \3/\" ${pf_file}",
+          command => "/usr/share/security_baseline/bin/update_pam_lockout_config.sh ${pf_file} ${attempts} ${lockouttime}",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlyif  => "test -z \"$(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*deny=\S+\s*.*$' ${pf_file})\"",
-        }
-
-        exec { "update authselect pam lockout config timeout ${service}":
-          command => "sed -ri \"/pam_faillock.so/s/unlock_time=\S+/unlock_time=${lockouttime}/g\" ${pf_file} || sed -ri \"s/^\s*(auth\s+required\s+pam_faillock\.so\s+)(.*[^{}])(\{.*\}|)$/\1\2 unlock_time=${lockouttime} \3/\" ${pf_file}",
-          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlyif  => "test -z \"$(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*unlock_time=\S+\s*.*$' ${pf_file})\"",
+          onlyif  => "test -z \"$(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*deny=\S+\s*.*$' ${pf_file})\" || test -z \"$(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*unlock_time=\S+\s*.*$' ${pf_file})\"",
         }
 
       } else {

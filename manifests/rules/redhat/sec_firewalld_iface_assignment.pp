@@ -35,11 +35,13 @@ class security_baseline::rules::redhat::sec_firewalld_iface_assignment (
 ) {
   if ($enforce) {
     $zone_config.each |$zone, $iface| {
-      if(has_key($facts['security_baseline']['firewalld']['zone_iface'], $zone)) {
-        if ($facts['security_baseline']['firewalld']['zone_iface'][$zone] != $iface) {
-          exec { 'firewalld change zone interface':
-            command => "firewall-cmd --zone=${zone} --change-interface=${iface}",
-            path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if(has_key($facts['security_baseline'], 'firewalld')) {
+        if(has_key($facts['security_baseline']['firewalld']['zone_iface'], $zone)) {
+          if ($facts['security_baseline']['firewalld']['zone_iface'][$zone] != $iface) {
+            exec { 'firewalld change zone interface':
+              command => "firewall-cmd --zone=${zone} --change-interface=${iface}",
+              path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+            }
           }
         }
       }

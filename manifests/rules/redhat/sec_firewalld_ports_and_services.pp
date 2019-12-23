@@ -35,20 +35,24 @@ class security_baseline::rules::redhat::sec_firewalld_ports_and_services (
   Array $expected_ports    = [],
 ) {
   if ($enforce) {
-    $facts['security_baseline']['firewalld']['ports'].each |$port| {
-      unless ($port in $expected_ports) {
-        exec { "firewalld remove port ${port}":
-          command => "firewall-cmd --remove-port=${port}",
-          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+    if(has_key($facts['security_baseline'], 'firewalld')) {
+      $facts['security_baseline']['firewalld']['ports'].each |$port| {
+        unless ($port in $expected_ports) {
+          exec { "firewalld remove port ${port}":
+            command => "firewall-cmd --remove-port=${port}",
+            path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          }
         }
       }
     }
 
-    $facts['security_baseline']['firewalld']['services'].each |$service| {
-      unless ($service in $expected_services) {
-        exec { "firewalld remove service ${service}":
-          command => "firewall-cmd --remove-service=${service}",
-          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+    if(has_key($facts['security_baseline'], 'firewalld')) {
+      $facts['security_baseline']['firewalld']['services'].each |$service| {
+        unless ($service in $expected_services) {
+          exec { "firewalld remove service ${service}":
+            command => "firewall-cmd --remove-service=${service}",
+            path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          }
         }
       }
     }

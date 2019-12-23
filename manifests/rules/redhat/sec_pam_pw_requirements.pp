@@ -66,6 +66,7 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
   Integer $ocredit            = -1,
   Integer $lcredit            = -1,
   Integer $minclass           = -1,
+  Integer $retry              = 3,
 ) {
   $services = [
     'system-auth',
@@ -80,7 +81,7 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
       match  => '^#?minlen',
     }
 
-    if ($minclass != -1) and ($facts['operatingsystemrelease'] > '7') {
+    if ($minclass != -1) and ($facts['operatingsystemmajrelease'] > '7') {
       file_line { 'pam minclass':
         ensure => 'present',
         path   => '/etc/security/pwquality.conf',
@@ -117,13 +118,33 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
       }
     }
 
-    if ($facts['operatingsystemrelease'] > '7') {
-      exec { 'update authselect config':
-        command => '/usr/share/security_baseline/bin/update_pam_pw_requirements_config.sh',
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      }
+    if (
+      ($facts['security_baseline']['authselect']['profile'] != undef) and
+      ($facts['security_baseline']['authselect']['profile'] != '')
+    ) {
+      $pf_path = "/etc/authselect/custom/${facts['security_baseline']['authselect']['profile']}"
     } else {
-      $services.each | $service | {
+      $pf_path = '/etc/authselect'
+    }
+
+    $services.each | $service | {
+      if ($facts['operatingsystemmajrelease'] > '7') {
+
+        $pf_file = "${pf_path}/${service}"
+
+        exec { "update authselect config enforce for root ${service}":
+          command => "sed -ri 's/^\s*(password\s+requisite\s+pam_pwquality.so\s+)(.*)$/\1\2 enforce-for-root/' ${pf_file}",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "[[ -z $(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*enforce-for-root\s*.*$' ${pf_file}) ]]",
+        }
+
+        exec { "update authselect config retry ${service}":
+          command => "sed -ri '/pwquality/s/retry=\S+/retry=${retry}/ ${pf_file} || sed -ri 's/^\s*(password\s+requisite\s+pam_pwquality.so\s+)(.*)$/\1\2 retry=${retry}/' ${pf_file}",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "[[ -n $(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*\s+retry=\S+\s*.*$' ${pf_file}) ]]",
+        }
+
+      } else {
         pam { "pam-${service}-requisite":
           ensure    => present,
           service   => $service,

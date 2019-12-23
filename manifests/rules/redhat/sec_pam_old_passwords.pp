@@ -46,19 +46,32 @@ class security_baseline::rules::redhat::sec_pam_old_passwords (
   ]
 
   if($enforce) {
-    if ($facts['operatingsystemrelease'] > '7') {
-      exec { 'update authselect config for old passwords':
-        command => "/usr/share/security_baseline/bin/update_pam_pw_reuse_config.sh ${oldpasswords}",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      }
+    if (
+      ($facts['security_baseline']['authselect']['profile'] != undef) and
+      ($facts['security_baseline']['authselect']['profile'] != '')
+    ) {
+      $pf_path = "/etc/authselect/custom/${facts['security_baseline']['authselect']['profile']}"
     } else {
-      if($sha512) {
-        $arguments = ["remember=${oldpasswords}", 'shadow', 'sha512', 'try_first_pass', 'use_authtok']
-      } else {
-        $arguments = ["remember=${oldpasswords}", 'shadow', 'try_first_pass', 'use_authtok']
+      $pf_path = '/etc/authselect'
+    }
+
+    if ($facts['operatingsystemmajrelease'] > '7') {
+      $pf_file = "${pf_path}/system-auth"
+
+      exec { 'update authselect config for old passwords':
+        command => "sed -ri \"s/^\s*(password\s+(requisite|sufficient)\s+(pam_pwquality\.so|pam_unix\.so)\s+)(.*)(remember=\S+\s*)(.*)$/\1\4 remember=${oldpasswords} \6/\" ${pf_file} || sed -ri \"s/^\s*(password\s+(requisite|sufficient)\s+(pam_pwquality\.so|pam_unix\.so)\ s+)(.*)$/\1\4 remember=${oldpasswords}/\" ${pf_file}",
+        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        onlyif  => "[[ -n $(grep -E '^\s*password\s+(sufficient\s+pam_unix|requi(red|site)\s+pam_pwhistory).so\s+ ([^#]+\s+)*remember=\S+\s*.*$' ${pf_file}) ]]",
       }
 
+    } else {
+
       $services.each | $service | {
+        if($sha512) {
+          $arguments = ["remember=${oldpasswords}", 'shadow', 'sha512', 'try_first_pass', 'use_authtok']
+        } else {
+          $arguments = ["remember=${oldpasswords}", 'shadow', 'try_first_pass', 'use_authtok']
+        }
 
         pam { "pam-${service}-sufficient":
           ensure    => present,

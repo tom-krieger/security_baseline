@@ -38,11 +38,32 @@ class security_baseline::rules::redhat::sec_pam_passwd_sha512 (
   String $log_level = '',
   Boolean $sha512   = true,
 ) {
+  $services = [
+    'system-auth',
+    'password-auth',
+  ]
+
   if($enforce) {
-    if($sha512) {
-      exec { 'update authselect config for sha512':
-        command => '/usr/share/security_baseline/bin/update_pam_pw_hash_sha512_config.sh',
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+
+    if($sha512) and ($facts['operatingsystemmajrelease'] > '7') {
+      if (
+        ($facts['security_baseline']['authselect']['profile'] != undef) and
+        ($facts['security_baseline']['authselect']['profile'] != '')
+      ) {
+        $pf_path = "/etc/authselect/custom/${facts['security_baseline']['authselect']['profile']}"
+      } else {
+        $pf_path = '/etc/authselect'
+      }
+      
+      $services.each | $service | {
+        $pf_file = "${pf_path}/${service}"
+
+        exec { "update authselect config for sha512 ${service}":
+          command => "sed - ri 's/^\s*(password\s+sufficient\s+pam_unix.so\s+)(.*)$/\1\2 sha512/' ${pf_file}",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "[[ -z $(grep -E '^\s*password\s+sufficient\s+pam_unix.so\s+.*sha512\s*.*$' ${pf_file}) ]]",
+        }
+
       }
     }
   } else {

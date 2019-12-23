@@ -47,10 +47,12 @@ class security_baseline::rules::redhat::sec_firewalld_default_zone (
   String $default_zone = 'public',
 ) {
   if ($enforce) {
-    if ($facts['security_baseline']['firewalld']['default_zone'] != $default_zone) {
-      exec { 'set firewalld default zone':
-        command => "firewall-cmd --set-default-zone=${default_zone}",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+    if(has_key($facts['security_baseline'], 'firewalld')) {
+      if ($facts['security_baseline']['firewalld']['default_zone'] != $default_zone) {
+        exec { 'set firewalld default zone':
+          command => "firewall-cmd --set-default-zone=${default_zone}",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
     }
   } else {

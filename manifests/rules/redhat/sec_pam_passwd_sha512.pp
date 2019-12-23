@@ -48,7 +48,7 @@ class security_baseline::rules::redhat::sec_pam_passwd_sha512 (
     if($sha512) and ($facts['operatingsystemmajrelease'] > '7') {
       if (
         (has_key($facts['security_baseline'], 'authselect')) and
-        ($facts['security_baseline']['authselect']['profile'] != '')
+        ($facts['security_baseline']['authselect']['profile'] != 'none')
       ) {
         $pf_path = "/etc/authselect/custom/${facts['security_baseline']['authselect']['profile']}"
       } else {

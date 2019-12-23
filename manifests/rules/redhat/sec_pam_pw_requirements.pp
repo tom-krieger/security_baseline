@@ -120,7 +120,7 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
 
     if (
       (has_key($facts['security_baseline'], 'authselect')) and
-      ($facts['security_baseline']['authselect']['profile'] != '')
+      ($facts['security_baseline']['authselect']['profile'] != 'none')
     ) {
       $pf_path = "/etc/authselect/custom/${facts['security_baseline']['authselect']['profile']}"
     } else {

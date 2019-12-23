@@ -68,7 +68,6 @@ class security_baseline::rules::redhat::sec_pam_lockout (
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
           onlyif  => "test -z \"$(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*deny=\S+\s*.*$' ${pf_file})\" || test -z \"$(grep -E '^\s*auth\s+required\s+pam_faillock.so\s+.*unlock_time=\S+\s*.*$' ${pf_file})\"",
         }
-
       } else {
         pam { "pam_unix ${service}":
           ensure           => present,

@@ -135,7 +135,7 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
         exec { "update authselect config enforce for root ${service}":
           command => "/usr/share/security_baseline/bin/update_pam_pw_requirements_config.sh ${pf_file}",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlyif  => "test -z \"$(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*enforce-for-root\s*.*$' ${pf_file})\" || test -n \"$(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*\s+retry=\S+\s*.*$' ${pf_file})\"",
+          onlyif  => "test -z \"$(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*enforce-for-root\s*.*$' ${pf_file})\" || test -z \"$(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*\s+retry=\S+\s*.*$' ${pf_file})\"",
         }
 
       } else {

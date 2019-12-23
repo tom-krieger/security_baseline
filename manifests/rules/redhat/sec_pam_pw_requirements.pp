@@ -135,13 +135,13 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
         exec { "update authselect config enforce for root ${service}":
           command => "sed -ri 's/^\s*(password\s+requisite\s+pam_pwquality.so\s+)(.*)$/\1\2 enforce-for-root/' ${pf_file}",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlyif  => "test -z $(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*enforce-for-root\s*.*$') ${pf_file}",
+          onlyif  => "test -z \"$(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*enforce-for-root\s*.*$' ${pf_file})\"",
         }
 
         exec { "update authselect config retry ${service}":
-          command => "sed -ri '/pwquality/s/retry=\S+/retry=${retry}/ ${pf_file} || sed -ri 's/^\s*(password\s+requisite\s+pam_pwquality.so\s+)(.*)$/\1\2 retry=${retry}/' ${pf_file}",
+          command => "sed -ri '/pwquality/s/retry=\S+/retry=${retry}/' ${pf_file} || sed -ri 's/^\s*(password\s+requisite\s+pam_pwquality.so\s+)(.*)$/\1\2 retry=${retry}/' ${pf_file} ",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlyif  => "test -n $(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*\s+retry=\S+\s*.*$') ${pf_file}",
+          onlyif  => "test -n \"$(grep -E '^\s*password\s+requisite\s+pam_pwquality.so\s+.*\s+retry=\S+\s*.*$' ${pf_file})\"",
         }
 
       } else {

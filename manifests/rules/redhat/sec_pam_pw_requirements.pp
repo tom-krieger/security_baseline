@@ -44,6 +44,10 @@
 # @param lcredit
 #    Minimum number of lower case characters a password must contain
 #
+# @param minclass
+#    Minimum to provide character classes (only used for Redhat 8, ignored in oler RedHat versios). 
+#    Will be ignored if value is -1. Instead *credit values are used.
+#
 # @example
 #   class security_baseline::rules::redhat::ssec_pam_pw_requirements {
 #       enforce => true,
@@ -61,6 +65,7 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
   Integer $ucredit            = -1,
   Integer $ocredit            = -1,
   Integer $lcredit            = -1,
+  Integer $minclass           = -1,
 ) {
   $services = [
     'system-auth',
@@ -75,42 +80,58 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
       match  => '^#?minlen',
     }
 
-    file_line { 'pam dcredit':
-      ensure => 'present',
-      path   => '/etc/security/pwquality.conf',
-      line   => "dcredit = ${dcredit}",
-      match  => '^#?dcredit',
+    if ($minclass != -1) and ($facts['operatingsystemrelease'] > '7') {
+      file_line { 'pam minclass':
+        ensure => 'present',
+        path   => '/etc/security/pwquality.conf',
+        line   => "minclass = ${minclass}",
+        match  => '^#?minclass',
+      }
+    } else {
+      file_line { 'pam dcredit':
+        ensure => 'present',
+        path   => '/etc/security/pwquality.conf',
+        line   => "dcredit = ${dcredit}",
+        match  => '^#?dcredit',
+      }
+
+      file_line { 'pam ucredit':
+        ensure => 'present',
+        path   => '/etc/security/pwquality.conf',
+        line   => "ucredit = ${ucredit}",
+        match  => '^#?ucredit',
+      }
+
+      file_line { 'pam ocredit':
+        ensure => 'present',
+        path   => '/etc/security/pwquality.conf',
+        line   => "ocredit = ${ocredit}",
+        match  => '^#?ocredit',
+      }
+
+      file_line { 'pam lcredit':
+        ensure => 'present',
+        path   => '/etc/security/pwquality.conf',
+        line   => "lcredit = ${lcredit}",
+        match  => '^#?lcredit',
+      }
     }
 
-    file_line { 'pam ucredit':
-      ensure => 'present',
-      path   => '/etc/security/pwquality.conf',
-      line   => "ucredit = ${ucredit}",
-      match  => '^#?ucredit',
-    }
-
-    file_line { 'pam ocredit':
-      ensure => 'present',
-      path   => '/etc/security/pwquality.conf',
-      line   => "ocredit = ${ocredit}",
-      match  => '^#?ocredit',
-    }
-
-    file_line { 'pam lcredit':
-      ensure => 'present',
-      path   => '/etc/security/pwquality.conf',
-      line   => "lcredit = ${lcredit}",
-      match  => '^#?lcredit',
-    }
-
-    $services.each | $service | {
-      pam { "pam-${service}-requisite":
-        ensure    => present,
-        service   => $service,
-        type      => 'password',
-        control   => 'requisite',
-        module    => 'pam_pwquality.so',
-        arguments => ['try_first_pass', 'retry=3']
+    if ($facts['operatingsystemrelease'] > '7') {
+      exec { 'update authselect config':
+        command => '/usr/share/security_baseline/bin/update_pam_pw_requirements_config.sh',
+        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      }
+    } else {
+      $services.each | $service | {
+        pam { "pam-${service}-requisite":
+          ensure    => present,
+          service   => $service,
+          type      => 'password',
+          control   => 'requisite',
+          module    => 'pam_pwquality.so',
+          arguments => ['try_first_pass', 'retry=3']
+        }
       }
     }
   } else {

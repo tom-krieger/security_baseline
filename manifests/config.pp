@@ -124,6 +124,38 @@ class security_baseline::config(
     mode   => '0700',
   }
 
+  file { '/usr/share/security_baseline/bin/update_pam_pw_requirements_config.sh':
+    ensure => present,
+    source => 'puppet:///modules/security_baseline/update_pam_pw_requirements_config.sh',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0700',
+  }
+
+  file { '/usr/share/security_baseline/bin/update_pam_lockout_config.sh':
+    ensure => present,
+    source => 'puppet:///modules/security_baseline/update_pam_lockout_config.sh',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0700',
+  }
+
+  file { '/usr/share/security_baseline/bin/update_pam_pw_reuse_config.sh':
+    ensure => present,
+    source => 'puppet:///modules/security_baseline/update_pam_pw_reuse_config.sh',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0700',
+  }
+
+  file { '/usr/share/security_baseline/bin/update_pam_pw_hash_sha512_config.sh':
+    ensure => present,
+    source => 'puppet:///modules/security_baseline/update_pam_pw_hash_sha512_config.sh',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0700',
+  }
+
   if $update_postrun_command and ($reporting_type == 'fact') {
     if(('security_baseline' in $facts) and ('puppet_agent_postrun' in $facts['security_baseline'])) {
       if ($facts['security_baseline']['puppet_agent_postrun'] != "postrun_command = ${fact_upload_command}") {

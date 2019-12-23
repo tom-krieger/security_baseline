@@ -151,6 +151,38 @@ describe 'security_baseline::config' do
             'group'  => 'root',
             'mode'   => '0700',
           )
+
+        is_expected.to contain_file('/usr/share/security_baseline/bin/update_pam_pw_requirements_config.sh')
+          .with(
+            'ensure' => 'present',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/share/security_baseline/bin/update_pam_lockout_config.sh')
+          .with(
+            'ensure' => 'present',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/share/security_baseline/bin/update_pam_pw_reuse_config.sh')
+          .with(
+            'ensure' => 'present',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/share/security_baseline/bin/update_pam_pw_hash_sha512_config.sh')
+          .with(
+            'ensure' => 'present',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
       end
     end
   end

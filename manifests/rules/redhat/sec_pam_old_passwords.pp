@@ -46,23 +46,29 @@ class security_baseline::rules::redhat::sec_pam_old_passwords (
   ]
 
   if($enforce) {
-
-    if($sha512) {
-      $arguments = ["remember=${oldpasswords}", 'shadow', 'sha512', 'try_first_pass', 'use_authtok']
+    if ($facts['operatingsystemrelease'] > '7') {
+      exec { 'update authselect config for old passwords':
+        command => "/usr/share/security_baseline/bin/update_pam_pw_reuse_config.sh ${oldpasswords}",
+        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      }
     } else {
-      $arguments = ["remember=${oldpasswords}", 'shadow', 'try_first_pass', 'use_authtok']
-    }
+      if($sha512) {
+        $arguments = ["remember=${oldpasswords}", 'shadow', 'sha512', 'try_first_pass', 'use_authtok']
+      } else {
+        $arguments = ["remember=${oldpasswords}", 'shadow', 'try_first_pass', 'use_authtok']
+      }
 
-    $services.each | $service | {
+      $services.each | $service | {
 
-      pam { "pam-${service}-sufficient":
-        ensure    => present,
-        service   => $service,
-        type      => 'password',
-        control   => 'sufficient',
-        module    => 'pam_unix.so',
-        arguments => $arguments,
-        position  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
+        pam { "pam-${service}-sufficient":
+          ensure    => present,
+          service   => $service,
+          type      => 'password',
+          control   => 'sufficient',
+          module    => 'pam_unix.so',
+          arguments => $arguments,
+          position  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
+        }
       }
     }
   } else {

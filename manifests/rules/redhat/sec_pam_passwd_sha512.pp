@@ -21,6 +21,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param sha512
+#    Use sha512 password encryption (only used in Redhat 8, for 7 oe less is done in sec_pam_old_passwords)
+#
 # @example
 #   class security_baseline::rules::redhat::sec_pam_passwd_sha512 {
 #       enforce => true,
@@ -32,10 +35,17 @@
 class security_baseline::rules::redhat::sec_pam_passwd_sha512 (
   Boolean $enforce  = true,
   String $message   = '',
-  String $log_level = ''
+  String $log_level = '',
+  Boolean $sha512   = true,
 ) {
-
-  unless($enforce) {
+  if($enforce) {
+    if($sha512) {
+      exec { 'update authselect config for sha512':
+        command => '/usr/share/security_baseline/bin/update_pam_pw_hash_sha512_config.sh',
+        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      }
+    }
+  } else {
     unless ($facts['security_baseline']['pam']['sha512']['status']) {
       echo { 'password-sha512':
         message  => $message,

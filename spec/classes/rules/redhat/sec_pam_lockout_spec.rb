@@ -4,12 +4,13 @@ enforce_options = [true, false]
 
 describe 'security_baseline::rules::redhat::sec_pam_lockout' do
   enforce_options.each do |enforce|
-    context "RedHat with enforce = #{enforce}" do
+    context "RedHat 7 with enforce = #{enforce}" do
       let(:facts) do
         {
           osfamily: 'RedHat',
           operatingsystem: 'CentOS',
           architecture: 'x86_64',
+          operatingsystemrelease: '7',
           security_baseline: {
             pam: {
               pwquality: {
@@ -175,6 +176,62 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
               'withpath' => false,
             )
         end
+      end
+    end
+
+    context "RedHat 7 with enforce = #{enforce}" do
+      let(:facts) do
+        {
+          osfamily: 'RedHat',
+          operatingsystem: 'CentOS',
+          architecture: 'x86_64',
+          operatingsystemrelease: '8',
+          security_baseline: {
+            pam: {
+              pwquality: {
+                lockout: false,
+              },
+            },
+          },
+        }
+      end
+      let(:params) do
+        {
+          'enforce' => enforce,
+          'message' => 'pam lockout',
+          'log_level' => 'warning',
+          'lockouttime' => 900,
+          'attempts' => 3,
+        }
+      end
+
+      it { is_expected.to compile }
+      it do
+        if enforce
+          is_expected.to contain_exec('update authselect pam lockout config')
+            .with(
+              'command' => '/usr/share/security_baseline/bin/update_pam_lockout_config.sh 3 900',
+              'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+            )
+
+          is_expected.not_to contain_echo('pam-lockout')
+        else
+          is_expected.not_to contain_exec('update authselect pam lockout config')
+          is_expected.to contain_echo('pam-lockout')
+            .with(
+              'message'  => 'pam lockout',
+              'loglevel' => 'warning',
+              'withpath' => false,
+            )
+        end
+        is_expected.not_to contain_pam('pam_unix system-auth')
+        is_expected.not_to contain_pam('pam_faillock preauth system-auth')
+        is_expected.not_to contain_pam('pam_faillock authfail system-auth')
+        is_expected.not_to contain_pam('pam_faillock authsucc system-auth')
+        is_expected.not_to contain_pam('pam_unix password-auth')
+        is_expected.not_to contain_pam('pam_faillock preauth password-auth')
+        is_expected.not_to contain_pam('pam_faillock authfail password-auth')
+        is_expected.not_to contain_pam('pam_faillock authsucc password-auth')
       end
     end
   end

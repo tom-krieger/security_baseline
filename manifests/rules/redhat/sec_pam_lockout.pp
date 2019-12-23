@@ -48,66 +48,72 @@ class security_baseline::rules::redhat::sec_pam_lockout (
   ]
 
   if($enforce) {
-
-    $services.each | $service | {
-
-      pam { "pam_unix ${service}":
-        ensure           => present,
-        service          => $service,
-        type             => 'auth',
-        module           => 'pam_unix.so',
-        control          => '[success=1 default=bad]',
-        control_is_param => true,
-        arguments        => [],
+    if ($facts['operatingsystemrelease'] > '7') {
+      exec { 'update authselect pam lockout config':
+        command => "/usr/share/security_baseline/bin/update_pam_lockout_config.sh ${attempts} ${lockouttime}",
+        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       }
+    } else {
+      $services.each | $service | {
 
-      pam { "pam_faillock preauth ${service}":
-        ensure           => present,
-        service          => $service,
-        type             => 'auth',
-        module           => 'pam_faillock.so',
-        control          => 'required',
-        control_is_param => true,
-        arguments        => [
-          'preauth',
-          'audit',
-          'silent',
-          "deny=${attempts}",
-          "unlock_time=${lockouttime}",
-        ],
-        position         => 'before *[type="auth" and module="pam_unix.so"]',
-      }
+        pam { "pam_unix ${service}":
+          ensure           => present,
+          service          => $service,
+          type             => 'auth',
+          module           => 'pam_unix.so',
+          control          => '[success=1 default=bad]',
+          control_is_param => true,
+          arguments        => [],
+        }
 
-      pam { "pam_faillock authfail ${service}":
-        ensure           => present,
-        service          => $service,
-        type             => 'auth',
-        module           => 'pam_faillock.so',
-        control          => '[default=die]',
-        control_is_param => true,
-        arguments        => [
-          'authfail',
-          'audit',
-          "deny=${attempts}",
-          "unlock_time=${lockouttime}",
-        ],
-        position         => 'after *[type="auth" and module="pam_unix.so"]',
-      }
+        pam { "pam_faillock preauth ${service}":
+          ensure           => present,
+          service          => $service,
+          type             => 'auth',
+          module           => 'pam_faillock.so',
+          control          => 'required',
+          control_is_param => true,
+          arguments        => [
+            'preauth',
+            'audit',
+            'silent',
+            "deny=${attempts}",
+            "unlock_time=${lockouttime}",
+          ],
+          position         => 'before *[type="auth" and module="pam_unix.so"]',
+        }
 
-      pam { "pam_faillock authsucc ${service}":
-        ensure           => present,
-        service          => $service,
-        type             => 'auth',
-        module           => 'pam_faillock.so',
-        control          => 'sufficient',
-        control_is_param => true,
-        arguments        => [
-          'authsucc',
-          'audit',
-          "deny=${attempts}",
-          "unlock_time=${lockouttime}",
-        ],
-        position         => 'after *[type="auth" and module="pam_faillock.so" and control="[default=die]"]',
+        pam { "pam_faillock authfail ${service}":
+          ensure           => present,
+          service          => $service,
+          type             => 'auth',
+          module           => 'pam_faillock.so',
+          control          => '[default=die]',
+          control_is_param => true,
+          arguments        => [
+            'authfail',
+            'audit',
+            "deny=${attempts}",
+            "unlock_time=${lockouttime}",
+          ],
+          position         => 'after *[type="auth" and module="pam_unix.so"]',
+        }
+
+        pam { "pam_faillock authsucc ${service}":
+          ensure           => present,
+          service          => $service,
+          type             => 'auth',
+          module           => 'pam_faillock.so',
+          control          => 'sufficient',
+          control_is_param => true,
+          arguments        => [
+            'authsucc',
+            'audit',
+            "deny=${attempts}",
+            "unlock_time=${lockouttime}",
+          ],
+          position         => 'after *[type="auth" and module="pam_faillock.so" and control="[default=die]"]',
+        }
       }
     }
   } else {

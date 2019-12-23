@@ -331,9 +331,9 @@ def security_baseline_redhat(os, _distid, _release)
                  'ignorerhosts', 'hostbasedauthentication', 'permitrootlogin', 'permitemptypasswords', 'permituserenvironment',
                  'clientaliveinterval', 'clientalivecountmax', 'logingracetime', 'banner', 'usepam', 'allowtcpforwarding']
 
-  sshd_values.each do |value|
-    val = Facter::Core::Execution.exec("/sbin/sshd -T | grep -i #{value} | awk '{print $2;}'").strip
-    sshd[value] = check_value_string(val, 'none')
+  sshd_values.each do |sshd_value|
+    val = Facter::Core::Execution.exec("/sbin/sshd -T | grep -i #{sshd_value} | awk '{print $2;}'").strip
+    sshd[sshd_value] = check_value_string(val, 'none')
   end
 
   sshd['macs'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^MACs" | awk \'{print $2;}\'').strip.split(%r{\,})
@@ -1305,6 +1305,15 @@ def security_baseline_redhat(os, _distid, _release)
     authselect['faillock_global'] = check_value_string(val, 'none')
     security_baseline['authselect'] = authselect
   end
+
+  valgroup = Facter::Core::Execution.exec('grep ^shadow:[^:]*:[^:]*:[^:]+ /etc/group')
+  val = if valgroup.nil? || valgroup.empty?
+          []
+        else
+          valgroup.split("\n")
+        end
+  security_baseline['shadow_group'] = val
+  security_baseline['shadow_group_count'] = val.count
 
   security_baseline
 end

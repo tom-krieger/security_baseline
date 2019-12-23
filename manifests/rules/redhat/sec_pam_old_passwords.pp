@@ -61,7 +61,7 @@ class security_baseline::rules::redhat::sec_pam_old_passwords (
       exec { 'update authselect config for old passwords':
         command => "sed -ri \"s/^\s*(password\s+(requisite|sufficient)\s+(pam_pwquality\.so|pam_unix\.so)\s+)(.*)(remember=\S+\s*)(.*)$/\1\4 remember=${oldpasswords} \6/\" ${pf_file} || sed -ri \"s/^\s*(password\s+(requisite|sufficient)\s+(pam_pwquality\.so|pam_unix\.so)\ s+)(.*)$/\1\4 remember=${oldpasswords}/\" ${pf_file}",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        onlyif  => "test -n \"$(grep -E '^\s*password\s+(sufficient\s+pam_unix|requi(red|site)\s+pam_pwhistory).so\s+ ([^#]+\s+)*remember=\S+\s*.*$' ${pf_file})\"",
+        onlyif  => "test -z \"$(grep -E '^\s*password\s+(sufficient\s+pam_unix|requi(red|site)\s+pam_pwhistory).so\s+ ([^#]+\s+)*remember=\S+\s*.*$' ${pf_file})\"",
       }
 
     } else {

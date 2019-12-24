@@ -10,7 +10,7 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
           osfamily: 'RedHat',
           operatingsystem: 'CentOS',
           architecture: 'x86_64',
-          operatingsystemrelease: '7',
+          operatingsystemmajrelease: '7',
           security_baseline: {
             pam: {
               pwquality: {
@@ -179,14 +179,26 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
       end
     end
 
-    context "RedHat 7 with enforce = #{enforce}" do
+    context "RedHat 8 with enforce = #{enforce}" do
+      let(:pre_condition) do
+        <<-EOF
+        exec { 'authselect-apply-changes':
+          command     => 'authselect apply-changes',
+          path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          refreshonly => true,
+        }
+        EOF
+      end
       let(:facts) do
         {
           osfamily: 'RedHat',
           operatingsystem: 'CentOS',
           architecture: 'x86_64',
-          operatingsystemrelease: '8',
+          operatingsystemmajrelease: '8',
           security_baseline: {
+            authselect: {
+              profile: 'testprofile',
+            },
             pam: {
               pwquality: {
                 lockout: false,
@@ -208,15 +220,26 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
       it { is_expected.to compile }
       it do
         if enforce
-          is_expected.to contain_exec('update authselect pam lockout config')
+          is_expected.to contain_exec('update authselect pam lockout config deny system-auth')
             .with(
-              'command' => '/usr/share/security_baseline/bin/update_pam_lockout_config.sh 3 900',
+              'command' => "sed - ri '/pam_faillock.so/s/deny=\\S+/deny=3/g' /etc/authselect/custom/testprofile/system-auth || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 deny=3 \\3/' /etc/authselect/custom/testprofile/system-auth",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'unless'  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*deny=\\S+\\s*.*$' /etc/authselect/custom/testprofile/system-auth)\"",
             )
+            .that_notifies('Exec[authselect-apply-changes]')
+
+          is_expected.to contain_exec('update authselect pam lockout config timeout password-auth')
+            .with(
+              'command' => "sed -ri '/pam_faillock.so/s/unlock_time=\\S+/unlock_time=900/g' /etc/authselect/custom/testprofile/password-auth || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 unlock_time=900 \\3/' /etc/authselect/custom/testprofile/password-auth",
+              'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'unless'  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*unlock_time=\\S+\\s*.*$' /etc/authselect/custom/testprofile/password-auth)\"",
+            )
+            .that_notifies('Exec[authselect-apply-changes]')
 
           is_expected.not_to contain_echo('pam-lockout')
         else
-          is_expected.not_to contain_exec('update authselect pam lockout config')
+          is_expected.not_to contain_exec('update authselect pam lockout config system-auth')
+          is_expected.not_to contain_exec('update authselect pam lockout config password-auth')
           is_expected.to contain_echo('pam-lockout')
             .with(
               'message'  => 'pam lockout',
@@ -224,6 +247,7 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
               'withpath' => false,
             )
         end
+
         is_expected.not_to contain_pam('pam_unix system-auth')
         is_expected.not_to contain_pam('pam_faillock preauth system-auth')
         is_expected.not_to contain_pam('pam_faillock authfail system-auth')

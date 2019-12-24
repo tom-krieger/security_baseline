@@ -59,9 +59,10 @@ class security_baseline::rules::redhat::sec_pam_old_passwords (
       $pf_file = "${pf_path}/system-auth"
 
       exec { 'update authselect config for old passwords':
-        command => "/usr/share/security_baseline/bin/update_pam_pw_reuse_config.sh ${pf_file} ${oldpasswords}",
+        command => "sed -ri 's/^\\s*(password\\s+(requisite|sufficient)\\s+(pam_pwquality\\.so|pam_unix\\.so)\\s+)(.*)(remember=\\S+\\s*)(.*)$/\\1\\4 remember=${oldpasswords} \\6/' ${pf_file} || sed -ri 's/^\\s*(password\\s+(requisite|sufficient)\\s+(pam_pwquality\\.so|pam_unix\\.so)\\s+)(.*)$/\\1\\4 remember=${oldpasswords}/' ${pf_file}", #lint:ignore:140chars
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        onlyif  => "test -z \"$(grep -E '^\s*password\s+(sufficient\s+pam_unix|requi(red|site)\s+pam_pwhistory).so\s+ ([^#]+\s+)*remember=\S+\s*.*$' ${pf_file})\"",
+        unless  => "test -n '$(grep -E '^\\s*password\\s+(sufficient\\s+pam_unix|requi(red|site)\\s+pam_pwhistory).so\\s+ ([^#]+\\s+)*remember=\\S+\s*.*$' ${pf_file})'", #lint:ignore:140chars
+        notify  => Exec['authselect-apply-changes'],
       }
 
     } else {

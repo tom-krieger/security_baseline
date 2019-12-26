@@ -39,7 +39,7 @@ class security_baseline::rules::redhat::sec_nftables_persistence (
       file {'/etc/sysconfig/nftable':
         ensure => present,
         owner  => 'root',
-        grouo  => 'root',
+        group  => 'root',
         mode   => '0644',
       }
     }

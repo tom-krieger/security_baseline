@@ -54,19 +54,19 @@ describe 'security_baseline::rules::redhat::sec_nftables_default_deny' do
         if enforce
           is_expected.to contain_exec('set input default policy')
             .with(
-              'command' => 'nft chain inet filter input { policy drop ; }',
+              'command' => 'nft chain inet filter input { policy drop \\; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
 
           is_expected.to contain_exec('set forward default policy')
             .with(
-              'command' => 'nft chain inet filter forward { policy drop ; }',
+              'command' => 'nft chain inet filter forward { policy drop \\; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
 
           is_expected.to contain_exec('set output default policy')
             .with(
-              'command' => 'nft chain inet filter output { policy drop ; }',
+              'command' => 'nft chain inet filter output { policy drop \\; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
 

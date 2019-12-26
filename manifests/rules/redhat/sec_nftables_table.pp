@@ -31,7 +31,7 @@ class security_baseline::rules::redhat::sec_nftables_table (
 ) {
   if ($enforce) {
     if(has_key($facts['security_baseline'], 'nftables')) {
-      $count = $facts['security_baseline']['nftables']['table_count']
+      $count = $facts['security_baseline']['nftables']['tables_count']
     } else {
       $count = 0
     }
@@ -48,7 +48,7 @@ class security_baseline::rules::redhat::sec_nftables_table (
     }
   } else {
     if(has_key($facts['security_baseline'], 'nftables')) {
-      $status = $facts['security_baseline']['nftables']['table_count_status']
+      $status = $facts['security_baseline']['nftables']['tables_count_status']
     } else {
       $status = false
     }

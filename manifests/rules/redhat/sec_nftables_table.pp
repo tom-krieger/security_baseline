@@ -42,7 +42,7 @@ class security_baseline::rules::redhat::sec_nftables_table (
           before => Exec["create nfs table ${nftables_default_table}"],        }
       }
       exec { "create nfs table ${nftables_default_table}":
-        command => "nft create table inet ${nftables_default_table}",
+        command => "nft create table ${nftables_default_table}",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       }
     }

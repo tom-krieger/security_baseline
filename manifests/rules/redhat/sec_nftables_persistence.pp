@@ -35,7 +35,7 @@ class security_baseline::rules::redhat::sec_nftables_persistence (
   String $log_level = '',
 ) {
   if($enforce) {
-    if(!defined(File['/etc/sysconfig/nftable'])) {
+    if(!defined(File['/etc/sysconfig/nftables.conf'])) {
       file {'/etc/sysconfig/nftable':
         ensure => present,
         owner  => 'root',
@@ -44,7 +44,7 @@ class security_baseline::rules::redhat::sec_nftables_persistence (
       }
     }
     file_line { 'add persistence file include':
-      path               => '/etc/sysconfig/nftables',
+      path               => '/etc/sysconfig/nftables.conf',
       line               => 'include "/etc/nftables/nftables.rules"',
       match              => 'include "/etc/nftables/nftables.rules"',
       append_on_no_match => true,

@@ -36,19 +36,19 @@ describe 'security_baseline::rules::redhat::sec_nftables_base_chains' do
         if enforce
           is_expected.to contain_exec('create base chain input')
             .with(
-              'command' => 'nft create chain inet filter input { type filter hook input priority 0 \; }',
+              'command' => 'nft create chain inet filter input { type filter hook input priority 0 \\; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
 
           is_expected.to contain_exec('create base chain forward')
             .with(
-              'command' => 'nft create chain inet filter forward { type filter hook forward priority 0 \; }',
+              'command' => 'nft create chain inet filter forward { type filter hook forward priority 0 \\; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
 
           is_expected.to contain_exec('create base chain output')
             .with(
-              'command' => 'nft create chain inet filter output { type filter hook output priority 0 \; }',
+              'command' => 'nft create chain inet filter output { type filter hook output priority 0 \\; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
           is_expected.not_to contain_echo('nftables-base-chains')

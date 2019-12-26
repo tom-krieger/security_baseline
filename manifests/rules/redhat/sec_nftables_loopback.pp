@@ -33,30 +33,34 @@ class security_baseline::rules::redhat::sec_nftables_loopback (
   String $table     = 'default',
 ) {
   if($enforce) {
-    if($facts['security_baseline']['nftables']['loopback']['lo_iface'] == 'none') {
-      exec { 'nftables add local interface':
-        command => "nft add rule ${table} filter input iif lo accept",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+    if(has_key($facts['security_baseline'], 'nftables')) {
+      if($facts['security_baseline']['nftables']['loopback']['lo_iface'] == 'none') {
+        exec { 'nftables add local interface':
+          command => "nft add rule ${table} filter input iif lo accept",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
-    }
-    if($facts['security_baseline']['nftables']['loopback']['lo_network'] == 'none') {
-      exec { 'nftables add local network':
-        command => "nft add rule ${table} filter input ip saddr 127.0.0.0/8 counter drop",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if($facts['security_baseline']['nftables']['loopback']['lo_network'] == 'none') {
+        exec { 'nftables add local network':
+          command => "nft add rule ${table} filter input ip saddr 127.0.0.0/8 counter drop",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
-    }
-    if($facts['security_baseline']['nftables']['loopback']['ip6_saddr'] == 'none') {
-      exec { 'nftables ip6 traffic':
-        command => "nft add rule ${table} filter input ip6 saddr ::1 counter drop",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if($facts['security_baseline']['nftables']['loopback']['ip6_saddr'] == 'none') {
+        exec { 'nftables ip6 traffic':
+          command => "nft add rule ${table} filter input ip6 saddr ::1 counter drop",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
     }
   } else {
-    if($facts['security_baseline']['nftables']['loopback']['status'] == false) {
-      echo { 'nftables-loopback':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+    if(has_key($facts['security_baseline'], 'nftables')) {
+      if($facts['security_baseline']['nftables']['loopback']['status'] == false) {
+        echo { 'nftables-loopback':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

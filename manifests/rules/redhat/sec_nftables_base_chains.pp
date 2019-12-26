@@ -33,30 +33,34 @@ class security_baseline::rules::redhat::sec_nftables_base_chains (
   String $table     = 'default',
 ) {
   if($enforce) {
-    if($facts['security_baseline']['nftables']['base_chain_input'] == 'none') {
-      exec { 'create base chain input':
-        command => "nft create chain ${table} filter input { type filter hook input priority 0 \\; }",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+    if(has_key($facts['security_baseline'], 'nftables')) {
+      if($facts['security_baseline']['nftables']['base_chain_input'] == 'none') {
+        exec { 'create base chain input':
+          command => "nft create chain ${table} filter input { type filter hook input priority 0 \\; }",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
-    }
-    if($facts['security_baseline']['nftables']['base_chain_forward'] == 'none') {
-      exec { 'create base chain forward':
-        command => "nft create chain ${table} filter forward { type filter hook forward priority 0 \\; }",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if($facts['security_baseline']['nftables']['base_chain_forward'] == 'none') {
+        exec { 'create base chain forward':
+          command => "nft create chain ${table} filter forward { type filter hook forward priority 0 \\; }",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
-    }
-    if($facts['security_baseline']['nftables']['base_chain_output'] == 'none') {
-      exec { 'create base chain output':
-        command => "nft create chain ${table} filter output { type filter hook output priority 0 \\; }",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if($facts['security_baseline']['nftables']['base_chain_output'] == 'none') {
+        exec { 'create base chain output':
+          command => "nft create chain ${table} filter output { type filter hook output priority 0 \\; }",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
     }
   } else {
-    if($facts['security_baseline']['nftables']['base_chain_status'] == false) {
-      echo { 'nftables-base-chains':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+    if(has_key($facts['security_baseline'], 'nftables')) {
+      if($facts['security_baseline']['nftables']['base_chain_status'] == false) {
+        echo { 'nftables-base-chains':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

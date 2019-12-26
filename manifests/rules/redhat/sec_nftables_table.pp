@@ -30,14 +30,29 @@ class security_baseline::rules::redhat::sec_nftables_table (
   String $nftables_default_table = 'default',
 ) {
   if ($enforce) {
-    if($facts['security_baseline']['nftables']['table_count'] == 0) {
+    if(has_key($facts['security_baseline'], 'nftables')) {
+      $count = $facts['security_baseline']['nftables']['table_count']
+    } else {
+      $count = 0
+    }
+    if($count == 0) {
+      if(!defined(Package['nftables'])) {
+        package { 'nftables':
+          ensure => installed,
+          before => Exec["create nfs table ${nftables_default_table}"],        }
+      }
       exec { "create nfs table ${nftables_default_table}":
         command => "nft create table inet ${nftables_default_table}",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       }
     }
   } else {
-    if($facts['security_baseline']['nftables']['table_count_status'] == false) {
+    if(has_key($facts['security_baseline'], 'nftables')) {
+      $status = $facts['security_baseline']['nftables']['table_count_status']
+    } else {
+      $status = false
+    }
+    if($status == false) {
       echo { 'nftables-table':
         message  => $message,
         loglevel => $log_level,

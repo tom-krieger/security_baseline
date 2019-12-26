@@ -31,48 +31,52 @@ class security_baseline::rules::redhat::sec_nftables_outbound_established (
   String $table     = 'default',
 ) {
   if($enforce) {
-    if($facts['security_baseline']['nftables']['conns']['in_tcp'] == false) {
-      exec { 'add nftables rule for input tcp established':
-        command => "nft add rule ${table} filter input ip protocol tcp ct state established accept",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+    if(has_key($facts['security_baseline'], 'nftables')) {
+      if($facts['security_baseline']['nftables']['conns']['in_tcp'] == false) {
+        exec { 'add nftables rule for input tcp established':
+          command => "nft add rule ${table} filter input ip protocol tcp ct state established accept",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
-    }
-    if($facts['security_baseline']['nftables']['conns']['in_udp'] == false) {
-      exec { 'add nftables rule for input udp established':
-        command => "nft add rule ${table} filter input ip protocol udp ct state established accept",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if($facts['security_baseline']['nftables']['conns']['in_udp'] == false) {
+        exec { 'add nftables rule for input udp established':
+          command => "nft add rule ${table} filter input ip protocol udp ct state established accept",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
-    }
-    if($facts['security_baseline']['nftables']['conns']['in_icmp'] == false) {
-      exec { 'add nftables rule for input icmp established':
-        command => "nft add rule ${table} filter input ip protocol icmp ct state established accept",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if($facts['security_baseline']['nftables']['conns']['in_icmp'] == false) {
+        exec { 'add nftables rule for input icmp established':
+          command => "nft add rule ${table} filter input ip protocol icmp ct state established accept",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
-    }
-    if($facts['security_baseline']['nftables']['conns']['out_tcp'] == false) {
-      exec { 'add nftables rule for output tcp established':
-        command => "nft add rule ${table} filter output ip protocol tcp ct state new,related,established accept",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if($facts['security_baseline']['nftables']['conns']['out_tcp'] == false) {
+        exec { 'add nftables rule for output tcp established':
+          command => "nft add rule ${table} filter output ip protocol tcp ct state new,related,established accept",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
-    }
-    if($facts['security_baseline']['nftables']['conns']['out_udp'] == false) {
-      exec { 'add nftables rule for output udp established':
-        command => "nft add rule ${table} filter output ip protocol udp ct state new,related,established accept",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if($facts['security_baseline']['nftables']['conns']['out_udp'] == false) {
+        exec { 'add nftables rule for output udp established':
+          command => "nft add rule ${table} filter output ip protocol udp ct state new,related,established accept",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
-    }
-    if($facts['security_baseline']['nftables']['conns']['out_icmp'] == false) {
-      exec { 'add nftables rule for output icmp established':
-        command => "nft add rule ${table} filter output ip protocol icmp ct state new,related,established accept",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      if($facts['security_baseline']['nftables']['conns']['out_icmp'] == false) {
+        exec { 'add nftables rule for output icmp established':
+          command => "nft add rule ${table} filter output ip protocol icmp ct state new,related,established accept",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
       }
     }
   } else {
-    if($facts['security_baseline']['nftables']['conns']['status'] == false) {
-      echo { 'nftables-outbound-established':
-        message  => $message,
-        loglevel => $log_level,
-        withpath => false,
+    if(has_key($facts['security_baseline'], 'nftables')) {
+      if($facts['security_baseline']['nftables']['conns']['status'] == false) {
+        echo { 'nftables-outbound-established':
+          message  => $message,
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   }

@@ -37,7 +37,7 @@ describe 'security_baseline::rules::redhat::sec_authselect_profile_select' do
             .with(
               'command' => 'authselect select custom/testprofile with-sudo with-faillock without-nullok -f',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test ! -d /etc/authselect/custom/testprofile',
+              'onlyif'  => 'test -d /etc/authselect/custom/testprofile',
               'returns' => [0, 1],
             )
 

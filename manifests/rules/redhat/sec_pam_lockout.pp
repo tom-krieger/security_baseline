@@ -76,7 +76,9 @@ class security_baseline::rules::redhat::sec_pam_lockout (
           unless  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*unlock_time=\\S+\\s*.*$' ${pf_file})\"",
           notify  => Exec['authselect-apply-changes'],
         }
+
       } else {
+
         pam { "pam_unix ${service}":
           ensure           => present,
           service          => $service,

@@ -228,6 +228,14 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
             )
             .that_notifies('Exec[authselect-apply-changes]')
 
+            is_expected.to contain_exec('update authselect pam lockout config deny password-auth')
+            .with(
+              'command' => "sed - ri '/pam_faillock.so/s/deny=\\S+/deny=3/g' /etc/authselect/custom/testprofile/password-auth || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 deny=3 \\3/' /etc/authselect/custom/testprofile/password-auth",
+              'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'unless'  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*deny=\\S+\\s*.*$' /etc/authselect/custom/testprofile/password-auth)\"",
+            )
+            .that_notifies('Exec[authselect-apply-changes]')
+
           is_expected.to contain_exec('update authselect pam lockout config timeout password-auth')
             .with(
               'command' => "sed -ri '/pam_faillock.so/s/unlock_time=\\S+/unlock_time=900/g' /etc/authselect/custom/testprofile/password-auth || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 unlock_time=900 \\3/' /etc/authselect/custom/testprofile/password-auth",
@@ -236,10 +244,20 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
             )
             .that_notifies('Exec[authselect-apply-changes]')
 
+          is_expected.to contain_exec('update authselect pam lockout config timeout system-auth')
+            .with(
+              'command' => "sed -ri '/pam_faillock.so/s/unlock_time=\\S+/unlock_time=900/g' /etc/authselect/custom/testprofile/system-auth || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 unlock_time=900 \\3/' /etc/authselect/custom/testprofile/system-auth",
+              'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'unless'  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*unlock_time=\\S+\\s*.*$' /etc/authselect/custom/testprofile/system-auth)\"",
+            )
+            .that_notifies('Exec[authselect-apply-changes]')
+
           is_expected.not_to contain_echo('pam-lockout')
         else
           is_expected.not_to contain_exec('update authselect pam lockout config system-auth')
           is_expected.not_to contain_exec('update authselect pam lockout config password-auth')
+          is_expected.not_to contain_exec('update authselect pam lockout config timeout password-auth')
+          is_expected.not_to contain_exec('update authselect pam lockout config timeout system-auth')
           is_expected.to contain_echo('pam-lockout')
             .with(
               'message'  => 'pam lockout',

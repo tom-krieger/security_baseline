@@ -27,6 +27,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_base_chains' do
           'enforce' => enforce,
           'message' => 'nftables base chains',
           'log_level' => 'warning',
+          'table' => 'inet',
         }
       end
 

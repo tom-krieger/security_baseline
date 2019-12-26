@@ -36,6 +36,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_outbound_established' d
           'enforce' => enforce,
           'message' => 'nftables base chains',
           'log_level' => 'warning',
+          'table' => 'inet',
         }
       end
 

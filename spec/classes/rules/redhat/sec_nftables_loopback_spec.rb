@@ -33,6 +33,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_loopback' do
           'enforce' => enforce,
           'message' => 'nftables loopback',
           'log_level' => 'warning',
+          'table' => 'inet',
         }
       end
 
@@ -47,7 +48,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_loopback' do
 
           is_expected.to contain_exec('nftables add local network')
             .with(
-              'command' => 'nft create rule inet filter input ip saddr 127.0.0.0/8 counter drop',
+              'command' => 'nft add rule inet filter input ip saddr 127.0.0.0/8 counter drop',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
 

@@ -45,6 +45,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_default_deny' do
           'default_policy_input' => 'drop',
           'default_policy_forward' => 'drop',
           'default_policy_output' => 'drop',
+          'table' => 'inet',
         }
       end
 

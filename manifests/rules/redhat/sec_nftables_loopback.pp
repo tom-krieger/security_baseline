@@ -37,14 +37,12 @@ class security_baseline::rules::redhat::sec_nftables_loopback (
       exec { 'nftables add local interface':
         command => "nft add rule ${table} filter input iif lo accept",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        before  => Exec['nftables add local network'],
       }
     }
     if($facts['security_baseline']['nftables']['loopback']['lo_network'] == 'none') {
       exec { 'nftables add local network':
         command => "nft add rule ${table} filter input ip saddr 127.0.0.0/8 counter drop",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        before  => Exec['nftables ip6 traffic'],
       }
     }
     if($facts['security_baseline']['nftables']['loopback']['ip6_saddr'] == 'none') {

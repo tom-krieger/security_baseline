@@ -49,14 +49,12 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
       exec { 'set input default policy':
         command => "nft chain ${table} filter input { policy ${default_policy_input} ; }",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        before  => Exec['set forward default policy'],
       }
     }
     if($facts['security_baseline']['nftables']['policy']['forward'] != $default_policy_forward) {
       exec { 'set forward default policy':
         command => "nft chain ${table} filter forward { policy ${default_policy_forward} ; }",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        before  => Exec['set output default policy'],
       }
     }
     if($facts['security_baseline']['nftables']['policy']['output'] != $default_policy_output) {

@@ -27,6 +27,12 @@
 # @param default_policy_output
 #    Default output policy
 #
+# @param table
+#    nftable table to add rules
+#
+# @additional_rules
+#    dditinals rules to add to te policy
+#
 # @example
 #   class security_baseline::rules::redhat::sec_nftables_default_deny {
 #       enforce => true,
@@ -70,7 +76,7 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
         exec { $rule:
           command => "nft add rule ${table} ${rule}",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          # onlyif  => "test -z \"$(nft list ruleset | grep '${rule}')\"",
+          onlyif  => "test -z \"$(nft list ruleset | grep '${rule}')\"",
         }
       }
     }

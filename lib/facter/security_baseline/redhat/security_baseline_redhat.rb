@@ -1125,7 +1125,7 @@ def security_baseline_redhat(os, _distid, _release)
     if val.nil? || val.empty?
       policy['input'] = 'none'
     else
-      m = val.match(%r{policy\s*(?<policy>\w);})
+      m = val.match(%r{policy\s*(?<policy>\w*);})
       unless m.nil?
         policy['input'] = m[:policy].downcase
       end
@@ -1135,7 +1135,7 @@ def security_baseline_redhat(os, _distid, _release)
     if val.nil? || val.empty?
       policy['forward'] = 'none'
     else
-      m = val.match(%r{policy\s*(?<policy>\w);})
+      m = val.match(%r{policy\s*(?<policy>\w*);})
       unless m.nil?
         policy['forward'] = m[:policy].downcase
       end
@@ -1145,7 +1145,7 @@ def security_baseline_redhat(os, _distid, _release)
     if val.nil? || val.empty?
       policy['output'] = 'none'
     else
-      m = val.match(%r{policy\s*(?<policy>\w);})
+      m = val.match(%r{policy\s*(?<policy>\w*);})
       unless m.nil?
         policy['output'] = m[:policy].downcase
       end

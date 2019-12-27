@@ -46,7 +46,8 @@ class security_baseline::rules::redhat::sec_authselect_profile_select (
     exec { 'select authselect profile':
       command => "authselect select custom/${custom_profile} ${options} -f",
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      onlyif  => "test -d /etc/authselect/custom/${custom_profile}",
+      onlyif  => ["test -d /etc/authselect/custom/${custom_profile}",
+                  "test -z \"$(authselect current | grep 'custom/${custom_profile}')\""],
       returns => [0, 1],
     }
   } else {

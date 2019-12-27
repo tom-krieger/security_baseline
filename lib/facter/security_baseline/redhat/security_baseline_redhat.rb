@@ -20,6 +20,7 @@ require 'facter/security_baseline/common/trim_string'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'facter/security_baseline/common/check_values_expected'
 require 'facter/security_baseline/common/read_iptables_rules'
+require 'facter/security_baseline/common/read_nftables_rules'
 require 'pp'
 
 # frozen_string_literal: true

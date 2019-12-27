@@ -68,11 +68,6 @@ class security_baseline::rules::redhat::sec_nftables_outbound_established (
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
         }
       }
-
-      exec { 'allow ssh login':
-        command => "nft add rule ${table} filter input tcp dport 22 accept",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      }
     }
   } else {
     if(has_key($facts['security_baseline'], 'nftables')) {

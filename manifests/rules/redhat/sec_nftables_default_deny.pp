@@ -43,6 +43,7 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
   Enum['accept', 'reject', 'drop'] $default_policy_output  = 'drop',
   Enum['accept', 'reject', 'drop'] $default_policy_forward = 'drop',
   String $table                                            = 'default',
+  Array $additional_rules                                  = [],
 ) {
   if($enforce) {
     if(has_key($facts['security_baseline'], 'nftables')) {
@@ -62,6 +63,14 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
         exec { 'set output default policy':
           command => "nft chain ${table} filter output { policy ${default_policy_output} \; }",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        }
+      }
+
+      $additional_rules.each |$rule| {
+        exec { $rule:
+          command => "nft add rule ${table} ${rule}",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "test -z \"nft list ruleset | grep '${rule}'\"",
         }
       }
     }

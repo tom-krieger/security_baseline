@@ -46,6 +46,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_default_deny' do
           'default_policy_forward' => 'drop',
           'default_policy_output' => 'drop',
           'table' => 'inet',
+          'additioonal_rules' => ['filter input tcp dport 22 accept'], 
         }
       end
 
@@ -70,11 +71,19 @@ describe 'security_baseline::rules::redhat::sec_nftables_default_deny' do
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
 
+          is_expected.to contan_exec('filter input tcp dport 22 accept')
+            .with(
+              'command' => 'nft add rule inet filter input tcp dport 22 accept',
+              'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'onlyif'  => 'test -z "nft list ruleset | grep \'filter input tcp dport 22 accept\'"',
+            )
+
           is_expected.not_to contain_echo('nftables-default-deny')
         else
           is_expected.not_to contain_exec('set input default policy')
           is_expected.not_to contain_exec('set forward default policy')
           is_expected.not_to contain_exec('set output default policy')
+          is_expected.not_to contan_exec('filter input tcp dport 22 accept')
           is_expected.to contain_echo('nftables-default-deny')
             .with(
               'message'  => 'nftables default deny',

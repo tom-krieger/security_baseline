@@ -74,7 +74,7 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
 
       $additional_rules.each |$chain, $rules| {
         $rules.each |$rule| {
-          exec { $rule:
+          exec { "adding rule ${rule}":
             command => "nft add rule ${table} filter ${chain} ${rule}",
             path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             onlyif  => "test -z \"$(nft list ruleset | grep '${rule}')\"",

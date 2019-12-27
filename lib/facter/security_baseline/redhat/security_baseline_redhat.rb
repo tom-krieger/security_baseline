@@ -1152,6 +1152,7 @@ def security_baseline_redhat(os, _distid, _release)
 
     policy['status'] = policy['input'] == 'drop' && policy['forward'] == 'drop' && policy['output'] == 'drop'
     nft['policy'] = policy
+    nft['rules'] = read_nftables_rules
 
     security_baseline['nftables'] = nft
   end

@@ -45,6 +45,7 @@ class security_baseline::rules::redhat::sec_nftables_table (
         command => "nft create table ${nftables_default_table} filter",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
         onlyif  => "test -z \"$(nft list ruleset | grep -E '^table ${nftables_default_table}')\"",
+        notify  => Exec['dump nftables ruleset'],
       }
     }
   } else {

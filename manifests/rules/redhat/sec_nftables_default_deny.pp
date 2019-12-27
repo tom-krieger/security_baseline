@@ -57,18 +57,21 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
         exec { 'set input default policy':
           command => "nft chain ${table} filter input { policy ${default_policy_input} \; }",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          notify  => Exec['dump nftables ruleset'],
         }
       }
       if($facts['security_baseline']['nftables']['policy']['forward'] != $default_policy_forward) {
         exec { 'set forward default policy':
           command => "nft chain ${table} filter forward { policy ${default_policy_forward} \; }",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          notify  => Exec['dump nftables ruleset'],
         }
       }
       if($facts['security_baseline']['nftables']['policy']['output'] != $default_policy_output) {
         exec { 'set output default policy':
           command => "nft chain ${table} filter output { policy ${default_policy_output} \; }",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          notify  => Exec['dump nftables ruleset'],
         }
       }
 
@@ -78,6 +81,7 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
             command => "nft add rule ${table} filter ${chain} ${rule}",
             path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             onlyif  => "test -z \"$(nft list ruleset | grep '${rule}')\"",
+            notify  => Exec['dump nftables ruleset'],
           }
         }
       }

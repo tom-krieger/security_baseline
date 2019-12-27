@@ -39,6 +39,7 @@ class security_baseline::rules::redhat::sec_nftables_loopback (
           command => "nft add rule ${table} filter input iif lo accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
           onlyif  => "test -z \"$(nft list ruleset | grep 'iif \"lo\" accept')\"",
+          notify  => Exec['dump nftables ruleset'],
         }
       }
       if($facts['security_baseline']['nftables']['loopback']['lo_network'] == 'none') {
@@ -46,6 +47,7 @@ class security_baseline::rules::redhat::sec_nftables_loopback (
           command => "nft add rule ${table} filter input ip saddr 127.0.0.0/8 counter drop",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
           onlyif  => "test -z \"$(nft list ruleset | grep -E 'ip\\s*saddr\\s*127.0.0.0/8\\s*counter\\s*packets.*drop')\"",
+          notify  => Exec['dump nftables ruleset'],
         }
       }
       if($facts['security_baseline']['nftables']['loopback']['ip6_saddr'] == 'none') {
@@ -53,6 +55,7 @@ class security_baseline::rules::redhat::sec_nftables_loopback (
           command => "nft add rule ${table} filter input ip6 saddr ::1 counter drop",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
           onlyif  => "test -z \"$(nft list ruleset | grep 'ip6 saddr ::1 counter packets')\"",
+          notify  => Exec['dump nftables ruleset'],
         }
       }
     }

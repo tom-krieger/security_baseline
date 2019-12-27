@@ -51,8 +51,9 @@ class security_baseline::rules::redhat::sec_nftables_persistence (
     }
 
     exec { 'dump nftables ruleset':
-      command => 'nft list ruleset > /etc/nftables/nftables.rules',
-      path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      command     => 'nft list ruleset > /etc/nftables/nftables.rules',
+      path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+      refreshonly => true,
     }
   }
 }

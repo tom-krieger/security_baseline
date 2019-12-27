@@ -36,36 +36,42 @@ class security_baseline::rules::redhat::sec_nftables_outbound_established (
         exec { 'add nftables rule for input tcp established':
           command => "nft add rule ${table} filter input ip protocol tcp ct state established accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "test -z \"$(nft list ruleset | grep 'ip protocol tcp ct state established accept')\"",
         }
       }
       if($facts['security_baseline']['nftables']['conns']['in_udp'] == false) {
         exec { 'add nftables rule for input udp established':
           command => "nft add rule ${table} filter input ip protocol udp ct state established accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "test -z \"$(nft list ruleset | grep 'ip protocol udp ct state established accept')\"",
         }
       }
       if($facts['security_baseline']['nftables']['conns']['in_icmp'] == false) {
         exec { 'add nftables rule for input icmp established':
           command => "nft add rule ${table} filter input ip protocol icmp ct state established accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "test -z \"$(nft list ruleset | grep 'ip protocol icmp ct state established accept')\"",
         }
       }
       if($facts['security_baseline']['nftables']['conns']['out_tcp'] == false) {
         exec { 'add nftables rule for output tcp established':
           command => "nft add rule ${table} filter output ip protocol tcp ct state new,related,established accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "test -z \"$(nft list ruleset | grep 'ip protocol tcp ct state new,related,established accept')\"",
         }
       }
       if($facts['security_baseline']['nftables']['conns']['out_udp'] == false) {
         exec { 'add nftables rule for output udp established':
           command => "nft add rule ${table} filter output ip protocol udp ct state new,related,established accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "test -z \"$(nft list ruleset | grep 'ip protocol udp ct state new,related,established accept')\"",
         }
       }
       if($facts['security_baseline']['nftables']['conns']['out_icmp'] == false) {
         exec { 'add nftables rule for output icmp established':
           command => "nft add rule ${table} filter output ip protocol icmp ct state new,related,established accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "test -z \"$(nft list ruleset | grep 'ip protocol icmp ct state new,related,established accept')\"",
         }
       }
     }

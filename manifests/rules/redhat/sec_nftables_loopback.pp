@@ -38,6 +38,7 @@ class security_baseline::rules::redhat::sec_nftables_loopback (
         exec { 'nftables add local interface':
           command => "nft add rule ${table} filter input iif lo accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlxif  => "test -z \"$(nft list ruleset | grep 'iif \"lo\" accept')\"",
         }
       }
       if($facts['security_baseline']['nftables']['loopback']['lo_network'] == 'none') {
@@ -51,6 +52,7 @@ class security_baseline::rules::redhat::sec_nftables_loopback (
         exec { 'nftables ip6 traffic':
           command => "nft add rule ${table} filter input ip6 saddr ::1 counter drop",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "test -z \"$(nft list ruleset | grep 'ip6 saddr ::1 counter packets')\"",
         }
       }
     }

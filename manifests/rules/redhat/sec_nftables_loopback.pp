@@ -38,7 +38,7 @@ class security_baseline::rules::redhat::sec_nftables_loopback (
         exec { 'nftables add local interface':
           command => "nft add rule ${table} filter input iif lo accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlxif  => "test -z \"$(nft list ruleset | grep 'iif \"lo\" accept')\"",
+          onlyif  => "test -z \"$(nft list ruleset | grep 'iif \"lo\" accept')\"",
         }
       }
       if($facts['security_baseline']['nftables']['loopback']['lo_network'] == 'none') {

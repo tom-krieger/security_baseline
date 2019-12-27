@@ -5,6 +5,15 @@ enforce_options = [true, false]
 describe 'security_baseline::rules::redhat::sec_nftables_default_deny' do
   enforce_options.each do |enforce|
     context "RedHat with enforce #{enforce}" do
+      let(:pre_condition) do
+        <<-EOF
+        exec { 'dump nftables ruleset':
+          command     => 'nft list ruleset > /etc/nftables/nftables.rules',
+          path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          refreshonly => true,
+        }
+        EOF
+      end
       let(:facts) do
         {
           osfamily: 'RedHat',
@@ -46,7 +55,9 @@ describe 'security_baseline::rules::redhat::sec_nftables_default_deny' do
           'default_policy_forward' => 'drop',
           'default_policy_output' => 'drop',
           'table' => 'inet',
-          'additioonal_rules' => ['filter input tcp dport 22 accept'], 
+          'additional_rules' => {
+            'input' => ['tcp dport ssh accept'],
+          },
         }
       end
 
@@ -58,32 +69,36 @@ describe 'security_baseline::rules::redhat::sec_nftables_default_deny' do
               'command' => 'nft chain inet filter input { policy drop \; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
+            .that_notifies('Exec[dump nftables ruleset]')
 
           is_expected.to contain_exec('set forward default policy')
             .with(
               'command' => 'nft chain inet filter forward { policy drop \; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
+            .that_notifies('Exec[dump nftables ruleset]')
 
           is_expected.to contain_exec('set output default policy')
             .with(
               'command' => 'nft chain inet filter output { policy drop \; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
+            .that_notifies('Exec[dump nftables ruleset]')
 
-          is_expected.to contan_exec('filter input tcp dport 22 accept')
+          is_expected.to contain_exec('adding rule tcp dport ssh accept')
             .with(
-              'command' => 'nft add rule inet filter input tcp dport 22 accept',
+              'command' => 'nft add rule inet filter input tcp dport ssh accept',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test -z "nft list ruleset | grep \'filter input tcp dport 22 accept\'"',
+              'onlyif'  => 'test -z "$(nft list ruleset | grep \'tcp dport ssh accept\')"',
             )
+            .that_notifies('Exec[dump nftables ruleset]')
 
           is_expected.not_to contain_echo('nftables-default-deny')
         else
           is_expected.not_to contain_exec('set input default policy')
           is_expected.not_to contain_exec('set forward default policy')
           is_expected.not_to contain_exec('set output default policy')
-          is_expected.not_to contan_exec('filter input tcp dport 22 accept')
+          is_expected.not_to contain_exec('adding rule tcp dport ssh accept')
           is_expected.to contain_echo('nftables-default-deny')
             .with(
               'message'  => 'nftables default deny',

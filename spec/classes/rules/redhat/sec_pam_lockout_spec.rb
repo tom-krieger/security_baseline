@@ -228,7 +228,7 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
             )
             .that_notifies('Exec[authselect-apply-changes]')
 
-            is_expected.to contain_exec('update authselect pam lockout config deny password-auth')
+          is_expected.to contain_exec('update authselect pam lockout config deny password-auth')
             .with(
               'command' => "sed - ri '/pam_faillock.so/s/deny=\\S+/deny=3/g' /etc/authselect/custom/testprofile/password-auth || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 deny=3 \\3/' /etc/authselect/custom/testprofile/password-auth",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],

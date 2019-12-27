@@ -30,7 +30,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_persistence' do
         if enforce
           is_expected.to contain_file_line('add persistence file include')
             .with(
-              'path'               => '/etc/sysconfig/nftables',
+              'path'               => '/etc/sysconfig/nftables.conf',
               'line'               => 'include "/etc/nftables/nftables.rules"',
               'match'              => 'include "/etc/nftables/nftables.rules"',
               'append_on_no_match' => true,

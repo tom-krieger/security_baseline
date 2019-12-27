@@ -1,15 +1,15 @@
 require 'pp'
 
 def read_nftables_rules
-    nft = {}
+  nft = {}
 
-    if File.exist?('/sbin(nft')
-      lines = Facter::Core::Execution.exec('/sbin/nft list ruleset')
-      rules = if lines.nil? || lines.empty?
-                []
-              else
-                lines.split("\n")
-              end
+  if File.exist?('/sbin(nft')
+    lines = Facter::Core::Execution.exec('/sbin/nft list ruleset')
+    rules = if lines.nil? || lines.empty?
+              []
+            else
+              lines.split("\n")
+            end
 
     table = ''
     chain = ''

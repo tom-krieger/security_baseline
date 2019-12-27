@@ -5,6 +5,15 @@ enforce_options = [true, false]
 describe 'security_baseline::rules::redhat::sec_nftables_base_chains' do
   enforce_options.each do |enforce|
     context "RedHat with enforce #{enforce}" do
+      let(:pre_condition) do
+        <<-EOF
+        exec { 'dump nftables ruleset':
+          command     => 'nft list ruleset > /etc/nftables/nftables.rules',
+          path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          refreshonly => true,
+        }
+        EOF
+      end
       let(:facts) do
         {
           osfamily: 'RedHat',
@@ -38,19 +47,27 @@ describe 'security_baseline::rules::redhat::sec_nftables_base_chains' do
             .with(
               'command' => 'nft create chain inet filter input { type filter hook input priority 0 \; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'onlyif'  => 'test -z "$(nft list ruleset | grep \'type filter hook input priority 0\')"',
             )
+            .that_notifies('Exec[dump nftables ruleset]')
 
           is_expected.to contain_exec('create base chain forward')
             .with(
               'command' => 'nft create chain inet filter forward { type filter hook forward priority 0 \; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'onlyif'  => 'test -z "$(nft list ruleset | grep \'type filter hook forward priority 0\')"',
             )
+            .that_notifies('Exec[dump nftables ruleset]')
 
           is_expected.to contain_exec('create base chain output')
             .with(
               'command' => 'nft create chain inet filter output { type filter hook output priority 0 \; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'onlyif'  => 'test -z "$(nft list ruleset | grep \'type filter hook output priority 0\')"',
+
             )
+            .that_notifies('Exec[dump nftables ruleset]')
+
           is_expected.not_to contain_echo('nftables-base-chains')
         else
           is_expected.not_to contain_exec('create base chain input')

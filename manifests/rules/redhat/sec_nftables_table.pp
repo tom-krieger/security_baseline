@@ -39,9 +39,9 @@ class security_baseline::rules::redhat::sec_nftables_table (
       if(!defined(Package['nftables'])) {
         package { 'nftables':
           ensure => installed,
-          before => Exec["create nfs table ${nftables_default_table}"],        }
+          before => Exec["create nft table ${nftables_default_table}"],        }
       }
-      exec { "create nfs table ${nftables_default_table}":
+      exec { "create nft table ${nftables_default_table}":
         command => "nft create table ${nftables_default_table} filter",
         path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
         onlyif  => "test -z \"$(nft list ruleset | grep -E '^table ${nftables_default_table}')\"",

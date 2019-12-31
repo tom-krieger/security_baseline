@@ -51,6 +51,12 @@ describe 'security_baseline::rules::common::sec_dev_shm_noexec' do
                 'mountoptions' => 'noexec',
               )
 
+            is_expected.to contain_security_baseline__set_mount_options('/dev/shm-noexec')
+              .with(
+                'mountpoint'   => '/dev/shm',
+                'mountoptions' => 'noexec',
+              )
+
             is_expected.not_to contain_echo('dev-shm-noexec')
           else
             is_expected.not_to contain_file_line('add /dev/shm to fstab')

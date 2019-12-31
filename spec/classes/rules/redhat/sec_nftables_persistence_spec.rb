@@ -28,6 +28,14 @@ describe 'security_baseline::rules::redhat::sec_nftables_persistence' do
       it {
         is_expected.to compile
         if enforce
+          is_expected.to contain_file('/etc/sysconfig/nftable.conf')
+            .with(
+              'ensure' => 'present',
+              'owner'  => 'root',
+              'group'  => 'root',
+              'mode'   => '0644',
+            )
+          
           is_expected.to contain_file_line('add persistence file include')
             .with(
               'path'               => '/etc/sysconfig/nftables.conf',
@@ -41,6 +49,10 @@ describe 'security_baseline::rules::redhat::sec_nftables_persistence' do
               'command' => 'nft list ruleset > /etc/nftables/nftables.rules',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
             )
+        else
+          is_expected.not_to contain_file('/etc/sysconfig/nftable.conf')
+          is_expected.not_to contain_file_line('add persistence file include')
+          is_expected.not_to contain_exec('dump nftables ruleset')
         end
       }
     end

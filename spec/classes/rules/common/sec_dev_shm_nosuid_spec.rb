@@ -51,6 +51,12 @@ describe 'security_baseline::rules::common::sec_dev_shm_nosuid' do
                 'mountoptions' => 'nosuid',
               )
 
+            is_expected.to contain_security_baseline__set_mount_options('/dev/shm-nosuid')
+              .with(
+                'mountpoint'   => '/dev/shm',
+                'mountoptions' => 'nosuid',
+              )
+
             is_expected.not_to contain_echo('dev-shm-nosuid')
           else
             is_expected.not_to contain_file_line('add /dev/shm to fstab')

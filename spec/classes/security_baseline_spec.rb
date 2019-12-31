@@ -63,6 +63,8 @@ describe 'security_baseline' do
             'loglevel' => 'debug',
             'withpath' => false,
           )
+
+        is_expected.to contain_security_baseline__sec_check('1.1.1.1')
       }
     end
   end

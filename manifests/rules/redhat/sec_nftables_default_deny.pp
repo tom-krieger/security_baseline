@@ -31,7 +31,8 @@
 #    nftable table to add rules
 #
 # @additional_rules
-#    dditinals rules to add to te policy
+#    additinals rules to add to te policy. Add an array with rules to teh hash. Hash key is the chain 
+#    to add the rules.
 #
 # @example
 #   class security_baseline::rules::redhat::sec_nftables_default_deny {

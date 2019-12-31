@@ -51,6 +51,12 @@ describe 'security_baseline::rules::common::sec_dev_shm_nodev' do
                 'mountoptions' => 'nodev',
               )
 
+            is_expected.to contain_security_baseline__set_mount_options('/dev/shm-nodev')
+              .with(
+                'mountpoint'   => '/dev/shm',
+                'mountoptions' => 'nodev',
+              )
+
             is_expected.not_to contain_echo('dev-shm-nodev')
           else
             is_expected.not_to contain_file_line('add /dev/shm to fstab')

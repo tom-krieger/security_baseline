@@ -36,7 +36,7 @@ class security_baseline::rules::redhat::sec_nftables_persistence (
 ) {
   if($enforce) {
     if(!defined(File['/etc/sysconfig/nftables.conf'])) {
-      file {'/etc/sysconfig/nftable':
+      file {'/etc/sysconfig/nftable.conf':
         ensure => present,
         owner  => 'root',
         group  => 'root',

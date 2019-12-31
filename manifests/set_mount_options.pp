@@ -30,7 +30,7 @@ define security_baseline::set_mount_options (
 
   exec { "remount ${mountpoint} with ${mountoptions}":
     command     => "mount -o remount ${mountpoint}",
-    path        => ['/bn', '/usr/bin', '/sbin', '/uasr/sbin'],
+    path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
     refreshonly => true,
   }
 

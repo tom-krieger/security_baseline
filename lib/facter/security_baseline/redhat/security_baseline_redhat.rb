@@ -76,7 +76,7 @@ def security_baseline_redhat(os, _distid, release)
   selinux = {}
   val = if File.exist?('/boot/grub/grub.conf')
           Facter::Core::Execution.exec('grep "^\s*kernel" /boot/grub/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
-        elsif File.Exist?('/boot/grub2/grub.cfg')
+        elsif File.exist?('/boot/grub2/grub.cfg')
           Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
         else
           ''

@@ -31,15 +31,24 @@ class security_baseline::rules::redhat::sec_single_user_mode (
   String $log_level = ''
 ) {
   if($enforce) {
-    file_line { 'su-rescue':
-      path  => '/usr/lib/systemd/system/rescue.service',
-      line  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
-      match => '^ExecStart=',
-    }
-    file_line { 'su-emergency':
-      path  => '/usr/lib/systemd/system/emergency.service',
-      line  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
-      match => '^ExecStart=',
+    if($facts['operatingsystemmajrelease'] > '6') {
+      file_line { 'su-rescue':
+        path  => '/usr/lib/systemd/system/rescue.service',
+        line  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
+        match => '^ExecStart=',
+      }
+      file_line { 'su-emergency':
+        path  => '/usr/lib/systemd/system/emergency.service',
+        line  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
+        match => '^ExecStart=',
+      }
+    } elsif($facts['operatingsystemmajrelease'] == '6') {
+      file_line { 'sulogin':
+        path               => '/etc/sysconfig/init',
+        line               => 'SINGLE=/sbin/sulogin',
+        match              => '^SINGLE=',
+        append_on_no_match => true,
+        }
     }
   } else {
     if($facts['security_baseline']['single_user_mode']['status'] == false) {

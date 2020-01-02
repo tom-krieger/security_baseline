@@ -22,7 +22,7 @@
 #    The log_level for the above message
 #
 # @param sha512
-#    Use sha512 password encryption (only used in Redhat 8, for 7 oe less is done in sec_pam_old_passwords)
+#    Use sha512 password encryption (only used in Redhat 8, for 7 or less is done in sec_pam_old_passwords)
 #
 # @example
 #   class security_baseline::rules::redhat::sec_pam_passwd_sha512 {

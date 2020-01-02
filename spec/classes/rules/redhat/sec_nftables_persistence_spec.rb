@@ -35,7 +35,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_persistence' do
               'group'  => 'root',
               'mode'   => '0644',
             )
-          
+
           is_expected.to contain_file_line('add persistence file include')
             .with(
               'path'               => '/etc/sysconfig/nftables.conf',

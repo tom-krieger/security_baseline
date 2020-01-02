@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::redhat::sec_package_xinetd' do
+describe 'security_baseline::rules::redhat::sec_service_talk' do
   enforce_options.each do |enforce|
     context "RedHat with enforce = #{enforce}" do
       let(:facts) do
@@ -10,13 +10,14 @@ describe 'security_baseline::rules::redhat::sec_package_xinetd' do
           osfamily: 'RedHat',
           operatingsystem: 'CentOS',
           architecture: 'x86_64',
-          srv_chargen: true,
+          srv_echo: true,
           security_baseline: {
             xinetd_services: {
-              srv_chargen: true,
+              srv_echo: true,
+              srv_talk: true,
             },
-            packages_installed: {
-              xinetd: true,
+            servicves_enabled: {
+              srv_talk: true,
             },
           },
         }
@@ -25,7 +26,7 @@ describe 'security_baseline::rules::redhat::sec_package_xinetd' do
       let(:params) do
         {
           'enforce' => enforce,
-          'message' => 'xinetd package',
+          'message' => 'servive talk',
           'log_level' => 'warning',
         }
       end
@@ -33,17 +34,18 @@ describe 'security_baseline::rules::redhat::sec_package_xinetd' do
       it { is_expected.to compile }
       it do
         if enforce
-          is_expected.to contain_package('xinetd')
+          is_expected.to contain_service('talk')
             .with(
-              'ensure' => 'absent',
+              'ensure' => 'stopped',
+              'enable' => false,
             )
 
-          is_expected.not_to contain_echo('xinetd-pkg')
+          is_expected.not_to contain_echo('talk-service')
         else
-          is_expected.not_to contain_package('xinetd')
-          is_expected.to contain_echo('xinetd-pkg')
+          is_expected.not_to contain_service('talk')
+          is_expected.to contain_echo('talk-service')
             .with(
-              'message'  => 'xinetd package',
+              'message'  => 'servive talk',
               'loglevel' => 'warning',
               'withpath' => false,
             )

@@ -30,25 +30,21 @@ class security_baseline::rules::redhat::sec_rsh (
   String $log_level = ''
 ) {
   if($enforce) {
-
-    service { 'rsh.socket':
-      ensure => 'stopped',
-      enable => false,
+    if($facts['operatingsystemmajrelease'] > '6') {
+      $srvs = ['rsh.socket', 'rlogin.socket', 'rexec.socket']
+    } else {
+      $srvs = ['rsh', 'rlogin', 'rexec']
     }
-
-    service { 'rlogin.socket':
-      ensure => 'stopped',
-      enable => false,
-    }
-
-    service { 'rexec.socket':
-      ensure => 'stopped',
-      enable => false,
+    $srvs.each |$srv| {
+      service { $srv:
+        ensure => 'stopped',
+        enable => false,
+      }
     }
 
   } else {
 
-    if($facts['security_baseline']['services_enabled']['srv_rsh'] == 'enabled') {
+    if($facts['security_baseline']['xinetd_services']['srv_rsh']) {
       echo { 'rsh-service':
         message  => $message,
         loglevel => $log_level,

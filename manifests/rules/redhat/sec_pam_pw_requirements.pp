@@ -153,13 +153,22 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
           notify  => Exec['authselect-apply-changes'],
         }
 
-      } else {
+      } elsif($facts['operatingsystemmajrelease'] == '7') {
         pam { "pam-${service}-requisite":
           ensure    => present,
           service   => $service,
           type      => 'password',
           control   => 'requisite',
           module    => 'pam_pwquality.so',
+          arguments => ['try_first_pass', 'retry=3']
+        }
+      } else {
+        pam { "pam-${service}-requisite":
+          ensure    => present,
+          service   => $service,
+          type      => 'password',
+          control   => 'requisite',
+          module    => 'pam_cracklib.so',
           arguments => ['try_first_pass', 'retry=3']
         }
       }

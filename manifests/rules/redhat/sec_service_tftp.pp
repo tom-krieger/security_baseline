@@ -33,27 +33,29 @@ class security_baseline::rules::redhat::sec_service_tftp (
   String $log_level = ''
 ) {
   if($enforce) {
+    if($facts['operatingsystemmajrelease'] > '6') {
+      service { 'tftp-dgram':
+        ensure => stopped,
+        enable => false,
+      }
 
-    service { 'tftp-dgram':
-      ensure => stopped,
-      enable => false,
+      service { 'tftp-stream':
+        ensure => stopped,
+        enable => false,
+      }
+    } else {
+      service { 'tftp':
+        ensure => stopped,
+        enable => false,
+      }
     }
-
-    service { 'tftp-stream':
-      ensure => stopped,
-      enable => false,
-    }
-
   } else {
-
     if($facts['security_baseline']['xinetd_services']['srv_tftp'] == true) {
-
       echo { 'tftp-service':
         message  => $message,
         loglevel => $log_level,
         withpath => false,
       }
-
     }
   }
 }

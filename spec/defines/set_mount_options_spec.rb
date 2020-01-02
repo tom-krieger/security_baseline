@@ -12,14 +12,14 @@ mpts.each do |mpt|
           let(:title) { "#{mpt}-#{opt}" }
           let(:params) do
             {
-              'mountpoint'   => "#{mpt}",
-              'mountoptions' => "#{opt}",
+              'mountpoint'   => mpt.to_s,
+              'mountoptions' => opt.to_s,
             }
           end
           let(:facts) { os_facts }
 
-          it { 
-            is_expected.to compile 
+          it {
+            is_expected.to compile
             aug = "/etc/fstab - work on #{mpt} with #{opt}"
             exc = "Exec[remount #{mpt} with #{opt}]"
             is_expected.to contain_augeas(aug)
@@ -29,7 +29,7 @@ mpts.each do |mpt|
                   "ins opt after /files/etc/fstab/*[file = '#{mpt}']/opt[last()]",
                   "set *[file = '#{mpt}']/opt[last()] #{opt}",
                 ],
-                'onlyif'  => "match *[file = '#{mpt}']/opt[. = '#{opt}'] size == 0",
+                'onlyif' => "match *[file = '#{mpt}']/opt[. = '#{opt}'] size == 0",
               )
               .that_notifies(exc)
 

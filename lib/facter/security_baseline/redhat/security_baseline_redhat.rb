@@ -28,7 +28,7 @@ require 'pp'
 # security_baseline_redhat.rb
 # collect facts about the security baseline
 
-def security_baseline_redhat(os, _distid, _release)
+def security_baseline_redhat(os, _distid, release)
   security_baseline = {}
   arch = Facter.value(:architecture)
 
@@ -54,7 +54,7 @@ def security_baseline_redhat(os, _distid, _release)
                'sudo' => '-q' }
   modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat', 'usb-storage']
   xinetd_services = ['echo-dgram', 'echo-stream', 'time-dgram', 'time-stream', 'chargen-dgram', 'chargen-stream', 'tftp',
-                     'daytime-dgram', 'daytime-stream', 'discard-dgram', 'discard-stream']
+                     'daytime-dgram', 'daytime-stream', 'discard-dgram', 'discard-stream', 'rexec', 'rlogin', 'rsh', 'talk', 'telnet', 'rsync']
   sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
                    'net.ipv4.conf.all.accept_source_route', 'net.ipv4.conf.default.accept_source_route', 'net.ipv4.conf.all.accept_redirects',
                    'net.ipv4.conf.default.accept_redirects', 'net.ipv4.conf.all.secure_redirects', 'net.ipv4.conf.all.log_martians',
@@ -74,7 +74,13 @@ def security_baseline_redhat(os, _distid, _release)
   security_baseline[:aide] = read_facts_aide(os)
 
   selinux = {}
-  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
+  val = if File.exist?('/boot/grub/grub.conf')
+          Facter::Core::Execution.exec('grep "^\s*kernel" /boot/grub/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
+        elsif File.Exist?('/boot/grub2/grub.cfg')
+          Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub2/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
+        else
+          ''
+        end
   selinux['bootloader'] = (val.nil? || val.empty?)
   security_baseline[:selinux] = selinux
 
@@ -155,18 +161,38 @@ def security_baseline_redhat(os, _distid, _release)
   security_baseline[:x11] = x11
 
   single_user_mode = {}
-  resc = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/rescue.service')
-  single_user_mode['rescue'] = check_value_boolean(resc, false)
+  if release == '6'
+    val = Facter::Core::Execution.exec('grep ^SINGLE /etc/sysconfig/init')
+    single_user_mode['status'] = if val.nil? || val.empty?
+                                   false
+                                 else
+                                   val =~ %r{/sbin/sulogin}
+                                 end
+  else
+    resc = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/rescue.service')
+    single_user_mode['rescue'] = check_value_boolean(resc, false)
 
-  emerg = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/emergency.service')
-  single_user_mode['emergency'] = check_value_boolean(emerg, false)
+    emerg = Facter::Core::Execution.exec('grep /sbin/sulogin /usr/lib/systemd/system/emergency.service')
+    single_user_mode['emergency'] = check_value_boolean(emerg, false)
 
-  single_user_mode['status'] = if (single_user_mode['emergency'] == false) || (single_user_mode['rescue'] == false)
-                                 false
-                               else
-                                 true
-                               end
+    single_user_mode['status'] = if (single_user_mode['emergency'] == false) || (single_user_mode['rescue'] == false)
+                                   false
+                                 else
+                                   true
+                                 end
+  end
   security_baseline[:single_user_mode] = single_user_mode
+
+  if release == '6'
+    interactive_boot = {}
+    val = Facter::Core::Execution.exec('grep "^PROMPT=" /etc/sysconfig/init')
+    interactive_boot['status'] = if val.nil? || val.empty?
+                                   false
+                                 else
+                                   val =~ %r{PROMPT=no}
+                                 end
+    security_baseline['interactive_boot'] = interactive_boot
+  end
 
   issue = {}
   issue['os'] = read_file_stats('/etc/issue')
@@ -206,9 +232,21 @@ def security_baseline_redhat(os, _distid, _release)
                                        end
 
   grub = {}
-  val = Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg /boot/grub2/user.cfg')
+  val = if File.exist?('/boot/grub/grub.cfg')
+          Facter::Core::Execution.exec('grep "^password" /boot/grub/grub.cfg')
+        elsif File.exist?('/boot/grub2/grub.cfg') || File.exist?('/boot/grub2/user.cfg')
+          Facter::Core::Execution.exec('grep "^GRUB2_PASSWORD" /boot/grub2/grub.cfg /boot/grub2/user.cfg')
+        else
+          ''
+        end
   grub['grub_passwd'] = check_value_boolean(val, false)
-  grub['grub.cfg'] = read_file_stats('/boot/grub2/grub.cfg')
+  grub['grub.cfg'] = if File.exist?('')
+                       read_file_stats('/boot/grub2/grub.cfg')
+                     elsif File.exist?('/boot/grub/grub.cfg')
+                       read_file_stats('/boot/grub/grub.cfg')
+                     else
+                       {}
+                     end
   grub['user.cfg'] = read_file_stats('/boot/grub2/user.cfg')
   security_baseline[:grub] = grub
 
@@ -382,10 +420,17 @@ def security_baseline_redhat(os, _distid, _release)
 
   pam = {}
   pwquality = {}
-  val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/password-auth')
-  pwquality['password-auth'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/system-auth')
-  pwquality['system-auth'] = check_value_string(val, 'none')
+  if release > '6'
+    val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/password-auth')
+    pwquality['password-auth'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/system-auth')
+    pwquality['system-auth'] = check_value_string(val, 'none')
+  else
+    val = Facter::Core::Execution.exec('grep pam_cracklib.so /etc/pam.d/password-auth')
+    pwquality['password-auth'] = check_value_string(val, 'none')
+    val = Facter::Core::Execution.exec('grep pam_cracklib.so /etc/pam.d/system-auth')
+    pwquality['system-auth'] = check_value_string(val, 'none')
+  end
   val = trim_string(Facter::Core::Execution.exec('grep ^minlen /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
   pwquality['minlen'] = check_value_string(val, 'none')
   val = trim_string(Facter::Core::Execution.exec('grep ^dcredit /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
@@ -511,7 +556,13 @@ def security_baseline_redhat(os, _distid, _release)
 
   accounts = {}
   wrong_shell = []
-  cmd = "egrep -v \"^\/+\" /etc/passwd | awk -F: '($1!=\"root\" && $1!=\"sync\" && $1!=\"shutdown\" && $1!=\"halt\" && $3<1000 && $7!=\"/sbin/nologin\" && $7!=\"/bin/false\") {print}'"
+  minUid = if release > '6'
+             1000
+           else
+             500
+           end
+
+  cmd = "egrep -v \"^\/+\" /etc/passwd | awk -F: '($1!=\"root\" && $1!=\"sync\" && $1!=\"shutdown\" && $1!=\"halt\" && $3<#{minUid} && $7!=\"/sbin/nologin\" && $7!=\"/bin/false\") {print}'"
   val = Facter::Core::Execution.exec(cmd)
   unless val.nil? || val.empty?
     val.split("\n").each do |line|
@@ -719,7 +770,13 @@ def security_baseline_redhat(os, _distid, _release)
                                   end
 
   auditd['srv_auditd'] = check_service_is_enabled('auditd')
-  val = Facter::Core::Execution.exec('grep "^\s*linux.*audit=1" /boot/grub2/grub.cfg')
+  val = if File.exist?('/boot/grub2/grub.cfg')
+          Facter::Core::Execution.exec('grep "^\s*linux.*audit=1" /boot/grub2/grub.cfg')
+        elsif File.exist?('/boot/grub/grub.cfg')
+          Facter::Core::Execution.exec('grep "^\s*linux.*audit=1" /boot/grub/grub.cfg')
+        else
+          ''
+        end
   auditd['auditing_process'] = if val.empty? || val.nil?
                                  'none'
                                else
@@ -1223,7 +1280,11 @@ def security_baseline_redhat(os, _distid, _release)
   end
   security_baseline['crypto_policy'] = crypto_policy
 
-  val = Facter::Core::Execution.exec('grep -E "^\s*kernelopts=(\S+\s+)*ipv6\.disable=1\b\s*(\S+\s*)*$" /boot/grub2/grubenv')
+  val = if release > '6'
+          Facter::Core::Execution.exec('grep -E "^\s*kernelopts=(\S+\s+)*ipv6\.disable=1\b\s*(\S+\s*)*$" /boot/grub2/grubenv')
+        else
+          Facter::Core::Execution.exec('grep -E "^\s*kernel(\S+\s+)*ipv6\.disable=1\b\s*(\S+\s*)*$" /boot/grub/grub.conf')
+        end
   security_baseline['grub_ipv6_disabled'] = if val.nil? || val.empty?
                                               false
                                             elsif val =~ %r{ipv6.disable=1}

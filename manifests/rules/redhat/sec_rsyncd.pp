@@ -29,15 +29,25 @@ class security_baseline::rules::redhat::sec_rsyncd (
   String $log_level = ''
 ) {
   if($enforce) {
-
-    service {'rsyncd':
-      ensure => 'stopped',
-      enable => false,
+    if($facts['operatingsystemmajrelease'] > '6') {
+      service {'rsyncd':
+        ensure => 'stopped',
+        enable => false,
+      }
+    } else {
+        service {'rsync':
+        ensure => 'stopped',
+        enable => false,
+      }
+    }
+  } else {
+    if($facts['operatingsystemmajrelease'] > '6') {
+      $status = $facts['security_baseline']['services_enabled']['srv_rsyncd']
+    } else {
+      $status = $facts['security_baseline']['xinetd_services']['srv_rsync']
     }
 
-  } else {
-
-    if($facts['security_baseline']['services_enabled']['srv_rsyncd'] == 'enabled') {
+    if(($status == 'enabled') or ($status == true)) {
       echo { 'rsyncd':
         message  => $message,
         loglevel => $log_level,

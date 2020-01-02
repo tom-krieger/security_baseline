@@ -5,14 +5,24 @@ describe 'security_baseline::services' do
     context "on #{os}" do
       let(:facts) { os_facts }
 
-      it { is_expected.to compile }
-      it {
-        is_expected.to contain_exec('reload-sshd')
-          .with(
-            'command'     => 'systemctl reload sshd',
-            'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-            'refreshonly' => true,
-          )
+      it { 
+        is_expected.to compile 
+
+        if os_facts[:operatingsystemmajrelease] == '6' && os_facts[:osfamily] == 'RedHat'
+          is_expected.to contain_exec('reload-sshd')
+            .with(
+              'command'     => 'service sshd reload',
+              'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'refreshonly' => true,
+            )  
+        else
+          is_expected.to contain_exec('reload-sshd')
+            .with(
+              'command'     => 'systemctl reload sshd',
+              'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'refreshonly' => true,
+            )  
+        end
 
         is_expected.to contain_exec('reload-rsyslogd')
           .with(

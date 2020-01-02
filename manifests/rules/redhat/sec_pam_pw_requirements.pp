@@ -74,47 +74,49 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
   ]
 
   if($enforce) {
-    file_line { 'pam minlen':
-      ensure => 'present',
-      path   => '/etc/security/pwquality.conf',
-      line   => "minlen = ${minlen}",
-      match  => '^#?minlen',
-    }
-
-    if ($minclass != -1) and ($facts['operatingsystemmajrelease'] > '7') {
-      file_line { 'pam minclass':
+    if ($facts['operatingsystemmajrelease'] > '6') {
+      file_line { 'pam minlen':
         ensure => 'present',
         path   => '/etc/security/pwquality.conf',
-        line   => "minclass = ${minclass}",
-        match  => '^#?minclass',
-      }
-    } else {
-      file_line { 'pam dcredit':
-        ensure => 'present',
-        path   => '/etc/security/pwquality.conf',
-        line   => "dcredit = ${dcredit}",
-        match  => '^#?dcredit',
+        line   => "minlen = ${minlen}",
+        match  => '^#?minlen',
       }
 
-      file_line { 'pam ucredit':
-        ensure => 'present',
-        path   => '/etc/security/pwquality.conf',
-        line   => "ucredit = ${ucredit}",
-        match  => '^#?ucredit',
-      }
+      if ($minclass != -1) and ($facts['operatingsystemmajrelease'] > '7') {
+        file_line { 'pam minclass':
+          ensure => 'present',
+          path   => '/etc/security/pwquality.conf',
+          line   => "minclass = ${minclass}",
+          match  => '^#?minclass',
+        }
+      } else {
+        file_line { 'pam dcredit':
+          ensure => 'present',
+          path   => '/etc/security/pwquality.conf',
+          line   => "dcredit = ${dcredit}",
+          match  => '^#?dcredit',
+        }
 
-      file_line { 'pam ocredit':
-        ensure => 'present',
-        path   => '/etc/security/pwquality.conf',
-        line   => "ocredit = ${ocredit}",
-        match  => '^#?ocredit',
-      }
+        file_line { 'pam ucredit':
+          ensure => 'present',
+          path   => '/etc/security/pwquality.conf',
+          line   => "ucredit = ${ucredit}",
+          match  => '^#?ucredit',
+        }
 
-      file_line { 'pam lcredit':
-        ensure => 'present',
-        path   => '/etc/security/pwquality.conf',
-        line   => "lcredit = ${lcredit}",
-        match  => '^#?lcredit',
+        file_line { 'pam ocredit':
+          ensure => 'present',
+          path   => '/etc/security/pwquality.conf',
+          line   => "ocredit = ${ocredit}",
+          match  => '^#?ocredit',
+        }
+
+        file_line { 'pam lcredit':
+          ensure => 'present',
+          path   => '/etc/security/pwquality.conf',
+          line   => "lcredit = ${lcredit}",
+          match  => '^#?lcredit',
+        }
       }
     }
 
@@ -169,7 +171,8 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
           type      => 'password',
           control   => 'requisite',
           module    => 'pam_cracklib.so',
-          arguments => ['try_first_pass', 'retry=3']
+          arguments => ['try_first_pass', 'retry=3', "minlen=${minlen}", "dcredit=${dcredit}",
+                        "ucredit=${ucredit}", "ocredit=${ocredit}", "lcredit=${lcredit}"]
         }
       }
     }

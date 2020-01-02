@@ -6,15 +6,18 @@
 # @example
 #   include security_baseline::services
 class security_baseline::services {
-  if $facts['operatingsystemmajrelease'] > '6' {
+  if (
+    ($facts['operatingsystemmajrelease'] <= '6') and
+    ($facts['osfamily'] == 'RedHat')
+  ) {
     exec { 'reload-sshd':
-      command     => 'systemctl reload sshd',
+      command     => 'service sshd reload',
       path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       refreshonly => true,
     }
   } else {
     exec { 'reload-sshd':
-      command     => 'service sshd reload',
+      command     => 'systemctl reload sshd',
       path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       refreshonly => true,
     }

@@ -361,11 +361,11 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline['ntp'] = ntpdata
 
   sshd = {}
-  if File.exist?('/sbin/sshd')
-    sshdCmd = '/sbin/sshd'
-  else
-    sshdCmd = '/usr/sbin/sshd'
-  end
+  sshdCmd = if File.exist?('/sbin/sshd')
+              '/sbin/sshd'
+            else
+              '/usr/sbin/sshd'
+            end
   val = Facter::Core::Execution.exec("grep '^/s*CRYPTO_POLICY=' /etc/sysconfig/sshd'")
   sshd['crypto_policy'] = check_value_string(val, 'none')
   sshd['package'] = check_package_installed('openssh-server')

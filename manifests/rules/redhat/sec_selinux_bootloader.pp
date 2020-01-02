@@ -28,16 +28,20 @@ class security_baseline::rules::redhat::sec_selinux_bootloader (
   String $log_level = ''
 ) {
   if($enforce) {
-    file_line { 'cmdline_definition':
-      line   => 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"',
-      path   => '/etc/default/grub',
-      match  => '^GRUB_CMDLINE_LINUX_DEFAULT',
-      notify => Exec['selinux-grub-config']
-    }
-    exec {'selinux-grub-config':
-      command     => 'grub2-mkconfig -o /boot/grub2/grub.cfg',
-      path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      refreshonly => true,
+    if($facts['operatingsystemmajrelease'] >= '8') {
+      file_line { 'cmdline_definition':
+        line   => 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"',
+        path   => '/etc/default/grub',
+        match  => '^GRUB_CMDLINE_LINUX_DEFAULT',
+        notify => Exec['selinux-grub-config']
+      }
+      exec {'selinux-grub-config':
+        command     => 'grub2-mkconfig -o /boot/grub2/grub.cfg',
+        path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        refreshonly => true,
+      }
+    } else {
+
     }
   } else {
     if($facts['security_baseline']['selinux']['bootloader'] == false) {

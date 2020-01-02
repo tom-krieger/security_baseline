@@ -9,6 +9,7 @@ describe 'security_baseline::rules::redhat::sec_aide_cron' do
         {
           osfamily: 'RedHat',
           operatingsystem: 'CentOS',
+          operatingsystemmajrelease: '7',
           architecture: 'x86_64',
           security_baseline: {
             aide: {

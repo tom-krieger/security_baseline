@@ -6,8 +6,13 @@
 # @example
 #   include security_baseline::services
 class security_baseline::services {
+  if(has_key($facts, 'operatingsystemmajrelease')) {
+    $rel = $facts['operatingsystemmajrelease']
+  } else {
+    $rel = ''
+  }
   if (
-    ($facts['operatingsystemmajrelease'] <= '6') and
+    ($rel <= '6') and
     ($facts['osfamily'] == 'RedHat')
   ) {
     exec { 'reload-sshd':

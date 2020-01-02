@@ -31,8 +31,9 @@ class security_baseline::rules::common::sec_auditd_process (
   String $log_level = ''
 ) {
   if($enforce) {
-    kernel_parameter { 'audit=1':
+    kernel_parameter { 'audit':
       ensure => present,
+      value  => 1,
     }
   } else {
     if($facts['security_baseline']['auditd']['auditing_process'] == 'none') {

@@ -361,6 +361,11 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline['ntp'] = ntpdata
 
   sshd = {}
+  if File.exist?('/sbin/sshd')
+    sshdCmd = '/sbin/sshd'
+  else
+    sshdCmd = '/usr/sbin/sshd'
+  end
   val = Facter::Core::Execution.exec("grep '^/s*CRYPTO_POLICY=' /etc/sysconfig/sshd'")
   sshd['crypto_policy'] = check_value_string(val, 'none')
   sshd['package'] = check_package_installed('openssh-server')
@@ -371,18 +376,18 @@ def security_baseline_redhat(os, _distid, release)
                  'clientaliveinterval', 'clientalivecountmax', 'logingracetime', 'banner', 'usepam', 'allowtcpforwarding']
 
   sshd_values.each do |sshd_value|
-    val = Facter::Core::Execution.exec("/sbin/sshd -T | grep -i #{sshd_value} | awk '{print $2;}'")
+    val = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i #{sshd_value} | awk '{print $2;}'")
     unless val.nil? || val.empty?
       val.strip!
     end
     sshd[sshd_value] = check_value_string(val, 'none')
   end
 
-  sshd['macs'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^MACs" | awk \'{print $2;}\'').strip.split(%r{\,})
-  sshd['allowusers'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^AllowUsers" | awk \'{print $2;}\'').strip.split("\n")
-  sshd['allowgroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^AllowGroups" | awk \'{print $2;}\'').strip.split("\n")
-  sshd['denyusers'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^DenyUsers" | awk \'{print $2;}\'').strip.split("\n")
-  sshd['denygroups'] = Facter::Core::Execution.exec('/sbin/sshd -T | grep -i "^DenyGroups" | awk \'{print $2;}\'').strip.split("\n")
+  sshd['macs'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^MACs\" | awk '{print $2;}'").strip.split(%r{\,})
+  sshd['allowusers'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^AllowUsers\" | awk '{print $2;}'").strip.split("\n")
+  sshd['allowgroups'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^AllowGroups\" | awk '{print $2;}'").strip.split("\n")
+  sshd['denyusers'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^DenyUsers\" | awk '{print $2;}'").strip.split("\n")
+  sshd['denygroups'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^DenyGroups\" | awk '{print $2;}'").strip.split("\n")
   sshd['protocol'] = check_value_string(Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip, 'none')
 
   val = Facter::Core::Execution.exec("find /etc/ssh -xdev -type f -name 'ssh_host_*_key'")

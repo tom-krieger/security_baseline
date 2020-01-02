@@ -371,7 +371,10 @@ def security_baseline_redhat(os, _distid, release)
                  'clientaliveinterval', 'clientalivecountmax', 'logingracetime', 'banner', 'usepam', 'allowtcpforwarding']
 
   sshd_values.each do |sshd_value|
-    val = Facter::Core::Execution.exec("/sbin/sshd -T | grep -i #{sshd_value} | awk '{print $2;}'").strip
+    val = Facter::Core::Execution.exec("/sbin/sshd -T | grep -i #{sshd_value} | awk '{print $2;}'")
+    unless val.nil? || val.empty?
+      val.strip!
+    end
     sshd[sshd_value] = check_value_string(val, 'none')
   end
 

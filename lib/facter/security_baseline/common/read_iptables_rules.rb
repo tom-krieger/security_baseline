@@ -34,7 +34,8 @@ def read_iptables_rules(version = '4')
         default_policies[chain] = def_policy
       end
 
-      m = rule.match(%r{(?<pkts>\d+)\s*(?<bytes>\d+)\s*(?<target>\w*)\s*(?<prot>\w*)\s*(?<opt>[0-9a-zA-Z\-_\.]*)\s*(?<in>[a-zA-Z0-9\*_\-]*)\s*(?<out>[a-zA-Z0-9\*_\-]*)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<info>.*)})
+      m = rule.match(%r{(?<pkts>\d+)\s*(?<bytes>\d+)\s*(?<target>\w*)\s*(?<prot>\w*)\s*(?<opt>[0-9a-zA-Z\-_\.]*)\s*(?<in>[a-zA-Z0-9\*_\-]*)
+                        \s*(?<out>[a-zA-Z0-9\*_\-]*)\s*(?<source>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<dest>\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}[\/\d+]*)\s*(?<info>.*)}x)
       next if m.nil?
       nr += 1
       policy["rule #{nr}"] = {}

@@ -21,6 +21,7 @@ require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'facter/security_baseline/common/check_values_expected'
 require 'facter/security_baseline/common/read_iptables_rules'
 require 'facter/security_baseline/common/read_nftables_rules'
+require 'facter/security_baseline/redhat/read_firewalld_zone_iface'
 require 'pp'
 
 # frozen_string_literal: true
@@ -1058,22 +1059,7 @@ def security_baseline_redhat(os, _distid, release)
         firewalld['zone_iface'] = {}
         firewalld['zone_iface_assigned'] = false
       else
-        zone = 'undef'
-        iface_assigned = false
-        val.split("\n").each do |line|
-          if line =~ %r{^[a-zA-Z0-9]}
-            zone = line
-          elsif line =~ %r{interfaces:}
-            m = line.match(%r{interfaces:\s*(?<ifaces>[a-zA-Z0-9_\-]*)})
-            unless m.nil?
-              ifaces = m[:ifaces]
-              firewalld['zone_iface'] = {}
-              firewalld['zone_iface'][zone] = ifaces
-              iface_assigned = true
-            end
-          end
-        end
-        firewalld['zone_iface_assigned_status'] = iface_assigned
+        firewalld = read_firewalld_zone_iface(val, firewalld)
       end
     end
 

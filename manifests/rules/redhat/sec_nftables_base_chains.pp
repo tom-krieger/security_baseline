@@ -34,21 +34,21 @@ class security_baseline::rules::redhat::sec_nftables_base_chains (
 ) {
   if($enforce) {
     exec { 'create base chain input':
-      command => "nft create chain ${table} filter input { type filter hook input priority 0 \; }",
+      command => "nft create chain ${table} filter input { type filter hook input priority 0 \\; }",
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       onlyif  => "test -z \"$(nft list ruleset ${table} | grep 'type filter hook input priority 0')\"",
       notify  => Exec['dump nftables ruleset'],
     }
 
     exec { 'create base chain forward':
-      command => "nft create chain ${table} filter forward { type filter hook forward priority 0 \; }",
+      command => "nft create chain ${table} filter forward { type filter hook forward priority 0 \\; }",
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       onlyif  => "test -z \"$(nft list ruleset ${table} | grep 'type filter hook forward priority 0')\"",
       notify  => Exec['dump nftables ruleset'],
     }
 
     exec { 'create base chain output':
-      command => "nft create chain ${table} filter output { type filter hook output priority 0 \; }",
+      command => "nft create chain ${table} filter output { type filter hook output priority 0 \\; }",
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       onlyif  => "test -z \"$(nft list ruleset ${table} | grep 'type filter hook output priority 0')\"",
       notify  => Exec['dump nftables ruleset'],

@@ -48,9 +48,9 @@ describe 'security_baseline::rules::common::sec_auditd_process' do
             it {
               is_expected.to contain_kernel_parameter('audit')
                 .with(
-                  'ensure' => 'present', 
-                  'value' => 1
-              )
+                  'ensure' => 'present',
+                  'value' => 1,
+                )
               is_expected.not_to contain_echo('auditd-process')
             }
 

@@ -1720,7 +1720,9 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - nftables
-        - base_chain_status
+        - inet
+        - base
+        - status
       fact_value: true
     message: 'Rule 3.4.3.3. nftables base chains should be configured.'
     log_level: 'warning'
@@ -1738,6 +1740,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - nftables
+        - inet
         - loopback
         - status
       fact_value: true
@@ -1757,6 +1760,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - nftables
+        - inet
         - conns
         - status
       fact_value: true
@@ -1776,6 +1780,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - nftables
+        - inet
         - policy
         - status
       fact_value: true

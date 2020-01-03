@@ -1218,7 +1218,7 @@ def security_baseline_redhat(os, _distid, release)
         end
       end
 
-      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset#{table}  | grep 'hook output'")
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table}  | grep 'hook output'")
       if val.nil? || val.empty?
         policy['output'] = 'none'
       else

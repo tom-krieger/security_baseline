@@ -6,15 +6,6 @@ describe 'security_baseline::rules::redhat::sec_selinux_bootloader' do
   on_supported_os.each do |os, os_facts|
     enforce_options.each do |enforce|
       context "on #{os} with enforce = #{enforce}" do
-        let(:pre_condition) do
-          <<-EOF
-          exec {'selinux-grub-config':
-            command     => 'grub2-mkconfig -o /boot/grub2/grub.cfg',
-            path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-            refreshonly => true,
-          }
-          EOF
-        end
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {

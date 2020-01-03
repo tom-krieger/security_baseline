@@ -1137,9 +1137,9 @@ def security_baseline_redhat(os, _distid, release)
       loopback = {}
       val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep 'iif \"lo\" accept'")
       loopback['lo_iface'] = check_value_string(val, 'none')
-      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep 'ip sddr'")
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | grep 'ip sddr'")
       loopback['lo_network'] = check_value_string(val, 'none')
-      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep 'ip6 saddr'")
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | grep 'ip6 saddr'")
       loopback['ip6_saddr'] = check_value_string(val, 'none')
       loopback['status'] = loopback['lo_iface'] != 'none' && loopback['lo_network'] != 'none' && loopback['ip6_saddr'] != 'none'
       nft[table]['loopback'] = loopback

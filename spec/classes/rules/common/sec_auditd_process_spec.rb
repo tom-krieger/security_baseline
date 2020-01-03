@@ -46,7 +46,11 @@ describe 'security_baseline::rules::common::sec_auditd_process' do
 
           if enforce
             it {
-              is_expected.to contain_kernel_parameter('audit=1').with('ensure' => 'present')
+              is_expected.to contain_kernel_parameter('audit')
+                .with(
+                  'ensure' => 'present', 
+                  'value' => 1
+              )
               is_expected.not_to contain_echo('auditd-process')
             }
 

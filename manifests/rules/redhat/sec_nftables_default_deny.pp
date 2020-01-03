@@ -30,7 +30,7 @@
 # @param table
 #    nftable table to add rules
 #
-# @additional_rules
+# @param additional_rules
 #    additinals rules to add to te policy. Add an array with rules to teh hash. Hash key is the chain 
 #    to add the rules.
 #

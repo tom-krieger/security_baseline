@@ -18,6 +18,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param table
+#    nftable table to add rules
+#
 # @example
 #   class security_baseline::rules::redhat::sec_nftables_base_chains {
 #       enforce => true,

@@ -31,6 +31,16 @@ The code of this security baseline module is based on the following CIS Benchmar
 CIS SUSE Linux Enterprise 12 Benchmark
 v2.1.0 - 12-28-2017
 
+### Redhat 6
+
+CIS Red Hat Enterprise Linux 6 Benchmark
+v2.1.0 - 12-27-2017
+
+### CentOS 6
+
+CIS CentOS Linux 6 Benchmark
+v2.1.0 - 12-27-2017
+
 ### Redhat 7
 
 CIS Red Hat Enterprise Linux 7 Benchmark
@@ -40,6 +50,16 @@ v2.2.0 - 12-27-2017
 
 CIS CentOS Linux 7 Benchmark
 v2.2.0 - 12-27-2017
+
+### Redhat 8
+
+CIS Red Hat Enterprise Linux 8 Benchmark
+v1.0.0 - 09-30-2019
+
+### CentOS 8
+
+CIS CentOS Linux 8 Benchmark
+v1.0.0 - 10-31-2019
 
 ### Ubuntu 18.04
 
@@ -89,7 +109,7 @@ class your_class_name (
 }
 ```
 
-Please keep in mind that the classes you want to use for your security basdeline have to available in the Puppet catalog. Otherwise the catalog compliation will fail.
+Please keep in mind that the classes you want to use for your security baseline have to be available in the Puppet catalog. Otherwise the catalog compliation will fail.
 
 ### Parameter `enforce`
  
@@ -199,7 +219,7 @@ See [REFERENCE.md](https://github.com/tom-krieger/security_baseline/blob/master/
 
 ## Limitations
 
-CVurrently the module is tested with RedHat 7, CentOS 7, Suse SLES 12 and Ubunto 18.04. Other OSes may work but thereÄs no guarantee. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
+Currently the module is tested with RedHat 6, 7, 8, CentOS 6, 7, 8, Suse SLES 12 and Ubuntu 18.04. Other OSes may work but there's no guarantee. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
 
 ## Development
 

@@ -48,6 +48,9 @@
 #    Minimum to provide character classes (only used for Redhat 8, ignored in oler RedHat versios). 
 #    Will be ignored if value is -1. Instead *credit values are used.
 #
+# @param retry
+#    allowed retries when password is wrong
+#
 # @example
 #   class security_baseline::rules::redhat::ssec_pam_pw_requirements {
 #       enforce => true,

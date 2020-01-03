@@ -1,10 +1,15 @@
 require 'pp'
 
-def read_nftables_rules
+def read_nftables_rules(table='')
   nft = {}
 
   if File.exist?('/sbin(nft')
-    lines = Facter::Core::Execution.exec('/sbin/nft list ruleset')
+    if table.empty?
+      cmd = '/sbin/nft list ruleset'
+    else
+      cmd = "/sbin/nft list ruleset #{table}"
+    end
+    lines = Facter::Core::Execution.exec(cmd)
     rules = if lines.nil? || lines.empty?
               []
             else

@@ -1123,111 +1123,117 @@ def security_baseline_redhat(os, _distid, release)
       nft['tables_count'] = nft['tables'].count
       nft['tables_count_status'] = nft['tables_count'] > 0
     end
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook input'")
-    nft['base_chain_input'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook forward'")
-    nft['base_chain_forward'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook output'")
-    nft['base_chain_output'] = check_value_string(val, 'none')
-    nft['base_chain_status'] = nft['base_chain_input'] != 'none' && nft['base_chain_forward'] != 'none' && nft['base_chain_output'] != 'none'
 
-    loopback = {}
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep 'iif \"lo\" accept'")
-    loopback['lo_iface'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep 'ip sddr'")
-    loopback['lo_network'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep 'ip6 saddr'")
-    loopback['ip6_saddr'] = check_value_string(val, 'none')
-    loopback['status'] = loopback['lo_iface'] != 'none' && loopback['lo_network'] != 'none' && loopback['ip6_saddr'] != 'none'
-    nft['loopback'] = loopback
+    nft['tables'].each do |table|
+      nft[table] = {}
+      base = {}
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | grep 'hook input'")
+      base['input'] = check_value_string(val, 'none')
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | grep 'hook forward'")
+      base['forward'] = check_value_string(val, 'none')
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | grep 'hook output'")
+      base['output'] = check_value_string(val, 'none')
+      base['status'] = base['input'] != 'none' && base['forward'] != 'none' && base['output'] != 'none'
+      nft[table]['base'] = base
 
-    conns = {}
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol tcp ct state'")
-    conns['in_tcp'] = if val.nil? || val.empty?
-                        false
-                      elsif val =~ %r{tcp\s*ct\s*state\s*established\s*accept}
-                        true
-                      else
-                        false
-                      end
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol udp ct state'")
-    conns['in_udp'] = if val.nil? || val.empty?
-                        false
-                      elsif val =~ %r{udp\s*ct\s*state\s*established\s*accept}
-                        true
-                      else
-                        false
-                      end
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook input/,/}/' | grep -E 'ip protocol icmp ct state'")
-    conns['in_icmp'] = if val.nil? || val.empty?
-                         false
-                       elsif val =~ %r{icmp\s*ct\s*state\s*established\s*accept}
-                         true
-                       else
-                         false
-                       end
+      loopback = {}
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep 'iif \"lo\" accept'")
+      loopback['lo_iface'] = check_value_string(val, 'none')
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep 'ip sddr'")
+      loopback['lo_network'] = check_value_string(val, 'none')
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep 'ip6 saddr'")
+      loopback['ip6_saddr'] = check_value_string(val, 'none')
+      loopback['status'] = loopback['lo_iface'] != 'none' && loopback['lo_network'] != 'none' && loopback['ip6_saddr'] != 'none'
+      nft[table]['loopback'] = loopback
 
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol tcp ct state'")
-    conns['out_tcp'] = if val.nil? || val.empty?
-                         false
-                       elsif val =~ %r{tcp\s*ct\s*state\s*established,related,new\s*accept}
-                         true
-                       else
-                         false
-                       end
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol udp ct state'")
-    conns['out_udp'] = if val.nil? || val.empty?
-                         false
-                       elsif val =~ %r{udp\s*ct\s*state\s*established,related,new\s*accept}
-                         true
-                       else
-                         false
-                       end
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | awk '/hook output/,/}/' | grep -E 'ip protocol icmp ct state'")
-    conns['out_icmp'] = if val.nil? || val.empty?
+      conns = {}
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep -E 'ip protocol tcp ct state'")
+      conns['in_tcp'] = if val.nil? || val.empty?
                           false
-                        elsif val =~ %r{icmp\s*ct\s*state\s*established,related,new\s*accept}
+                        elsif val =~ %r{tcp\s*ct\s*state\s*established\s*accept}
                           true
                         else
                           false
                         end
-    conns['status'] = conns['in_tcp'] && conns['in_udp'] && conns['in_icmp'] && conns['out_tcp'] && conns['out_udp'] && conns['out_icmp']
-    nft['conns'] = conns
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep -E 'ip protocol udp ct state'")
+      conns['in_udp'] = if val.nil? || val.empty?
+                          false
+                        elsif val =~ %r{udp\s*ct\s*state\s*established\s*accept}
+                          true
+                        else
+                          false
+                        end
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep -E 'ip protocol icmp ct state'")
+      conns['in_icmp'] = if val.nil? || val.empty?
+                          false
+                        elsif val =~ %r{icmp\s*ct\s*state\s*established\s*accept}
+                          true
+                        else
+                          false
+                        end
 
-    policy = {}
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook input'")
-    if val.nil? || val.empty?
-      policy['input'] = 'none'
-    else
-      m = val.match(%r{policy\s*(?<policy>\w*);})
-      unless m.nil?
-        policy['input'] = m[:policy].downcase
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook output/,/}/' | grep -E 'ip protocol tcp ct state'")
+      conns['out_tcp'] = if val.nil? || val.empty?
+                          false
+                        elsif val =~ %r{tcp\s*ct\s*state\s*established,related,new\s*accept}
+                          true
+                        else
+                          false
+                        end
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook output/,/}/' | grep -E 'ip protocol udp ct state'")
+      conns['out_udp'] = if val.nil? || val.empty?
+                          false
+                        elsif val =~ %r{udp\s*ct\s*state\s*established,related,new\s*accept}
+                          true
+                        else
+                          false
+                        end
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook output/,/}/' | grep -E 'ip protocol icmp ct state'")
+      conns['out_icmp'] = if val.nil? || val.empty?
+                            false
+                          elsif val =~ %r{icmp\s*ct\s*state\s*established,related,new\s*accept}
+                            true
+                          else
+                            false
+                          end
+      conns['status'] = conns['in_tcp'] && conns['in_udp'] && conns['in_icmp'] && conns['out_tcp'] && conns['out_udp'] && conns['out_icmp']
+      nft[table]['conns'] = conns
+
+      policy = {}
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | grep 'hook input'")
+      if val.nil? || val.empty?
+        policy['input'] = 'none'
+      else
+        m = val.match(%r{policy\s*(?<policy>\w*);})
+        unless m.nil?
+          policy['input'] = m[:policy].downcase
+        end
       end
-    end
 
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook forward'")
-    if val.nil? || val.empty?
-      policy['forward'] = 'none'
-    else
-      m = val.match(%r{policy\s*(?<policy>\w*);})
-      unless m.nil?
-        policy['forward'] = m[:policy].downcase
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | grep 'hook forward'")
+      if val.nil? || val.empty?
+        policy['forward'] = 'none'
+      else
+        m = val.match(%r{policy\s*(?<policy>\w*);})
+        unless m.nil?
+          policy['forward'] = m[:policy].downcase
+        end
       end
-    end
 
-    val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset | grep 'hook output'")
-    if val.nil? || val.empty?
-      policy['output'] = 'none'
-    else
-      m = val.match(%r{policy\s*(?<policy>\w*);})
-      unless m.nil?
-        policy['output'] = m[:policy].downcase
+      val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset#{table}  | grep 'hook output'")
+      if val.nil? || val.empty?
+        policy['output'] = 'none'
+      else
+        m = val.match(%r{policy\s*(?<policy>\w*);})
+        unless m.nil?
+          policy['output'] = m[:policy].downcase
+        end
       end
-    end
 
-    policy['status'] = policy['input'] == 'drop' && policy['forward'] == 'drop' && policy['output'] == 'drop'
-    nft['policy'] = policy
-    nft['rules'] = read_nftables_rules
+      policy['status'] = policy['input'] == 'drop' && policy['forward'] == 'drop' && policy['output'] == 'drop'
+      nft[table]['policy'] = policy
+      nft[table]['rules'] = read_nftables_rules(table)
+    end
 
     security_baseline['nftables'] = nft
   end

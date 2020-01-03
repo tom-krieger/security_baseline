@@ -1040,7 +1040,9 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline['syslog'] = syslog
 
   security_baseline['iptables'] = read_iptables_rules('4')
-  security_baseline['ip6tables'] = read_iptables_rules('6')
+  if release > '6'
+    security_baseline['ip6tables'] = read_iptables_rules('6')
+  end
 
   if File.exist?('/usr/bin/firewall-cmd')
     firewalld = {}

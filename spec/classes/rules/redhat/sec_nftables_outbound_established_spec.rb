@@ -82,7 +82,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_outbound_established' d
             .with(
               'command' => 'nft add rule inet filter output ip protocol tcp ct state new,related,established accept',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'ip protocol tcp ct state new,related,established accept\')"',
+              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'ip protocol tcp ct state established,related,new accept\')"',
             )
             .that_notifies('Exec[dump nftables ruleset]')
 
@@ -90,7 +90,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_outbound_established' d
             .with(
               'command' => 'nft add rule inet filter output ip protocol udp ct state new,related,established accept',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'ip protocol udp ct state new,related,established accept\')"',
+              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'ip protocol udp ct state established,related,new accept\')"',
             )
             .that_notifies('Exec[dump nftables ruleset]')
 
@@ -98,7 +98,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_outbound_established' d
             .with(
               'command' => 'nft add rule inet filter output ip protocol icmp ct state new,related,established accept',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'ip protocol icmp ct state new,related,established accept\')"',
+              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'ip protocol icmp ct state established,related,new accept\')"',
             )
             .that_notifies('Exec[dump nftables ruleset]')
 

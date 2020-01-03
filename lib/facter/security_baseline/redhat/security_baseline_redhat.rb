@@ -241,7 +241,7 @@ def security_baseline_redhat(os, _distid, release)
           ''
         end
   grub['grub_passwd'] = check_value_boolean(val, false)
-  grub['grub.cfg'] = if File.exist?('')
+  grub['grub.cfg'] = if File.exist?('/boot/grub2/grub.cfg')
                        read_file_stats('/boot/grub2/grub.cfg')
                      elsif File.exist?('/boot/grub/grub.cfg')
                        read_file_stats('/boot/grub/grub.cfg')

@@ -30,8 +30,17 @@ class security_baseline::rules::common::sec_iptables (
   String $log_level = ''
 ) {
   if($enforce) {
+    if($facts['osfamily'] == 'RedHat') and ($facts['operatingsystemmajrelease'] <= '6') {
+      $params = {
+        ensure_v6 => 'stopped',
+      }
+    } else {
+      $params = {}
+    }
     if(!defined(Class['firewall'])) {
-      class { '::firewall': }
+      class { '::firewall':
+        * => $params,
+      }
     }
 
     resources { 'firewall':

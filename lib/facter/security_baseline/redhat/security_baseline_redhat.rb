@@ -1112,7 +1112,14 @@ def security_baseline_redhat(os, _distid, release)
       nft['tables_count'] = 0
       nft['tables_count_status'] = false
     else
-      nft['tables'] = val.split("\n")
+      tbls = []
+      val.split("\n").each do |line|
+        m = line.match(%r{table\s*(?<tbl>\w*)\s*filter})
+        unless m.nil?
+          tbls.push(m[:tbl])
+        end
+      end
+      nft['tables'] = tbls
       nft['tables_count'] = nft['tables'].count
       nft['tables_count_status'] = nft['tables_count'] > 0
     end

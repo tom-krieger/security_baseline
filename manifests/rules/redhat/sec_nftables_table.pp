@@ -31,26 +31,27 @@ class security_baseline::rules::redhat::sec_nftables_table (
 ) {
   if ($enforce) {
     if(has_key($facts['security_baseline'], 'nftables')) {
-      $count = $facts['security_baseline']['nftables']['tables_count']
-    } else {
-      $count = 0
-    }
-    if($count == 0) {
-      if(!defined(Package['nftables'])) {
-        package { 'nftables':
-          ensure => installed,
-          before => Exec["create nft table ${nftables_default_table}"],        }
-      }
-      exec { "create nft table ${nftables_default_table}":
-        command => "nft create table ${nftables_default_table} filter",
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        onlyif  => "test -z \"$(nft list ruleset | grep -E '^table ${nftables_default_table}')\"",
-        notify  => Exec['dump nftables ruleset'],
+      if(!($nftables_default_table in $facts['security_baseline']['nftables']['tables'])) {
+        if(!defined(Package['nftables'])) {
+          package { 'nftables':
+            ensure => installed,
+            before => Exec["create nft table ${nftables_default_table}"],        }
+        }
+        exec { "create nft table ${nftables_default_table}":
+          command => "nft create table ${nftables_default_table} filter",
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          onlyif  => "test -z \"$(nft list ruleset | grep -E '^table ${nftables_default_table}')\"",
+          notify  => Exec['dump nftables ruleset'],
+        }
       }
     }
   } else {
     if(has_key($facts['security_baseline'], 'nftables')) {
-      $status = $facts['security_baseline']['nftables']['tables_count_status']
+      if($nftables_default_table in $facts['security_baseline']['nftables']['tables']) {
+        $status = true
+      } else {
+        $status = false
+      }
     } else {
       $status = false
     }

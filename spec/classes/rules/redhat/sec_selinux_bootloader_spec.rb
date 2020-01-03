@@ -26,19 +26,24 @@ describe 'security_baseline::rules::redhat::sec_selinux_bootloader' do
         it { is_expected.to compile }
         it do
           if enforce
-            is_expected.to contain_file_line('cmdline_definition')
-              .with(
-                'line'  => 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"',
-                'path'  => '/etc/default/grub',
-                'match' => '^GRUB_CMDLINE_LINUX_DEFAULT',
-              )
-              .that_notifies('Exec[selinux-grub-config]')
-            is_expected.to contain_exec('selinux-grub-config')
-              .with(
-                'command'     => 'grub2-mkconfig -o /boot/grub2/grub.cfg',
-                'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-                'refreshonly' => true,
-              )
+            if os_facts[:operatingsystemmajrelease] >= '8'
+              is_expected.to contain_file_line('cmdline_definition')
+                .with(
+                  'line'  => 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"',
+                  'path'  => '/etc/default/grub',
+                  'match' => '^GRUB_CMDLINE_LINUX_DEFAULT',
+                )
+                .that_notifies('Exec[selinux-grub-config]')
+              is_expected.to contain_exec('selinux-grub-config')
+                .with(
+                  'command'     => 'grub2-mkconfig -o /boot/grub2/grub.cfg',
+                  'path'        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+                  'refreshonly' => true,
+                )
+            else
+              is_expected.not_to contain_file_line('cmdline_definition')
+              is_expected.not_to contain_exec('selinux-grub-config')
+            end
 
             is_expected.not_to contain_echo('bootloader-selinux')
           else

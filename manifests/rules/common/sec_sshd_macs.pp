@@ -18,6 +18,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param macs
+#    MAC algorithms to add to config
+#
 # @example
 #   class security_baseline::rules::common::sec_sshd_macs {
 #       enforce => true,
@@ -27,31 +30,31 @@
 #
 # @api private
 class security_baseline::rules::common::sec_sshd_macs (
-  Boolean $enforce = true,
-  String $message = '',
-  String $log_level = ''
+  Boolean $enforce  = true,
+  String $message   = '',
+  String $log_level = '',
+  Array $macs       = [],
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
-      file_line { 'sshd-macs':
-        ensure => present,
-        path   => '/etc/ssh/sshd_config',
-        line   => 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com',  #lint:ignore:140chars
-        match  => '^MACs.*',
-        notify => Exec['reload-sshd'],
+      if (!empty($macs)) {
+        $maclist = $macs.join(',')
+        file_line { 'sshd-macs':
+          ensure => present,
+          path   => '/etc/ssh/sshd_config',
+          line   => "MACs ${maclist}",
+          match  => '^MACs.*',
+          notify => Exec['reload-sshd'],
+        }
       }
     } else {
-      unless(
-        ('hmac-sha2-512-etm@openssh.com' in $facts['security_baseline']['sshd']['macs']) and
-        ('hmac-sha2-256-etm@openssh.com' in $facts['security_baseline']['sshd']['macs']) and
-        ('umac-128-etm@openssh.com' in $facts['security_baseline']['sshd']['macs']) and
-        ('hmac-sha2-512,hmac-sha2-256' in $facts['security_baseline']['sshd']['macs']) and
-        ('umac-128@openssh.com' in $facts['security_baseline']['sshd']['macs'])
-      ) {
-        echo { 'sshd-macs':
-          message  => $message,
-          loglevel => $log_level,
-          withpath => false,
+      $macs.each |$mac| {
+        if(!($mac in $facts['security_baseline']['sshd']['macs'])) {
+          echo { "sshd-macs-${mac}":
+            message  => "${message} (${mac})",
+            loglevel => $log_level,
+            withpath => false,
+          }
         }
       }
     }

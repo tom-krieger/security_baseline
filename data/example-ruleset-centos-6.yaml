@@ -2927,12 +2927,12 @@ security_baseline::rules:
       fact_value: 
         - hmac-sha2-512-etm@openssh.com
         - hmac-sha2-256-etm@openssh.com
-        - umac-128-etm@openssh.com
-        - hmac-sha2-512
-        - hmac-sha2-256
-        - umac-128@openssh.com
     message: 'Rule 5.2.11. The sshd parameter MACs should be configured with strong MAC algorithms.'
     log_level: warning
+    config_data:
+      macs:
+        - hmac-sha2-512
+        - hmac-sha2-256
   '5.2.12':
     rulename: sshd-timeouts
     active: true

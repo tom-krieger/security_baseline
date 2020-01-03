@@ -36,7 +36,7 @@ describe 'security_baseline::rules::common::sec_sshd_macs' do
                 'denygroups' => 'none',
                 'logingracetime' => 90,
                 'loglevel' => 'WARN',
-                'macs' => ['hmm'],
+                'macs' => ['hmac-sha2-512'],
                 'maxauthtries' => 5,
                 'permitrootlogin' => 'yes',
                 'clientaliveinterval' => 400,
@@ -51,6 +51,7 @@ describe 'security_baseline::rules::common::sec_sshd_macs' do
             'enforce' => enforce,
             'message' => 'sshd macs',
             'log_level' => 'warning',
+            'macs' => ['hmac-sha2-512','hmac-sha2-256'],
           }
         end
 
@@ -61,17 +62,17 @@ describe 'security_baseline::rules::common::sec_sshd_macs' do
               .with(
                 'ensure' => 'present',
                 'path'   => '/etc/ssh/sshd_config',
-                'line'   => 'MACs hmac-sha2-512-etm@openssh.com,hmac-sha2-256-etm@openssh.com,umac-128-etm@openssh.com,hmac-sha2-512,hmac-sha2-256,umac-128@openssh.com',
+                'line'   => 'MACs hmac-sha2-512,hmac-sha2-256',
                 'match'  => '^MACs.*',
               )
               .that_notifies('Exec[reload-sshd]')
 
-            is_expected.not_to contain_echo('sshd-macs')
+            is_expected.not_to contain_echo('sshd-macs-hmac-sha2-256')
           else
             is_expected.not_to contain_file_line('sshd-macs')
-            is_expected.to contain_echo('sshd-macs')
+            is_expected.to contain_echo('sshd-macs-hmac-sha2-256')
               .with(
-                'message'  => 'sshd macs',
+                'message'  => 'sshd macs (hmac-sha2-256)',
                 'loglevel' => 'warning',
                 'withpath' => false,
               )

@@ -36,11 +36,13 @@ describe 'security_baseline::rules::redhat::sec_nftables_default_deny' do
                 'out_udp' => false,
                 'out_icmp' => false,
               },
-              'policy' => {
-                'input' => 'accept',
-                'forward' => 'accept',
-                'output' => 'accept',
-                'status' => false,
+              'inet' => {
+                'policy' => {
+                  'input' => 'accept',
+                  'output' => 'accept',
+                  'forward' => 'accept',
+                  'status' => false,
+                },
               },
             },
           },
@@ -89,7 +91,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_default_deny' do
             .with(
               'command' => 'nft add rule inet filter input tcp dport ssh accept',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test -z "$(nft list ruleset | grep \'tcp dport ssh accept\')"',
+              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'tcp dport ssh accept\')"',
             )
             .that_notifies('Exec[dump nftables ruleset]')
 

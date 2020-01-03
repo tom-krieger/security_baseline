@@ -34,34 +34,34 @@ class security_baseline::rules::redhat::sec_nftables_loopback (
 ) {
   if($enforce) {
     if(has_key($facts['security_baseline'], 'nftables')) {
-      if($facts['security_baseline']['nftables']['loopback']['lo_iface'] == 'none') {
+      if($facts['security_baseline']['nftables'][$table]['loopback']['lo_iface'] == 'none') {
         exec { 'nftables add local interface':
           command => "nft add rule ${table} filter input iif lo accept",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlyif  => "test -z \"$(nft list ruleset | grep 'iif \"lo\" accept')\"",
+          onlyif  => "test -z \"$(nft list ruleset ${table} | grep 'iif \"lo\" accept')\"",
           notify  => Exec['dump nftables ruleset'],
         }
       }
-      if($facts['security_baseline']['nftables']['loopback']['lo_network'] == 'none') {
+      if($facts['security_baseline']['nftables'][$table]['loopback']['lo_network'] == 'none') {
         exec { 'nftables add local network':
           command => "nft add rule ${table} filter input ip saddr 127.0.0.0/8 counter drop",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlyif  => "test -z \"$(nft list ruleset | grep -E 'ip\\s*saddr\\s*127.0.0.0/8\\s*counter\\s*packets.*drop')\"",
+          onlyif  => "test -z \"$(nft list ruleset ${table} | grep -E 'ip\\s*saddr\\s*127.0.0.0/8\\s*counter\\s*packets.*drop')\"",
           notify  => Exec['dump nftables ruleset'],
         }
       }
-      if($facts['security_baseline']['nftables']['loopback']['ip6_saddr'] == 'none') {
+      if($facts['security_baseline']['nftables'][$table]['loopback']['ip6_saddr'] == 'none') {
         exec { 'nftables ip6 traffic':
           command => "nft add rule ${table} filter input ip6 saddr ::1 counter drop",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlyif  => "test -z \"$(nft list ruleset | grep 'ip6 saddr ::1 counter packets')\"",
+          onlyif  => "test -z \"$(nft list ruleset ${table} | grep 'ip6 saddr ::1 counter packets')\"",
           notify  => Exec['dump nftables ruleset'],
         }
       }
     }
   } else {
     if(has_key($facts['security_baseline'], 'nftables')) {
-      if($facts['security_baseline']['nftables']['loopback']['status'] == false) {
+      if($facts['security_baseline']['nftables'][$table]['loopback']['status'] == false) {
         echo { 'nftables-loopback':
           message  => $message,
           loglevel => $log_level,

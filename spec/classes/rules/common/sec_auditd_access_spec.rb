@@ -22,7 +22,7 @@ describe 'security_baseline::rules::common::sec_auditd_access' do
             {
               osfamily: 'RedHat',
               operatingsystem: 'CentOS',
-          operatingsystemmajrelease: '7',
+              operatingsystemmajrelease: '7',
               architecture: arch.to_s,
               security_baseline: {
                 auditd: {

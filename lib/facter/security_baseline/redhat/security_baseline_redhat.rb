@@ -361,7 +361,7 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline['ntp'] = ntpdata
 
   sshd = {}
-  sshdCmd = if File.exist?('/sbin/sshd')
+  sshdcmd = if File.exist?('/sbin/sshd')
               '/sbin/sshd'
             else
               '/usr/sbin/sshd'
@@ -376,18 +376,18 @@ def security_baseline_redhat(os, _distid, release)
                  'clientaliveinterval', 'clientalivecountmax', 'logingracetime', 'banner', 'usepam', 'allowtcpforwarding']
 
   sshd_values.each do |sshd_value|
-    val = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i #{sshd_value} | awk '{print $2;}'")
+    val = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i #{sshd_value} | awk '{print $2;}'")
     unless val.nil? || val.empty?
       val.strip!
     end
     sshd[sshd_value] = check_value_string(val, 'none')
   end
 
-  sshd['macs'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^MACs\" | awk '{print $2;}'").strip.split(%r{\,})
-  sshd['allowusers'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^AllowUsers\" | awk '{print $2;}'").strip.split("\n")
-  sshd['allowgroups'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^AllowGroups\" | awk '{print $2;}'").strip.split("\n")
-  sshd['denyusers'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^DenyUsers\" | awk '{print $2;}'").strip.split("\n")
-  sshd['denygroups'] = Facter::Core::Execution.exec("#{sshdCmd} -T | grep -i \"^DenyGroups\" | awk '{print $2;}'").strip.split("\n")
+  sshd['macs'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^MACs\" | awk '{print $2;}'").strip.split(%r{\,})
+  sshd['allowusers'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^AllowUsers\" | awk '{print $2;}'").strip.split("\n")
+  sshd['allowgroups'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^AllowGroups\" | awk '{print $2;}'").strip.split("\n")
+  sshd['denyusers'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^DenyUsers\" | awk '{print $2;}'").strip.split("\n")
+  sshd['denygroups'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^DenyGroups\" | awk '{print $2;}'").strip.split("\n")
   sshd['protocol'] = check_value_string(Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip, 'none')
 
   val = Facter::Core::Execution.exec("find /etc/ssh -xdev -type f -name 'ssh_host_*_key'")
@@ -429,16 +429,14 @@ def security_baseline_redhat(os, _distid, release)
   pam = {}
   pwquality = {}
   if release > '6'
-    val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/password-auth')
-    pwquality['password-auth'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/system-auth')
-    pwquality['system-auth'] = check_value_string(val, 'none')
+    val1 = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/password-auth')
+    val2 = Facter::Core::Execution.exec('grep pam_pwquality.so /etc/pam.d/system-auth')
   else
-    val = Facter::Core::Execution.exec('grep pam_cracklib.so /etc/pam.d/password-auth')
-    pwquality['password-auth'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec('grep pam_cracklib.so /etc/pam.d/system-auth')
-    pwquality['system-auth'] = check_value_string(val, 'none')
+    val1 = Facter::Core::Execution.exec('grep pam_cracklib.so /etc/pam.d/password-auth')
+    val2 = Facter::Core::Execution.exec('grep pam_cracklib.so /etc/pam.d/system-auth')
   end
+  pwquality['password-auth'] = check_value_string(val1, 'none')
+  pwquality['system-auth'] = check_value_string(val2, 'none')
   val = trim_string(Facter::Core::Execution.exec('grep ^minlen /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
   pwquality['minlen'] = check_value_string(val, 'none')
   val = trim_string(Facter::Core::Execution.exec('grep ^dcredit /etc/security/pwquality.conf | awk -F = \'{print $2;}\''))
@@ -1165,29 +1163,29 @@ def security_baseline_redhat(os, _distid, release)
                         end
       val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook input/,/}/' | grep -E 'ip protocol icmp ct state'")
       conns['in_icmp'] = if val.nil? || val.empty?
-                          false
-                        elsif val =~ %r{icmp\s*ct\s*state\s*established\s*accept}
-                          true
-                        else
-                          false
-                        end
+                           false
+                         elsif val =~ %r{icmp\s*ct\s*state\s*established\s*accept}
+                           true
+                         else
+                           false
+                         end
 
       val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook output/,/}/' | grep -E 'ip protocol tcp ct state'")
       conns['out_tcp'] = if val.nil? || val.empty?
-                          false
-                        elsif val =~ %r{tcp\s*ct\s*state\s*established,related,new\s*accept}
-                          true
-                        else
-                          false
-                        end
+                           false
+                         elsif val =~ %r{tcp\s*ct\s*state\s*established,related,new\s*accept}
+                           true
+                         else
+                           false
+                         end
       val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook output/,/}/' | grep -E 'ip protocol udp ct state'")
       conns['out_udp'] = if val.nil? || val.empty?
-                          false
-                        elsif val =~ %r{udp\s*ct\s*state\s*established,related,new\s*accept}
-                          true
-                        else
-                          false
-                        end
+                           false
+                         elsif val =~ %r{udp\s*ct\s*state\s*established,related,new\s*accept}
+                           true
+                         else
+                           false
+                         end
       val = Facter::Core::Execution.exec("/usr/sbin/nft list ruleset #{table} | awk '/hook output/,/}/' | grep -E 'ip protocol icmp ct state'")
       conns['out_icmp'] = if val.nil? || val.empty?
                             false

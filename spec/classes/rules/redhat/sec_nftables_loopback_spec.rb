@@ -27,11 +27,13 @@ describe 'security_baseline::rules::redhat::sec_nftables_loopback' do
               'base_chain_status' => false,
               'table_count' => 0,
               'table_count_status' => false,
-              'loopback' => {
-                'lo_iface' => 'none',
-                'lo_network' => 'none',
-                'ip6_saddr' => 'none',
-                'status' => false,
+              'inet' => {
+                'loopback' => {
+                  'lo_iface' => 'none',
+                  'lo_network' => 'none',
+                  'ip6_saddr' => 'none',
+                  'status' => false,
+                },
               },
             },
           },
@@ -53,7 +55,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_loopback' do
             .with(
               'command' => 'nft add rule inet filter input iif lo accept',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test -z "$(nft list ruleset | grep \'iif "lo" accept\')"',
+              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'iif "lo" accept\')"',
             )
             .that_notifies('Exec[dump nftables ruleset]')
 
@@ -61,7 +63,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_loopback' do
             .with(
               'command' => 'nft add rule inet filter input ip saddr 127.0.0.0/8 counter drop',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => "test -z \"$(nft list ruleset | grep -E 'ip\\s*saddr\\s*127.0.0.0/8\\s*counter\\s*packets.*drop')\"",
+              'onlyif'  => "test -z \"$(nft list ruleset inet | grep -E 'ip\\s*saddr\\s*127.0.0.0/8\\s*counter\\s*packets.*drop')\"",
             )
             .that_notifies('Exec[dump nftables ruleset]')
 
@@ -69,7 +71,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_loopback' do
             .with(
               'command' => 'nft add rule inet filter input ip6 saddr ::1 counter drop',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => "test -z \"$(nft list ruleset | grep 'ip6 saddr ::1 counter packets')\"",
+              'onlyif'  => "test -z \"$(nft list ruleset inet | grep 'ip6 saddr ::1 counter packets')\"",
             )
             .that_notifies('Exec[dump nftables ruleset]')
 

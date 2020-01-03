@@ -23,6 +23,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_table' do
             'nftables' => {
               'tables_count' => 0,
               'tables_count_status' => false,
+              'tables' => ['test1'],
             },
           },
         }

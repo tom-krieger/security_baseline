@@ -54,21 +54,21 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
 ) {
   if($enforce) {
     if(has_key($facts['security_baseline'], 'nftables')) {
-      if($facts['security_baseline']['nftables']['policy']['input'] != $default_policy_input) {
+      if($facts['security_baseline']['nftables'][$table]['policy']['input'] != $default_policy_input) {
         exec { 'set input default policy':
           command => "nft chain ${table} filter input { policy ${default_policy_input} \; }",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
           notify  => Exec['dump nftables ruleset'],
         }
       }
-      if($facts['security_baseline']['nftables']['policy']['forward'] != $default_policy_forward) {
+      if($facts['security_baseline']['nftables'][$table]['policy']['forward'] != $default_policy_forward) {
         exec { 'set forward default policy':
           command => "nft chain ${table} filter forward { policy ${default_policy_forward} \; }",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
           notify  => Exec['dump nftables ruleset'],
         }
       }
-      if($facts['security_baseline']['nftables']['policy']['output'] != $default_policy_output) {
+      if($facts['security_baseline']['nftables'][$table]['policy']['output'] != $default_policy_output) {
         exec { 'set output default policy':
           command => "nft chain ${table} filter output { policy ${default_policy_output} \; }",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
@@ -81,7 +81,7 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
           exec { "adding rule ${rule}":
             command => "nft add rule ${table} filter ${chain} ${rule}",
             path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-            onlyif  => "test -z \"$(nft list ruleset | grep '${rule}')\"",
+            onlyif  => "test -z \"$(nft list ruleset ${table} | grep '${rule}')\"",
             notify  => Exec['dump nftables ruleset'],
           }
         }
@@ -89,7 +89,7 @@ class security_baseline::rules::redhat::sec_nftables_default_deny (
     }
   } else {
     if(has_key($facts['security_baseline'], 'nftables')) {
-      if($facts['security_baseline']['nftables']['policy']['status'] == false) {
+      if($facts['security_baseline']['nftables'][$table]['policy']['status'] == false) {
         echo { 'nftables-default-deny':
           message  => $message,
           loglevel => $log_level,

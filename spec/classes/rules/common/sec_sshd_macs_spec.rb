@@ -51,7 +51,7 @@ describe 'security_baseline::rules::common::sec_sshd_macs' do
             'enforce' => enforce,
             'message' => 'sshd macs',
             'log_level' => 'warning',
-            'macs' => ['hmac-sha2-512','hmac-sha2-256'],
+            'macs' => ['hmac-sha2-512', 'hmac-sha2-256'],
           }
         end
 

@@ -43,8 +43,8 @@ describe 'security_baseline::rules::common::sec_syslogng_default_file_perms' do
               .with(
                 'ensure' => 'present',
                 'path'   => '/etc/syslog-ng/syslog-ng.conf',
-                'line'   => 'options { flush_lines (0); time_reopen (10); log_fifo_size (1000); chain_hostnames(off); flush_lines(0); \
-perm(0640); stats_freq(3600); threaded(yes); use_dns (no); use_fqdn (no); create_dirs (yes); keep_hostname (yes);};',
+                'line'   => "options { flush_lines (0); time_reopen (10); log_fifo_size (1000); chain_hostnames(off); flush_lines(0); \
+perm(0640); stats_freq(3600); threaded(yes); use_dns (no); use_fqdn (no); create_dirs (yes); keep_hostname (yes);};",
               )
               .that_notifies('Exec[reload-syslog-ng]')
 

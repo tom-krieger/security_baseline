@@ -24,7 +24,7 @@ One main purpose is to ensure the module can be extended by further security set
 
 ## CIS Benchmark Reference
 
-The code of this security baseline module is based on the following CIS Benchmarks
+The code of this security baseline module is based on the following CIS Benchmarks:
 
 ### SLES 12
 

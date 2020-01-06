@@ -47,35 +47,41 @@ describe 'security_baseline::rules::sles::sec_rsyslog_remote_syslog' do
             if is_loghost
               is_expected.to contain_file_line('rsyslog.conf add ModLoad')
                 .with(
-                  'ensure' => 'present',
-                  'path'   => '/etc/rsyslog.conf',
-                  'line'   => '$ModLoad imtcp',
-                  'match'  => '\$ModLoad',
+                  'ensure'             => 'present',
+                  'path'               => '/etc/rsyslog.conf',
+                  'line'               => '$ModLoad imtcp',
+                  'match'              => '^#\$ModLoad',
+                  'append_on_no_match' => true,
                 )
+                .that_requires('Package[rsyslog]')
 
               is_expected.to contain_file_line('rsyslog.conf add InputTCPServerRun')
                 .with(
-                  'ensure' => 'present',
-                  'path'   => '/etc/rsyslog.conf',
-                  'line'   => '$InputTCPServerRun 514',
-                  'match'  => '\$InputTCPServerRun',
+                  'ensure'             => 'present',
+                  'path'               => '/etc/rsyslog.conf',
+                  'line'               => '$InputTCPServerRun 514',
+                  'match'              => '^#\$InputTCPServerRun 514',
+                  'append_on_no_match' => true,
                 )
+                .that_requires('Package[rsyslog]')
             else
               is_expected.to contain_file_line('rsyslog.conf remove ModLoad')
                 .with(
-                  'ensure' => 'present',
-                  'path'   => '/etc/rsyslog.conf',
-                  'line'   => '#$ModLoad imtcp',
-                  'match'  => '\$ModLoad',
+                  'ensure'  => 'present',
+                  'path'    => '/etc/rsyslog.conf',
+                  'line'    => '#$ModLoad imtcp',
+                  'match'   => '\$ModLoad imtcp',
                 )
+                .that_requires('Package[rsyslog]')
 
               is_expected.to contain_file_line('rsyslog.conf remove InputTCPServerRun')
                 .with(
-                  'ensure' => 'present',
-                  'path'   => '/etc/rsyslog.conf',
-                  'line'   => '#$InputTCPServerRun 514',
-                  'match'  => '\$InputTCPServerRun',
+                  'ensure'  => 'present',
+                  'path'    => '/etc/rsyslog.conf',
+                  'line'    => '#$InputTCPServerRun 514',
+                  'match'   => '\$InputTCPServerRun 514',
                 )
+                .that_requires('Package[rsyslog]')
             end
 
             is_expected.not_to contain_echo('rsyslog-remote-syslog')

@@ -3416,7 +3416,7 @@ security_baseline::rules:
       fact_name:
         - rhosts_files
       fact_value: none
-    message: 'Rule 6.2.14. Users shouldnot have .rhosts files.'
+    message: 'Rule 6.2.14. Users should not have .rhosts files.'
     log_level: warning
   '6.2.15':
     rulename: passwd-groups-exist

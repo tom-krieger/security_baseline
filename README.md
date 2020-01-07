@@ -34,16 +34,16 @@ This module also has the ability to create compliance reports. The reports can b
 
 The code of this security baseline module is based on the following CIS Benchmarks:
 
-| OS           | Benchmark version                                            |
-|--------------|--------------------------------------------------------------|
-| Suse SLES 12 | CIS SUSE Linux Enterprise 12 Benchmark v2.1.0 - 12-28-2017   |
-| RedHat 6     | CIS Red Hat Enterprise Linux 6 Benchmark v2.1.0 - 12-27-2017 |
-| RedHat 7     | CIS Red Hat Enterprise Linux 7 Benchmark v2.2.0 - 12-27-2017 |
-| RedHat 8     | CIS Red Hat Enterprise Linux 8 Benchmark v1.0.0 - 09-30-2019 |
-| CentOS 6     | CIS CentOS Linux 6 Benchmark v2.1.0 - 12-27-2017             |
-| CentOS 7     | CIS CentOS Linux 7 Benchmark v2.2.0 - 12-27-2017             |
-| CentOS 8     | CIS CentOS Linux 8 Benchmark v1.0.0 - 10-31-2019             |
-| Ubuntu 18.04 | CIS Ubuntu Linux 18.04 LTS Benchmark v1.0.0 - 08-13-2018     |
+| OS           | Benchmark version                                            | Version | Date       |
+|--------------|--------------------------------------------------------------|---------|------------|
+| Suse SLES 12 | CIS SUSE Linux Enterprise 12 Benchmark                       | 2.1.0   | 12-28-2017 |
+| RedHat 6     | CIS Red Hat Enterprise Linux 6 Benchmark                     | 2.1.0   | 12-27-2017 |
+| RedHat 7     | CIS Red Hat Enterprise Linux 7 Benchmark                     | 2.2.0   | 12-27-2017 |
+| RedHat 8     | CIS Red Hat Enterprise Linux 8 Benchmark                     | 1.0.0   | 09-30-2019 |
+| CentOS 6     | CIS CentOS Linux 6 Benchmark                                 | 2.1.0   | 12-27-2017 |
+| CentOS 7     | CIS CentOS Linux 7 Benchmark                                 | 2.2.0   | 12-27-2017 |
+| CentOS 8     | CIS CentOS Linux 8 Benchmark                                 | 1.0.0   | 10-31-2019 |
+| Ubuntu 18.04 | CIS Ubuntu Linux 18.04 LTS Benchmark                         | 1.0.0   | 08-13-2018 |
 
 ## Setup
 

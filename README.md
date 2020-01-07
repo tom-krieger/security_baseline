@@ -9,6 +9,7 @@
     * [Setup requirements](#setup-requirements)
     * [Beginning with security_baseline](#beginning-with-security_baseline)
     * [Passing additional data to rules](#passing-additional-data-to-rules)
+    * [Cronjobs](#cronjobs)
     * [Reporting](#reporting)
 3. [Checking facts](#checking-facts)
 3. [Extend the security baseline](#extend-the-security-baseline)
@@ -52,7 +53,7 @@ It is highly recommended to have the complete security baseline definition writt
 
 The security_baseline module has a parameter `enforce`. If this parameter is set to true all necessary changes are made to make a machine compliant to the security baseline. This can have severre impacts to the machines, especially if security settings are defined in a wrong way.
 
-The module needs a base directory. This directory is created by the module during the fist run and is `/usr/share/security_baseline`. Some data is collected with cron jobs once a day as collecting these data is depending on the server size somewhat expensive and time consuming, e. g. searching als s-bit programs .
+The module needs a base directory. This directory is created by the module during the fist run and is `/usr/share/security_baseline`. Some data is collected with cron jobs once a day as collecting these data is depending on the server size somewhat expensive and time consuming, e. g. searching als s-bit programs . Unter the base directory there will be a directory `bin` where all scripts for gathering information are located.
 
 ### Setup Requirements
 
@@ -131,6 +132,22 @@ class security_baseline::rules::redhat::sec_ntp_daemon_ntp (
 }
 ```
 
+### Cronjobs
+
+Gathering information can sometime consume a lot of time. Gathering those facts dzring Puppet runs has a significat impact on the time consumed by a Puppet run. Therefore some facts are only gathered once a day using cron jobs. The security_baseline modules installes the following cron jobs to collect information and provide there information to the fact scripts creating the security_baseline fact.
+
+#### Cron /etc/cron.d/system-file-permissions.cron
+
+This cron job runs a verrify for rpm or dpkg packages and checks for changes file permissions and so on.
+
+#### Cron /etc/cron.d/unowned-files.cron
+
+This cron job searches for unowned and ungrouped files.
+
+#### Cron /etc/cron.d/world-writebale-files.cron
+
+This cron job searches for world writable files.
+
 ### Reporting
 
 This module knows two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a csv report which will be stored on the server and can be collected afterwards with some collecting job.
@@ -155,7 +172,7 @@ class { 'security_baseline':
 
 ## Checking facts
 
-For reporting purposes it is necessary that the security settuings required by a benchmark are checked.
+For reporting purposes it is necessary that the security settings required by a benchmark are checked.
 
 ```hiera
 ---

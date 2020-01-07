@@ -45,7 +45,7 @@ describe 'security_baseline::rules::debian::sec_systemd_timesyncd' do
               'match'              => '^FallbackNTP=',
               'append_on_no_match' => true,
             )
-            
+
           is_expected.not_to contain_echo('systemd_timesyncd')
         else
           is_expected.not_to contain_file_line('ntp-timesyncd.conf')

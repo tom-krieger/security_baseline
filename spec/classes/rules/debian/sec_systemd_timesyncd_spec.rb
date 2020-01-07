@@ -13,7 +13,7 @@ describe 'security_baseline::rules::debian::sec_systemd_timesyncd' do
           security_baseline: {
             services_enabled: {
               'systemd-timesyncd' => 'disabled',
-            }
+            },
           },
         }
       end

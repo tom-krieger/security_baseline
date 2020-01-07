@@ -22,49 +22,22 @@ Define a complete security baseline and monitor the baseline's rules. The defini
 
 One main purpose is to ensure the module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
 
+This project is highly inspired by the [fervid CIS module](https://forge.puppet.com/fervid/secure_linux_cis). I added things I missed there like creating reports. Also I do not want to use bechmark numbers for the rules as these numbers change from OS version to OS version.
+
 ## CIS Benchmark Reference
 
 The code of this security baseline module is based on the following CIS Benchmarks:
 
-### SLES 12
-
-CIS SUSE Linux Enterprise 12 Benchmark
-v2.1.0 - 12-28-2017
-
-### Redhat 6
-
-CIS Red Hat Enterprise Linux 6 Benchmark
-v2.1.0 - 12-27-2017
-
-### CentOS 6
-
-CIS CentOS Linux 6 Benchmark
-v2.1.0 - 12-27-2017
-
-### Redhat 7
-
-CIS Red Hat Enterprise Linux 7 Benchmark
-v2.2.0 - 12-27-2017
-
-### CentOS 7
-
-CIS CentOS Linux 7 Benchmark
-v2.2.0 - 12-27-2017
-
-### Redhat 8
-
-CIS Red Hat Enterprise Linux 8 Benchmark
-v1.0.0 - 09-30-2019
-
-### CentOS 8
-
-CIS CentOS Linux 8 Benchmark
-v1.0.0 - 10-31-2019
-
-### Ubuntu 18.04
-
-CIS Ubuntu Linux 18.04 LTS Benchmark
-v1.0.0 - 08-13-2018
+| OS           | Benchmark version                                            |
+|--------------|--------------------------------------------------------------|
+| Suse SLES 12 | CIS SUSE Linux Enterprise 12 Benchmark v2.1.0 - 12-28-2017   |
+| RedHat 6     | CIS Red Hat Enterprise Linux 6 Benchmark v2.1.0 - 12-27-2017 |
+| RedHat 7     | CIS Red Hat Enterprise Linux 7 Benchmark v2.2.0 - 12-27-2017 |
+| RedHat 8     | CIS Red Hat Enterprise Linux 8 Benchmark v1.0.0 - 09-30-2019 |
+| CentOS 6     | CIS CentOS Linux 6 Benchmark v2.1.0 - 12-27-2017             |
+| CentOS 7     | CIS CentOS Linux 7 Benchmark v2.2.0 - 12-27-2017             |
+| CentOS 8     | CIS CentOS Linux 8 Benchmark v1.0.0 - 10-31-2019             |
+| Ubuntu 18.04 | CIS Ubuntu Linux 18.04 LTS Benchmark v1.0.0 - 08-13-2018     |
 
 ## Setup
 
@@ -93,6 +66,8 @@ or
 ```puppet
 include ::security_baseline
 ```
+
+The 'data' folder contains example Hiera definitions for various OSes.
 
 ## Extend the security baseline
 
@@ -150,6 +125,13 @@ Hiera data:
 security_baseline::baseline_version: '1.0.0'
 security_baseline::debug: false
 security_baseline::log_info: true
+security_baseline::auditd_suid_include:
+  - /usr
+security_baseline::update_postrun_command: true
+security_baseline::reporting_type: fact
+security_baseline::logfile: /opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml
+security_baseline::auditd_rules_file: /etc/audit/rules.d/sec_baseline_auditd.rules
+security_baseline::auditd_rules_fact_file: /opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml
 security_baseline::rules:
   '1.1.1.1':
     rulename: 'cramfs'
@@ -172,7 +154,7 @@ security_baseline::rules:
 
 ```
 
-### Extension class
+### Extension classes
 
 The security baseline module contains a lot of classes to make your system complinat to a security guide. But some companies have own security baselines with own rules. Therefore the security baseline module can be extended by custom modules. You can add your own classes if these classes implement the interface described [above](#extend-the-security-baseline)
 
@@ -219,7 +201,7 @@ See [REFERENCE.md](https://github.com/tom-krieger/security_baseline/blob/master/
 
 ## Limitations
 
-Currently the module is tested with RedHat 6, 7, 8, CentOS 6, 7, 8, Suse SLES 12 and Ubuntu 18.04. Other OSes may work but there's no guarantee. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
+Currently the module is tested with RedHat 6, 7, 8, CentOS 6, 7, 8, Suse SLES 12 and Ubuntu 18.04 (partially tested). Other OSes may work but there's no guarantee. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
 
 ## Development
 

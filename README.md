@@ -148,6 +148,10 @@ This cron job searches for unowned and ungrouped files.
 
 This cron job searches for world writable files.
 
+#### Cron /etc/cron.daily/suid-audit
+
+Search for s-uid programs to create auditd rules for those binaries.
+
 ### Reporting
 
 This module knows two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a csv report which will be stored on the server and can be collected afterwards with some collecting job.

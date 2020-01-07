@@ -43,8 +43,9 @@ The code of this security baseline module is based on the following CIS Benchmar
 | CentOS 6     | CIS CentOS Linux 6 Benchmark                                 | 2.1.0   | 12-27-2017 |
 | CentOS 7     | CIS CentOS Linux 7 Benchmark                                 | 2.2.0   | 12-27-2017 |
 | CentOS 8     | CIS CentOS Linux 8 Benchmark                                 | 1.0.0   | 10-31-2019 |
-| Ubuntu 18.04 | CIS Ubuntu Linux 18.04 LTS Benchmark                         | 1.0.0   | 08-13-2018 |
+| Ubuntu 18.04 | CIS Ubuntu Linux 18.04 LTS Benchmark                         | 2.0.1   | 01-03-2020 |
 
+The benchmarks can be found at [CIS Benchmarks Website](https://www.cisecurity.org/cis-benchmarks/).
 ## Setup
 
 It is highly recommended to have the complete security baseline definition written in Hira definitions. This enables you to have different security baselines for groups of servers, environmants or special single servers.
@@ -134,7 +135,7 @@ class security_baseline::rules::redhat::sec_ntp_daemon_ntp (
 
 ### Cronjobs
 
-Gathering information can sometime consume a lot of time. Gathering those facts dzring Puppet runs has a significat impact on the time consumed by a Puppet run. Therefore some facts are only gathered once a day using cron jobs. The security_baseline modules installes the following cron jobs to collect information and provide there information to the fact scripts creating the security_baseline fact.
+Gathering information can sometime consume a lot of time. Gathering those facts during Puppet runs would have a significat impact on the time consumed by a Puppet run. Therefore some facts are only gathered once a day using cron jobs. The `security_baseline` module installes the following cron jobs to collect information and provide the information to the fact scripts creating the `security_baseline` fact.
 
 #### Cron /etc/cron.d/system-file-permissions.cron
 
@@ -154,7 +155,7 @@ Search for s-uid programs to create auditd rules for those binaries.
 
 ### Reporting
 
-This module knows two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a csv report which will be stored on the server and can be collected afterwards with some collecting job.
+This module knows two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a CSV report which will be stored on the server and can be collected afterwards with some collecting job.
 
 Reporting is configured as follows
 
@@ -165,7 +166,7 @@ class { 'security_baseline':
 }
 ```
 
-or for csv file creation
+or for CSV file creation
 
 ```puppet
 class { 'security_baseline':

@@ -28,7 +28,7 @@ def security_baseline_ubuntu(os, _distid, _release)
   arch = Facter.value(:architecture)
 
   services = ['autofs', 'avahi-daemon', 'cups', 'isc-dhcp-server', 'bind9', 'dovecot', 'apache2', 'nis', 'ntalk', 'talk', 'rsync', 'smbd',
-              'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'cron', 'slapd', 'telnet']
+              'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'cron', 'slapd', 'telnet', 'systemd-timesyncd']
   packages = { 'iptables' => '-s',
                'openldap-clients' => '-s',
                'mcstrans' => '-s',

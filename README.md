@@ -244,9 +244,9 @@ To extend the security baseline module you can write your own Puppet modules. Th
 
 ```puppet
 class your_class_name (
-  Boolean $enforce = true,
-  String $message = '',
-  String $loglevel = '',
+  Boolean $enforce            = true,
+  String $message             = '',
+  String $log_level           = '',
   Optional[Hash] $config_data = {}
 ) {
      ...
@@ -263,7 +263,7 @@ This parameter controls if the security settings should be monitored only or if 
 
 The message to log if the system is not compliant and enforce is set to false.
 
-### Parameter `loglevel`
+### Parameter `log_level`
 
 The log level the message should be logged.
 
@@ -329,9 +329,9 @@ The security baseline module contains a lot of classes to make your system compl
 
 ```puppet
 class your_class_name (
-  Boolean $enforce = true,
-  String $message = '',
-  String $loglevel = '',
+  Boolean $enforce            = true,
+  String $message             = '',
+  String $log_level           = '',
   Optional[Hash] $config_data = {}
 ) {
   if($config_data) {
@@ -343,7 +343,7 @@ class your_class_name (
 
 ### Extension class Hiera data
 
-```puppet
+```hiera
 ---
 '2.2.1.2':
   rulename: 'ntp'

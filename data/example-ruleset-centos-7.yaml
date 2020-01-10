@@ -886,7 +886,7 @@ security_baseline::rules:
     level: 1
     description: 'GDM is the GNOME Display Manager which handles graphical login for GNOME based systems.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_gdm'
+    class: '::security_baseline::rules::redhat::sec_gdm'
     check:
       fact_hash: security_baseline
       fact_name: gnome_gdm_conf

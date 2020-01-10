@@ -3,7 +3,7 @@
 #
 # AppArmor profiles define what resources applications are able to access.
 #
-#Rationale:
+# Rationale:
 # Security configuration requirements vary from site to site. Some sites may mandate a policy that is 
 # stricter than the default policy, which is perfectly acceptable. This item is intended to ensure that 
 # any policies that exist on the system are activated.
@@ -32,21 +32,9 @@ class security_baseline::rules::debian::sec_apparmor_profiles (
 ) {
   if($enforce) {
     if($facts['security_baseline']['apparmor']['profiles'] != $facts['security_baseline']['apparmor']['profiles_enforced']) {
-      if(!defined(Package['apparmor'])) {
-        package { 'apparmor':
-          ensure => installed,
-        }
-      }
-      if(!defined(Package['apparmor-utils'])) {
-        package {'apparmor-utils':
-          ensure  => installed,
-          require => Package['apparmor'],
-        }
-      }
       exec {'apparmor enforce':
         command => 'aa-enforce /etc/apparmor.d/*',
         path    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
-        require => Package['apparmor-utils'],
       }
     }
   } else {

@@ -30,6 +30,8 @@ def security_baseline_ubuntu(os, _distid, _release)
   services = ['autofs', 'avahi-daemon', 'cups', 'isc-dhcp-server', 'bind9', 'dovecot', 'apache2', 'nis', 'ntalk', 'talk', 'rsync', 'smbd',
               'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'cron', 'slapd', 'telnet', 'systemd-timesyncd']
   packages = { 'iptables' => '-s',
+               'auditd' => '-s',
+               'audispd-plugins' => '-s',
                'apparmor-utils' => '-s',
                'apparmor' => '-s',
                'nftables' => '-s',
@@ -383,43 +385,71 @@ grep -v active) ]] && echo "NX Protection is not active"')
   security_baseline['ntp'] = ntpdata
 
   sshd = {}
-  sshd['package'] = check_package_installed('openssh')
+  sshdcmd = if File.exist?('/sbin/sshd')
+              '/sbin/sshd'
+            else
+              '/usr/sbin/sshd'
+            end
+  val = Facter::Core::Execution.exec("grep '^/s*CRYPTO_POLICY=' /etc/sysconfig/sshd'")
+  sshd['crypto_policy'] = check_value_string(val, 'none')
+  sshd['package'] = check_package_installed('openssh-server')
   sshd['/etc/ssh/sshd_config'] = read_file_stats('/etc/ssh/sshd_config')
-  val = Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['protocol'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^LogLevel" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['loglevel'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^X11Forwarding" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['x11forwading'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^MaxAuthTries" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['maxauthtries'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^IgnoreRhosts" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['ignorerhosts'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^HostbasedAuthentication" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['hostbasedauthentication'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^PermitRootLogin" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['permitrootlogin'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^PermitEmptyPasswords" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['permitemptypasswords'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^PermitUserEnvironment" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['permituserenvironment'] = check_value_string(val, 'none')
-  sshd['macs'] = Facter::Core::Execution.exec('grep "^MACs" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip.split(%r{\,})
-  val = Facter::Core::Execution.exec('grep "^ClientAliveInterval" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['clientaliveinterval'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^ClientAliveCountMax" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['clientalivecountmax'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^LoginGraceTime" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['logingracetime'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^AllowUsers" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['allowusers'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^AllowGroups" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['allowgroups'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^DenyUsers" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['denyusers'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^DenyGroups" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['denygroups'] = check_value_string(val, 'none')
-  val = Facter::Core::Execution.exec('grep "^Banner" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip
-  sshd['banner'] = check_value_string(val, 'none')
+
+  sshd_values = ['loglevel', 'x11forwarding', 'maxauthtries', 'maxstartups', 'maxsessions',
+                 'ignorerhosts', 'hostbasedauthentication', 'permitrootlogin', 'permitemptypasswords', 'permituserenvironment',
+                 'clientaliveinterval', 'clientalivecountmax', 'logingracetime', 'banner', 'usepam', 'allowtcpforwarding']
+
+  sshd_values.each do |sshd_value|
+    val = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i #{sshd_value} | awk '{print $2;}'")
+    unless val.nil? || val.empty?
+      val.strip!
+    end
+    sshd[sshd_value] = check_value_string(val, 'none')
+  end
+
+  sshd['macs'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^MACs\" | awk '{print $2;}'").strip.split(%r{\,})
+  sshd['ciphers'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^ciphers\" | awk '{print $2;}'").strip.split(%r{\,})
+  sshd['kexalgorithms'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^kexalgorithms\" | awk '{print $2;}'").strip.split(%r{\,})
+  sshd['allowusers'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^AllowUsers\" | awk '{print $2;}'").strip.split("\n")
+  sshd['allowgroups'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^AllowGroups\" | awk '{print $2;}'").strip.split("\n")
+  sshd['denyusers'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^DenyUsers\" | awk '{print $2;}'").strip.split("\n")
+  sshd['denygroups'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^DenyGroups\" | awk '{print $2;}'").strip.split("\n")
+  sshd['protocol'] = check_value_string(Facter::Core::Execution.exec('grep "^Protocol" /etc/ssh/sshd_config | awk \'{print $2;}\'').strip, 'none')
+
+  val = Facter::Core::Execution.exec("find /etc/ssh -xdev -type f -name 'ssh_host_*_key'")
+  sshd['priv_key_files'] = if val.nil? || val.empty?
+                             {}
+                           else
+                             key_files = {}
+                             val.split("\n").each do |ssh_key_file|
+                               key_files[ssh_key_file] = read_file_stats(ssh_key_file)
+                             end
+                             key_files
+                           end
+  status = true
+  sshd['priv_key_files'].each do |_ssh_key_file, data|
+    if data['combined'] != '0-0-384'
+      status = false
+    end
+  end
+  sshd['priv_key_files_status'] = status
+  val = Facter::Core::Execution.exec("find /etc/ssh -xdev -type f -name 'ssh_host_*_key.pub'")
+  sshd['pub_key_files'] = if val.nil? || val.empty?
+                            {}
+                          else
+                            key_files = {}
+                            val.split("\n").each do |ssh_key_file|
+                              key_files[ssh_key_file] = read_file_stats(ssh_key_file)
+                            end
+                            key_files
+                          end
+  status = true
+  sshd['pub_key_files'].each do |_ssk_key_file, data|
+    if data['combined'] != '0-0-420'
+      status = false
+    end
+  end
+  sshd['pub_key_files_status'] = status
   security_baseline['sshd'] = sshd
 
   pam = {}
@@ -725,12 +755,24 @@ grep -v active) ]] && echo "NX Protection is not active"')
                                   end
 
   auditd['srv_auditd'] = check_service_is_enabled('auditd')
-  val = Facter::Core::Execution.exec('grep "^\s*linux.*audit=1" /boot/grub/grub.cfg')
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep -v "audit=1" | grep -v \'/boot/memtest86+.bin\'')
   auditd['auditing_process'] = if val.empty? || val.nil?
                                  'none'
                                else
                                  'audit=1'
                                end
+
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep -v "audit_backlog_limit="')
+  auditd['backlog_limit'] = if val.nil? || val.empty?
+                              'none'
+                            else
+                              m = val.match(%r{audit_backlog_limit=(?<limit>\d+)})
+                              if m.nil?
+                                'none'
+                              else
+                                m[:limit]
+                              end
+                            end
 
   val = Facter::Core::Execution.exec('auditctl -l | grep time-change')
   expected = [
@@ -1194,7 +1236,6 @@ grep -v active) ]] && echo "NX Protection is not active"')
     default = {}
     rules = {}
     in_rules = false
-    nr = 0
     val = Facter::Core::Execution.exec('/usr/sbin/ufw status verbose')
     if val.nil? || val.empty?
       default = {}
@@ -1215,17 +1256,37 @@ grep -v active) ]] && echo "NX Protection is not active"')
           end
 
           if in_rules
-            nr += 1
-            to = line[0, 27].strip
-            rules[to] = {}
-            rules[to]['action'] = line[27, 38].gsub(/\s+/m, ' ').strip
-            rules[to]['from'] = line[39, line.length - 1].gsub(/\s+/m, ' ').strip
+            to = line[0, 28].strip
+            action = line[28, 12].gsub(%r{\s+}m, ' ').strip
+            from = line[39, line.length - 40].gsub(%r{\s+}m, ' ').strip
+            key = "#{to}|#{action}"
+            rules[key] = {}
+            rules[key]['to'] = to
+            rules[key]['action'] = action
+            rules[key]['from'] = from
           end
         end
       end
     end
     ufw['defaults'] = default
     ufw['rules'] = rules
+    ufw['default_deny_status'] = default['incoming'] == 'deny' && default['outgoing'] == 'deny' && default['routed'] == 'deny'
+
+    status = true
+    checks = {
+      'Anywhere on lo|ALLOW IN' => 'Anywhere',
+      'Anywhere|DENY IN' => '127.0.0.0/8',
+      'Anywhere (v6) on lo|ALLOW IN' => 'Anywhere (v6)',
+      'Anywhere (v6)|DENY IN' => 'Anywhere (v6)',
+      'Anywhere{ALLOW OUT' => 'Anywhere on lo',
+      'Anywhere (v6)|ALLOW OUT' => 'Anywhere (v6) on lo',
+    }
+    checks.each do |key, rule_val|
+      unless rules.key?(key) && rules[key] == rule_val
+        status = false
+      end
+    end
+    ufw['loopback_status'] = status
 
     security_baseline['ufw'] = ufw
   end
@@ -1241,6 +1302,15 @@ grep -v active) ]] && echo "NX Protection is not active"')
   end
   security_baseline['wlan_interfaces'] = wlan
   security_baseline['wlan_interfaces_count'] = cnt
+
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep -v "ipv6.disable=1"')
+  security_baseline['grub_ipv6_disabled'] = if val.nil? || val.empty?
+                                              false
+                                            elsif val =~ %r{ipv6.disable=1}
+                                              true
+                                            else
+                                              false
+                                            end
 
   security_baseline
 end

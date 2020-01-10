@@ -18,14 +18,14 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_gdm {
+#   class security_baseline::rules::debian::sec_gdm {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_gdm (
+class security_baseline::rules::debian::sec_gdm (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''
@@ -36,8 +36,8 @@ class security_baseline::rules::common::sec_gdm (
 
       file { 'gdm':
         ensure  => present,
-        path    => '/etc/dconf/profile/gdm',
-        content => "user-db:user\nsystem-db:gdm\nfile-db:/usr/share/gdm/greeter-dconf-defaults",
+        path    => '/etc/gdm3/greeter.dconf-defaults',
+        content => "[org/gnome/login-screen]\nbanner-message-enable=true\nbanner-message-text=\'Authorized uses only. All activity may be monitored and reported.\'", #lint:ignore:140chars
       }
 
       file { 'banner-login':

@@ -906,7 +906,7 @@ security_baseline::rules:
         - os
         - combined
       fact_value: '0-0-420'
-    message: 'Rule 1.7.1.5.1. /etc/issue should be owned by root, group root, permissions 0644.'
+    message: 'Rule 1.7.1.5. /etc/issue should be owned by root, group root, permissions 0644.'
     log_level: 'info'
   '1.7.1.6':
     rulename: 'issue_net_perm'
@@ -923,7 +923,7 @@ security_baseline::rules:
         - net
         - combined
       fact_value: '0-0-420'
-    message: 'Rule 1.7.1.6.1. /etc/issue.net should be owned by root'
+    message: 'Rule 1.7.1.6. /etc/issue.net should be owned by root'
     log_level: 'info'
   '1.7.2':
     rulename: 'gdm'

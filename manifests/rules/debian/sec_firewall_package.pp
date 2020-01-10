@@ -20,7 +20,7 @@
 #    The firewall package to use
 #
 # @example
-#   class security_baseline::rules::redhat::sec_firewall_package {
+#   class security_baseline::rules::debian::sec_firewall_package {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info',
@@ -28,11 +28,11 @@
 #   }
 #
 # @api private
-class security_baseline::rules::redhat::sec_firewall_package (
-  Boolean $enforce                                            = true,
-  String $message                                             = '',
-  String $log_level                                           = '',
-  Enum['iptables', 'nftables', 'firewalld'] $firewall_package = 'iptables',
+class security_baseline::rules::debian::sec_firewall_package (
+  Boolean $enforce                                      = true,
+  String $message                                       = '',
+  String $log_level                                     = '',
+  Enum['iptables', 'nftables', 'ufw'] $firewall_package = 'iptables',
 ) {
   if($enforce) {
     case $firewall_package {
@@ -44,8 +44,8 @@ class security_baseline::rules::redhat::sec_firewall_package (
           }
         }
       }
-      'firewalld': {
-        package { 'firewalld':
+      'ufw': {
+        package { 'ufw':
           ensure => installed,
         }
       }
@@ -60,7 +60,7 @@ class security_baseline::rules::redhat::sec_firewall_package (
     }
   } else {
     if (
-      ($facts['security_baseline']['packages_installed']['firewalld'] == false) and
+      ($facts['security_baseline']['packages_installed']['ufw'] == false) and
       ($facts['security_baseline']['packages_installed']['nftables'] == false) and
       ($facts['security_baseline']['packages_installed']['iptables'] == false)
     ) {

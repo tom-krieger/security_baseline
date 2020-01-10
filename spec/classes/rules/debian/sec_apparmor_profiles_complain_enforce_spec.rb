@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::debian::sec_apparmor_profiles' do
+describe 'security_baseline::rules::debian::sec_apparmor_profiles_complain_enforce' do
   on_supported_os.each do |os, os_facts|
     enforce_options.each do |enforce|
       context "on #{os} with enforce = #{enforce}" do
@@ -14,6 +14,7 @@ describe 'security_baseline::rules::debian::sec_apparmor_profiles' do
                 'profiles' => 17,
                 'profiles_enforced' => 15,
                 'profiles_complain' => 2,
+                'profiles_status' => false,
               },
               'access_control' => 'none',
             },
@@ -24,6 +25,7 @@ describe 'security_baseline::rules::debian::sec_apparmor_profiles' do
             'enforce' => enforce,
             'message' =>  'apparmor profiles',
             'log_level' => 'warning',
+            'mode' => 'enforce',
           }
         end
 
@@ -36,10 +38,10 @@ describe 'security_baseline::rules::debian::sec_apparmor_profiles' do
                 'path'    => ['/bin', '/sbin', '/usr/bin', '/usr/sbin'],
               )
 
-            is_expected.not_to contain_echo('apparmor-profiles')
+            is_expected.not_to contain_echo('apparmor-profiles-enforce-complain')
           else
             is_expected.not_to contain_exec('apparmor enforce')
-            is_expected.to contain_echo('apparmor-profiles')
+            is_expected.to contain_echo('apparmor-profiles-enforce-complain')
               .with(
                 'message'  => 'apparmor profiles',
                 'loglevel' => 'warning',

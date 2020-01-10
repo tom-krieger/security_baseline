@@ -3069,7 +3069,7 @@ security_baseline::rules:
     message: 'Rule 5.2.16. The sshd should use pam.'
     log_level: warning
   '5.2.17':
-    rulename: sshd-use-pam
+    rulename: sshd-tcp-portforwarding
     active: true
     scored: true
     level: 1
@@ -3101,7 +3101,7 @@ security_baseline::rules:
     message: 'Rule 5.2.18. The sshd should use rate limiting.'
     log_level: warning
   '5.2.19':
-    rulename: sshd-max-startups
+    rulename: sshd-max-sessions
     active: true
     scored: true
     level: 1

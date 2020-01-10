@@ -27,8 +27,8 @@
 #
 # @api private
 class security_baseline::rules::debian::sec_gshadow_perms (
-  $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if($enforce) {

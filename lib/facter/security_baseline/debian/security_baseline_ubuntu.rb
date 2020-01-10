@@ -1216,10 +1216,10 @@ grep -v active) ]] && echo "NX Protection is not active"')
 
           if in_rules
             nr += 1
-            to = line[0, 27]
+            to = line[0, 27].strip
             rules[to] = {}
-            rules[to]['action'] = line[28, 39]
-            rules[to]['from'] = line[40, line.length - 1]
+            rules[to]['action'] = line[27, 38].strip
+            rules[to]['from'] = line[39, line.length - 1].strip
           end
         end
       end

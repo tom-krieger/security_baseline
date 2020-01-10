@@ -104,7 +104,7 @@ def security_baseline_ubuntu(os, _distid, _release)
                                      else
                                        val.match(%r{(?<complain>\d+) processes are unconfined but have a profile defined})[:complain]
                                      end
-  apparmor['profiles_status'] = (apparmor['profiles'] - apparmor['profiles_enforced'] - apparmor['profiles_complain']).zero?
+  apparmor['profiles_status'] = (apparmor['profiles'].to_i - apparmor['profiles_enforced'].to_i - apparmor['profiles_complain'].to_i).zero?
   security_baseline[:apparmor] = apparmor
 
   seval = check_package_installed('selinux')

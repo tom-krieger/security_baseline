@@ -47,7 +47,11 @@ class security_baseline::rules::debian::sec_ufw_outbound (
         } else {
           $to = ''
         }
-        $cmd = "ufw ${data['action']} proto ${data['proto']} ${from}${to}port ${data['port']}"
+        if($from == '') and ($to == '') {
+          $cmd = "ufw allow ${data['port']}/${data['proto']}"
+        } else {
+          $cmd = "ufw ${data['action']} proto ${data['proto']} ${from}${to}port ${data['port']}"
+        }
         $check = "test -z \"$(ufw status verbose | grep -E -i '^${data['port']}/${data['proto']}.*ALLOW ${data['queue']}')\""
       } elsif ($data['queue'] == 'out') {
         $cmd = "ufw ${data['action']} ${data['queue']} to ${data['to']} port ${data['port']}"

@@ -39,7 +39,7 @@ class security_baseline::rules::debian::sec_ufw_open_ports (
         $cmd = "ufw ${data['action']} ${data['queue']} ${data['port']}/${data['proto']}"
         $check = "test -z \"$(ufw status verbose | grep -E -i '^${data['port']}/${data['proto']}.*ALLOW ${data['queue']}')\""
       } elsif ($data['queue'] == 'out') {
-        $cmd = "ufw ${data['action']} ${data['queue']} to ${data['to']} port ${data['port']}/${data['proto']}"
+        $cmd = "ufw ${data['action']} ${data['queue']} to ${data['to']} port ${data['port']}"
         $check = "test -z \"$(ufw status verbose | grep -E -i '^${data['port']}.*ALLOW ${data['queue']}')\""
       } else {
         fail("unknow ufw queue ${data['queue']}")

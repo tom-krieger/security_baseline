@@ -1023,7 +1023,7 @@ security_baseline::rules:
     active: true
     scored: false
     level: 1
-    description: 'systemd-timesyncd is a daemon that has been added for synchronizing the system clock across the network. It implements an SNTP client. In contrast to NTP implementations such as chrony or the NTP reference server this only implements a client side, and does not bother with the full NTP complexity, focusing only on querying time from one remote server and synchronizing the local clock to it. The daemon runs with minimal privileges, and has been hooked up with networkd to only operate when network connectivity is available. The daemon saves the current clock to disk every time a new NTP sync has been acquired, and uses this to possibly correct the system clock early at bootup, in order to accommodate for systems that lack an RTC such as the Raspberry Pi and embedded devices, and make sure that time monotonically progresses on these systems, even if it is not always correct. To make use of this daemon a new system user and group "systemd- timesync" needs to be created on installation of systemd.'
+    description: 'systemd-timesyncd is a daemon that has been added for synchronizing the system clock across the network. It implements an SNTP client. In contrast to NTP implementations such as chrony or the NTP reference server this only implements a client side, and does not bother with the full NTP complexity, focusing only on querying time from one remote server and synchronizing the local clock to it. The daemon runs with minimal privileges, and has been hooked up with networkd to only operate when network connectivity is available. The daemon saves the current clock to disk every time a new NTP sync has been acquired, and uses this to possibly correct the system clock early at bootup, in order to accommodate for systems that lack an RTC such as the Raspberry Pi and embedded devices, and make sure that time monotonically progresses on these systems, even if it is not always correct. To make use of this daemon a new system user and group systemd-timesync needs to be created on installation of systemd.'
     enforce: true
     class: '::security_baseline::rules::debian::sec_systemd_timesyncd'
     check:
@@ -3425,7 +3425,7 @@ security_baseline::rules:
     message: 'Rule 5.2.21. The sshd should not allow tcp forwarding.'
     log_level: warning
   '5.2.22':
-    ruleme: sshd-max-startups
+    rulename: sshd-max-startups
     active: true
     scored: true
     level: 1

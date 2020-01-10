@@ -46,13 +46,13 @@ describe 'security_baseline::rules::debian::sec_ufw_outbound' do
         if enforce
           is_expected.to contain_exec('allow DNS outbound')
             .with(
-              'command' => 'ufw allow out to any port 53/udp',
+              'command' => 'ufw allow out to any port 53',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
               'onlyif'  => 'test -z "$(ufw status verbose | grep -E -i \'^53.*ALLOW out\')"',
             )
           is_expected.to contain_exec('allow http outbound')
             .with(
-              'command' => 'ufw allow out to any port 80/tcp',
+              'command' => 'ufw allow out to any port 80',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
               'onlyif'  => 'test -z "$(ufw status verbose | grep -E -i \'^80.*ALLOW out\')"',
             )

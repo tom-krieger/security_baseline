@@ -33,9 +33,17 @@ describe 'security_baseline::rules::debian::sec_ufw_service' do
               'ensure' => 'running',
               'enable' => true,
             )
+          is_expected.to contain_exec('enable-ufw')
+            .with(
+              'command' => 'ufw --force enable',
+              'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+              'unless'  => 'test -z "$(ufw status | grep \"Status: inactive\")"',
+            )
+            
           is_expected.not_to contain_echo('ufw-service')
         else
           is_expected.not_to contain_service('ufw')
+          is_expected.not_to contain_exec('enable-ufw')
           is_expected.to contain_echo('ufw-service')
             .with(
               'message'  => 'ufw service',

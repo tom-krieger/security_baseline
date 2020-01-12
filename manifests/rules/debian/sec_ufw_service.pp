@@ -41,7 +41,7 @@ class security_baseline::rules::debian::sec_ufw_service (
     exec { 'enable-ufw':
       command => 'ufw --force enable',
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      onlyif  => 'test -z "$(ufw status | grep \"Status: inactive\")"',
+      unless  => 'test -z "$(ufw status | grep \"Status: inactive\")"',
     }
   } else {
     if($facts['security_baseline']['services_enabled']['srv_ufw'] == 'disabled') {

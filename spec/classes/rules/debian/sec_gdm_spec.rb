@@ -11,6 +11,9 @@ describe 'security_baseline::rules::debian::sec_gdm' do
             'security_baseline' => {
               'gnome_gdm_conf' => false,
               'gnome_gdm' => true,
+              'packages_installed' => {
+                'gdm3' => true,
+              },
             },
           )
         end

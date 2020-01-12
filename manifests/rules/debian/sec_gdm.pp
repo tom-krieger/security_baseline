@@ -34,26 +34,21 @@ class security_baseline::rules::debian::sec_gdm (
 
     if($enforce) {
 
-      file { '/etc/gdm3':
-        ensure => directory,
-        owner  => 'root',
-        group  => 'root',
-        mode   => '0755',
-      }
-      file { 'gdm':
-        ensure  => present,
-        path    => '/etc/gdm3/greeter.dconf-defaults',
-        content => "[org/gnome/login-screen]\nbanner-message-enable=true\nbanner-message-text=\'Authorized uses only. All activity may be monitored and reported.\'", #lint:ignore:140chars
-      }
+      if($facts['security_baseline']['packages_installed']['gdm3']) {
+        file { 'gdm':
+          ensure  => present,
+          path    => '/etc/gdm3/greeter.dconf-defaults',
+          content => "[org/gnome/login-screen]\nbanner-message-enable=true\nbanner-message-text=\'Authorized uses only. All activity may be monitored and reported.\'", #lint:ignore:140chars
+        }
 
-      file { 'banner-login':
-        ensure  => present,
-        path    => '/etc/dconf/db/gdm.d/01-banner-message',
-        content => "[org/gnome/login-screen]\nbanner-message-enable=true\nbanner-message-text=\'Authorized uses only. All activity may be monitored and reported.\'", #lint:ignore:140chars
-        require => File['gdm'],
-        notify  => Exec['dconf-gdm-exec'],
+        file { 'banner-login':
+          ensure  => present,
+          path    => '/etc/dconf/db/gdm.d/01-banner-message',
+          content => "[org/gnome/login-screen]\nbanner-message-enable=true\nbanner-message-text=\'Authorized uses only. All activity may be monitored and reported.\'", #lint:ignore:140chars
+          require => File['gdm'],
+          notify  => Exec['dconf-gdm-exec'],
+        }
       }
-
       exec { 'dconf-gdm-exec':
         path        => '/bin/',
         command     => 'dconf update',
@@ -62,7 +57,7 @@ class security_baseline::rules::debian::sec_gdm (
 
     } else {
 
-      if($facts['security_baseline']['gnome_gdm_conf'] == false) {
+      if($facts['security_baseline']['gnome_gdm_conf'] == false) and ($facts['security_baseline']['packages_installed']['gdm3']) {
         echo { 'gdm-conf':
           message  => $message,
           loglevel => $log_level,

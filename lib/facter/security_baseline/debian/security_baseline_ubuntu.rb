@@ -36,6 +36,7 @@ def security_baseline_ubuntu(os, _distid, _release)
                'apparmor' => '-s',
                'nftables' => '-s',
                'ufw' => '-s',
+               'gdm3' => '-s',
                'openldap-clients' => '-s',
                'mcstrans' => '-s',
                'prelink' => '-s',

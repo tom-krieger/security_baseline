@@ -34,6 +34,12 @@ class security_baseline::rules::debian::sec_gdm (
 
     if($enforce) {
 
+      file { '/etc/gdm3':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
       file { 'gdm':
         ensure  => present,
         path    => '/etc/gdm3/greeter.dconf-defaults',

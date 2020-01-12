@@ -45,7 +45,7 @@ describe 'security_baseline::rules::debian::sec_ufw_default_deny' do
             .with(
               'command' => 'ufw default deny outgoing',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => "test -z \"$(ufw status verbose | grep 'deny (outgoing  )')\"",
+              'onlyif'  => "test -z \"$(ufw status verbose | grep 'deny (outgoing)')\"",
             )
 
           is_expected.to contain_exec('default routed policy deny')

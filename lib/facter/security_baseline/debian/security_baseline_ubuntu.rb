@@ -1304,6 +1304,47 @@ grep -v active) ]] && echo "NX Protection is not active"')
   security_baseline['wlan_interfaces'] = wlan
   security_baseline['wlan_interfaces_count'] = cnt
 
+  if File.exist?('/etc/systemd/journald.conf')
+    journald = {}
+    val = Facter::Core::Execution.exec('grep -e ^\s*ForwardToSyslog /etc/systemd/journald.conf')
+    journald['forward_to_syslog'] = if val.nil? || val.empty?
+                                      'none'
+                                    else
+                                      m = val.match(%r{ForwardToSyslog=(?<flag>\w*)})
+                                      if m.nil?
+                                        'none'
+                                      else
+                                        m[:flag]
+                                      end
+                                    end
+
+    val = Facter::Core::Execution.exec('grep -e ^\s*Compress /etc/systemd/journald.conf')
+    journald['compress'] = if val.nil? || val.empty?
+                             'none'
+                           else
+                             m = val.match(%r{Compress=(?<flag>\w*)})
+                             if m.nil?
+                               'none'
+                             else
+                               m[:flag]
+                             end
+                           end
+
+    val = Facter::Core::Execution.exec('grep -e ^\s*Storage /etc/systemd/journald.conf')
+    journald['storage_persistent'] = if val.nil? || val.empty?
+                                       'none'
+                                     else
+                                       m = val.match(%r{Storage=(?<flag>\w*)})
+                                       if m.nil?
+                                         'none'
+                                       else
+                                         m[:flag]
+                                       end
+                                     end
+
+    security_baseline['journald'] = journald
+  end
+
   val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep -v "ipv6.disable=1"')
   security_baseline['grub_ipv6_disabled'] = if val.nil? || val.empty?
                                               false

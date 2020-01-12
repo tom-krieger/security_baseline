@@ -45,6 +45,7 @@ def security_baseline_ubuntu(os, _distid, _release)
                'selinux' => '-s',
                'xinetd' => '-s',
                'setroubleshoot' => '-s',
+               'logrotate' => '-s',
                'talk' => '-s',
                'tcp_wrappers' => '-s',
                'telnet' => '-s',

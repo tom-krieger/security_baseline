@@ -1030,7 +1030,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - services_enabled
-        - systemd-timesyncd
+        - srv_systemd-timesyncd
       fact_value: enabled
     message: 'Rule 2.2.1.2. Systemd timesyncd should be configured propperly.'
     log_level: 'warning'
@@ -1771,7 +1771,7 @@ security_baseline::rules:
     message: 'Rule 3.5.1.1. A firewall package (iptables, ufw or nftables) should be installed.'
     log_level: 'warning'
     config_data:
-      firewall_package: iptables
+      firewall_package: ufw
   '3.5.2.1':
     rulename: 'ufw-service'
     active: true
@@ -2285,7 +2285,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name: 
         - packages_installed
-        - audit
+        - auditd
       fact_value: true
     message: 'Rule 4.1.1.1. Auditd package should be installed.'
     log_level: 'warning'
@@ -3732,7 +3732,7 @@ security_baseline::rules:
     config_data:
       wheel_users:
         - root
-        - ubuntu
+        - kriegeth
   '6.1.1':
     rulename: system-file-perms
     active: true

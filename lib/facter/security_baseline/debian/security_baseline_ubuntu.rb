@@ -28,7 +28,7 @@ def security_baseline_ubuntu(os, _distid, _release)
   arch = Facter.value(:architecture)
 
   services = ['autofs', 'avahi-daemon', 'cups', 'isc-dhcp-server', 'bind9', 'dovecot', 'apache2', 'nis', 'ntalk', 'talk', 'rsync', 'smbd',
-              'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'cron', 'slapd', 'telnet', 'systemd-timesyncd']
+              'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'cron', 'slapd', 'telnet', 'systemd-timesyncd', 'ufw']
   packages = { 'iptables' => '-s',
                'auditd' => '-s',
                'audispd-plugins' => '-s',
@@ -53,7 +53,7 @@ def security_baseline_ubuntu(os, _distid, _release)
                'ldap-utils' => '-s',
                'sudo' => '-s',
                'openbsd-inetd' => '-s' }
-  modules = ['cramfs', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'udf', 'dccp', 'rds', 'sctp', 'tipc']
+  modules = ['cramfs', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'udf', 'dccp', 'rds', 'sctp', 'tipc', 'vfat', 'squashfs']
   xinetd_services = ['echo', 'echo-udp', 'time', 'time-udp', 'chargen', 'chargen-udp', 'tftp', 'tftp-udp', 'daytime', 'daytime-udp', 'discard', 'discard-udp',
                      'exec', 'login', 'shell', 'talk', 'ntalk', 'telnet', 'tftp']
   sysctl_values = ['net.ipv4.ip_forward', 'net.ipv4.conf.all.send_redirects', 'net.ipv4.conf.default.send_redirects',
@@ -1303,6 +1303,19 @@ grep -v active) ]] && echo "NX Protection is not active"')
   end
   security_baseline['wlan_interfaces'] = wlan
   security_baseline['wlan_interfaces_count'] = cnt
+
+  sudo = {}
+  val = Facter::Core::Execution.exec("grep -Ehi '^\s*Defaults\s+(\[^#]+,\s*)?use_pty' /etc/sudoers /etc/sudoers.d/*")
+  sudo['use_pty'] = check_value_string(val, 'none')
+  if sudo['use_pty'] != 'none'
+    sudo['use_pty'] = 'used'
+  end
+  val = Facter::Core::Execution.exec("grep -Ei '^\s*Defaults\s+([^#]+,\s*)?logfile=' /etc/sudoers /etc/sudoers.d/*")
+  sudo['logfile'] = check_value_string(val, 'none')
+  if sudo['logfile'] != 'none'
+    sudo['logfile'] = 'configured'
+  end
+  security_baseline['sudo'] = sudo
 
   if File.exist?('/etc/systemd/journald.conf')
     journald = {}

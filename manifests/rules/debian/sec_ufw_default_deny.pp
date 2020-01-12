@@ -50,7 +50,7 @@ class security_baseline::rules::debian::sec_ufw_default_deny (
     exec { "default outgoing policy ${default_outgoing}":
       command => "ufw default ${default_outgoing} outgoing",
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      onlyif  => "test -z \"$(ufw status verbose | grep '${default_outgoing} (outgoing  )')\"",
+      onlyif  => "test -z \"$(ufw status verbose | grep '${default_outgoing} (outgoing)')\"",
     }
     exec { "default routed policy ${default_routed}":
       command => "ufw default ${default_routed} routed",

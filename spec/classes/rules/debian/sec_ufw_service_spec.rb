@@ -39,7 +39,7 @@ describe 'security_baseline::rules::debian::sec_ufw_service' do
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
               'unless'  => 'test -z "$(ufw status | grep \"Status: inactive\")"',
             )
-            
+
           is_expected.not_to contain_echo('ufw-service')
         else
           is_expected.not_to contain_service('ufw')

@@ -5,6 +5,8 @@
   "summary": "Security baseline enforcement and monitoring",
   "license": "Apache-2.0",
   "source": "https://git.home.tom-krieger.de/puppet-modules/security_baseline.git",
+  "project_page": "https://github.com/tom-krieger/security_baseline",
+  "issues_url": "https://github.com/tom-krieger/security_baseline/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",

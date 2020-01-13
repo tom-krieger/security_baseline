@@ -31,16 +31,16 @@ class security_baseline::rules::common::sec_network_ipv6_router_advertisements (
   String $log_level = ''
 ) {
   if($enforce) {
-
-    sysctl {
-      'net.ipv6.conf.all.accept_ra':
-        value => 0;
+    if($facts['security_baseline']['grub_ipv6_disabled'] == false) {
+      sysctl {
+        'net.ipv6.conf.all.accept_ra':
+          value => 0;
+      }
+      sysctl {
+        'net.ipv6.conf.default.accept_ra':
+          value => 0;
+      }
     }
-    sysctl {
-      'net.ipv6.conf.default.accept_ra':
-        value => 0;
-    }
-
   } else {
 
     if(has_key($facts['security_baseline']['sysctl'], 'net.ipv6.conf.all.accept_ra' )) {

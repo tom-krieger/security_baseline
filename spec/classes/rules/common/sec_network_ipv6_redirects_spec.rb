@@ -9,6 +9,7 @@ describe 'security_baseline::rules::common::sec_network_ipv6_redirects' do
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {
+              'grub_ipv6_disabled' => false,
               'sysctl' => {
                 'net.ipv6.conf.all.accept_redirects' => '1',
                 'net.ipv6.conf.default.accept_redirects' => '1',

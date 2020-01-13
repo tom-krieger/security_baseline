@@ -29,14 +29,15 @@ class security_baseline::rules::common::sec_network_ipv6_disable (
   String $log_level = ''
 ) {
   if($enforce) {
-
-    sysctl {
-      'net.ipv6.conf.all.disable_ipv6':
-        value => 1;
-    }
-    sysctl {
-      'net.ipv6.conf.default.disable_ipv6':
-        value => 1;
+    if($facts['security_baseline']['grub_ipv6_disabled'] == false) {
+      sysctl {
+        'net.ipv6.conf.all.disable_ipv6':
+          value => 1;
+      }
+      sysctl {
+        'net.ipv6.conf.default.disable_ipv6':
+          value => 1;
+      }
     }
 
   } else {

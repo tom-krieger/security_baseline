@@ -1359,7 +1359,7 @@ grep -v active) ]] && echo "NX Protection is not active"')
     security_baseline['journald'] = journald
   end
 
-  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep -v "ipv6.disable=1"')
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep  "ipv6.disable=1"')
   security_baseline['grub_ipv6_disabled'] = if val.nil? || val.empty?
                                               false
                                             elsif val =~ %r{ipv6.disable=1}

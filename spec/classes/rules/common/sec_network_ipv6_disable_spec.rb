@@ -9,6 +9,7 @@ describe 'security_baseline::rules::common::sec_network_ipv6_disable' do
         let(:facts) do
           os_facts.merge(
             'security_baseline' => {
+              'grub_ipv6_disabled' => false,
               'sysctl' => {
                 'net.ipv6.conf.all.disable_ipv6' => 0,
                 'net.ipv6.conf.default.disable_ipv6' => 0,

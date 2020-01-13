@@ -1042,5 +1042,14 @@ def security_baseline_sles(os, _distid, _release)
   security_baseline['wlan_interfaces'] = wlan
   security_baseline['wlan_interfaces_count'] = cnt
 
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep  "ipv6.disable=1"')
+  security_baseline['grub_ipv6_disabled'] = if val.nil? || val.empty?
+                                              false
+                                            elsif val =~ %r{ipv6.disable=1}
+                                              true
+                                            else
+                                              false
+                                            end
+
   security_baseline
 end

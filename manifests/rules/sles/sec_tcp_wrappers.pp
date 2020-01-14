@@ -37,7 +37,7 @@ class security_baseline::rules::sles::sec_tcp_wrappers (
       ensure => installed,
     }
   } else {
-    if($facts['security_baseline']['packages_installed']['tcp_wrappers']) {
+    if($facts['security_baseline']['packages_installed']['tcpd'] == false) {
       echo { 'tcpd':
         message  => $message,
         loglevel => $log_level,

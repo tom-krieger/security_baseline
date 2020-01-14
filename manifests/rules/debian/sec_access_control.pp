@@ -16,6 +16,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param access_control_pkg
+#    Install SELinux or AppArmor
+#
 # @example
 #   class security_baseline::rules::debian::sec_access_control {
 #       enforce => true,
@@ -25,12 +28,14 @@
 #
 # @api private
 class security_baseline::rules::debian::sec_access_control (
-  Boolean $enforce  = true,
-  String $message   = '',
-  String $log_level = '',
+  Boolean $enforce                                = true,
+  String $message                                 = '',
+  String $log_level                               = '',
+  Enum['selinux', 'apparmor'] $access_control_pkg = 'apparmor'
 ) {
   if($enforce) {
-    if(!defined(Package['apparmor'])) {
+    if($access_control_pkg == 'apparmor') {
+      if(!defined(Package['apparmor'])) {
         package { 'apparmor':
           ensure => installed,
         }
@@ -41,6 +46,18 @@ class security_baseline::rules::debian::sec_access_control (
           require => Package['apparmor'],
         }
       }
+    } elsif($access_control_pkg == 'selinux') {
+      if(!defined(Package['selinux-basics'])) {
+        package {'selinux-basics':
+          ensure => installed,
+        }
+      }
+      if(!defined(Package['selinux-policy-default'])){
+        package {'selinux-policy-default':
+          ensure => installed,
+        }
+      }
+    }
   } else {
     if($facts['security_baseline']['access_control'] == 'none') {
       echo { 'apparmor-pkg':

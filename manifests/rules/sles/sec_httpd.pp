@@ -17,29 +17,29 @@
 #    The log_level for the above message
 #
 # @example
-#   class security_baseline::rules::common::sec_httpd {
+#   class security_baseline::rules::sles::sec_httpd {
 #       enforce => true,
 #       message => 'Test',
 #       log_level => 'info'
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_httpd (
+class security_baseline::rules::sles::sec_httpd (
   Boolean $enforce = true,
   String $message = '',
   String $log_level = ''
 ) {
   if($enforce) {
 
-    service {'httpd':
+    service {'apache2':
       ensure => 'stopped',
       enable => false
       }
 
   } else {
 
-    if($facts['security_baseline']['services_enabled']['srv_httpd'] == 'enabled') {
-      echo { 'httpd':
+    if($facts['security_baseline']['services_enabled']['srv_apache2'] == 'enabled') {
+      echo { 'apache2':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

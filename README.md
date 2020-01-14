@@ -45,6 +45,7 @@ The code of this security baseline module is based on the following CIS Benchmar
 | CentOS 7     | CIS CentOS Linux 7 Benchmark                                 | 2.2.0   | 12-27-2017 |
 | CentOS 8     | CIS CentOS Linux 8 Benchmark                                 | 1.0.0   | 10-31-2019 |
 | Ubuntu 18.04 | CIS Ubuntu Linux 18.04 LTS Benchmark                         | 2.0.1   | 01-03-2020 |
+| Debian 9     | CIS Debian Linux 9 Benchmark                                 | 1.0.1   | 01-13-2020 |
 
 The benchmarks can be found at [CIS Benchmarks Website](https://www.cisecurity.org/cis-benchmarks/).
 

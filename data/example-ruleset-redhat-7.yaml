@@ -2499,7 +2499,7 @@ security_baseline::rules:
     level: 1
     description: 'Once the syslog-ng package is installed it needs to be activated.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_sysllogng_service'
+    class: '::security_baseline::rules::common::sec_syslogng_service'
     check:
       fact_hash: security_baseline
       fact_name: 

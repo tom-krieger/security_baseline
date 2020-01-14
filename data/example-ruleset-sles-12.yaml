@@ -705,7 +705,7 @@ security_baseline::rules:
     level: 2
     description: 'SELinux and AppArmor provide Mandatory Access Control.'
     enforce: true
-    class: '::security_baseline::rules::debian::sec_access_control'
+    class: '::security_baseline::rules::sles::sec_access_control'
     check:
       fact_hash: security_baseline
       fact_name:
@@ -2414,7 +2414,7 @@ security_baseline::rules:
     level: 1
     description: 'Once the syslog-ng package is installed it needs to be activated.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_sysllogng_service'
+    class: '::security_baseline::rules::common::sec_syslogng_service'
     check:
       fact_hash: security_baseline
       fact_name: 

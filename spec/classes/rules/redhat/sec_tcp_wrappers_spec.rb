@@ -12,7 +12,7 @@ describe 'security_baseline::rules::redhat::sec_tcp_wrappers' do
           architecture: 'x86_64',
           security_baseline: {
             packages_installed: {
-              tcp_wrappers: true,
+              tcp_wrappers: false,
             },
           },
         }

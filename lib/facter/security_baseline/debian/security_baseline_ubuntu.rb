@@ -47,7 +47,7 @@ def security_baseline_ubuntu(os, _distid, _release)
                'setroubleshoot' => '-s',
                'logrotate' => '-s',
                'talk' => '-s',
-               'tcp_wrappers' => '-s',
+               'tcpd' => '-s',
                'telnet' => '-s',
                'nis' => '-s',
                'rsh' => '-s',

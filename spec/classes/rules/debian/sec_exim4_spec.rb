@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::debian::sec_tcp_wrappers' do
+describe 'security_baseline::rules::debian::sec_exim4' do
   enforce_options.each do |enforce|
     context "on Debian with enforce = #{enforce}" do
       let(:facts) do
@@ -10,9 +10,9 @@ describe 'security_baseline::rules::debian::sec_tcp_wrappers' do
           osfamily: 'Debian',
           operatingsystem: 'Ubuntu',
           architecture: 'x86_64',
-          security_baseline: {
-            packages_installed: {
-              tcpd: false,
+          'security_baseline' => {
+            'packages_installed' => {
+              'exim4' => true,
             },
           },
         }
@@ -20,30 +20,29 @@ describe 'security_baseline::rules::debian::sec_tcp_wrappers' do
       let(:params) do
         {
           'enforce' => enforce,
-          'message' => 'tcpd package',
+          'message' => 'exim4 package',
           'log_level' => 'warning',
         }
       end
 
-      it { is_expected.to compile }
-      it do
+      it {
+        is_expected.to compile
         if enforce
-          is_expected.to contain_package('tcpd')
+          is_expected.to contain_package('exim4')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'absent',
             )
-
-          is_expected.not_to contain_echo('tcpd')
+          is_expected.not_to contain_echo('exim4')
         else
-          is_expected.not_to contain_package('tcpd')
-          is_expected.to contain_echo('tcpd')
+          is_expected.not_to contain_package('exim4')
+          is_expected.to contain_echo('exim4')
             .with(
-              'message'  => 'tcpd package',
+              'message'  => 'exim4 package',
               'loglevel' => 'warning',
               'withpath' => false,
             )
         end
-      end
+      }
     end
   end
 end

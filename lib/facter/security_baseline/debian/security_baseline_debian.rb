@@ -27,7 +27,7 @@ def security_baseline_debian(os, _distid, _release)
   arch = Facter.value(:architecture)
 
   services = ['autofs', 'avahi-daemon', 'cups', 'isc-dhcp-server', 'bind9', 'dovecot', 'apache2', 'nis', 'ntalk', 'talk', 'rsync', 'smbd',
-              'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'cron', 'slapd', 'telnet', 'systemd-timesyncd']
+              'snmpd', 'squid', 'vsftpd', 'xinetd', 'sshd', 'cron', 'slapd', 'telnet']
   packages = { 'iptables' => '-s',
                'auditd' => '-s',
                'audispd-plugins' => '-s',
@@ -44,10 +44,11 @@ def security_baseline_debian(os, _distid, _release)
                'setroubleshoot' => '-s',
                'logrotate' => '-s',
                'talk' => '-s',
-               'tcp_wrappers' => '-s',
+               'tcpd' => '-s',
                'telnet' => '-s',
                'nis' => '-s',
                'rsh' => '-s',
+               'exim4' => '-s',
                'ldap-utils' => '-s',
                'sudo' => '-s',
                'openbsd-inetd' => '-s' }

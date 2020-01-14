@@ -2,7 +2,7 @@ require 'spec_helper'
 
 enforce_options = [true, false]
 
-describe 'security_baseline::rules::debian::sec_tcp_wrappers' do
+describe 'security_baseline::rules::debian::sec_nis' do
   enforce_options.each do |enforce|
     context "on Debian with enforce = #{enforce}" do
       let(:facts) do
@@ -10,9 +10,9 @@ describe 'security_baseline::rules::debian::sec_tcp_wrappers' do
           osfamily: 'Debian',
           operatingsystem: 'Ubuntu',
           architecture: 'x86_64',
-          security_baseline: {
-            packages_installed: {
-              tcpd: false,
+          'security_baseline' => {
+            'services_enabled' => {
+              'srv_nis' => 'enabled',
             },
           },
         }
@@ -20,30 +20,30 @@ describe 'security_baseline::rules::debian::sec_tcp_wrappers' do
       let(:params) do
         {
           'enforce' => enforce,
-          'message' => 'tcpd package',
+          'message' => 'nis service',
           'log_level' => 'warning',
         }
       end
 
-      it { is_expected.to compile }
-      it do
+      it {
+        is_expected.to compile
         if enforce
-          is_expected.to contain_package('tcpd')
+          is_expected.to contain_service('nis')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'stopped',
+              'enable' => false,
             )
-
-          is_expected.not_to contain_echo('tcpd')
+          is_expected.not_to contain_echo('nis')
         else
-          is_expected.not_to contain_package('tcpd')
-          is_expected.to contain_echo('tcpd')
+          is_expected.not_to contain_service('nis')
+          is_expected.to contain_echo('nis')
             .with(
-              'message'  => 'tcpd package',
+              'message'  => 'nis service',
               'loglevel' => 'warning',
               'withpath' => false,
             )
         end
-      end
+      }
     end
   end
 end

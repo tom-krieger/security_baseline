@@ -12,7 +12,7 @@ describe 'security_baseline::rules::sles::sec_tcp_wrappers' do
           architecture: 'x86_64',
           security_baseline: {
             packages_installed: {
-              tcp_wrappers: true,
+              tcpd: false,
             },
           },
         }

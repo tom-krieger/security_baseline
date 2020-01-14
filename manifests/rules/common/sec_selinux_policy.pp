@@ -17,6 +17,9 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param selinux_policy
+#    SELinux policy to use
+#
 # @example
 #   class security_baseline::rules::common::sec_selinux_state {
 #       enforce => true,
@@ -26,9 +29,10 @@
 #
 # @api private
 class security_baseline::rules::common::sec_selinux_policy (
-  Boolean $enforce = true,
-  String $message = '',
-  String $log_level = ''
+  Boolean $enforce       = true,
+  String $message        = '',
+  String $log_level      = '',
+  String $selinux_policy = 'targeted',
 ) {
   if($enforce) {
     if(!defined(File['/etc/selinux/config'])) {
@@ -41,11 +45,11 @@ class security_baseline::rules::common::sec_selinux_policy (
     }
     file_line { 'selinux_targeted':
       path  => '/etc/selinux/config',
-      line  => 'SELINUXTYPE=targeted',
+      line  => "SELINUXTYPE=${selinux_policy}",
       match => '^SELINUXTYPE=',
     }
   } else {
-    if(($::selinux_config_policy != 'targeted') and ($::selinux_config_policy != 'mls')) {
+    if(($::selinux_config_policy != 'targeted') and ($::selinux_config_policy != $selinux_policy) and ($::selinux_config_policy != 'mls')) {
       echo { 'selinux':
         message  => $message,
         loglevel => $log_level,

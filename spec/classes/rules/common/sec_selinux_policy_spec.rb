@@ -21,6 +21,7 @@ describe 'security_baseline::rules::common::sec_selinux_policy' do
             'enforce' => enforce,
             'message' => 'policy selinux',
             'log_level' => 'warning',
+            'selinux_policy' => 'targeted',
           }
         end
 

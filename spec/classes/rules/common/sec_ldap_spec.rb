@@ -8,7 +8,6 @@ describe 'security_baseline::rules::common::sec_ldap' do
       context "on #{os} with enforce = #{enforce}" do
         let(:facts) do
           os_facts.merge(
-            'srv_avahi' => 'enabled',
             'security_baseline' => {
               'services_enabled' => {
                 'srv_slapd' => 'enabled',

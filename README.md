@@ -19,6 +19,7 @@
 7. [Development](#development)
 8. [Changelog](#changelog)
 9. [Contributors](#contributors)
+10. [Warranty](#warranty)
 
 ## Description
 
@@ -26,7 +27,7 @@ Define a complete security baseline and monitor the baseline's rules. The defini
 
 This project is highly inspired by the [fervid/secure_linux_cis](https://forge.puppet.com/fervid/secure_linux_cis) module from Puppet Forge. 
 
-This module does not use bechmark numbers for the class names of the rules as these numbers change from OS version to OS version. One main purpose is to ensure the module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
+The `security_baseline` module does not use bechmark numbers for the class names of the rules. These numbers change from OS version to OS version. One main purpose is to ensure this module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
 
 This module also has the ability to create compliance reports. The reports can be created as a Puppet fact uploaded to the Puppet Master or as a CSV file which will remain on the servers for later collection.
 
@@ -46,15 +47,16 @@ The code of this security baseline module is based on the following CIS Benchmar
 | Ubuntu 18.04 | CIS Ubuntu Linux 18.04 LTS Benchmark                         | 2.0.1   | 01-03-2020 |
 
 The benchmarks can be found at [CIS Benchmarks Website](https://www.cisecurity.org/cis-benchmarks/).
+
 ## Setup
 
-It is highly recommended to have the complete security baseline definition written in Hira definitions. This enables you to have different security baselines for groups of servers, environmants or special single servers.
+It is highly recommended to have the complete security baseline definition written in Hira definitions. This enables you to have different security baselines for groups of servers, environments or special single servers.
 
 ### What security_baseline affects
 
-The security_baseline module has a parameter `enforce`. If this parameter is set to true all necessary changes are made to make a machine compliant to the security baseline. This can have severre impacts to the machines, especially if security settings are defined in a wrong way.
+The security_baseline module has a parameter `enforce` for each rule. If this parameter is set to true all necessary changes are made to make a machine compliant to the security baseline rule. This can have severe impacts to the machines, especially if security settings are defined in a wrong way. Please test your settings before rolling out to production environments.
 
-The module needs a base directory. This directory is created by the module during the fist run and is `/usr/share/security_baseline`. Some data is collected with cron jobs once a day as collecting these data is depending on the server size somewhat expensive and time consuming, e. g. searching als s-bit programs . Unter the base directory there will be a directory `bin` where all scripts for gathering information are located.
+The module needs a base directory. The base directory `/usr/share/security_baseline` is created by the module during the fist run. Some data is collected with cron jobs once a day as collecting this data is somewhat expensive and time consuming depending on the server size, e. g. searching als s-bit programs . Under the base directory there will be a directory `bin` where all scripts for gathering information are located.
 
 ### Setup Requirements
 
@@ -382,3 +384,7 @@ Contributions are welcome in any form, pull requests, and issues should be filed
 See [CHANGELOG.md](https://github.com/tom-krieger/security_baseline/blob/master/CHANGELOG.md)
 
 ## Contributors
+
+## Warranty
+
+This Puppet module is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the Apache 2.0 License for more details.

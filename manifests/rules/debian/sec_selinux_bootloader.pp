@@ -32,6 +32,21 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
       line   => 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"',
       path   => '/etc/default/grub',
       match  => '^GRUB_CMDLINE_LINUX_DEFAULT',
+      notify => Exec['selinux-grub-config'],
+    }
+    kernel_parameter { 'selinux':
+      ensure => present,
+      value  => '1',
+      notify => Exec['selinux-grub-config']
+    }
+    kernel_parameter { 'security':
+      ensure => present,
+      value  => 'selinux',
+      notify => Exec['selinux-grub-config']
+    }
+    kernel_parameter { 'enforcing':
+      ensure => present,
+      value  => '1',
       notify => Exec['selinux-grub-config']
     }
     exec {'selinux-grub-config':

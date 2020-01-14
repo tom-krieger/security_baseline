@@ -75,7 +75,7 @@ def security_baseline_debian(os, _distid, _release)
   security_baseline[:aide] = read_facts_aide(os)
 
   selinux = {}
-  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep -e "selinux.*=.*0" -e "enforcing.*=.*0"')
+  val = Facter::Core::Execution.exec('grep "^\s*linux" /boot/grub/grub.cfg | grep -e "selinux.*=.*1" -e "enforcing.*=.*1" -e "security.*=.*selinux"')
   selinux['bootloader'] = (val.nil? || val.empty?)
   security_baseline[:selinux] = selinux
 

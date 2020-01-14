@@ -52,7 +52,7 @@ describe 'security_baseline::rules::debian::sec_ufw_default_deny' do
             .with(
               'command' => 'ufw default deny routed',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => "test -z \"$(ufw status verbose | grep 'deny (routed)')\"",
+              'onlyif'  => "test -z \"$(ufw status verbose | grep -e 'deny (routed)' -e 'disabled (routed)')\"",
             )
 
           is_expected.not_to contain_echo('ufw-default-deny')

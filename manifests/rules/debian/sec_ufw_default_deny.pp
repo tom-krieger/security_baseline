@@ -52,10 +52,12 @@ class security_baseline::rules::debian::sec_ufw_default_deny (
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       onlyif  => "test -z \"$(ufw status verbose | grep '${default_outgoing} (outgoing)')\"",
     }
+
+    # exec only if default policy for routed traffic is not the desired state or id not completely disabled
     exec { "default routed policy ${default_routed}":
       command => "ufw default ${default_routed} routed",
       path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-      onlyif  => "test -z \"$(ufw status verbose | grep '${default_routed} (routed)')\"",
+      onlyif  => "test -z \"$(ufw status verbose | grep -e '${default_routed} (routed)' -e 'disabled (routed)')\"",
     }
   } else {
     if($facts['security_baseline']['ufw']['default_deny_status'] == false) {

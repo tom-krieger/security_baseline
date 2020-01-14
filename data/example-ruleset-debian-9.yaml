@@ -1000,7 +1000,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - services_enabled
-        - srv_dhcpd
+        - srv_isc-dhcp-server
       fact_value: 'disabled'
     message: 'Rule 2.2.5. Dhcpd daemon should be disbaled.'
     log_level: 'warning'
@@ -1096,7 +1096,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name: 
         - packages_installed
-        - srv_exim4
+        - exim4
       fact_value: false
     message: 'Rule 2.2.11. Exim4 daemon should not be installed.'
     log_level: 'warning'

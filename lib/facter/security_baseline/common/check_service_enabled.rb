@@ -1,7 +1,7 @@
 # check if a systemd service is enabled
 def check_service_is_enabled(service)
   srv = Facter::Core::Execution.exec("systemctl is-enabled #{service}")
-  if srv.nil? || srv.empty? || (srv =~ %r{^Failed})
+  if srv.nil? || srv.empty? || (srv =~ %r{^Failed}) || srv =~ /Failed to get unit file state/
     'disabled'
   else
     srv

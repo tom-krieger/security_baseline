@@ -1016,7 +1016,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - services_enabled
-        - srv_ldap
+        - srv_slapd
       fact_value: 'disabled'
     message: 'Rule 2.2.6. Ldap daemon should be disbaled.'
     log_level: 'warning'

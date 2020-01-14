@@ -11,7 +11,7 @@ describe 'security_baseline::rules::common::sec_ldap' do
             'srv_avahi' => 'enabled',
             'security_baseline' => {
               'services_enabled' => {
-                'srv_ldap' => 'enabled',
+                'srv_slapd' => 'enabled',
               },
             },
           )

@@ -39,7 +39,7 @@ class security_baseline::rules::common::sec_ldap (
 
   } else {
 
-    if($facts['security_baseline']['services_enabled']['srv_ldap'] == 'enabled') {
+    if($facts['security_baseline']['services_enabled']['srv_slapd'] == 'enabled') {
       echo { 'ldap':
         message  => $message,
         loglevel => $log_level,

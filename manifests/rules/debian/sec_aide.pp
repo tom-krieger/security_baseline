@@ -46,7 +46,7 @@ class security_baseline::rules::debian::sec_aide (
     }
 
     exec { 'aidedb':
-      command     => 'aide --init',
+      command     => 'aideinit',
       path        => '/sbin/',
       refreshonly => true,
       notify      => Exec['rename_aidedb'],
@@ -54,7 +54,7 @@ class security_baseline::rules::debian::sec_aide (
     }
 
     exec { 'rename_aidedb':
-      command     => 'mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz',
+      command     => 'mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db',
       creates     => '/var/lib/aide/aide.db.gz',
       path        => '/bin/:/sbin/:/usr/bin/:/usr/sbin/',
       logoutput   => true,

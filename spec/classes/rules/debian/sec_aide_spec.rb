@@ -35,12 +35,12 @@ describe 'security_baseline::rules::debian::sec_aide' do
             .that_notifies('Exec[aidedb]')
           is_expected.to contain_exec('aidedb')
             .with(
-              command: 'aide --init',
+              command: 'aideinit',
             )
             .that_notifies('Exec[rename_aidedb]')
           is_expected.to contain_exec('rename_aidedb')
             .with(
-              command: 'mv /var/lib/aide/aide.db.new.gz /var/lib/aide/aide.db.gz',
+              command: 'mv /var/lib/aide/aide.db.new /var/lib/aide/aide.db',
             )
           is_expected.not_to contain_echo('aide')
         else

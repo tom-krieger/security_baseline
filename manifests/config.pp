@@ -117,7 +117,7 @@ class security_baseline::config(
 
     file { '/usr/share/security_baseline/bin/check_dot_files_write.sh':
       ensure  => present,
-      content => epp('security_baseline/security_baseline/check_dot_files_write.sh.epp', {nologin => $nologin}),
+      content => epp('security_baseline/check_dot_files_write.sh.epp', {nologin => $nologin}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
@@ -125,7 +125,7 @@ class security_baseline::config(
 
     file { '/usr/share/security_baseline/bin/check_forward_files.sh':
       ensure  => present,
-      content => epp('security_baseline/security_baseline/check_forward_files.sh.epp', {nologin => $nologin}),
+      content => epp('security_baseline/check_forward_files.sh.epp', {nologin => $nologin}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
@@ -133,14 +133,14 @@ class security_baseline::config(
 
     file { '/usr/share/security_baseline/bin/check_home_dir_owner.sh':
       ensure  => present,
-      content => epp('security_baseline/security_baseline/check_home_dir_owner.sh.epp', {nologin => $nologin}),
+      content => epp('security_baseline/check_home_dir_owner.sh.epp', {nologin => $nologin}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
     }
     file { '/usr/share/security_baseline/bin/check_home_dir_permissions.sh':
       ensure  => present,
-      content => epp('security_baseline/security_baseline/check_home_dir_permissions.sh.epp', {nologin => $nologin}),
+      content => epp('security_baseline/check_home_dir_permissions.sh.epp', {nologin => $nologin}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
@@ -148,7 +148,7 @@ class security_baseline::config(
 
     file { '/usr/share/security_baseline/bin/check_netrc_files_write.sh':
       ensure  => present,
-      content => epp('security_baseline/security_baseline/check_netrc_files_write.sh.epp', {nologin => $nologin}),
+      content => epp('security_baseline/check_netrc_files_write.sh.epp', {nologin => $nologin}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
@@ -156,7 +156,7 @@ class security_baseline::config(
 
     file { '/usr/share/security_baseline/bin/check_netrc_files.sh':
       ensure  => present,
-      content => epp('security_baseline/security_baseline/check_netrc_files.sh.epp', {nologin => $nologin}),
+      content => epp('security_baseline/check_netrc_files.sh.epp', {nologin => $nologin}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
@@ -164,7 +164,7 @@ class security_baseline::config(
 
     file { '/usr/share/security_baseline/bin/check_rhosts_files.sh':
       ensure  => present,
-      content => epp('security_baseline/security_baseline/check_rhosts_files.sh.epp', {nologin => $nologin}),
+      content => epp('security_baseline/check_rhosts_files.sh.epp', {nologin => $nologin}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
@@ -172,7 +172,7 @@ class security_baseline::config(
 
     file { '/usr/share/security_baseline/bin/check_user_home_dirs.sh':
       ensure  => present,
-      content => epp('security_baseline/security_baseline/check_user_home_dirs.sh.epp', {nologin => $nologin}),
+      content => epp('security_baseline/check_user_home_dirs.sh.epp', {nologin => $nologin}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',

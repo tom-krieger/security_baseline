@@ -34,7 +34,7 @@ def security_baseline_redhat(os, _distid, release)
   arch = Facter.value(:architecture)
 
   services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
-              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond', 'firewalld', 'iptables', 'nftables']
+              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond', 'firewalld', 'iptables', 'nftables', 'slapd']
   packages = { 'iptables' => '-q',
                'nftables' => '-q',
                'firewalld' => '-q',
@@ -52,6 +52,7 @@ def security_baseline_redhat(os, _distid, release)
                'tcp_wrappers' => '-q',
                'telnet' => '-q',
                'ypbind' => '-q',
+               'xinetd' => '-q',
                'sudo' => '-q' }
   modules = ['cramfs', 'dccp', 'freevxfs', 'hfs', 'hfsplus', 'jffs2', 'rds', 'sctp', 'squashfs', 'tipc', 'udf', 'vfat', 'usb-storage']
   xinetd_services = ['echo-dgram', 'echo-stream', 'time-dgram', 'time-stream', 'chargen-dgram', 'chargen-stream', 'tftp',

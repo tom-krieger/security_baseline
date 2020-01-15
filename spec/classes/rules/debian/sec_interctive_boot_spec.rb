@@ -69,29 +69,8 @@ describe 'security_baseline::rules::debian::sec_interctive_boot' do
 
       it {
         is_expected.to compile
-        if enforce
-          is_expected.to contain_file('/etc/sysconfig/boot')
-            .with(
-              'ensure' => 'file',
-              'owner'  => 'root',
-              'group'  => 'root',
-              'mode'   => '0644',
-            )
-         
-          is_expected.to contain_file_line('interactive-boot')
-            .with(
-              'ensure'             => 'present',
-              'path'               => '/etc/sysconfig/boot',
-              'line'               => 'PROMPT_FOR_CONFIRM="no"',
-              'match'              => '^PROMPT_FOR_CONFIRM=',
-              'append_on_no_match' => true,
-            )
-
-          is_expected.not_to contain_echo('interctive_boot')
-        else
-          is_expected.not_to contain_file_line('interactive-boot')
-          is_expected.not_to contain_file('/etc/sysconfig/boot')
-        end
+        is_expected.not_to contain_echo('interctive_boot')
+        is_expected.not_to contain_file_line('interactive-boot')
       }
     end
   end

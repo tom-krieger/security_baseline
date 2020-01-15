@@ -29,7 +29,7 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
 ) {
   if($enforce) {
     if(
-      ($facts['security_baseline']['selinux']['bootloader']) and
+      ($facts['security_baseline']['selinux']['bootloader'] == false) and
       ($facts['operatingsystem'] == 'Debian')
     ) {
       exec { 'activate selinux':
@@ -65,7 +65,7 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
       refreshonly => true,
     }
   } else {
-    if($facts['security_baseline']['selinux']['bootloader']) {
+    if($facts['security_baseline']['selinux']['bootloader'] == false) {
       echo { 'bootloader-selinux':
         message  => $message,
         loglevel => $log_level,

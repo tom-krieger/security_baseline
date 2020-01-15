@@ -81,8 +81,8 @@ describe 'security_baseline::rules::debian::sec_selinux_bootloader' do
             is_expected.not_to contain_kernel_parameter('selinux')
             is_expected.not_to contain_kernel_parameter('security')
             is_expected.not_to contain_kernel_parameter('enforcing')
-            
-            if bootloader
+
+            if bootloader == false
               is_expected.to contain_echo('bootloader-selinux')
                 .with(
                   'message'  => 'bootloader selinux',
@@ -127,7 +127,7 @@ describe 'security_baseline::rules::debian::sec_selinux_bootloader' do
         it { is_expected.to compile }
         it do
           if enforce
-            if bootloader
+            if bootloader == false
               is_expected.to contain_exec('activate selinux')
                 .with(
                   'command' => 'selinux-activate',
@@ -179,7 +179,7 @@ describe 'security_baseline::rules::debian::sec_selinux_bootloader' do
             is_expected.not_to contain_kernel_parameter('security')
             is_expected.not_to contain_kernel_parameter('enforcing')
 
-            if bootloader
+            if bootloader == false
               is_expected.to contain_echo('bootloader-selinux')
                 .with(
                   'message'  => 'bootloader selinux',

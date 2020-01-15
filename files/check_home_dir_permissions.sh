@@ -2,7 +2,7 @@
 
 # check home directory permissions
 
-< /etc/passwd egrep -v '^(root|halt|sync|shutdown)' | awk -F: '($7 != "$(which nologin)" && $7 != "/bin/false") { print $1 " " $6 }' | while read user dir; do
+< /etc/passwd egrep -v '^(root|halt|sync|shutdown)' | awk -F: '($7 != "/sbin/nologin" && $7 != "/bin/false") { print $1 " " $6 }' | while read user dir; do
 
   if [ -d "$dir" ]; then
     dirperm=$(ls -ld "$dir" | cut -f1 -d" ")

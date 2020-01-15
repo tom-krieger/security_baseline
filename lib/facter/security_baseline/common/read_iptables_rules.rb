@@ -93,7 +93,22 @@ def read_iptables_rules(version = '4')
       policy["rule #{nr}"]['state'] = state
       policy["rule #{nr}"]['icmptype'] = icmptype
     end
-    iptables['policy_status'] = default_policies['INPUT'].casecmp('drop').zero? && default_policies['OUTPUT'].casecmp('drop').zero? && default_policies['FORWARD'].casecmp('drop').zero?
+    input_policy = if default_policies.include? 'INPUT'
+                     default_policies['INPUT']
+                   else
+                     'none'
+                   end
+    output_policy = if default_policies.include? 'OUTPUT'
+                      default_policies['OUTPUT']
+                    else
+                      'none'
+                    end
+    forward_policy = if default_policies.include? 'FORWARD'
+                       default_policies['FORWARD']
+                     else
+                       'none'
+                     end
+    iptables['policy_status'] = input_policy.casecmp('drop').zero? && output_policy.casecmp('drop').zero? && forward_policy.casecmp('drop').zero?
     iptables['default_policies'] = default_policies
     iptables['policy'] = policy
   end

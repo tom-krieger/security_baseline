@@ -569,7 +569,7 @@ def security_baseline_redhat(os, _distid, release)
               500
             end
 
-  cmd = "egrep -v \"^\/+\" /etc/passwd | awk -F: '($1!=\"root\" && $1!=\"sync\" && $1!=\"shutdown\" && $1!=\"halt\" && $3<#{min_uid} && $7!=\"/sbin/nologin\" && $7!=\"/bin/false\") {print}'"
+  cmd = "egrep -v \"^\/+\" /etc/passwd | awk -F: '($1!=\"root\" && $1!=\"sync\" && $1!=\"shutdown\" && $1!=\"halt\" && $3<#{min_uid} && $7!=\"$(which nologin)\" && $7!=\"/bin/false\") {print}'"
   val = Facter::Core::Execution.exec(cmd)
   unless val.nil? || val.empty?
     val.split("\n").each do |line|

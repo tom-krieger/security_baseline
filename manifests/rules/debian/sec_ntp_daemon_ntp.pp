@@ -37,6 +37,9 @@
 # @param ntp_burst
 #    Specifies whether to enable the iburst option for every NTP peer.
 #
+# @param service_manage
+#    Manage the ntp service
+#
 # @example
 #   class security_baseline::rules::debian::sec_ntp_daemon_ntp {
 #       enforce => true,
@@ -44,7 +47,7 @@
 #       log_level => 'info',
 #       ntp_daemon => 'ntp',  
 #       ntp_servers => ['server1', 'server2'],
-#       }
+#     }
 #   }
 #
 # @api private
@@ -58,6 +61,7 @@ class security_baseline::rules::debian::sec_ntp_daemon_ntp (
   String $ntp_statsdir                    = '',
   Boolean $ntp_disable_monitor            = true,
   Boolean $ntp_burst                      = false,
+  Boolean $service_manage                 = true,
 ) {
   if($enforce) {
     if(empty($ntp_servers)) {
@@ -69,6 +73,7 @@ class security_baseline::rules::debian::sec_ntp_daemon_ntp (
       statsdir        => $ntp_statsdir,
       disable_monitor => $ntp_disable_monitor,
       iburst_enable   => $ntp_burst,
+      service_manage  => $service_manage,
     }
 
     if($ntp_driftfile == '') {

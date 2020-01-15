@@ -39,6 +39,7 @@ describe 'security_baseline::rules::debian::sec_ntp_daemon_ntp' do
               'statsdir'        => '/var/tmp',
               'disable_monitor' => true,
               'iburst_enable'   => false,
+              'service_manage'  => false,
             )
 
           is_expected.to contain_file_line('ntp runas user')

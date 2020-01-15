@@ -1098,7 +1098,7 @@ security_baseline::rules:
     level: 1
     description: 'The File Transfer Protocol (FTP) provides networked computers with the ability to transfer files.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_httpd'
+    class: '::security_baseline::rules::redhat::sec_httpd'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -1210,7 +1210,7 @@ security_baseline::rules:
     level: 1
     description: 'The Network Information Service (NIS) (formally known as Yellow Pages) is a client-server directory service protocol for distributing system configuration files. The NIS server is a collection of programs that allow for the distribution of configuration files.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_nis'
+    class: '::security_baseline::rules::redhat::sec_nis'
     check:
       fact_hash: security_baseline
       fact_name: 

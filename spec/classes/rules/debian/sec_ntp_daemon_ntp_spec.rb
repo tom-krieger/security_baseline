@@ -26,6 +26,7 @@ describe 'security_baseline::rules::debian::sec_ntp_daemon_ntp' do
           'log_level' => 'warning',
           'ntp_servers' => ['10.10.10.1', '10.10.10.2'],
           'ntp_statsdir' => '/var/tmp',
+          'service_manage' => false,
         }
       end
 

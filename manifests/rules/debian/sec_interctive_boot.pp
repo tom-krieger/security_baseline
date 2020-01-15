@@ -33,7 +33,13 @@ class security_baseline::rules::debian::sec_interctive_boot (
   String $log_level = ''
 ) {
   if ($enforce) {
-    if($facts['security_baseline']['interactive_boot'] != 'n/a') {
+    if($facts['security_baseline']['interactive_boot'] != 'no') {
+      file { '/etc/sysconfig/boot':
+        ensure => file,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
       file_line { 'interactive-boot':
         ensure             => 'present',
         path               => '/etc/sysconfig/boot',

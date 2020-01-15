@@ -2,7 +2,7 @@
 
 # check home directory owner
 
-< /etc/passwd egrep -v '^(root|halt|sync|shutdown)' | awk -F: '($7 != "/sbin/nologin" && $7 != "/bin/false") { print $1 " " $6 }' | while read user dir; do
+< /etc/passwd egrep -v '^(root|halt|sync|shutdown)' | awk -F: '($7 != "<%= $nologin %>" && $7 != "/bin/false") { print $1 " " $6 }' | while read user dir; do
 
   if [ -d "$dir" ]; then
     owner=$(stat -L -c "%U" "$dir")

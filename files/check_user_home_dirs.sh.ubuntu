@@ -15,4 +15,4 @@ grep -E -v '^(halt|sync|shutdown)' /etc/passwd | awk -F: '($7 != "'"$(which nolo
 
 done
 
-exit o
+exit 0

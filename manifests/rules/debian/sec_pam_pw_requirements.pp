@@ -108,17 +108,33 @@ class security_baseline::rules::debian::sec_pam_pw_requirements (
       match  => '^#?lcredit',
     }
 
+    if($facts['operatingsystem'] == 'Ubuntu') {
+      $data = {
+        ensure    => present,
+        service   => 'common-password',
+        type      => 'password',
+        control   => 'requisite',
+        module    => 'pam_pwquality.so',
+        arguments => [
+          'try_first_pass',
+          'retry=3',
+          "minlen=${minlen}",
+        ]
+      }
+    } else {
+      $data = {
+        ensure    => present,
+        service   => 'common-password',
+        type      => 'password',
+        control   => 'requisite',
+        module    => 'pam_pwquality.so',
+        arguments => [
+          'retry=3',
+        ]
+      }
+    }
     pam { 'pam_pwquality common-password':
-      ensure    => present,
-      service   => 'common-password',
-      type      => 'password',
-      control   => 'requisite',
-      module    => 'pam_pwquality.so',
-      arguments => [
-        'try_first_pass',
-        'retry=3',
-        "minlen=${minlen}",
-      ]
+      * => $data,
     }
   } else {
     unless ($facts['security_baseline']['pam']['pwquality']['status']) {

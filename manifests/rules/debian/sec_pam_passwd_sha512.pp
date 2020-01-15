@@ -34,13 +34,27 @@ class security_baseline::rules::debian::sec_pam_passwd_sha512 (
 ) {
 
   if($enforce) {
+    if($facts['operatingsystem'] == 'Ubuntu') {
+      $data = {
+        ensure    => present,
+        service   => 'common-password',
+        type      => 'password',
+        control   => '[success=1, default=ignore]',
+        module    => 'pam_unix.so',
+        arguments => ['obscure', 'use_authtok', 'try_first_pass', 'sha512'],
+      }
+    } else {
+      $data = {
+        ensure    => present,
+        service   => 'common-password',
+        type      => 'password',
+        control   => '[success=1, default=ignore]',
+        module    => 'pam_unix.so',
+        arguments => ['sha512'],
+        }
+    }
     pam { 'pam-common-sha512':
-      ensure    => present,
-      service   => 'common-password',
-      type      => 'password',
-      control   => '[success=1, default=ignore]',
-      module    => 'pam_unix.so',
-      arguments => ['obscure', 'use_authtok', 'try_first_pass', 'sha512'],
+      * => $data,
     }
   } else {
     unless ($facts['security_baseline']['pam']['sha512']['status']) {

@@ -28,6 +28,16 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
   String $log_level = ''
 ) {
   if($enforce) {
+    if(
+      ($facts['security_baseline']['selinux']['bootloader']) and
+      ($facts['operatingsystem'] == 'Debian')
+    ) {
+      exec { 'activate selinux':
+        command => 'selinux-activate',
+        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        before  => Exec['selinux-grub-config'],
+      }
+    }
     file_line { 'cmdline_definition':
       line   => 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"',
       path   => '/etc/default/grub',
@@ -55,7 +65,7 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
       refreshonly => true,
     }
   } else {
-    if($facts['security_baseline']['selinux']['bootloader'] == false) {
+    if($facts['security_baseline']['selinux']['bootloader']) {
       echo { 'bootloader-selinux':
         message  => $message,
         loglevel => $log_level,

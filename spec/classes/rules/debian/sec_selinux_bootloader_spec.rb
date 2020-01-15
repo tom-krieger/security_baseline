@@ -131,7 +131,7 @@ describe 'security_baseline::rules::debian::sec_selinux_bootloader' do
               is_expected.to contain_exec('activate selinux')
                 .with(
                   'command' => 'selinux-activate',
-                  'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],               
+                  'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
                 )
             end
 

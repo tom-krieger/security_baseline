@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # get facts about enabled services
 
 def read_facts_services_enabled(services, os = '', release = '')

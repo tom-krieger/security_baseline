@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def read_service_data(services, file_name)
   srv_name = ''
   srv_status = ''

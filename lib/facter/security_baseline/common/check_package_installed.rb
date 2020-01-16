@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # check if a package isinstalled
 # params:
 #    opts: rpm options to use

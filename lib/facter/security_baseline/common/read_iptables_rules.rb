@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def read_iptables_rules(version = '4')
   iptables = {}
 

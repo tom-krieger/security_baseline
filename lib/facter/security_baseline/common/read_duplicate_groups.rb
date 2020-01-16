@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # read_duplicate_groups.rb
 # get duplicate groups by gid and/or group name
 # mykey = gid : gets duplicate gids

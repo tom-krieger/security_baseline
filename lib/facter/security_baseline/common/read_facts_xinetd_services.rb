@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # get facts about xinetd services
 
 def read_facts_xinetd_services(srvs, type = 'std')

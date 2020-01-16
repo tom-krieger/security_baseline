@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # get facts about installed packages
 
 def read_facts_packages_installed(packages)

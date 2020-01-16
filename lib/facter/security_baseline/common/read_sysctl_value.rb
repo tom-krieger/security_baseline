@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # get a value with sysctl command
 # params:
 #    value to read

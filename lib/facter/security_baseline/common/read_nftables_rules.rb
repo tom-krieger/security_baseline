@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'pp'
 
 def read_nftables_rules(table = '')

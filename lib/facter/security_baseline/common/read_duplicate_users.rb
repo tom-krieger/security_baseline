@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # read_duplicate_users.rb
 # get duplicate users by uid and/os username
 # mykey = uid : gets duplicate uids

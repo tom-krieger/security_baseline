@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # check if a kernelmodule is installed
 
 def check_kernel_module(mod)

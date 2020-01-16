@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # get facts about aide
 
 def read_facts_aide(os)

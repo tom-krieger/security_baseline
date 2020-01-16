@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # return facts about kernel modules
 
 def read_facts_kernel_modules(modules)

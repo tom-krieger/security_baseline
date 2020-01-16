@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 def read_local_users
   local_users = {}
   user_list = Facter::Core::Execution.exec('egrep ^[^:]+:[^\!*] /etc/shadow | cut -d: -f1').split("\n")

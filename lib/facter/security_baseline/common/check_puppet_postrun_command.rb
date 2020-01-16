@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # check puppet agentpostrun command
 
 def check_puppet_postrun_command

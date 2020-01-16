@@ -24,12 +24,14 @@ describe 'security_baseline::config' do
           .with(
             'command' => 'puppet config --section agent set postrun_command "/usr/local/bin/puppet facts upload"',
             'path'    => ['/bin', '/usr/bin', '/usr/local/bin'],
+            'onlyif'  => "test -z \"$(puppet config print | grep -E \"postrun_command\\s*=\\s*/usr/local/bin/puppet facts upload\")\"",
           )
 
         is_expected.to contain_exec('set puppet agent postrun main')
           .with(
             'command' => 'puppet config --section main set postrun_command "/usr/local/bin/puppet facts upload"',
             'path'    => ['/bin', '/usr/bin', '/usr/local/bin'],
+            'onlyif'  => "test -z \"$(puppet config print | grep -E \"postrun_command\\s*=\\s*/usr/local/bin/puppet facts upload\")\"",
           )
 
         is_expected.to contain_file('/usr/share/security_baseline/')

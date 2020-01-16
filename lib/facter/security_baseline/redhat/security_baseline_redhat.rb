@@ -133,11 +133,11 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline[:partitions] = partitions
 
   yum = {}
-  if release.to_i > 6
-    val = Facter::Core::Execution.exec('yum repolist -q | grep -v "^repo id"')
-  else
-    val = Facter::Core::Execution.exec('yum repolist | grep -v -e "^repo id" -e "^ \*" -e "^Load" -e "^repolist"')
-  end
+  val = if release.to_i > 6
+          Facter::Core::Execution.exec('yum repolist -q | grep -v "^repo id"')
+        else
+          Facter::Core::Execution.exec('yum repolist | grep -v -e "^repo id" -e "^ \*" -e "^Load" -e "^repolist"')
+        end
   if val.nil? || val.empty?
     repos = 'none'
     repocount = 0
@@ -225,11 +225,11 @@ def security_baseline_redhat(os, _distid, release)
   val = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
   security_baseline[:sticky_ww] = check_value_string(val, 'none')
 
-  if release.to_i <= 6
-    val = Facter::Core::Execution.exec('yum check-update -q | grep -v ^$')  
-  else
-    val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
-  end
+  val = if release.to_i <= 6
+          Facter::Core::Execution.exec('yum check-update -q | grep -v ^$')
+        else
+          Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
+        end
   security_baseline[:security_patches] = check_value_string(val, 'none')
 
   security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''

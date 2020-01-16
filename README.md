@@ -404,7 +404,7 @@ See [CHANGELOG.md](https://github.com/tom-krieger/security_baseline/blob/master/
 
 ## Contributors
 
-
+The list of contributors can be found at: [https://github.com/tom-krieger/security_baseline/graphs/contributors](https://github.com/tom-krieger/security_baseline/graphs/contributors).
 
 ## Warranty
 

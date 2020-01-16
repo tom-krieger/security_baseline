@@ -1,6 +1,6 @@
 # get facts about enabled services
 
-def read_facts_services_enabled(services, os='', release='')
+def read_facts_services_enabled(services, os = '', release = '')
   services_enabled = {}
 
   services.each do |srv|

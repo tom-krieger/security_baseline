@@ -1,6 +1,6 @@
 # check if a systemd service is enabled
-def check_service_is_enabled(service, os='', release='')
-  if((os.downcase == 'redhat') && (release != '') && (release.to_i <= 6))
+def check_service_is_enabled(service, os = '', release = '')
+  if os.casecmp('redhat').zero? && (release != '') && (release.to_i <= 6)
     srv = Facter::Core::Execution.exec("chkconfig --list #{service} | grep ':on'")
     if srv.nil? || srv.empty?
       'disabled'

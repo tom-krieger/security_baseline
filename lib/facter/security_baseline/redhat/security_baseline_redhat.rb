@@ -33,8 +33,8 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline = {}
   arch = Facter.value(:architecture)
 
-  services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
-              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond', 'firewalld', 'iptables', 'nftables', 'slapd']
+  services = ['autofs', 'avahi-daemon', 'cups', 'dhcpd', 'named', 'dovecot', 'httpd', 'ldap', 'slapd', 'ypserv', 'ntalk', 'rhnsd', 'rsyncd', 'smb',
+              'snmpd', 'squid', 'telnet.socket', 'tftp.socket', 'vsftpd', 'xinetd', 'sshd', 'crond', 'firewalld', 'iptables', 'nftables']
   packages = { 'iptables' => '-q',
                'nftables' => '-q',
                'firewalld' => '-q',
@@ -69,7 +69,7 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline['puppet_agent_postrun'] = check_puppet_postrun_command
   security_baseline[:kernel_modules] = read_facts_kernel_modules(modules)
   security_baseline[:packages_installed] = read_facts_packages_installed(packages)
-  security_baseline[:services_enabled] = read_facts_services_enabled(services)
+  security_baseline[:services_enabled] = read_facts_services_enabled(services, os, release)
 
   security_baseline[:xinetd_services] = read_facts_xinetd_services(xinetd_services)
   security_baseline[:sysctl] = read_facts_sysctl(sysctl_values)

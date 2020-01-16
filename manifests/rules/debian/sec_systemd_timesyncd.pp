@@ -30,6 +30,11 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param ntp_servers
+#    The ntp server to use for time synchonisation.
+#
+# @param ntp_fallback_servers
+#
 # @example
 #   class security_baseline::rules::debian::sec_systemd_timesyncd {
 #       enforce => true,

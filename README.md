@@ -12,6 +12,7 @@
     * [Passing additional data to rules](#passing-additional-data-to-rules)
     * [Cronjobs](#cronjobs)
     * [Reporting](#reporting)
+    * [Example Hiera files](#example-hiera-files)
 3. [Checking facts](#checking-facts)
 3. [Extend the security baseline](#extend-the-security-baseline)
 4. [Usage](#usage)
@@ -182,6 +183,10 @@ class { 'security_baseline':
   logfile => '/usr/share/security_baseline/logs/security_baseline_findings.csv',
 }
 ```
+
+### Example Hiera files
+
+The `data`directory contains example Hiera data for various OSes. Please do not use without reviewing. The configuration in hese files may or may not fit your needs or can even crash your systes. You are strongly advised to review the files before using them and adapt them to your needs.
 
 ## Checking facts
 

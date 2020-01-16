@@ -35,7 +35,7 @@ describe 'security_baseline::rules::debian::sec_nftables_persistence' do
               'group'  => 'root',
               'mode'   => '0644',
             )
-          
+
           is_expected.to contain_file('/etc/nftables')
             .with(
               'ensure' => 'directory',

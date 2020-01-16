@@ -3,7 +3,7 @@
 #### Table of Contents
 
 1. [Description](#description)
-2. [Security baseline[(#security-baseline)]]
+2. [Security baseline](#security-baseline)
 2. [CIS Benchmark Reference](#CIS-Benchmark-Reference)
 2. [Setup - The basics of getting started with security_baseline](#setup)
     * [What security_baseline affects](#what-security_baseline-affects)
@@ -36,7 +36,7 @@ This module also has the ability to create compliance reports. The reports can b
 
 ## Security baseline
 
-A security baseline describes how servers in your environent are setup securely. The baseline may be different for server classes like database servers, application or web servers. A security baseline can be based on a CIS benchmark but can include more rules specific to your environment. But dependeing on server classes not all rules of a CIS benchmark will be used. Sometimes the benchmarks contain different ways to achive a goal, e.g. RedHat 8 you can use firewalld, iptables or nftables to setup a firewall. Surely it makes no sense to have all of them running in parallel.
+A security baseline describes how servers in your environment are setup with a secure configuration. The baseline may be different for server classes like database servers, application or web servers. A security baseline can be based on a CIS benchmark but can include more rules specific to your environment. But depending on server classes not all rules of a CIS benchmark will be used. Sometimes the benchmarks contain different ways to achieve a goal, e.g. with RedHat 8 you can use firewalld, iptables or nftables to setup a firewall. Surely it makes no sense to have all of them running in parallel.
 
 ## CIS Benchmark Reference
 

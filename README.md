@@ -186,7 +186,8 @@ class { 'security_baseline':
 
 ### Example Hiera files
 
-The `data`directory contains example Hiera data for various OSes. Please do not use without reviewing. The configuration in hese files may or may not fit your needs or can even crash your systes. You are strongly advised to review the files before using them and adapt them to your needs.
+The `data` directory contains example Hiera data for various operating systems. Please do not use these files without reviewing them *carefully*. The configuration in these files may or may not fit your needs or can even crash your systems. 
+*You are strongly advised to review the files before using them and adapt them to your needs.*
 
 ## Checking facts
 

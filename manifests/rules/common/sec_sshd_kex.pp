@@ -18,7 +18,7 @@
 # @param log_level
 #    The log_level for the above message
 #
-# @param kexs
+# @param kexs 
 #    Key exchange methods to add to config
 #
 # @example

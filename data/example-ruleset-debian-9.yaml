@@ -2833,41 +2833,21 @@ security_baseline::rules:
         - sshd
         - ciphers
       fact_value: 
-        - 3des-cbc
-        - aes128-cbc
-        - aes192-cbc
-        - aes256-cbc
         - aes128-ctr
         - aes192-ctr
         - aes256-ctr 
         - aes128-gcm@openssh.com 
         - aes256-gcm@openssh.com 
-        - arcfour
-        - arcfour128 
-        - arcfour256 
-        - blowfish-cbc
-        - cast128-cbc 
-        - rijndael-cbc@lysator.liu.se 
         - chacha20-poly1305@openssh.com
     message: 'Rule 5.2.13. The sshd should use strong ciphers.'
     log_level: warning
     config_data:
       ciphers:
-        - 3des-cbc
-        - aes128-cbc
-        - aes192-cbc
-        - aes256-cbc
         - aes128-ctr
         - aes192-ctr
         - aes256-ctr 
         - aes128-gcm@openssh.com 
         - aes256-gcm@openssh.com 
-        - arcfour
-        - arcfour128 
-        - arcfour256 
-        - blowfish-cbc
-        - cast128-cbc 
-        - rijndael-cbc@lysator.liu.se 
         - chacha20-poly1305@openssh.com
   '5.2.14':
     rulename: sshd-macs
@@ -2911,13 +2891,10 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - sshd
-        - macs
+        - kexalgorithms
       fact_value: 
         - curve25519-sha256 
-        - curve25519-sha256@libssh.org 
-        - diffie-hellman-group1-sha1 
-        - diffie-hellman-group14-sha1 
-        - diffie-hellman-group-exchange-sha1 
+        - curve25519-sha256@libssh.org
         - diffie-hellman-group-exchange-sha256 
         - ecdh-sha2-nistp256 ecdh-sha2-nistp384 
         - ecdh-sha2-nistp521
@@ -2926,10 +2903,7 @@ security_baseline::rules:
     config_data:
       kexs:
         - curve25519-sha256 
-        - curve25519-sha256@libssh.org 
-        - diffie-hellman-group1-sha1 
-        - diffie-hellman-group14-sha1 
-        - diffie-hellman-group-exchange-sha1 
+        - curve25519-sha256@libssh.org
         - diffie-hellman-group-exchange-sha256 
         - ecdh-sha2-nistp256 ecdh-sha2-nistp384 
         - ecdh-sha2-nistp521

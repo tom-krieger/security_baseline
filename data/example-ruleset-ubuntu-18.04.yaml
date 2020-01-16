@@ -3243,7 +3243,7 @@ security_baseline::rules:
       fact_hash: security_baseline
       fact_name:
         - sshd
-        - macs
+        - kexalgorithms
       fact_value: 
         - curve25519-sha256 
         - curve25519-sha256@libssh.org 

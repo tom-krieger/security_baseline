@@ -133,7 +133,11 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline[:partitions] = partitions
 
   yum = {}
-  val = Facter::Core::Execution.exec('yum repolist -q | grep -v "^repo id"')
+  if release.to_i > 6
+    val = Facter::Core::Execution.exec('yum repolist -q | grep -v "^repo id"')
+  else
+    val = Facter::Core::Execution.exec('yum repolist | grep -v -e "^repo id" -e "^*" -e "^Load" -e "^repolist"')
+  end
   if val.nil? || val.empty?
     repos = 'none'
     repocount = 0

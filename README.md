@@ -3,6 +3,7 @@
 #### Table of Contents
 
 1. [Description](#description)
+2. [Security baseline[(#security-baseline)]]
 2. [CIS Benchmark Reference](#CIS-Benchmark-Reference)
 2. [Setup - The basics of getting started with security_baseline](#setup)
     * [What security_baseline affects](#what-security_baseline-affects)
@@ -30,6 +31,10 @@ This project is highly inspired by the [fervid/secure_linux_cis](https://forge.p
 The `security_baseline` module does not use bechmark numbers for the class names of the rules. These numbers change from OS version to OS version. One main purpose is to ensure this module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
 
 This module also has the ability to create compliance reports. The reports can be created as a Puppet fact uploaded to the Puppet Master or as a CSV file which will remain on the servers for later collection.
+
+## Security baseline
+
+A security baseline describes how servers in your environent are setup securely. The baseline may be different for server classes like database servers, application or web servers. A security baseline can be based on a CIS benchmark but can include more rules specific to your environment. But dependeing on server classes not all rules of a CIS benchmark will be used. Sometimes the benchmarks contain different ways to achive a goal, e.g. RedHat 8 you can use firewalld, iptables or nftables to setup a firewall. Surely it makes no sense to have all of them running in parallel.
 
 ## CIS Benchmark Reference
 
@@ -376,6 +381,8 @@ See [REFERENCE.md](https://github.com/tom-krieger/security_baseline/blob/master/
 
 Currently the module is tested with RedHat 6, 7, 8, CentOS 6, 7, 8, Suse SLES 12 and Ubuntu 18.04 (partially tested). Other OSes may work but there's no guarantee. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
 
+More testing is needed as for every supported OS there are different setups in the wild and some of them might not be covered. 
+
 ## Development
 
 Contributions are welcome in any form, pull requests, and issues should be filed via GitHub.
@@ -385,6 +392,8 @@ Contributions are welcome in any form, pull requests, and issues should be filed
 See [CHANGELOG.md](https://github.com/tom-krieger/security_baseline/blob/master/CHANGELOG.md)
 
 ## Contributors
+
+See [CONTRIBUTING.md](https://github.com/tom-krieger/security_baseline/blob/master/CONTRIBUTING.md) on how to contribute.
 
 ## Warranty
 

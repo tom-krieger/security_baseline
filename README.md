@@ -13,7 +13,7 @@
     * [Cronjobs](#cronjobs)
     * [Reporting](#reporting)
     * [Example Hiera files](#example-hiera-files)
-    * [Reboot](#reboot)
+    * [Automatic reboot](#automatic-reboot)
 3. [Checking facts](#checking-facts)
 3. [Extend the security baseline](#extend-the-security-baseline)
 4. [Usage](#usage)
@@ -190,13 +190,13 @@ class { 'security_baseline':
 The `data` directory contains example Hiera data for various operating systems. Please do not use these files without reviewing them *carefully*. The configuration in these files may or may not fit your needs or can even crash your systems. 
 > *You are strongly advised to review the files before using them and adapt them to your needs.*
 
-### Reboot
+### Automatic reboot
 
-There's no built-in reboot when particulat classes are doing changes , e. g. enabling SELinux. As servers cn run in a roduction environment it is not desireable to have a reboot during a Puppet run. That's the reason you have to decide yurself if and when to reboot your macines.
+There's no built-in reboot when particular classes are doing changes , e. g. enabling SELinux. As servers can run in a production environment it is not desireable to have an automatic reboot during a Puppet run. That's the reason you have to decide yourself if and when to reboot your machines.
 
 ## Checking facts
 
-For reporting purposes it is necessary that the security settings required by a benchmark are checked.
+For reporting purposes it is necessary that the security settings required by a baseline are checked.
 
 ```hiera
 ---

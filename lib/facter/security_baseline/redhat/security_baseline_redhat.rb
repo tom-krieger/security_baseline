@@ -221,7 +221,11 @@ def security_baseline_redhat(os, _distid, release)
   val = Facter::Core::Execution.exec("df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type d \( -perm -0002 -a ! -perm -1000 \) 2>/dev/null")
   security_baseline[:sticky_ww] = check_value_string(val, 'none')
 
-  val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
+  if release.to_i <= 6
+    val = Facter::Core::Execution.exec('yum check-update -q | grep -v ^$')  
+  else
+    val = Facter::Core::Execution.exec('yum check-update --security -q | grep -v ^$')
+  end
   security_baseline[:security_patches] = check_value_string(val, 'none')
 
   security_baseline[:gnome_gdm] = Facter::Core::Execution.exec('rpm -qa | grep gnome') != ''

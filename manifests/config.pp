@@ -233,10 +233,12 @@ class security_baseline::config(
         exec { 'set puppet agent postrun agent':
           command => "puppet config --section agent set postrun_command \"${fact_upload_command}\"",
           path    => ['/bin', '/usr/bin', '/usr/local/bin'],
+          onlyif  => "test -z \"$(puppet config print | grep -E \"postrun_command\\s*=\\s*${fact_upload_command}\")\"",
         }
         exec { 'set puppet agent postrun main':
           command => "puppet config --section main set postrun_command \"${fact_upload_command}\"",
           path    => ['/bin', '/usr/bin', '/usr/local/bin'],
+          onlyif  => "test -z \"$(puppet config print | grep -E \"postrun_command\\s*=\\s*${fact_upload_command}\")\"",
         }
       }
     }

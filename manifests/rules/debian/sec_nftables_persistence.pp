@@ -35,16 +35,24 @@ class security_baseline::rules::debian::sec_nftables_persistence (
   String $log_level = '',
 ) {
   if($enforce) {
-    if(!defined(File['/etc/sysconfig/nftables.conf'])) {
-      file {'/etc/sysconfig/nftable.conf':
+    if(!defined(File['/etc/nftables.conf'])) {
+      file {'/etc/nftables.conf':
         ensure => present,
         owner  => 'root',
         group  => 'root',
         mode   => '0644',
       }
     }
+    if(!defined(File['/etc/nftables'])) {
+      file { '/etc/nftables':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
+    }
     file_line { 'add persistence file include':
-      path               => '/etc/sysconfig/nftables.conf',
+      path               => '/etc/nftables.conf',
       line               => 'include "/etc/nftables/nftables.rules"',
       match              => 'include "/etc/nftables/nftables.rules"',
       append_on_no_match => true,
@@ -54,6 +62,7 @@ class security_baseline::rules::debian::sec_nftables_persistence (
       command     => 'nft list ruleset > /etc/nftables/nftables.rules',
       path        => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
       refreshonly => true,
+      require     => File['/etc/nftables'],
     }
   }
 }

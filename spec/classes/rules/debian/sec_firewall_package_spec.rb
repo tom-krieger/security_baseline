@@ -38,9 +38,19 @@ describe 'security_baseline::rules::debian::sec_firewall_package' do
             .with(
               'ensure' => 'installed',
             )
+          is_expected.to contain_package('nftables')
+            .with(
+              'ensure' => 'absent',
+            )
+          is_expected.to contain_package('iptables')
+            .with(
+              'ensure' => 'absent',
+            )
           is_expected.not_to contain_echo('firewall-package')
         else
           is_expected.not_to contain_package('ufw')
+          is_expected.not_to contain_package('nftables')
+          is_expected.not_to contain_package('iptables')
           is_expected.to contain_echo('firewall-package')
             .with(
               'message'  => 'firewall package',
@@ -85,9 +95,19 @@ describe 'security_baseline::rules::debian::sec_firewall_package' do
             .with(
               'ensure' => 'installed',
             )
+          is_expected.to contain_package('ufw')
+            .with(
+              'ensure' => 'absent',
+            )
+          is_expected.to contain_package('iptables')
+            .with(
+              'ensure' => 'absent',
+            )
           is_expected.not_to contain_echo('firewall-package')
         else
           is_expected.not_to contain_package('nftables')
+          is_expected.not_to contain_package('ufw')
+          is_expected.not_to contain_package('iptables')
           is_expected.to contain_echo('firewall-package')
             .with(
               'message'  => 'firewall package',
@@ -129,9 +149,19 @@ describe 'security_baseline::rules::debian::sec_firewall_package' do
         is_expected.to compile
         if enforce
           is_expected.to contain_class('firewall')
+          is_expected.to contain_package('nftables')
+            .with(
+              'ensure' => 'absent',
+            )
+          is_expected.to contain_package('ufw')
+            .with(
+              'ensure' => 'absent',
+            )
           is_expected.not_to contain_echo('firewall-package')
         else
           is_expected.not_to contain_class('firewall')
+          is_expected.not_to contain_package('nftables')
+          is_expected.not_to contain_package('ufw')
           is_expected.to contain_echo('firewall-package')
             .with(
               'message'  => 'firewall package',

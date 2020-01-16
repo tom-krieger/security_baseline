@@ -43,15 +43,33 @@ class security_baseline::rules::debian::sec_firewall_package (
             purge => true,
           }
         }
+        package { 'ufw':
+          ensure => absent,
+        }
+        package { 'nftables':
+          ensure => absent,
+        }
       }
       'ufw': {
         package { 'ufw':
           ensure => installed,
         }
+        package { 'nftables':
+          ensure => absent,
+        }
+        package { 'iptables':
+          ensure => absent,
+        }
       }
       'nftables': {
         package { 'nftables':
           ensure => installed,
+        }
+        package { 'ufw':
+          ensure => absent,
+        }
+        package { 'iptables':
+          ensure => absent,
         }
       }
       default: {

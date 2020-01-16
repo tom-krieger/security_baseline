@@ -27,6 +27,8 @@ def read_sshd_config
   end
 
   sshd['macs'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^MACs\" | awk '{print $2;}'").strip.split(%r{\,})
+  sshd['ciphers'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^ciphers\" | awk '{print $2;}'").strip.split(%r{\,})
+  sshd['kexalgorithms'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^kexalgorithms\" | awk '{print $2;}'").strip.split(%r{\,})
   sshd['allowusers'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^AllowUsers\" | awk '{print $2;}'").strip.split("\n")
   sshd['allowgroups'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^AllowGroups\" | awk '{print $2;}'").strip.split("\n")
   sshd['denyusers'] = Facter::Core::Execution.exec("#{sshdcmd} -T | grep -i \"^DenyUsers\" | awk '{print $2;}'").strip.split("\n")

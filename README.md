@@ -38,6 +38,8 @@ This module also has the ability to create compliance reports. The reports can b
 
 A security baseline describes how servers in your environment are setup with a secure configuration. The baseline may be different for server classes like database servers, application or web servers. A security baseline can be based on a CIS benchmark but can include more rules specific to your environment. But depending on server classes not all rules of a CIS benchmark will be used. Sometimes the benchmarks contain different ways to achieve a goal, e.g. with RedHat 8 you can use firewalld, iptables or nftables to setup a firewall. Surely it makes no sense to have all of them running in parallel.
 
+For this module level 1 and level 2 server tests from the CIS benchmarks below are taken into account.
+
 ## CIS Benchmark Reference
 
 The code of this security baseline module is based on the following CIS Benchmarks:

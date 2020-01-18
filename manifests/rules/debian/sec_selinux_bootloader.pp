@@ -41,12 +41,12 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
           withpath => false,
         }
         if(!defined(Package['selinux-basics'])) {
-          package {'selinux-basics':
+          package { 'selinux-basics':
             ensure => installed,
           }
         }
         if(!defined(Package['selinux-policy-default'])){
-          package {'selinux-policy-default':
+          package { 'selinux-policy-default':
             ensure => installed,
           }
         }
@@ -54,6 +54,7 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
           command => 'selinux-activate',
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
           before  => Exec['selinux-grub-config'],
+          require => Package['selinux-policy-default', 'selinux-basics']
         }
       } else {
         echo { 'bootloader-selinux-not-activates':

@@ -28,14 +28,18 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
   String $log_level = ''
 ) {
   if($enforce) {
-    if(
-      ($facts['security_baseline']['selinux']['bootloader'] == false) and
-      ($facts['operatingsystem'] == 'Debian')
-    ) {
-      exec { 'activate selinux':
-        command => 'selinux-activate',
-        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-        before  => Exec['selinux-grub-config'],
+    if($facts['operatingsystem'] == 'Debian') {
+      if(
+        ($facts['security_baseline']['selinux']['bootloader'] == false) or
+        (!((has_key($facts, 'security_baseline')) and
+          (has_key($facts['security_baseline'], 'selinux')) and
+          (has_key($facts['security_baseline']['selinux'], 'bootloader'))))
+      ) {
+        exec { 'activate selinux':
+          command => 'selinux-activate',
+          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+          before  => Exec['selinux-grub-config'],
+        }
       }
     }
     file_line { 'cmdline_definition':

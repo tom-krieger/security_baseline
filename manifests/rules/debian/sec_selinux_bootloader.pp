@@ -40,6 +40,16 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
           loglevel => 'warning',
           withpath => false,
         }
+        if(!defined(Package['selinux-basics'])) {
+          package {'selinux-basics':
+            ensure => installed,
+          }
+        }
+        if(!defined(Package['selinux-policy-default'])){
+          package {'selinux-policy-default':
+            ensure => installed,
+          }
+        }
         exec { 'activate selinux':
           command => 'selinux-activate',
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],

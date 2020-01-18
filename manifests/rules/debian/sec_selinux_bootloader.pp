@@ -35,10 +35,21 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
           (has_key($facts['security_baseline'], 'selinux')) and
           (has_key($facts['security_baseline']['selinux'], 'bootloader'))))
       ) {
+        echo { 'bootloader-selinux-activates':
+          message  => 'Running selinux-activate',
+          loglevel => 'warning',
+          withpath => false,
+        }
         exec { 'activate selinux':
           command => 'selinux-activate',
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
           before  => Exec['selinux-grub-config'],
+        }
+      } else {
+        echo { 'bootloader-selinux-not-activates':
+          message  => 'Not running selinux-activate',
+          loglevel => 'warning',
+          withpath => false,
         }
       }
     }

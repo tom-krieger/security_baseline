@@ -28,42 +28,39 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
   String $log_level = ''
 ) {
   if($enforce) {
-    if($facts['operatingsystem'] == 'Debian') {
-      if(
-        ($facts['security_baseline']['selinux']['bootloader'] == false) or
-        (!((has_key($facts, 'security_baseline')) and
-          (has_key($facts['security_baseline'], 'selinux')) and
-          (has_key($facts['security_baseline']['selinux'], 'bootloader'))))
-      ) {
-        echo { 'bootloader-selinux-activates':
-          message  => 'Running selinux-activate',
-          loglevel => 'warning',
-          withpath => false,
-        }
-        if(!defined(Package['selinux-basics'])) {
-          package { 'selinux-basics':
-            ensure => installed,
-          }
-        }
-        if(!defined(Package['selinux-policy-default'])){
-          package { 'selinux-policy-default':
-            ensure => installed,
-          }
-        }
-        exec { 'activate selinux':
-          command => 'selinux-activate',
-          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          before  => Exec['selinux-grub-config'],
-          require => Package['selinux-policy-default', 'selinux-basics']
-        }
-      } else {
-        echo { 'bootloader-selinux-not-activates':
-          message  => 'Not running selinux-activate',
-          loglevel => 'warning',
-          withpath => false,
+    if(
+      (($facts['security_baseline']['selinux']['bootloader'] == false)) and
+      ($facts['operatingsystem'] == 'Debian')
+    ) {
+      echo { 'bootloader-selinux-activates':
+        message  => 'Running selinux-activate',
+        loglevel => 'warning',
+        withpath => false,
+      }
+      if(!defined(Package['selinux-basics'])) {
+        package { 'selinux-basics':
+          ensure => installed,
         }
       }
+      if(!defined(Package['selinux-policy-default'])){
+        package { 'selinux-policy-default':
+          ensure => installed,
+        }
+      }
+      exec { 'activate selinux':
+        command => 'selinux-activate',
+        path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+        before  => Exec['selinux-grub-config'],
+        require => Package['selinux-policy-default', 'selinux-basics']
+      }
+    } else {
+      echo { 'bootloader-selinux-not-activates':
+        message  => 'Not running selinux-activate',
+        loglevel => 'warning',
+        withpath => false,
+      }
     }
+
     file_line { 'cmdline_definition':
       line   => 'GRUB_CMDLINE_LINUX_DEFAULT="quiet"',
       path   => '/etc/default/grub',

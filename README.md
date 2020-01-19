@@ -396,6 +396,10 @@ Currently the module is tested with RedHat 6, 7, 8, CentOS 6, 7, 8, Suse SLES 12
 
 More testing is needed as for every supported OS there are different setups in the wild and some of them might not be covered. 
 
+### Auditd
+
+Auditd is configured with immutal rules. This meens that changing rules will need a *reboot* to make the new rules effective.
+
 ## Development
 
 Contributions are welcome in any form, pull requests, and issues should be filed via GitHub.

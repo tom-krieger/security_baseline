@@ -150,7 +150,7 @@ class security_baseline (
     }
   }
 
-  $reboot_classes = [
+  $rebooting_classes = [
     'Class[security_baseline::rules::redhat::sec_selinux_bootloader]',
     'Class[security_baseline::rules::common::sec_selinux_state]',
     'Class[security_baseline::rules::common::sec_selinux_policy]'
@@ -161,7 +161,7 @@ class security_baseline (
       apply     => 'finished',
       timeout   => 120,
       message   => 'forced reboot by Puppet',
-      subscribe => $reboot_classes,
+      subscribe => $rebooting_classes,
     }
   }
 }

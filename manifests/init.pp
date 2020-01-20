@@ -140,9 +140,10 @@ class security_baseline (
   }
 
   if($reboot) {
-    reboot { 'reboot if necessary':
+    reboot { 'after_run':
       apply     => 'finish',
       timeout   => 120,
+      message   => 'forced reboot by Puppet',
       subscribe => $classes,
     }
   }

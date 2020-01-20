@@ -131,12 +131,11 @@ class security_baseline (
     }
   }
 
-  $classes = $reboot_classes.join(',')
   echo {'reboot-classes':
-    message  => $classes,
+    message  => $reboot_classes,
     loglevel => 'info',
     withpath => false,
-    }
+  }
 
   $rules.each |$rule_title, $rule_data| {
     ::security_baseline::sec_check{ $rule_title:

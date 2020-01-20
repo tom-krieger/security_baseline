@@ -134,7 +134,17 @@ class security_baseline (
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 
-  $classes = $reboot_classes.map |$key, $value| { "'Class[${value['class']}]'" }
+  $classes = $reboot_classes.map |$key, $value| {
+    $arr = capitalize($value['class'].split('::'))
+    $class = $arr.join('::')
+    "'Class[${class}]'"
+  }
+
+  echo { 'reboot classes':
+    message  => $classes,
+    loglevel => 'info',
+    withpath => false,
+  }
 
   if ($reporting_type == 'fact') {
     concat::fragment { 'finish':
@@ -161,7 +171,7 @@ class security_baseline (
       apply     => 'finished',
       timeout   => 120,
       message   => 'forced reboot by Puppet',
-      subscribe => $rebooting_classes,
+      subscribe => $classes,
     }
   }
 }

@@ -66,6 +66,18 @@ class security_baseline::rules::redhat::sec_pam_passwd_sha512 (
         }
 
       }
+    } elsif($sha512) {
+      $services.each | $service | {
+        pam { "pam-${service}-sha512-sufficient":
+          ensure    => present,
+          service   => $service,
+          type      => 'password',
+          control   => 'sufficient',
+          module    => 'pam_unix.so',
+          arguments => 'sha512',
+          position  => 'after *[type="password" and module="pam_unix.so" and control="requisite"]',
+        }
+      }
     }
   } else {
     unless ($facts['security_baseline']['pam']['sha512']['status']) {

@@ -69,7 +69,8 @@ class security_baseline::rules::redhat::sec_pam_old_passwords (
 
       $services.each | $service | {
         if($sha512) {
-          $arguments = ["remember=${oldpasswords}", 'shadow', 'sha512', 'try_first_pass', 'use_authtok']
+          $arguments = ["remember=${oldpasswords}", 'shadow', 'try_first_pass', 'use_authtok']
+          # $arguments = ["remember=${oldpasswords}", 'shadow', 'sha512', 'try_first_pass', 'use_authtok']
         } else {
           $arguments = ["remember=${oldpasswords}", 'shadow', 'try_first_pass', 'use_authtok']
         }

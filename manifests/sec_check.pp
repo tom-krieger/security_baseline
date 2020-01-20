@@ -63,6 +63,7 @@ define security_baseline::sec_check (
   Boolean $active             = true,
   Integer $level              = 1,
   Boolean $scored             = true,
+  Boolean $reboot             = false,
   Optional[Hash] $config_data = {},
 ) {
 

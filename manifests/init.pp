@@ -125,7 +125,26 @@ class security_baseline (
     }
   }
 
-  create_resources('::security_baseline::sec_check', $rules)
+  $reboot_classes = $rules.reduce |$name, $data| {
+    if has_key($data, 'reboot') and $data['reboot'] == true {
+      [$data['class']]
+    }
+  }
+
+  $classes = $reboot_classes.join(',')
+  echo {'reboot-classes':
+    message  => $classes,
+    loglevel => 'info',
+    withpath => false,
+    }
+
+  $rules.each |$rule_title, $rule_data| {
+    ::security_baseline::sec_check{ $rule_title:
+      * => $rule_data,
+    }
+  }
+
+  # create_resources('::security_baseline::sec_check', $rules)
 
   if ($reporting_type == 'fact') {
     concat::fragment { 'finish':

@@ -139,12 +139,7 @@ class security_baseline (
     withpath => false,
   }
 
-  $rules.each |$rule_title, $rule_data| {
-    security_baseline::sec_check { $rule_title:
-      * => $rule_data,
-    }
-  }
-  # create_resources('::security_baseline::sec_check', $rules)
+  create_resources('::security_baseline::sec_check', $rules)
 
   if ($reporting_type == 'fact') {
     concat::fragment { 'finish':

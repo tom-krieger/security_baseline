@@ -171,7 +171,7 @@ class security_baseline (
       apply     => 'finished',
       timeout   => 120,
       message   => 'forced reboot by Puppet',
-      subscribe => $rebooting_classes,
+      subscribe => $classes,
     }
   }
 }

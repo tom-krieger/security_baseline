@@ -83,6 +83,10 @@
     {
       "name": "puppetlabs-mount_providers",
       "version_requirement": "2.0.1"
+    },
+    {
+      "name": "puppetlabs-reboot",
+      "version_requirement": "2.3.0"
     }
   ],
   "operatingsystem_support": [

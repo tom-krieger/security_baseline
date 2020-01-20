@@ -51,6 +51,10 @@
 # @param fact_upload_command
 #    Command to use to upload facts to Puppet master
 #
+# @param reboot
+#    If set to true and tehre are classes with the reboot flag set to true a reboot will
+#    be performef if these classed fire
+#
 # @example
 #   include security_baseline
 #
@@ -69,6 +73,7 @@ class security_baseline (
   String $sgid_fact_file                      = '/opt/puppetlabs/facter/facts.d/security_baseline_sgid_programs.yaml',
   Boolean $update_postrun_command             = true,
   String $fact_upload_command                 = '/usr/local/bin/puppet facts upload',
+  Boolean $reboot                             = false,
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
@@ -125,17 +130,21 @@ class security_baseline (
     }
   }
 
-  $reboot_classes = $rules.filter |$name, $data| {
-    if has_key($data, 'reboot') and $data['reboot'] == true {
-      $data['class']
-    }
-  }
+  $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 
   $classes = $reboot_classes.map |$key, $value| { $value['class'] }
-  echo {'reboot-classes':
+  echo {'reboot-classes found':
     message  => $classes,
     loglevel => 'info',
     withpath => false,
+  }
+
+  if($reboot) {
+    reboot { 'reboot if necessary':
+      apply     => 'finish',
+      tieout    => 120,
+      subscribe => $classes,
+    }
   }
 
   $rules.each |$rule_title, $rule_data| {

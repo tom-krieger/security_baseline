@@ -34,6 +34,10 @@
 # @param log_level
 #    Loglevel for the message
 #
+# @param reboot
+#    If set to true and global reboot is allowed a class firing with this flag
+#    will trigger a reboot after catalog apply has finished
+#
 # @param config_data
 #    Additional configuration data, especially if external security modules are used to provide configuration data
 #    to those modules

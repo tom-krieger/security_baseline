@@ -13,12 +13,14 @@
     * [Cronjobs](#cronjobs)
     * [Reporting](#reporting)
     * [Example Hiera files](#example-hiera-files)
-    * [Automatic reboot](#automatic-reboot)
 3. [Checking facts](#checking-facts)
 3. [Extend the security baseline](#extend-the-security-baseline)
 4. [Usage](#usage)
 5. [Reference](#reference)
 6. [Limitations](#limitations)
+    * [Auditd](#auditd)
+    * [SELinux and Apparmor](#selinux-and-apparmor)
+    * [Automatic reboot](#automatic-reboot)
 7. [Development](#development)
 8. [Changelog](#changelog)
 9. [Contributors](#contributors)
@@ -191,10 +193,6 @@ class { 'security_baseline':
 
 The `data` directory contains example Hiera data for various operating systems. Please do not use these files without reviewing them *carefully*. The configuration in these files may or may not fit your needs or can even crash your systems. 
 > *You are strongly advised to review the files before using them and adapt them to your needs.*
-
-### Automatic reboot
-
-There's no built-in reboot when particular classes are doing changes , e. g. enabling SELinux. As servers can run in a production environment it is not desireable to have an automatic reboot during a Puppet run. That's the reason you have to decide yourself if and when to reboot your machines.
 
 ## Checking facts
 
@@ -399,6 +397,14 @@ More testing is needed as for every supported OS there are different setups in t
 ### Auditd
 
 Auditd is configured with immutal rules. This meens that changing rules will need a *reboot* to make the new rules effective.
+
+### SELinux and Apparmor
+
+SELinux and AppArmor are - if configured - activated while this module is applied. To make them effective a *reboot* is needed.
+
+### Automatic reboot
+
+There's no built-in reboot when particular classes are doing changes , e. g. enabling SELinux. As servers can run in a production environment it is not desireable to have an automatic reboot during a Puppet run. That's the reason you have to decide yourself if and when to reboot your machines.
 
 ## Development
 

@@ -3247,7 +3247,7 @@ security_baseline::rules:
         - opasswd
         - status
       fact_value: true
-    message: 'Rule 5.4.3. The last 5 passwords shopud not be reused.'
+    message: 'Rule 5.4.3. The last 5 passwords should not be reused.'
     log_level: warning
     config_data:
       oldpasswords: 10

@@ -21,6 +21,7 @@
     * [Auditd](#auditd)
     * [SELinux and Apparmor](#selinux-and-apparmor)
     * [Automatic reboot](#automatic-reboot)
+7. [Credits](#credits)
 7. [Development](#development)
 8. [Changelog](#changelog)
 9. [Contributors](#contributors)
@@ -29,8 +30,6 @@
 ## Description
 
 Define a complete security baseline and monitor the baseline's rules. The definition of the baseline should be done in Hiera. The purpose of the module is to give the ability to setup a complete security baseline which not necessarily have to stick to industry security guides like the CIS benchmarks.
-
-This project is highly inspired by the [fervid/secure_linux_cis](https://forge.puppet.com/fervid/secure_linux_cis) module from Puppet Forge. 
 
 The `security_baseline` module does not use bechmark numbers for the class names of the rules. These numbers change from OS version to OS version. One main purpose is to ensure this module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
 
@@ -405,6 +404,10 @@ SELinux and AppArmor are - if configured - activated while this module is applie
 ### Automatic reboot
 
 There's no built-in reboot when particular classes are doing changes , e. g. enabling SELinux. As servers can run in a production environment it is not desireable to have an automatic reboot during a Puppet run. That's the reason you have to decide yourself if and when to reboot your machines.
+
+## Credits
+
+This project is highly inspired by the [fervid/secure_linux_cis](https://forge.puppet.com/fervid/secure_linux_cis) module from Puppet Forge. 
 
 ## Development
 

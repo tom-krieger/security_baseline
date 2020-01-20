@@ -7,7 +7,6 @@
 
 _Public Classes_
 
-* [`security_baseline`](#security_baseline): Security baseline enforcement and monitoring
 * [`security_baseline::auditd_suid_rules_cron`](#security_baselineauditd_suid_rules_cron): Create a cron job to search binaries with s-bit
 * [`security_baseline::config`](#security_baselineconfig): Configuration stuff
 * [`security_baseline::services`](#security_baselineservices): Additional services
@@ -434,136 +433,6 @@ _Private Classes_
 
 ## Classes
 
-### security_baseline
-
-Define a complete security baseline and monitor the rules. The definition of the baseline can be done in Hiera.
-The purpose of the module is to give the ability to setup complete security baseline which not necessarily have to stick
-to an industry security guide like the CIS benchmarks.
-One main purpose is to ensure the module can be extended by further security settings and monitorings without changing the code of
-this module.
-
-The easiest way to use the module is to put all rule data into a hiera file. For more information please coinsult the README file.
-
-#### Examples
-
-##### 
-
-```puppet
-include security_baseline
-```
-
-#### Parameters
-
-The following parameters are available in the `security_baseline` class.
-
-##### `baseline_version`
-
-Data type: `String`
-
-Version of the security ruleset
-
-##### `rules`
-
-Data type: `Hash`
-
-Hash containing the whole ruleset
-
-##### `debug`
-
-Data type: `Boolean`
-
-Switch debug output on
-
-Default value: `false`
-
-##### `log_info`
-
-Data type: `Boolean`
-
-Switch logging with level info on
-
-Default value: `false`
-
-##### `logfile`
-
-Data type: `String`
-
-Logfile to write messages to
-
-Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml'
-
-##### `auditd_suid_include`
-
-Data type: `Array`
-
-Directories to search for suid and sgid programs. Can not be set together with auditd_suid_exclude
-
-Default value: []
-
-##### `auditd_suid_exclude`
-
-Data type: `Array`
-
-Directories to exclude from search for suid and sgid programs. Can not be set together with auditd_suid_include
-
-Default value: []
-
-##### `auditd_rules_file`
-
-Data type: `String`
-
-Files to write the auditd rules facts into.
-
-Default value: '/etc/audit/rules.d/sec_baseline_auditd.rules'
-
-##### `reporting_type`
-
-Data type: `Enum['fact', 'csv_file']`
-
-Select to type of reporting. ca currently be set to csv or fact.
-
-Default value: 'fact'
-
-##### `auditd_rules_fact_file`
-
-Data type: `String`
-
-The file where to store the facts for auditd rules
-
-Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml'
-
-##### `suid_fact_file`
-
-Data type: `String`
-
-The file where to store the suid programms
-
-Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_suid_programs.yaml'
-
-##### `sgid_fact_file`
-
-Data type: `String`
-
-The file where to store the sgid programs
-
-Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_sgid_programs.yaml'
-
-##### `update_postrun_command`
-
-Data type: `Boolean`
-
-Update Puppet agent post run command
-
-Default value: `true`
-
-##### `fact_upload_command`
-
-Data type: `String`
-
-Command to use to upload facts to Puppet master
-
-Default value: '/usr/local/bin/puppet facts upload'
-
 ### security_baseline::auditd_suid_rules_cron
 
 Create a fact with all auditd rules needed to monitor the usage of s-bit programs.
@@ -887,6 +756,15 @@ Data type: `String`
 Loglevel for the message
 
 Default value: 'warning'
+
+##### `reboot`
+
+Data type: `Boolean`
+
+If set to true and global reboot is allowed a class firing with this flag
+will trigger a reboot after catalog apply has finished
+
+Default value: `false`
 
 ##### `config_data`
 

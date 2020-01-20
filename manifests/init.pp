@@ -131,8 +131,9 @@ class security_baseline (
     }
   }
 
+  $classes = $reboot_classes.map |$key, $value| { $value['class'] }
   echo {'reboot-classes':
-    message  => $reboot_classes,
+    message  => $classes,
     loglevel => 'info',
     withpath => false,
   }

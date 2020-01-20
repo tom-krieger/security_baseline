@@ -199,7 +199,7 @@ define security_baseline::sec_check (
 
       # internal classes are supposed to start with ::security_baseline::rules
       # logging is done within this resource and no concat target is needed
-      if($class =~ /^::security_baseline::rules::/) {
+      if($class =~ /^::security_baseline::rules::/) or ($class =~ /^security_baseline::rules::/) {
 
         $data = {
           'enforce'   => $enforce,

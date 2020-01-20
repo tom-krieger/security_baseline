@@ -137,7 +137,7 @@ class security_baseline (
   $classes = $reboot_classes.map |$key, $value| {
     $arr = capitalize($value['class'].split('::'))
     $class = $arr.join('::')
-    "'${class}'"
+    $class
   }
 
   $classlist = $classes.join(',')

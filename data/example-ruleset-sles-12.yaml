@@ -9,6 +9,8 @@ security_baseline::reporting_type: fact
 security_baseline::logfile: /opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml
 security_baseline::auditd_rules_file: /etc/audit/rules.d/sec_baseline_auditd.rules
 security_baseline::auditd_rules_fact_file: /opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml
+security_baseline::reboot: false
+security_baseline::reboot_timeout: 60
 security_baseline::rules:
   '1.1.1.1':
     rulename: 'cramfs'
@@ -624,6 +626,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 1.6.1.1. All linux bootloader entries should enforce selinux.'
     log_level: 'warning'
+    reboot: true
   '1.6.1.2':
     rulename: 'selinux'
     active: false
@@ -638,6 +641,7 @@ security_baseline::rules:
       fact_value: 'enforcing'
     message: 'Rule 1.6.1.2. Selinux should run in enforcing mode.'
     log_level: 'warning'
+    reboot: true
   '1.6.1.3':
     rulename: 'selinux-policy'
     active: false
@@ -652,6 +656,7 @@ security_baseline::rules:
       fact_value: 'targeted'
     message: 'Rule 1.6.1.3. Selinux policy should be defined.'
     log_level: 'warning'
+    reboot: true
   '1.6.1.4':
     rulename: 'unconf-daemons'
     active: false
@@ -682,6 +687,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 1.6.2.1. All linux bootloader entries should enforce apparmor.'
     log_level: 'warning'
+    reboot: true
   '1.6.2.2':
     rulename: 'apparmor-profiles'
     active: true
@@ -698,6 +704,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 1.6.2.2. AppArmor profiles should be enforcing.'
     log_level: 'warning'
+    reboot: true
   '1.6.3':
     rulename: 'selinux-apparmor-pkg'
     active: true
@@ -1928,6 +1935,7 @@ security_baseline::rules:
       fact_value: ''
     message: 'Rule 4.1.1. Auditd should be initialized.'
     log_level: 'warning'
+    reboot: true
     config_data:
       buffer_size: 8192
   '4.1.1.1':
@@ -1946,6 +1954,7 @@ security_baseline::rules:
       fact_value: 32
     message: 'Rule 4.1.1.1. Auditd should have a log storage size of 32 MB.'
     log_level: 'warning'
+    reboot: true
     config_data:
       max_log_size: 32
   '4.1.1.2':
@@ -1964,6 +1973,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.1.2. Auditd setting for action_mail_acct and/or admin_space_left_action and/or space_left_action are not correct.'
     log_level: 'warning'
+    reboot: true
     config_data:
       space_left_action: email
       action_mail_acct: root
@@ -1984,6 +1994,7 @@ security_baseline::rules:
       fact_value: keep_logs
     message: 'Rule 4.1.1.3. Auditd setting for max_log_file_action is not correct.'
     log_level: 'warning'
+    reboot: true
     config_data:
       max_log_file_action: keep_logs
   '4.1.2':
@@ -2002,6 +2013,7 @@ security_baseline::rules:
       fact_value: enabled
     message: 'Rule 4.1.2. Auditd should be enabled and running.'
     log_level: 'warning'
+    reboot: true
   '4.1.3':
     rulename: 'auditd-process'
     active: true
@@ -2018,6 +2030,7 @@ security_baseline::rules:
       fact_value: 'audit=1'
     message: 'Rule 4.1.3. Auditd process should be configured in grub.'
     log_level: 'warning'
+    reboot: true
   '4.1.4':
     rulename: 'auditd-time-change'
     active: true
@@ -2034,6 +2047,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.4. Auditd should have a rule to collect events changing date and time.'
     log_level: 'warning'
+    reboot: true
   '4.1.5':
     rulename: 'auditd-identity'
     active: true
@@ -2050,6 +2064,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.5. Auditd should have a rule to collect events changing identity.'
     log_level: 'warning'
+    reboot: true
   '4.1.6':
     rulename: 'auditd-locale'
     active: true
@@ -2066,6 +2081,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.6. Auditd should have a rule to ccollect events modifying network environment.'
     log_level: 'warning'
+    reboot: true
   '4.1.7':
     rulename: 'auditd-mac-policy'
     active: true
@@ -2082,6 +2098,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.7. Auditd should have a rule to collect events changing mandatory access controls.'
     log_level: 'warning'
+    reboot: true
   '4.1.8':
     rulename: 'auditd-logins'
     active: true
@@ -2098,6 +2115,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.8. Auditd should have a rule to collect login and logout events.'
     log_level: 'warning'
+    reboot: true
   '4.1.9.1':
     rulename: 'auditd-session'
     active: true
@@ -2114,6 +2132,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.9.1. Auditd should have a rule to collect session initiation events.'
     log_level: 'warning'
+    reboot: true
   '4.1.9.2':
     rulename: 'auditd-session-logins'
     active: true
@@ -2130,6 +2149,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.9.2. Auditd should have a rule to collect session initiation events (logins).'
     log_level: 'warning'
+    reboot: true
   '4.1.10':
     rulename: 'auditd-perm-mod'
     active: true
@@ -2146,6 +2166,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.10. Auditd should have a rule to collect discretionary access control permission modification events.'
     log_level: 'warning'
+    reboot: true
   '4.1.11':
     rulename: 'auditd-access'
     active: true
@@ -2162,6 +2183,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.11. Auditd should have a rule to collect unsuccessful unauthorized file access attempts.'
     log_level: 'warning'
+    reboot: true
   '4.1.12':
     rulename: 'auditd-priv-cmds'
     active: true
@@ -2178,6 +2200,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.12. Auditd should have a rule to collect use of privileged commands.'
     log_level: 'warning'
+    reboot: true
   '4.1.13':
     rulename: 'auditd-mounts'
     active: true
@@ -2194,6 +2217,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.13. Auditd should have a rule to collect successful file system mounts.'
     log_level: 'warning'
+    reboot: true
   '4.1.14':
     rulename: 'auditd-delete'
     active: true
@@ -2210,6 +2234,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.14. Auditd should have a rule to collect file deletion events by users.'
     log_level: 'warning'
+    reboot: true
   '4.1.15':
     rulename: 'auditd-scope'
     active: true
@@ -2226,6 +2251,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.15. Auditd should have a rule to collect unsuccessful unauthorized file access attempts.'
     log_level: 'warning'
+    reboot: true
   '4.1.16':
     rulename: 'auditd-actions'
     active: true
@@ -2242,6 +2268,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.11. Auditd should have a rule to collect file deletion events by users.'
     log_level: 'warning'
+    reboot: true
   '4.1.17':
     rulename: 'auditd-modules'
     active: true
@@ -2258,6 +2285,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.17. Auditd should have a rule to collect kernel module loading and unloading events.'
     log_level: 'warning'
+    reboot: true
   '4.1.18':
     rulename: 'auditd-immutable'
     active: true
@@ -2274,6 +2302,7 @@ security_baseline::rules:
       fact_value: true
     message: 'Rule 4.1.18. Auditd configutation should be immutable.'
     log_level: 'warning'
+    reboot: true
   '4.2.1.1':
     rulename: 'rsyslog-service'
     active: true

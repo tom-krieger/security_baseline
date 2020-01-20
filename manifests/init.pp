@@ -161,9 +161,9 @@ class security_baseline (
   }
 
   $rebooting_classes = [
-    'Class[Security_baseline::Rules::redhat::Sec_selinux_bootloader]',
-    'Class[Security_baseline::Rules::common::Sec_selinux_state]',
-    'Class[Security_baseline::Rules::common::Sec_selinux_policy]'
+    'Class[Security_baseline::Rules::Redhat::Sec_selinux_bootloader]',
+    'Class[Security_baseline::Rules::Common::Sec_selinux_state]',
+    'Class[Security_baseline::Rules::Common::Sec_selinux_policy]'
   ]
 
   if($reboot) {

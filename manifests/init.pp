@@ -139,15 +139,9 @@ class security_baseline (
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 
   $classes = $reboot_classes.map |$key, $value| {
-    $arr = capitalize($value['class'].split('::'))
-    $class = $arr.join('::')
-    $class
-  }
-
-  echo { 'reboot classes':
-    message  => $classlist,
-    loglevel => 'info',
-    withpath => false,
+    capitalize($value['class'].split('::')).join('::')
+    # $class = $arr.join('::')
+    # $class
   }
 
   if ($reporting_type == 'fact') {

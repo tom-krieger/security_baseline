@@ -137,11 +137,13 @@ class security_baseline (
   $classes = $reboot_classes.map |$key, $value| {
     $arr = capitalize($value['class'].split('::'))
     $class = $arr.join('::')
-    "'Class[${class}]'"
+    "'${class}'"
   }
 
+  $classlist = $classes.join(',')
+
   echo { 'reboot classes':
-    message  => $classes,
+    message  => $classlist,
     loglevel => 'info',
     withpath => false,
   }
@@ -171,7 +173,7 @@ class security_baseline (
       apply     => 'finished',
       timeout   => 120,
       message   => 'forced reboot by Puppet',
-      subscribe => $classes,
+      subscribe => Class[$classlist],
     }
   }
 }

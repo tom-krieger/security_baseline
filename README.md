@@ -395,15 +395,43 @@ More testing is needed as for every supported OS there are different setups in t
 
 ### Auditd
 
-Auditd is configured with immutal rules. This meens that changing rules will need a *reboot* to make the new rules effective.
+Auditd is configured with immutal rules. This meens that changing rules will require a *reboot* to make the new rules effective.
 
 ### SELinux and Apparmor
 
-SELinux and AppArmor are - if configured - activated while this module is applied. To make them effective a *reboot* is needed.
+SELinux and AppArmor are - if configured - activated while this module is applied. To make them effective a *reboot* is required.
 
 ### Automatic reboot
 
-There's no built-in reboot when particular classes are doing changes , e. g. enabling SELinux. As servers can run in a production environment it is not desireable to have an automatic reboot during a Puppet run. That's the reason you have to decide yourself if and when to reboot your machines.
+Automatic reboots might be dangerous as servers would be rebooted if one of the classes subscribed for reboot takes any action. But some changes need a reboot, e. g. enabling SELinux or changing auditd rules. As servers in production environments may not be rebooted you have to choose if you will allow reboots by settings a global parameter *security_baseline::reboot* and you can add a parameter reboot to each rule.
+
+The global *reboot* parameter enables or disables reboots regardless the settings rules have. The *reboot* parameter given with a rule will subscribe the class to the reboot module. If the rule takes any action a reboot will be triggered.
+
+The reboot timeout will shedule a reboot withinh the given time after applying the catalogue finished.
+
+```hiera
+---
+security_baseline::reboot: true
+security_baseline::reboot_timeout: 120
+security_baseline::rules:
+  '1.6.1.1':
+    rulename: 'selinux-bootloader'
+    active: true
+    scored: true
+    level: 2
+    description: 'Configure SELINUX to be enabled at boot time and verify that it has not been overwritten by the grub boot parameters.'
+    enforce: true
+    class: 'security_baseline::rules::redhat::sec_selinux_bootloader'
+    check:
+      fact_hash: security_baseline
+      fact_name: 
+        - selinux
+        - bootloader
+      fact_value: true
+    message: 'Rule 1.6.1.1. All linux bootloader entries should enforce selinux.'
+    log_level: 'warning'
+    reboot: true
+```
 
 ## Credits
 

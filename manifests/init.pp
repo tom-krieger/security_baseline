@@ -55,6 +55,9 @@
 #    If set to true and there are classes with the reboot flag set to true a reboot will
 #    be performef if these classed fire
 #
+# @param reboot_timeout
+#    Timeout until reboot will take place
+#
 # @example
 #   include security_baseline
 #
@@ -74,6 +77,7 @@ class security_baseline (
   Boolean $update_postrun_command             = true,
   String $fact_upload_command                 = '/usr/local/bin/puppet facts upload',
   Boolean $reboot                             = false,
+  Integer $reboot_timeout                     = 60,
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
@@ -140,8 +144,6 @@ class security_baseline (
     $class
   }
 
-  $classlist = $classes.join(',')
-
   echo { 'reboot classes':
     message  => $classlist,
     loglevel => 'info',
@@ -162,18 +164,12 @@ class security_baseline (
     }
   }
 
-  $rebooting_classes = [
-    'Class[Security_baseline::Rules::Redhat::Sec_selinux_bootloader]',
-    'Class[Security_baseline::Rules::Common::Sec_selinux_state]',
-    'Class[Security_baseline::Rules::Common::Sec_selinux_policy]'
-  ]
-
   if($reboot) {
     reboot { 'after_run':
-      apply     => 'finished',
-      timeout   => 120,
+      timeout   => $reboot_timeout,
       message   => 'forced reboot by Puppet',
       subscribe => Class[$classes],
+      apply     => 'finished',
     }
   }
 }

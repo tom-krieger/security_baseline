@@ -52,7 +52,7 @@
 #    Command to use to upload facts to Puppet master
 #
 # @param reboot
-#    If set to true and tehre are classes with the reboot flag set to true a reboot will
+#    If set to true and there are classes with the reboot flag set to true a reboot will
 #    be performef if these classed fire
 #
 # @example
@@ -142,7 +142,7 @@ class security_baseline (
   if($reboot) {
     reboot { 'reboot if necessary':
       apply     => 'finish',
-      tieout    => 120,
+      timeout   => 120,
       subscribe => $classes,
     }
   }

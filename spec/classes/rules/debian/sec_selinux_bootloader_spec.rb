@@ -139,11 +139,11 @@ describe 'security_baseline::rules::debian::sec_selinux_bootloader' do
                   'loglevel' => 'warning',
                   'withpath' => false,
                 )
-              is_expected.to contain_package('selinux-basics').with('ensure' => 'installed',)
-              is_expected.to contain_package('selinux-policy-default').with('ensure' => 'installed',)
+              is_expected.to contain_package('selinux-basics').with('ensure' => 'installed')
+              is_expected.to contain_package('selinux-policy-default').with('ensure' => 'installed')
             else
-              is_expected.not_to contain_package('selinux-basics').with('ensure' => 'installed',)
-              is_expected.not_to contain_package('selinux-policy-default').with('ensure' => 'installed',)
+              is_expected.not_to contain_package('selinux-basics').with('ensure' => 'installed')
+              is_expected.not_to contain_package('selinux-policy-default').with('ensure' => 'installed')
               is_expected.to contain_echo('bootloader-selinux-not-activates')
                 .with(
                   'message'  => 'Not running selinux-activate',
@@ -186,7 +186,7 @@ describe 'security_baseline::rules::debian::sec_selinux_bootloader' do
                 'value'  => '1',
               )
               .that_notifies('Exec[selinux-grub-config]')
-              
+
             is_expected.not_to contain_echo('bootloader-selinux')
           else
             is_expected.not_to contain_file_line('cmdline_definition')

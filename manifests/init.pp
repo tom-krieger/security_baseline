@@ -139,15 +139,6 @@ class security_baseline (
     withpath => false,
   }
 
-  if($reboot) {
-    reboot { 'after_run':
-      apply     => 'finish',
-      timeout   => 120,
-      message   => 'forced reboot by Puppet',
-      subscribe => $classes,
-    }
-  }
-
   $rules.each |$rule_title, $rule_data| {
     security_baseline::sec_check { $rule_title:
       * => $rule_data,
@@ -166,6 +157,15 @@ class security_baseline (
       content => epp('security_baseline/csv_file_end.epp', {}),
       target  => $logfile,
       order   => 9999,
+    }
+  }
+
+  if($reboot) {
+    reboot { 'after_run':
+      apply     => 'finished',
+      timeout   => 120,
+      message   => 'forced reboot by Puppet',
+      subscribe => $classes,
     }
   }
 }

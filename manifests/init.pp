@@ -130,6 +130,8 @@ class security_baseline (
     }
   }
 
+  create_resources('::security_baseline::sec_check', $rules)
+
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 
   $classes = $reboot_classes.map |$key, $value| { "Class[${value['class']}]" }
@@ -138,8 +140,6 @@ class security_baseline (
     loglevel => 'info',
     withpath => false,
   }
-
-  create_resources('::security_baseline::sec_check', $rules)
 
   if ($reporting_type == 'fact') {
     concat::fragment { 'finish':

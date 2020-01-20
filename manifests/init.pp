@@ -126,7 +126,7 @@ class security_baseline (
   }
 
   $reboot_classes = $rules.filter |$name, $data| {
-    if has_key($data[1], 'reboot') and $data[1]['reboot'] == true {
+    if has_key($data, 'reboot') and $data['reboot'] == true {
       $data['class']
     }
   }

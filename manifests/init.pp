@@ -134,7 +134,7 @@ class security_baseline (
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 
-  $classes = $reboot_classes.map |$key, $value| { "Class[${value['class']}]" }
+  $classes = $reboot_classes.map |$key, $value| { "'Class[${value['class']}]'" }
   echo {'reboot-classes found':
     message  => $classes,
     loglevel => 'info',

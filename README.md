@@ -408,7 +408,7 @@ More testing is needed as for every supported OS there are different setups in t
 
 ### Auditd
 
-Auditd is normally configured with immutal rules. This meens that changing rules will require a *reboot* to make the new rules effective.
+Auditd is normally configured with immutable rules. This meens that changing rules will require a *reboot* to make the new rules effective.
 
 ### SELinux and Apparmor
 

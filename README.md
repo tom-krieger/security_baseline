@@ -31,15 +31,17 @@
 
 Define a complete security baseline and monitor the baseline's rules. The definition of the baseline should be done in Hiera. The purpose of the module is to give the ability to setup a complete security baseline which not necessarily have to stick to industry security guides like the CIS benchmarks.
 
-The `security_baseline` module does not use bechmark numbers for the class names of the rules. These numbers change from OS version to OS version. One main purpose is to ensure this module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
+The `security_baseline` module does not use bechmark numbers for the class names of the rules. These numbers change from OS version to OS version and even from benchmark version to benchmark version. One main purpose is to ensure this module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
 
 This module also has the ability to create compliance reports. The reports can be created as a Puppet fact uploaded to the Puppet Master or as a CSV file which will remain on the servers for later collection.
 
 ## Security baseline
 
-A security baseline describes how servers in your environment are setup with a secure configuration. The baseline may be different for server classes like database servers, application or web servers. A security baseline can be based on a CIS benchmark but can include more rules specific to your environment. But depending on server classes not all rules of a CIS benchmark will be used. Sometimes the benchmarks contain different ways to achieve a goal, e.g. with RedHat 8 you can use firewalld, iptables or nftables to setup a firewall. Surely it makes no sense to have all of them running in parallel.
+A security baseline describes how servers in your environment are setup with a secure configuration. The baseline may be different each server class like database servers, application or web servers. 
 
-For this module level 1 and level 2 server tests from the CIS benchmarks below are taken into account.
+A security baseline can be based on a CIS benchmark but can include more rules specific to your environment. But depending on server classes not all rules of a CIS benchmark will be used. Sometimes the benchmarks contain different ways to achieve a goal, e.g. with RedHat 8 you can use firewalld, iptables or nftables to setup a firewall. Surely it makes no sense to have all of them running in parallel. So it is your task to define a security baseline to define which tool to use or which settings to use. 
+
+> For this module level 1 and level 2 server tests from the CIS benchmarks below are taken into account.
 
 ## CIS Benchmark Reference
 
@@ -61,17 +63,20 @@ The benchmarks can be found at [CIS Benchmarks Website](https://www.cisecurity.o
 
 ## Setup
 
-It is highly recommended to have the complete security baseline definition written in Hira definitions. This enables you to have different security baselines for groups of servers, environments or special single servers.
+It is highly recommended to have the complete security baseline definition written in Hira definitions. This enables you to have different security baselines for groups of servers, environments or even special single servers.
 
 ### What security_baseline affects
 
-The security_baseline module has a parameter `enforce` for each rule. If this parameter is set to true all necessary changes are made to make a machine compliant to the security baseline rule. This can have severe impacts to the machines, especially if security settings are defined in a wrong way. Please test your settings before rolling out to production environments.
+The *security_baseline* module has a parameter `enforce` for each rule. If this parameter is set to true all necessary changes are made to make a server compliant to the security baseline rules. This can have severe impacts to the machines, especially if security settings are defined in a wrong way. 
+> Please test your settings before rolling out to production environments.
 
 The module needs a base directory. The base directory `/usr/share/security_baseline` is created by the module during the fist run. Some data is collected with cron jobs once a day as collecting this data is somewhat expensive and time consuming depending on the server size, e. g. searching als s-bit programs . Under the base directory there will be a directory `bin` where all scripts for gathering information are located.
 
+This module creates a larger fact `security_baseline` to have all needed information for applying the rules. Some information is collected with cron jobs once a day as these jobs might run for a long time (e. g. searching filesystems for s-bit programs).
+
 ### Setup Requirements
 
-The security_baseline module needs some other puppet modules. These modules are defined in the [metadata.json](https://github.com/tom-krieger/security_baseline/blob/master/metadata.json) file.
+The *security_baseline* module needs some other Puppet modules. These modules are defined in the [metadata.json](https://github.com/tom-krieger/security_baseline/blob/master/metadata.json) file and are all available at [Puppet Forge](https://forge.puppet.com/).
 
 ### Beginning with security_baseline
 
@@ -88,11 +93,11 @@ or
 include ::security_baseline
 ```
 
-The 'data' folder contains example Hiera definitions for various OSes.
+The `data` folder contains example Hiera definitions for various operation systems.
 
 ### Passing additional data to rules
 
-Sometimes rules need additional data, especially if the security benchmark requirements should be enforced. The following example shows the Hirea configuration.
+Sometimes rules need additional data, especially if the security benchmark requirements should be enforced. The following example shows the Hirea configuration how to pass these parameters to the class implementing the rule.
 
 ```hiera
 ---
@@ -127,7 +132,7 @@ Sometimes rules need additional data, especially if the security benchmark requi
       ntp_burst: true
 ```
 
-All data below the `config_data` entry is passed as parameters to the class for the rule together with the common parameters for `enforce´, `log_level` and ´message`. The class must be capable of accept and use these additional these parameters.
+All data below the `config_data` entry is passed as parameters to the class for the rule together with the common parameters for `enforce`, `log_level` and `message`. The class must be capable of accept and use these additional parameters.
 
 The class `security_baseline::rules::redhat::sec_ntp_daemon_ntp` from the Hiera example above is defined as follows
 
@@ -168,7 +173,7 @@ Search for s-uid programs to create auditd rules for those binaries.
 
 ### Reporting
 
-This module knows two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a CSV report which will be stored on the server and can be collected afterwards with some collecting job.
+This module has two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a CSV report which will be stored on the server and can be collected afterwards with some collecting job.
 
 Reporting is configured as follows
 
@@ -251,11 +256,11 @@ The fact hash tells the module wich fact hash contains the facts to check. This 
 
 ### fact_name
 
-This parameter cn be eiterh a string or an array. In case of a strig the string is the name of the fact within the `security_baseline` hash. In case of an array, the array witll be expanded into an array access to the hsh. For the example for the cramfs kernel module above the fact will be looked up like `$facts['security_baseline']['kernel_modules']['cramfs']`.
+This parameter can be either a string or an array. In case of a string the string is the name of the fact within the `security_baseline` hash. In case of an array, the array will be expanded into an array access to the hash. For the example for the cramfs kernel module above the fact will be looked up like `$facts['security_baseline']['kernel_modules']['cramfs']`.
 
 ### fact_value
 
-The value the fact is compared against. In case of a single value the value of the fact is compared to the value given. In case of an array, all values of the array have to be in the fact and the fact should nt contain any additional values.
+The value the fact is compared against. In case of a single value the value of the fact is compared to the value given. In case of an array, all values of the array have to be in the fact and the fact should not contain any additional values.
 
 ## Extend the security baseline
 
@@ -265,14 +270,15 @@ To extend the security baseline module you can write your own Puppet modules. Th
 class your_class_name (
   Boolean $enforce            = true,
   String $message             = '',
-  String $log_level           = '',
+  String $log_level           = '', 
+  String $logfile             = '',
   Optional[Hash] $config_data = {}
 ) {
      ...
 }
 ```
 
-Please keep in mind that the classes you want to use for your security baseline have to be available in the Puppet catalog. Otherwise the catalog compliation will fail.
+> Please keep in mind that the classes you want to use for your security baseline have to be available in the Puppet catalog. Otherwise the catalog compliation will fail.
 
 ### Parameter `enforce`
  
@@ -285,6 +291,10 @@ The message to log if the system is not compliant and enforce is set to false.
 ### Parameter `log_level`
 
 The log level the message should be logged.
+
+### Parameter `logfile`
+
+The `logfile` parameter gives you the ability to write to the logfile. You can use the `logging` resource defined in this module to do this.
 
 ### Parameter `config_data`
 
@@ -320,6 +330,8 @@ security_baseline::reporting_type: fact
 security_baseline::logfile: /opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml
 security_baseline::auditd_rules_file: /etc/audit/rules.d/sec_baseline_auditd.rules
 security_baseline::auditd_rules_fact_file: /opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml
+security_baseline::reboot: false
+security_baseline::reboot_timeout: 120
 security_baseline::rules:
   '1.1.1.1':
     rulename: 'cramfs'
@@ -351,6 +363,7 @@ class your_class_name (
   Boolean $enforce            = true,
   String $message             = '',
   String $log_level           = '',
+  String $logfile             = '',
   Optional[Hash] $config_data = {}
 ) {
   if($config_data) {
@@ -389,13 +402,13 @@ See [REFERENCE.md](https://github.com/tom-krieger/security_baseline/blob/master/
 
 ## Limitations
 
-Currently the module is tested with RedHat 6, 7, 8, CentOS 6, 7, 8, Suse SLES 12 and Ubuntu 18.04 (partially tested). Other OSes may work but there's no guarantee. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
+Currently the module is tested with RedHat 6, 7, 8, CentOS 6, 7, 8, Suse SLES 12, Debian 9 (partly tested) and Ubuntu 18.04 (partially tested). Other OSes may work but there's no guarantee. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
 
 More testing is needed as for every supported OS there are different setups in the wild and some of them might not be covered. 
 
 ### Auditd
 
-Auditd is configured with immutal rules. This meens that changing rules will require a *reboot* to make the new rules effective.
+Auditd is normally configured with immutal rules. This meens that changing rules will require a *reboot* to make the new rules effective.
 
 ### SELinux and Apparmor
 
@@ -403,11 +416,11 @@ SELinux and AppArmor are - if configured - activated while this module is applie
 
 ### Automatic reboot
 
-Automatic reboots might be dangerous as servers would be rebooted if one of the classes subscribed for reboot takes any action. But some changes need a reboot, e. g. enabling SELinux or changing auditd rules. As servers in production environments may not be rebooted you have to choose if you will allow reboots by settings a global parameter *security_baseline::reboot* and you can add a parameter reboot to each rule.
+Automatic reboots might be *dangerous* as servers would be rebooted if one of the classes subscribed for reboot takes any action. But some changes need a reboot, e. g. enabling SELinux or changing auditd rules. As servers in production environments may not be rebooted you have to choose if you will allow reboots by settings a global parameter *security_baseline::reboot* and you can add a parameter reboot to each rule.
 
-The global *reboot* parameter enables or disables reboots regardless the settings rules have. The *reboot* parameter given with a rule will subscribe the class to the reboot module. If the rule takes any action a reboot will be triggered.
+The global *reboot* parameter enables or disables reboots regardless of the settings rules have. The *reboot* parameter given with a rule will subscribe the class implementing the rule to the reboot module. If the rule takes any action a reboot will be triggered.
 
-The reboot timeout will shedule a reboot withinh the given time after applying the catalogue finished.
+The reboot timeout will shedule a reboot within the given time after applying the catalogue finished.
 
 ```hiera
 ---

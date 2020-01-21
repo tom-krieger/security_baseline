@@ -31,7 +31,7 @@
 
 Define a complete security baseline and monitor the baseline's rules. The definition of the baseline should be done in Hiera. The purpose of the module is to give the ability to setup a complete security baseline which not necessarily have to stick to industry security guides like the CIS benchmarks.
 
-The `security_baseline` module does not use bechmark numbers for the class names of the rules. These numbers change from OS version to OS version and even from benchmark version to benchmark version. One main purpose is to ensure this module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
+The *security_baseline* module does not use bechmark numbers for the class names of the rules. These numbers change from OS version to OS version and even from benchmark version to benchmark version. One main purpose is to ensure this module can be extended by further security settings and monitorings without changing the code of this module. Therefore the module uses a generic interface to call classes implementing particular security baseline rules.
 
 This module also has the ability to create compliance reports. The reports can be created as a Puppet fact uploaded to the Puppet Master or as a CSV file which will remain on the servers for later collection.
 
@@ -72,11 +72,11 @@ The *security_baseline* module has a parameter `enforce` for each rule. If this 
 
 The module needs a base directory. The base directory `/usr/share/security_baseline` is created by the module during the fist run. Some data is collected with cron jobs once a day as collecting this data is somewhat expensive and time consuming depending on the server size, e. g. searching als s-bit programs . Under the base directory there will be a directory `bin` where all scripts for gathering information are located.
 
-This module creates a larger fact `security_baseline` to have all needed information for applying the rules. Some information is collected with cron jobs once a day as these jobs might run for a long time (e. g. searching filesystems for s-bit programs).
+This module creates a larger fact `security_baseline` to have all required information for applying the rules. Some information is collected with cron jobs once a day as these jobs might run for a long time (e. g. searching filesystems for s-bit programs).
 
 ### Setup Requirements
 
-The *security_baseline* module needs some other Puppet modules. These modules are defined in the [metadata.json](https://github.com/tom-krieger/security_baseline/blob/master/metadata.json) file and are all available at [Puppet Forge](https://forge.puppet.com/).
+The *security_baseline* module needs several other Puppet modules. These modules are defined in the [metadata.json](https://github.com/tom-krieger/security_baseline/blob/master/metadata.json) file and are all available at [Puppet Forge](https://forge.puppet.com/).
 
 ### Beginning with security_baseline
 

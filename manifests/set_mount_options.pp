@@ -13,7 +13,8 @@
 #   security_baseline::set_mount_options { 
 #     mountpoint => '/home',
 #     mountoptions => 'nodev', 
-# }
+#   }
+#
 define security_baseline::set_mount_options (
   String $mountpoint,
   String $mountoptions,

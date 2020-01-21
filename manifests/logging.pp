@@ -13,7 +13,7 @@
 #    Description of the rule
 #
 # @param log_level
-#    Log level for the messyage in the log
+#    Log level for the message in the log
 #
 # @param msg
 #    The log message

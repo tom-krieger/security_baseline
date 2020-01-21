@@ -56,6 +56,7 @@
 #       message     => 'Not in compliance with rule 1.1.2. No seperate directory for /tmp.',
 #       log_level   => 'warning',
 #   }
+#
 define security_baseline::sec_check (
   String $rulename,
   String $description,

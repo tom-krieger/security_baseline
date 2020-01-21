@@ -772,7 +772,7 @@ Description of the rule
 
 Data type: `Any`
 
-Log level for the messyage in the log
+Log level for the message in the log
 
 ##### `msg`
 
@@ -927,8 +927,6 @@ Default value: {}
 
 Change the mount options of a mountpoint.
 
-}
-
 #### Examples
 
 ##### 
@@ -937,6 +935,7 @@ Change the mount options of a mountpoint.
 security_baseline::set_mount_options {
   mountpoint => '/home',
   mountoptions => 'nodev',
+}
 ```
 
 #### Parameters

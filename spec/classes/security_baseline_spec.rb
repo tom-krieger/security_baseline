@@ -27,7 +27,7 @@ describe 'security_baseline' do
               },
               'message' => 'Test message unit test',
               'log_level' => 'warning,',
-              'reboot': false,
+              'reboot' => false,
             },
           },
         }
@@ -68,7 +68,6 @@ describe 'security_baseline' do
           )
 
         is_expected.to contain_security_baseline__sec_check('1.1.1.1')
-        
       }
     end
   end

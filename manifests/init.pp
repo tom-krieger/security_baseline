@@ -140,8 +140,6 @@ class security_baseline (
 
   $classes = $reboot_classes.map |$key, $value| {
     capitalize($value['class'].split('::')).join('::')
-    # $class = $arr.join('::')
-    # $class
   }
 
   if ($reporting_type == 'fact') {

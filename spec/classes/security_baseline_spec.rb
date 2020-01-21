@@ -7,6 +7,8 @@ describe 'security_baseline' do
       let(:params) do
         {
           'baseline_version' => '1.0.0',
+          'reboot' => true,
+          'reboot_timeout' => 120,
           'debug' => true,
           'log_info' => true,
           'rules' => {
@@ -25,6 +27,7 @@ describe 'security_baseline' do
               },
               'message' => 'Test message unit test',
               'log_level' => 'warning,',
+              'reboot': false,
             },
           },
         }
@@ -65,6 +68,7 @@ describe 'security_baseline' do
           )
 
         is_expected.to contain_security_baseline__sec_check('1.1.1.1')
+        
       }
     end
   end

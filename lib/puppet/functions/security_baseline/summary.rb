@@ -38,9 +38,8 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     tests_ok = ''
     tests_fail = ''
     tests_unknown = ''
-    content = File.open(file_to_read).readlines
+    lines = File.open(file_to_read).readlines
     unless lines.nil? || lines.empty?
-      lines = content.split("\n")
       lines.each do |line|
         if line =~ %r{^ok:}
           m = line.match(%r{^ok: (?<ok>.*)$})

@@ -10,7 +10,11 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     summary = {}
     data = {}
 
+    call_function('info', "summary #{filename}")
+
     return data unless File.exist?(filename)
+
+    call_function('info', "summary #{filename} found")
 
     data = get_file_content(filename)
     ok = data['ok'].split('#:#')

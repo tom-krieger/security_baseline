@@ -9,9 +9,6 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     return data unless File.exist?('/tmp/security_baseline_summary.txt')
 
     data = get_file_content('/tmp/security_baseline_summary.txt')
-    data['ok'].gsub!('#:#', ',')
-    data['fail'].gsub!('#:#', ',')
-    data['unknown'].gsub!('#:#', ',')
     ok = data['ok'].split('#:#')
     failed = data['fail'].split('#:#')
     unknown = data['unknown'].split('#:#')
@@ -24,6 +21,9 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     summary['count_unknown'] = unknown.count
 
     data['summary'] = summary
+    data['ok'].gsub!('#:#', ',')
+    data['fail'].gsub!('#:#', ',')
+    data['unknown'].gsub!('#:#', ',')
 
     data
   end

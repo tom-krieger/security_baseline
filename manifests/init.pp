@@ -160,7 +160,7 @@ class security_baseline (
       mode    => '0644',
     }
   }
-  summary::cleanup("/tmp/security_baseline_summary_${::hostname}.txt")
+  security_baseline::cleanup("/tmp/security_baseline_summary_${::hostname}.txt")
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 

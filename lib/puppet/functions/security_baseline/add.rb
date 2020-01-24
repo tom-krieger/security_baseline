@@ -1,13 +1,13 @@
 
-Puppet::Functions.create_function(:'security_baseline::init') do
+Puppet::Functions.create_function(:'security_baseline::add') do
   local_types do
-    type 'Stati = Enum[pk, fail, unknown]'
+    type 'Stati = Enum[ok, fail, unknown]'
   end
 
   dispatch :add do
     required_param 'String', :rule_nr
     required_param 'Stati', :status
-    optional_parm 'String', :filename
+    optional_param 'String', :filename
   end
 
   def add(rule_nr, status, filename = '/tmp/security_baseline_summary.txt')

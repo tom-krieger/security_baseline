@@ -9,8 +9,9 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
   def sum(filename = '/tmp/security_baseline_summary.txt')
     summary = {}
     data = {}
+    pwd = `pwd` 
 
-    call_function('info', "summary #{filename}")
+    call_function('info', "summary #{filename} - pwd #{pwd}")
 
     if File.exist?(filename)
       call_function('info', "summary #{filename} found")

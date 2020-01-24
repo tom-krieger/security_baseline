@@ -167,7 +167,7 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'compliant',
               }
-              security_baseline::add($title, 'OK')
+              security_baseline::add($title, 'ok')
             }
           }
         } else {

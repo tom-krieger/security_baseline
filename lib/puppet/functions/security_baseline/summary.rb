@@ -12,7 +12,8 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     pwd = `pwd` 
     hn = `hostname`
 
-    call_function('info', "summary #{filename} - pwd #{pwd} - host #{hn}")
+    call_function('info', "summary #{filename} - pwd #{pwd}")
+    call_function('info', "summary #{filename} - host #{hn}")
 
     if File.exist?(filename)
       call_function('info', "summary #{filename} found")

@@ -1,13 +1,9 @@
-module Puppet::Parser::Functions
-  newfunction(:'security_baseline::init', type: :rvalue, doc: <<-DOC) do |args|
-      @summary
-          Initialize summary file
+Puppet::Functions.create_function(:'security_baseline::init') do
+  dispatch :init do
+    required_param 'String', :filename
+  end
 
-      DOC
-
-    raise Puppet::ParseError, "security_baseline::init(): Wrong number of arguments (#{args.length}; must be = 1)" unless args.length == 1
-
-    filename = args[0]
+  def init(filename)
     File.delete(filename) if File.exist?(filename)
     File.open(filename, 'w') do |file|
       file.puts("ok:\n")

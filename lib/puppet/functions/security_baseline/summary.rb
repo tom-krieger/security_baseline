@@ -30,8 +30,6 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     data['fail'].gsub!('#:#', ',')
     data['unknown'].gsub!('#:#', ',')
 
-    pp data
-
     data
   end
 

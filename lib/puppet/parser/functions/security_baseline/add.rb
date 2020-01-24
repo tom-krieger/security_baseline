@@ -1,16 +1,19 @@
-Puppet::Functions.create_function(:'security_baseline::add') do
-  local_types do
-    type 'Stati = Enum[ok, fail, unknown]'
-  end
 
-  dispatch :add do
-    required_param 'String', :rule_nr
-    required_param 'Stati', :status
-  end
+module Puppet::Parser::Functions
+  newfunction(:'security_baseline::add', type: :rvalue, doc: <<-DOC) do |args|
+      @summary
+          Initialize summary file
 
-  require 'pp'
+      DOC
 
-  def add(rule_nr, status)
+    stati = ['ok', 'fail', 'unknown']
+
+    raise Puppet::ParseError, "security_baseline::add(): Wrong number of arguments (#{args.length}; must be = 2)" unless args.length == 2
+
+    unless stati.include?(args[1])
+      raise Puppet::ParseError, "security_baseline::add(): the second argument must be one of 'ok' or 'fail' or 'unknown'"
+    end
+
     data = if File.exist?('/tmp/security_baseline_summary.txt')
              get_file_content('/tmp/security_baseline_summary.txt')
            else
@@ -26,12 +29,11 @@ Puppet::Functions.create_function(:'security_baseline::add') do
     pp 'data'
     pp data
 
-    File.open('/tmp/security_baseline_summary.txt', 'w') { |file|
+    File.open('/tmp/security_baseline_summary.txt', 'w') do |file|
       data.each do |key, val|
-        file.write("#{key}:#{val}\n")
+        file.puts("#{key}:#{val}\n")
       end
-      file.close()
-    }
+    end
   end
 
   def get_file_content(file_to_read)

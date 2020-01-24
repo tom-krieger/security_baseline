@@ -5,7 +5,7 @@ Puppet::Functions.create_function(:'security_baseline::cleanup') do
 
   def cleanup(filename = '/tmp/security_baseline_summary.txt')
     File.delete(filename) if File.exist?(filename)
-    
+
     nil
   end
 end

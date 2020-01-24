@@ -1,12 +1,12 @@
 Puppet::Functions.create_function(:'security_baseline::summary') do
-  dispatch :summary do
+  dispatch :sum do
     optional_parameter 'String', :filename
     return_type 'Hash'
   end
 
   require 'pp'
 
-  def summary(filename = '/tmp/security_baseline_summary.txt')
+  def sum(filename = '/tmp/security_baseline_summary.txt')
     summary = {}
     data = {}
 

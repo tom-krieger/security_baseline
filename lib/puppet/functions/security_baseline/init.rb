@@ -10,5 +10,7 @@ Puppet::Functions.create_function(:'security_baseline::init') do
       file.puts("fail:\n")
       file.puts("unknown:\n")
     end
+
+    nil
   end
 end

@@ -32,6 +32,8 @@ Puppet::Functions.create_function(:'security_baseline::init') do
         file.puts("#{key}:#{val}\n")
       end
     end
+
+    nil
   end
 
   def get_file_content(file_to_read)

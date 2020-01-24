@@ -3,7 +3,7 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     return_type 'Hash'
   end
 
-  require 'puppet/tools'
+  require 'puppet/tools/helper'
 
   def summary
     summary = {}

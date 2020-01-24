@@ -1,19 +1,31 @@
 Puppet::Functions.create_function(:'security_baseline::add') do
+  local_types do
+    type 'Stati = Enum[ok, fail, unknown]'
+  end
+
   dispatch :add do
-    param 'String', :rule_nr
-    param 'String', :status
+    required_param 'String', :rule_nr
+    required_param 'Stati', :status
   end
 
   def add(rule_nr, status)
-    if File.exist?('/tmp/security_baseline_summary.txt')
-      data = get_file_content('/tmp/security_baseline_summary.txt')
+    data = if File.exist?('/tmp/security_baseline_summary.txt')
+             get_file_content('/tmp/security_baseline_summary.txt')
+           else
+             {}
+           end
 
-      if status == 'ok' || status == 'fail' || status == 'unknoen'
-        data[status] = if data[status].empty?
-                         rule_nr
-                       else
-                         "#{data[status]}#:##{rule_nr}"
-                       end
+    if ['ok', 'fail', 'unknown'].include?(status)
+      data[status] = if data[status].empty?
+                       rule_nr
+                     else
+                       "#{data[status]}#:##{rule_nr}"
+                     end
+    end
+
+    File.open('/tmp/security_baseline_summary.txt', 'w') do |file|
+      data.each do |key, val|
+        file.write("#{key}:#{val}\n")
       end
     end
   end
@@ -45,13 +57,12 @@ Puppet::Functions.create_function(:'security_baseline::add') do
         end
       end
     end
-  
+
     data = {}
     data['ok'] = tests_ok
     data['fail'] = tests_fail
     data['unknown'] = tests_unknown
-  
+
     data
   end
-    
 end

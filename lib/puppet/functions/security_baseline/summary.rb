@@ -1,10 +1,13 @@
 Puppet::Functions.create_function(:'security_baseline::summary') do
-
   dispatch :summary do
   end
 
   def summary
     summary = {}
+    data = {}
+
+    return data unless File.exist?('/tmp/security_baseline_summary.txt')
+
     data = get_file_content('/tmp/security_baseline_summary.txt')
     ok = data['ok'].split('#:#')
     failed = data['fail'].split('#:#')
@@ -49,13 +52,12 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
         end
       end
     end
-  
+
     data = {}
     data['ok'] = tests_ok
     data['fail'] = tests_fail
     data['unknown'] = tests_unknown
-  
-    data
-  end  
 
+    data
+  end
 end

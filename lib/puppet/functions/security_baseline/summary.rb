@@ -1,6 +1,6 @@
 Puppet::Functions.create_function(:'security_baseline::summary') do
   dispatch :sum do
-    optional_parameter 'String', :filename
+    optional_param 'String', :filename
     return_type 'Hash'
   end
 

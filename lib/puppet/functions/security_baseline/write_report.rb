@@ -5,7 +5,7 @@ uppet::Functions.create_function(:'security_baseline::write_report') do
 
   require 'pp'
 
-  def write_report(filename)
+  def write_report(_filename)
     summary = {}
     data = {}
 

@@ -1,16 +1,18 @@
 Puppet::Functions.create_function(:'security_baseline::summary') do
   dispatch :summary do
+    optional_parameter 'String', :filename
+    return_type 'Hash'
   end
 
   require 'pp'
 
-  def summary
+  def summary(filename = '/tmp/security_baseline_summary.txt')
     summary = {}
     data = {}
 
-    # return data unless File.exist?('/tmp/security_baseline_summary.txt')
+    return data unless File.exist?(filename)
 
-    data = get_file_content('/tmp/security_baseline_summary.txt')
+    data = get_file_content(filename)
     ok = data['ok'].split('#:#')
     failed = data['fail'].split('#:#')
     unknown = data['unknown'].split('#:#')

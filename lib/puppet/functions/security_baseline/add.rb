@@ -24,8 +24,8 @@ Puppet::Functions.create_function(:'security_baseline::add') do
                    end
 
     pp 'data'
-    PP data
-    
+    pp data
+
     File.open('/tmp/security_baseline_summary.txt', 'w') { |file|
       data.each do |key, val|
         file.write("#{key}:#{val}\n")

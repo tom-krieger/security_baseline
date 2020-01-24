@@ -1,4 +1,4 @@
-require 'puppet/functions/security_baseline/helper'
+require 'lib/puppet/functions/security_baseline/helper'
 
 Puppet::Functions.create_function(:'security_baseline::add') do
 
@@ -20,5 +20,5 @@ Puppet::Functions.create_function(:'security_baseline::add') do
       end
     end
   end
-  
+
 end

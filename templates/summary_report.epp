@@ -1,0 +1,15 @@
+---
+security_baseline_summary:
+  compliant_tests: <%= $compliant%>
+  failed_tests: <%= $failed %>
+  unknown_tests: <%= $unknown %>
+  summary:
+    count:
+      compliant: <%= $compliant_count %>
+      failed: <%= $failed_count %>
+      unknown: <%= $unknown_count %>
+    percent:
+      compliant: <%= $compliant_percent %>
+      failed: <%= $failed_percent %>
+      unknown: <%= $unknown_percent %>
+  

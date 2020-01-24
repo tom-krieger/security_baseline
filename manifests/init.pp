@@ -67,6 +67,7 @@ class security_baseline (
   Boolean $debug                              = false,
   Boolean $log_info                           = false,
   String $logfile                             = '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
+  String $summary_report                      = '/opt/puppetlabs/facter/facts.d/security_baseline_summary.yaml',
   Array $auditd_suid_include                  = [],
   Array $auditd_suid_exclude                  = [],
   String $auditd_rules_file                   = '/etc/audit/rules.d/sec_baseline_auditd.rules',
@@ -139,12 +140,25 @@ class security_baseline (
   create_resources('::security_baseline::sec_check', $rules)
 
   $summary = security_baseline::summary()
-  echo { 'Summary:':
-    message   => $summary,
-    loglevel  => 'info',
-    withpatch => false,
+
+  file { $summary_report:
+    ensure  => file,
+    content => epp('security_baseline/summary_report.epp', {
+      compliant         => $summeary['ok'],
+      failed            => $summary['fail'],
+      unknown           => $summary['unknown'],
+      compliant_count   => $summary['count_ok'],
+      failed_count      => $summary['count_fail'],
+      unknown_count     => $summary['count_unknown'],
+      compliant_percent => $summary['percent_ok'],
+      failed_percent    => $summary['percent_fail'],
+      unknown_percent   => $summary['percent_unknown'],
+    }),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
   }
-  # summary::cleanup()
+  summary::cleanup()
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 

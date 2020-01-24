@@ -1,7 +1,5 @@
 def remove_old_file
-  if File.exist?('/tmp/security_baseline_summary.txt')
-    File.delete('/tmp/security_baseline_summary.txt')
-  end
+  File.delete('/tmp/security_baseline_summary.txt') if File.exist?('/tmp/security_baseline_summary.txt')
 end
 
 def get_file_content(file_to_read)

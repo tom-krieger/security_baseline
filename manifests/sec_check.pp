@@ -128,7 +128,9 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'compliant',
               }
-              security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt")
+              if($scored) {
+                security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt")
+              }
             } else {
               if($::security_baseline::debug) {
                 echo { "Rule ${title}. Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
@@ -142,7 +144,9 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'not compliant',
               }
-              security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt")
+              if($scored) {
+                security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt")
+              }
             }
           } else {
             if($current_value != $fact_value) {
@@ -158,7 +162,9 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'not compliant',
               }
-              security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt")
+              if($scored) {
+                security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt")
+              }
             } else {
 
               # fact contains expected value
@@ -167,7 +173,9 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'compliant',
               }
-              security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt")
+              if($scored) {
+                security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt")
+              }
             }
           }
         } else {
@@ -178,7 +186,9 @@ define security_baseline::sec_check (
             msg       => $message,
             rulestate => 'compliant (no value)',
           }
-          security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt")
+          if($scored) {
+            security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt")
+          }
 
           if($fact_name.is_a(Array)) {
             $fact_key = join($fact_name, ' => ')
@@ -200,7 +210,9 @@ define security_baseline::sec_check (
           msg       => $message,
           rulestate => 'compliant (no value)',
         }
-        security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt")
+        if($scored) {
+          security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt")
+        }
       }
 
       # internal classes are supposed to start with ::security_baseline::rules

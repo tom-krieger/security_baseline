@@ -12,27 +12,27 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
 
     call_function('info', "summary #{filename}")
 
-    return data unless File.exist?(filename)
+    if File.exist?(filename)
+      call_function('info', "summary #{filename} found")
 
-    call_function('info', "summary #{filename} found")
+      data = get_file_content(filename)
+      ok = data['ok'].split('#:#')
+      failed = data['fail'].split('#:#')
+      unknown = data['unknown'].split('#:#')
+      all = ok.count + failed.count + unknown.count
+      call_function('info', "summary #{ok} #{failed} #{unknown} #{all}")
+      summary['percent_ok'] = (ok.count.to_f * 100 / all.to_f).round(2)
+      summary['percent_fail'] = (failed.count.to_f * 100 / all.to_f).round(2)
+      summary['percent_unknown'] = (unknown.count.to_f * 100 / all.to_f).round(2)
+      summary['count_ok'] = ok.count
+      summary['count_fail'] = failed.count
+      summary['count_unknown'] = unknown.count
 
-    data = get_file_content(filename)
-    ok = data['ok'].split('#:#')
-    failed = data['fail'].split('#:#')
-    unknown = data['unknown'].split('#:#')
-    all = ok.count + failed.count + unknown.count
-    call_function('info', "summary #{ok} #{failed} #{unknown} #{all}")
-    summary['percent_ok'] = (ok.count.to_f * 100 / all.to_f).round(2)
-    summary['percent_fail'] = (failed.count.to_f * 100 / all.to_f).round(2)
-    summary['percent_unknown'] = (unknown.count.to_f * 100 / all.to_f).round(2)
-    summary['count_ok'] = ok.count
-    summary['count_fail'] = failed.count
-    summary['count_unknown'] = unknown.count
-
-    data['summary'] = summary
-    data['ok'].gsub!('#:#', ',')
-    data['fail'].gsub!('#:#', ',')
-    data['unknown'].gsub!('#:#', ',')
+      data['summary'] = summary
+      data['ok'].gsub!('#:#', ',')
+      data['fail'].gsub!('#:#', ',')
+      data['unknown'].gsub!('#:#', ',')
+    end
 
     data
   end

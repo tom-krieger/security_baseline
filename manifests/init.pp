@@ -141,26 +141,26 @@ class security_baseline (
 
   $summary = security_baseline::summary("/tmp/security_baseline_summary_${::hostname}.txt")
 
-  #unless $summary.empty {
-    #file { $summary_report:
-    #  ensure  => file,
-    #  content => epp('security_baseline/summary_report.epp', {
-    #    compliant         => $summary['ok'],
-    #    failed            => $summary['fail'],
-    #    unknown           => $summary['unknown'],
-    #    compliant_count   => $summary['summary']['count_ok'],
-    #    failed_count      => $summary['summary']['count_fail'],
-    #    unknown_count     => $summary['summary']['count_unknown'],
-    #    compliant_percent => $summary['summary']['percent_ok'],
-    #    failed_percent    => $summary['summary']['percent_fail'],
-    #    unknown_percent   => $summary['summary']['percent_unknown'],
-    #  }),
-    #  owner   => 'root',
-    #  group   => 'root',
-    #  mode    => '0644',
-    #}
-  #}
-  # summary::cleanup("/tmp/security_baseline_summary_${::hostname}.txt")
+  unless empty($summary) {
+    file { $summary_report:
+      ensure  => file,
+      content => epp('security_baseline/summary_report.epp', {
+        compliant         => $summary['ok'],
+        failed            => $summary['fail'],
+        unknown           => $summary['unknown'],
+        compliant_count   => $summary['summary']['count_ok'],
+        failed_count      => $summary['summary']['count_fail'],
+        unknown_count     => $summary['summary']['count_unknown'],
+        compliant_percent => $summary['summary']['percent_ok'],
+        failed_percent    => $summary['summary']['percent_fail'],
+        unknown_percent   => $summary['summary']['percent_unknown'],
+      }),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
+  }
+  summary::cleanup("/tmp/security_baseline_summary_${::hostname}.txt")
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 

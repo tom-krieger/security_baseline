@@ -1,9 +1,9 @@
 Puppet::Functions.create_function(:'security_baseline::summary') do
+
   dispatch :summary do
-    return_type 'Hash'
   end
 
-  def summary()
+  def summary
     summary = {}
     data = get_file_content('/tmp/security_baseline_summary.txt')
     ok = data['ok'].split('#:#')
@@ -21,41 +21,41 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
 
     data
   end
-end
 
-def get_file_content(file_to_read)
-  tests_ok = ''
-  tests_fail = ''
-  tests_unknown = ''
-  content = File.open(file_to_read).readlines
-  unless lines.empty? || lines.nil?
-    lines = content.split("\n")
-    lines.each do |line|
-      if line =~ %r{^ok:}
-        m = line.match(%r{^ok: (?<ok>.*)$})
-        unless m.nil?
-          tests_ok = m[:ok]
+  def get_file_content(file_to_read)
+    tests_ok = ''
+    tests_fail = ''
+    tests_unknown = ''
+    content = File.open(file_to_read).readlines
+    unless lines.empty? || lines.nil?
+      lines = content.split("\n")
+      lines.each do |line|
+        if line =~ %r{^ok:}
+          m = line.match(%r{^ok: (?<ok>.*)$})
+          unless m.nil?
+            tests_ok = m[:ok]
+          end
         end
-      end
-      if line =~ %r{^fail:}
-        m = line.match(%r{^nok: (?<fail>.*)$})
-        unless m.nil?
-          tests_fail = m[:fail]
+        if line =~ %r{^fail:}
+          m = line.match(%r{^nok: (?<fail>.*)$})
+          unless m.nil?
+            tests_fail = m[:fail]
+          end
         end
-      end
-      next unless line =~ %r{^unknown:}
-      m = line.match(%r{^unknown: (?<unknown>.*)$})
-      unless m.nil?
-        tests_unknown = m[:unknown]
+        next unless line =~ %r{^unknown:}
+        m = line.match(%r{^unknown: (?<unknown>.*)$})
+        unless m.nil?
+          tests_unknown = m[:unknown]
+        end
       end
     end
-  end
+  
+    data = {}
+    data['ok'] = tests_ok
+    data['fail'] = tests_fail
+    data['unknown'] = tests_unknown
+  
+    data
+  end  
 
-  data = {}
-  data['ok'] = tests_ok
-  data['fail'] = tests_fail
-  data['unknown'] = tests_unknown
-
-  data
 end
-

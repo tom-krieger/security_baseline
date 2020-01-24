@@ -27,6 +27,7 @@ Puppet::Functions.create_function(:'security_baseline::add') do
       data.each do |key, val|
         file.write("#{key}:#{val}\n")
       end
+      file.close()
     end
   end
 

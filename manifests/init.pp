@@ -158,7 +158,7 @@ class security_baseline (
     group   => 'root',
     mode    => '0644',
   }
-  summary::cleanup()
+  # summary::cleanup()
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 

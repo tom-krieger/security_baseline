@@ -128,7 +128,7 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'compliant',
               }
-              summary::add($title, 'ok')
+              security_baseline::summary::add($title, 'ok')
             } else {
               if($::security_baseline::debug) {
                 echo { "Rule ${title}. Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
@@ -142,7 +142,7 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'not compliant',
               }
-              summary::add($title, 'fail')
+              security_baseline::summary::add($title, 'fail')
             }
           } else {
             if($current_value != $fact_value) {
@@ -158,7 +158,7 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'not compliant',
               }
-              summary::add($title, 'fail')
+              security_baseline::summary::add($title, 'fail')
             } else {
 
               # fact contains expected value
@@ -167,7 +167,7 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'compliant',
               }
-              summary::add($title, 'OK')
+              security_baseline::summary::add($title, 'OK')
             }
           }
         } else {
@@ -178,7 +178,7 @@ define security_baseline::sec_check (
             msg       => $message,
             rulestate => 'compliant (no value)',
           }
-          summary::add($title, 'unknown')
+          security_baseline::summary::add($title, 'unknown')
 
           if($fact_name.is_a(Array)) {
             $fact_key = join($fact_name, ' => ')
@@ -200,7 +200,7 @@ define security_baseline::sec_check (
           msg       => $message,
           rulestate => 'compliant (no value)',
         }
-        summary::add($title, 'unknown')
+        security_baseline::summary::add($title, 'unknown')
       }
 
       # internal classes are supposed to start with ::security_baseline::rules

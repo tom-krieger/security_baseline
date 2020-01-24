@@ -134,11 +134,11 @@ class security_baseline (
     }
   }
 
-  summary::init()
+  security_baseline::summary::init()
 
   create_resources('::security_baseline::sec_check', $rules)
 
-  $summary = summary::summary()
+  $summary = security_baseline::summary::summary()
   echo { 'Summary:':
     message   => $summary,
     loglevel  => 'info',

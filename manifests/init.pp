@@ -135,7 +135,7 @@ class security_baseline (
     }
   }
 
-  security_baseline::init()
+  security_baseline::init('/tmp/security_baseline_summary.txt')
 
   create_resources('::security_baseline::sec_check', $rules)
 

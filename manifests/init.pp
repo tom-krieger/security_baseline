@@ -139,6 +139,11 @@ class security_baseline (
   create_resources('::security_baseline::sec_check', $rules)
 
   $summary = summary::summary()
+  echo { 'Summary:':
+    message   => $summary,
+    loglevel  => 'info',
+    withpatch => false,
+  }
   # summary::cleanup()
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }

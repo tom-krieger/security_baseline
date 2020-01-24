@@ -4,7 +4,7 @@ Puppet::Functions.create_function(:'security_baseline::add') do
     param 'String', :status
   end
 
-  require 'helper'
+  require 'puppet/tools'
 
   def add(rule_nr, status)
     if File.exist?('/tmp/security_baseline_summary.txt')

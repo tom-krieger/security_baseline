@@ -4,6 +4,7 @@ Puppet::Functions.create_function(:'security_baseline::init') do
   end
 
   def init(filename)
+    call_function('debug', 'init called')
     File.delete(filename) if File.exist?(filename)
     File.open(filename, 'w') do |file|
       file.puts("ok:\n")

@@ -1,9 +1,9 @@
-require 'helper'
-
 Puppet::Functions.create_function(:'security_baseline::summary') do
   dispatch :summary do
     return_type 'Hash'
   end
+
+  require 'helper'
 
   def summary
     summary = {}

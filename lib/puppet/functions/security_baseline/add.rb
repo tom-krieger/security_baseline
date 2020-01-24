@@ -1,10 +1,10 @@
-require 'helper'
-
 Puppet::Functions.create_function(:'security_baseline::add') do
   dispatch :add do
     param 'String', :rule_nr
     param 'String', :status
   end
+
+  require 'helper'
 
   def add(rule_nr, status)
     if File.exist?('/tmp/security_baseline_summary.txt')

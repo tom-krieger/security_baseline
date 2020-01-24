@@ -32,6 +32,8 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
       data['ok'].gsub!('#:#', ',')
       data['fail'].gsub!('#:#', ',')
       data['unknown'].gsub!('#:#', ',')
+    else
+      call_function('info', "summary #{filename} NOT found")
     end
 
     data

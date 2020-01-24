@@ -29,6 +29,8 @@ Puppet::Functions.create_function(:'security_baseline::add') do
         file.puts("#{key}:#{val}\n")
       end
     end
+    
+    File.chmod(0644, filename)
 
     nil
   end

@@ -8,6 +8,8 @@ Puppet::Functions.create_function(:'security_baseline::add') do
     required_param 'Stati', :status
   end
 
+  require 'pp'
+
   def add(rule_nr, status)
     data = if File.exist?('/tmp/security_baseline_summary.txt')
              get_file_content('/tmp/security_baseline_summary.txt')
@@ -15,20 +17,21 @@ Puppet::Functions.create_function(:'security_baseline::add') do
              {}
            end
 
-    if ['ok', 'fail', 'unknown'].include?(status)
-      data[status] = if data[status].nil? || data[status].empty?
-                       rule_nr
-                     else
-                       "#{data[status]}#:##{rule_nr}"
-                     end
-    end
+    data[status] = if data[status].nil? || data[status].empty?
+                     rule_nr
+                   else
+                     "#{data[status]}#:##{rule_nr}"
+                   end
 
-    File.open('/tmp/security_baseline_summary.txt', 'w') do |file|
+    pp 'data'
+    PP data
+    
+    File.open('/tmp/security_baseline_summary.txt', 'w') { |file|
       data.each do |key, val|
         file.write("#{key}:#{val}\n")
       end
       file.close()
-    end
+    }
   end
 
   def get_file_content(file_to_read)

@@ -35,7 +35,7 @@ Puppet::Functions.create_function(:'security_baseline::add') do
     tests_fail = ''
     tests_unknown = ''
     content = File.open(file_to_read).readlines
-    unless lines.nil? || lines.empty?
+    unless content.nil? || content.empty?
       lines = content.split("\n")
       lines.each do |line|
         if line =~ %r{^ok:}

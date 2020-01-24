@@ -1,7 +1,6 @@
-require 'lib/puppet/functions/security_baseline/helper'
+require 'helper'
 
 Puppet::Functions.create_function(:'security_baseline::add') do
-
   dispatch :add do
     param 'String', :rule_nr
     param 'String', :status
@@ -20,5 +19,4 @@ Puppet::Functions.create_function(:'security_baseline::add') do
       end
     end
   end
-
 end

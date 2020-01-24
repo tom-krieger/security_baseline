@@ -1,7 +1,6 @@
-require 'lib/puppet/functions/security_baseline/helper'
+require 'helper'
 
 Puppet::Functions.create_function(:'security_baseline::summary') do
-  
   dispatch :summary do
     return_type 'Hash'
   end
@@ -24,6 +23,4 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
 
     data
   end
-
-  
 end

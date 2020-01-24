@@ -1,7 +1,6 @@
-require 'lib/puppet/functions/security_baseline/helper'
+require 'helper'
 
 Puppet::Functions.create_function(:'security_baseline::init') do
-
   dispatch :init do
   end
 

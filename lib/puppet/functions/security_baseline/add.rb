@@ -16,7 +16,7 @@ Puppet::Functions.create_function(:'security_baseline::add') do
            end
 
     if ['ok', 'fail', 'unknown'].include?(status)
-      data[status] = if data[status].empty?
+      data[status] = if data[status].nil? || data[status].empty?
                        rule_nr
                      else
                        "#{data[status]}#:##{rule_nr}"

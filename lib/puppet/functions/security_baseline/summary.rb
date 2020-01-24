@@ -17,9 +17,10 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     failed = data['fail'].split('#:#')
     unknown = data['unknown'].split('#:#')
     all = ok.count + failed.count + unknown.count
-    summary['percent_ok'] = (ok * 100 / all).round(2)
-    summary['percent_fail'] = (raise * 100 / all).round(2)
-    summary['percent_unknown'] = (unknown * 100 / all).round(2)
+    call_function('info', "summary #{ok} #{failed} #{unknown} #{all}")
+    summary['percent_ok'] = (ok.to_f * 100 / all.to_f).round(2)
+    summary['percent_fail'] = (failed.to_f * 100 / all.to_f).round(2)
+    summary['percent_unknown'] = (unknown.to_f * 100 / all.to_f).round(2)
     summary['count_ok'] = ok.count
     summary['count_fail'] = failed.count
     summary['count_unknown'] = unknown.count

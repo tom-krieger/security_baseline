@@ -41,19 +41,19 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     unless lines.nil? || lines.empty?
       lines.each do |line|
         if line =~ %r{^ok:}
-          m = line.match(%r{^ok: (?<ok>.*)$})
+          m = line.match(%r{^ok:(?<ok>.*)$})
           unless m.nil?
             tests_ok = m[:ok]
           end
         end
         if line =~ %r{^fail:}
-          m = line.match(%r{^nok: (?<fail>.*)$})
+          m = line.match(%r{^fail:(?<fail>.*)$})
           unless m.nil?
             tests_fail = m[:fail]
           end
         end
         next unless line =~ %r{^unknown:}
-        m = line.match(%r{^unknown: (?<unknown>.*)$})
+        m = line.match(%r{^unknown:(?<unknown>.*)$})
         unless m.nil?
           tests_unknown = m[:unknown]
         end

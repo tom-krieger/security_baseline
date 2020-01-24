@@ -134,7 +134,12 @@ class security_baseline (
     }
   }
 
+  summary::init()
+
   create_resources('::security_baseline::sec_check', $rules)
+
+  $summary = summary::summary()
+  # summary::cleanup()
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 

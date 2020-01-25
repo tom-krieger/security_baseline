@@ -103,7 +103,6 @@ class security_baseline (
     update_postrun_command => $update_postrun_command,
     fact_upload_command    => $fact_upload_command,
     reporting_type         => $reporting_type,
-    before                 => Concat[$logfile],
   }
 
   class {'security_baseline::auditd_suid_rules_cron':
@@ -112,7 +111,6 @@ class security_baseline (
     auditd_rules_fact_file => $auditd_rules_fact_file,
     suid_fact_file         => $suid_fact_file,
     sgid_fact_file         => $sgid_fact_file,
-    before                 => Concat[$logfile],
   }
 
   if ($reports == 'both' or $reports == 'details') {
@@ -141,6 +139,10 @@ class security_baseline (
         target  => $logfile,
         order   => 1,
       }
+    }
+  } elsif ($reports == 'summary') {
+    file { $logfile:
+      ensure => absent,
     }
   }
 

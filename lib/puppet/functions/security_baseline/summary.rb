@@ -32,7 +32,7 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
       data['fail'].gsub!('#:#', ',')
       data['unknown'].gsub!('#:#', ',')
 
-      call_function('info', "summary #{filename} - data #{data}")
+      # call_function('info', "summary #{filename} - data #{data}")
 
       File.delete(filename)  if cleanup && File.exist?(filename)
     else

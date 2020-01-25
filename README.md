@@ -173,7 +173,9 @@ Search for s-uid programs to create auditd rules for those binaries.
 
 ### Reporting
 
-This module has two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a CSV report which will be stored on the server and can be collected afterwards with some collecting job.
+This module has two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a CSV report which will be stored on the server and can be collected afterwards with some collecting job. 
+
+A summary report can be created as well. This report gives you an overview which checks are successful, which are not and which have an unknown result. You also get some numbers arround the tests.
 
 Reporting is configured as follows
 
@@ -181,6 +183,8 @@ Reporting is configured as follows
 class { 'security_baseline':
   reporting_type => 'fact',
   logfile => '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml',
+  summary_report => '/opt/puppetlabs/facter/facts.d/security_baseline_summary.yaml',
+  reports => 'both',
 }
 ```
 
@@ -190,6 +194,8 @@ or for CSV file creation
 class { 'security_baseline':
   reporting_type => 'csv_file',
   logfile => '/usr/share/security_baseline/logs/security_baseline_findings.csv',
+  summary_report => '/opt/puppetlabs/facter/facts.d/security_baseline_summary.yaml',
+  reports => 'both',
 }
 ```
 

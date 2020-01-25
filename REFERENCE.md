@@ -432,6 +432,11 @@ _Private Classes_
 * [`security_baseline::sec_check`](#security_baselinesec_check): Check a security rule.
 * [`security_baseline::set_mount_options`](#security_baselineset_mount_options): Change mount options
 
+**Functions**
+
+* [`security_baseline::add`](#security_baselineadd): 
+* [`security_baseline::summary`](#security_baselinesummary): 
+
 ## Classes
 
 ### security_baseline
@@ -492,6 +497,14 @@ Logfile to write messages to
 
 Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml'
 
+##### `summary_report`
+
+Data type: `String`
+
+File to write a summary report yaml report
+
+Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_summary.yaml'
+
 ##### `auditd_suid_include`
 
 Data type: `Array`
@@ -523,6 +536,14 @@ Data type: `Enum['fact', 'csv_file']`
 Select to type of reporting. ca currently be set to csv or fact.
 
 Default value: 'fact'
+
+##### `reports`
+
+Data type: `Enum['summary', 'details', 'both']`
+
+Select which reports to produce.
+
+Default value: 'both'
 
 ##### `auditd_rules_fact_file`
 
@@ -953,4 +974,60 @@ Mountpoint to work on
 Data type: `String`
 
 Options to set
+
+## Functions
+
+### security_baseline::add
+
+Type: Ruby 4.x API
+
+The security_baseline::add function.
+
+#### `security_baseline::add(String $rule_nr, Stati $status, Optional[String] $filename)`
+
+The security_baseline::add function.
+
+Returns: `Any`
+
+##### `rule_nr`
+
+Data type: `String`
+
+
+
+##### `status`
+
+Data type: `Stati`
+
+
+
+##### `filename`
+
+Data type: `Optional[String]`
+
+
+
+### security_baseline::summary
+
+Type: Ruby 4.x API
+
+The security_baseline::summary function.
+
+#### `security_baseline::summary(Optional[String] $filename, Optional[Boolean] $cleanup)`
+
+The security_baseline::summary function.
+
+Returns: `Hash`
+
+##### `filename`
+
+Data type: `Optional[String]`
+
+
+
+##### `cleanup`
+
+Data type: `Optional[Boolean]`
+
+
 

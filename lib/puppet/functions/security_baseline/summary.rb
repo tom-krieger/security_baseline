@@ -37,7 +37,7 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
 
       if cleanup && File.exist?(filename)
         call_function('info', "summary cleanup #{filename}")
-        File.delete(filename) 
+        File.delete(filename)
       end
     else
       call_function('info', "summary #{filename} NOT found")

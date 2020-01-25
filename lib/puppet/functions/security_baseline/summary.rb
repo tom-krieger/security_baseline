@@ -13,6 +13,7 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
 
     if File.exist?(filename)
       call_function('info', "summary #{filename} found")
+      call_function('info', "summary #{cleanup}")
 
       data = get_file_content(filename)
       ok = data['ok'].split('#:#')
@@ -34,7 +35,10 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
 
       # call_function('info', "summary #{filename} - data #{data}")
 
-      File.delete(filename) if cleanup && File.exist?(filename)
+      if cleanup && File.exist?(filename)
+        call_function('info', "summary cleanup #{filename}")
+        File.delete(filename) 
+      end
     else
       call_function('info', "summary #{filename} NOT found")
     end

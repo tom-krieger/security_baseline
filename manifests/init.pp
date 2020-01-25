@@ -147,10 +147,8 @@ class security_baseline (
   }
 
   security_baseline::init("/tmp/security_baseline_summary_${::hostname}.txt")
-
-  create_resources('::security_baseline::sec_check', $rules)
-
-  if($reports == 'both' or $reports == 'summary') {
+  -> create_resources('::security_baseline::sec_check', $rules)
+  -> if($reports == 'both' or $reports == 'summary') {
     $summary = security_baseline::summary("/tmp/security_baseline_summary_${::hostname}.txt", true)
 
     if empty($summary) {

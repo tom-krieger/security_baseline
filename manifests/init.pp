@@ -24,6 +24,9 @@
 # @param logfile
 #    Logfile to write messages to
 #
+# @param summary_report
+#    File to write a summary report yaml report
+#
 # @param auditd_suid_include
 #    Directories to search for suid and sgid programs. Can not be set together with auditd_suid_exclude
 #
@@ -35,6 +38,9 @@
 #
 # @param reporting_type
 #    Select to type of reporting. ca currently be set to csv or fact.
+#
+# @param reports
+#    Select which reports to produce.
 #
 # @param auditd_rules_fact_file
 #    The file where to store the facts for auditd rules
@@ -72,6 +78,7 @@ class security_baseline (
   Array $auditd_suid_exclude                  = [],
   String $auditd_rules_file                   = '/etc/audit/rules.d/sec_baseline_auditd.rules',
   Enum['fact', 'csv_file'] $reporting_type    = 'fact',
+  Enum['summary', 'details', 'both'] $reports = 'both',
   String $auditd_rules_fact_file              = '/opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml',
   String $suid_fact_file                      = '/opt/puppetlabs/facter/facts.d/security_baseline_suid_programs.yaml',
   String $sgid_fact_file                      = '/opt/puppetlabs/facter/facts.d/security_baseline_sgid_programs.yaml',
@@ -108,60 +115,64 @@ class security_baseline (
     before                 => Concat[$logfile],
   }
 
-  if ($reporting_type == 'fact') {
-    concat { $logfile:
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
-    }
+  if ($reports == 'both' or $reports == 'details') {
+    if ($reporting_type == 'fact') {
+      concat { $logfile:
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
 
-    concat::fragment { 'start':
-      content => epp('security_baseline/logfile_start.epp', {'version' => $baseline_version}),
-      target  => $logfile,
-      order   => 1,
-    }
-  } elsif ($reporting_type == 'csv_file') {
-    concat { $logfile:
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0644',
-    }
-    concat::fragment { 'start':
-      content => epp('security_baseline/csv_file_start.epp', {}),
-      target  => $logfile,
-      order   => 1,
+      concat::fragment { 'start':
+        content => epp('security_baseline/logfile_start.epp', {'version' => $baseline_version}),
+        target  => $logfile,
+        order   => 1,
+      }
+    } elsif ($reporting_type == 'csv_file') {
+      concat { $logfile:
+        ensure => present,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0644',
+      }
+      concat::fragment { 'start':
+        content => epp('security_baseline/csv_file_start.epp', {}),
+        target  => $logfile,
+        order   => 1,
+      }
     }
   }
 
   create_resources('::security_baseline::sec_check', $rules)
 
-  $summary = security_baseline::summary("/tmp/security_baseline_summary_${::hostname}.txt")
+  if($reports == 'both' or $reports == 'summary') {
+    $summary = security_baseline::summary("/tmp/security_baseline_summary_${::hostname}.txt", true)
 
-  if empty($summary) {
-    echo { 'no-summary-data':
-      message  => 'no summary data',
-      loglevel => 'warning',
-      withpath => false,
-    }
-  } else {
-    file { $summary_report:
-      ensure  => file,
-      content => epp('security_baseline/summary_report.epp', {
-        compliant         => $summary['ok'],
-        failed            => $summary['fail'],
-        unknown           => $summary['unknown'],
-        compliant_count   => $summary['summary']['count_ok'],
-        failed_count      => $summary['summary']['count_fail'],
-        unknown_count     => $summary['summary']['count_unknown'],
-        compliant_percent => $summary['summary']['percent_ok'],
-        failed_percent    => $summary['summary']['percent_fail'],
-        unknown_percent   => $summary['summary']['percent_unknown'],
-      }),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0644',
+    if empty($summary) {
+      echo { 'no-summary-data':
+        message  => 'no summary data',
+        loglevel => 'warning',
+        withpath => false,
+      }
+    } else {
+      file { $summary_report:
+        ensure  => file,
+        content => epp('security_baseline/summary_report.epp', {
+          compliant         => $summary['ok'],
+          failed            => $summary['fail'],
+          unknown           => $summary['unknown'],
+          compliant_count   => $summary['summary']['count_ok'],
+          failed_count      => $summary['summary']['count_fail'],
+          unknown_count     => $summary['summary']['count_unknown'],
+          compliant_percent => $summary['summary']['percent_ok'],
+          failed_percent    => $summary['summary']['percent_fail'],
+          unknown_percent   => $summary['summary']['percent_unknown'],
+        }),
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+      }
     }
   }
 
@@ -171,17 +182,19 @@ class security_baseline (
     capitalize($value['class'].split('::')).join('::')
   }
 
-  if ($reporting_type == 'fact') {
-    concat::fragment { 'finish':
-      content => epp('security_baseline/logfile_end.epp', {}),
-      target  => $logfile,
-      order   => 9999,
-    }
-  } elsif ($reporting_type == 'csv_file') {
-    concat::fragment { 'finish':
-      content => epp('security_baseline/csv_file_end.epp', {}),
-      target  => $logfile,
-      order   => 9999,
+  if($reports == 'both' or $reports == 'details') {
+    if ($reporting_type == 'fact') {
+      concat::fragment { 'finish':
+        content => epp('security_baseline/logfile_end.epp', {}),
+        target  => $logfile,
+        order   => 9999,
+      }
+    } elsif ($reporting_type == 'csv_file') {
+      concat::fragment { 'finish':
+        content => epp('security_baseline/csv_file_end.epp', {}),
+        target  => $logfile,
+        order   => 9999,
+      }
     }
   }
 

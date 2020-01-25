@@ -236,9 +236,11 @@ define security_baseline::sec_check (
 
       }
 
-      $logentry = $logentry_default + $logentry_data
-      ::security_baseline::logging { $title:
-        * => $logentry,
+      if ($::security_baseline::reports == 'both' or $::security_baseline::reports == 'details') {
+        $logentry = $logentry_default + $logentry_data
+        ::security_baseline::logging { $title:
+          * => $logentry,
+        }
       }
 
       $merged_data = merge($data, $config_data)

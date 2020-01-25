@@ -11,7 +11,7 @@ Puppet::Functions.create_function(:'security_baseline::add') do
   end
 
   def add(rule_nr, status, filename = '/tmp/security_baseline_summary.txt')
-    # call_function('info', "add called with #{rule_nr} and #{status}")
+    call_function('info', "add called with #{rule_nr} and #{status}")
     data = if File.exist?(filename)
              get_file_content(filename)
            else

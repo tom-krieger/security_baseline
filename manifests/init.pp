@@ -137,7 +137,7 @@ class security_baseline (
 
   create_resources('::security_baseline::sec_check', $rules)
 
-  $summary = security_baseline::summary("/tmp/security_baseline_summary_${::hostname}.txt")
+  $summary = security_baseline::summary("/usr/share/security_baseline/data/summary_${::hostname}.txt", true)
 
   if empty($summary) {
     echo { 'no-summary-data':

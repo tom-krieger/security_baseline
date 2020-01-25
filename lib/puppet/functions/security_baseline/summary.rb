@@ -11,9 +11,11 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
     data = {}
     pwd = `pwd` 
     hn = `hostname`
+    fl = `ls -la /tmp/`
 
     call_function('info', "summary #{filename} - pwd #{pwd}")
     call_function('info', "summary #{filename} - host #{hn}")
+    call_function('info', "summary #{filename} - files #{fl}")
 
     if File.exist?(filename)
       call_function('info', "summary #{filename} found")

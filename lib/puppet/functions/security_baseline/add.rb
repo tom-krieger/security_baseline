@@ -30,7 +30,7 @@ Puppet::Functions.create_function(:'security_baseline::add') do
       end
     end
 
-    File.chmod(0o644, filename)
+    File.chmod(0o666, filename)
 
     nil
   end

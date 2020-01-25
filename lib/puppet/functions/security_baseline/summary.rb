@@ -1,22 +1,16 @@
 Puppet::Functions.create_function(:'security_baseline::summary') do
   dispatch :sum do
     optional_param 'String', :filename
+    optional_param 'Boolean', :cleanup
     return_type 'Hash'
   end
 
   require 'pp'
 
-  def sum(filename = '/tmp/security_baseline_summary.txt')
+  def sum(filename = '/tmp/security_baseline_summary.txt', cleanup = false)
     summary = {}
     data = {}
-    pwd = `pwd` 
-    hn = `hostname`
-    fl = `ls -la /tmp/`
-
-    call_function('info', "summary #{filename} - pwd #{pwd}")
-    call_function('info', "summary #{filename} - host #{hn}")
-    call_function('info', "summary #{filename} - files #{fl}")
-
+    
     if File.exist?(filename)
       call_function('info', "summary #{filename} found")
 
@@ -37,6 +31,10 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
       data['ok'].gsub!('#:#', ',')
       data['fail'].gsub!('#:#', ',')
       data['unknown'].gsub!('#:#', ',')
+
+      call_function('info', "summary #{filename} - data #{data}")
+
+      File.delete(filename)  if cleanup && File.exist?(filename)
     else
       call_function('info', "summary #{filename} NOT found")
     end

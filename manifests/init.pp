@@ -135,13 +135,17 @@ class security_baseline (
     }
   }
 
-  security_baseline::init("/tmp/security_baseline_summary_${::hostname}.txt")
-
   create_resources('::security_baseline::sec_check', $rules)
 
   $summary = security_baseline::summary("/tmp/security_baseline_summary_${::hostname}.txt")
 
-  unless empty($summary) {
+  if empty($summary) {
+    echo { 'no-summary-data':
+      message  => 'no summary data',
+      loglevel => 'warning',
+      withpath => false,
+    }
+  } else {
     file { $summary_report:
       ensure  => file,
       content => epp('security_baseline/summary_report.epp', {
@@ -160,7 +164,6 @@ class security_baseline (
       mode    => '0644',
     }
   }
-  # security_baseline::cleanup("/tmp/security_baseline_summary_${::hostname}.txt")
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
 

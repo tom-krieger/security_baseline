@@ -9,5 +9,6 @@ Puppet::Functions.create_function(:'security_baseline::init') do
 
     call_function('info', "init cleanup #{filename}") if debug
     File.delete(filename)
+    system("rm -f #{filename}")
   end
 end

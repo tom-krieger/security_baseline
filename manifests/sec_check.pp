@@ -129,7 +129,7 @@ define security_baseline::sec_check (
                 rulestate => 'compliant',
               }
               if($scored) {
-                security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt")
+                security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt", true)
               }
             } else {
               if($::security_baseline::debug) {
@@ -145,7 +145,7 @@ define security_baseline::sec_check (
                 rulestate => 'not compliant',
               }
               if($scored) {
-                security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt")
+                security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt", true)
               }
             }
           } else {
@@ -163,7 +163,7 @@ define security_baseline::sec_check (
                 rulestate => 'not compliant',
               }
               if($scored) {
-                security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt")
+                security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt", true)
               }
             } else {
 
@@ -174,7 +174,7 @@ define security_baseline::sec_check (
                 rulestate => 'compliant',
               }
               if($scored) {
-                security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt")
+                security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt", true)
               }
             }
           }
@@ -187,7 +187,7 @@ define security_baseline::sec_check (
             rulestate => 'compliant (no value)',
           }
           if($scored) {
-            security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt")
+            security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt", true)
           }
 
           if($fact_name.is_a(Array)) {
@@ -211,7 +211,7 @@ define security_baseline::sec_check (
           rulestate => 'compliant (no value)',
         }
         if($scored) {
-          security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt")
+          security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt", true)
         }
       }
 
@@ -249,6 +249,6 @@ define security_baseline::sec_check (
       }
 
     } elsif ($active == false) {
-      security_baseline::add($title, 'notchecked', "/tmp/security_baseline_summary_${::hostname}.txt")
+      security_baseline::add($title, 'notchecked', "/tmp/security_baseline_summary_${::hostname}.txt", true)
     }
 }

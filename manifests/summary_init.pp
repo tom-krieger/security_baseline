@@ -14,7 +14,7 @@ class security_baseline::summary_init (
   Enum['summary', 'details', 'both'] $reports = 'both',
 ) {
   if($reports == 'both' or $reports == 'summary') {
-    security_baseline::init("/tmp/security_baseline_summary_${::hostname}.txt")
+    security_baseline::init("/tmp/security_baseline_summary_${::hostname}.txt", true)
   } else {
     echo { 'summary-no-init':
       message  => 'summary not initialized',

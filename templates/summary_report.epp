@@ -4,13 +4,16 @@ security_baseline_summary:
     compliant: <%= $compliant%>
     failed: <%= $failed %>
     unknown: <%= $unknown %>
+    notchecked: <%= $notchecked %>
   summary:
     count:
       compliant: <%= $compliant_count %>
       failed: <%= $failed_count %>
       unknown: <%= $unknown_count %>
+      notchecked: <%= $notchecked_count %>
     percent:
       compliant: <%= $compliant_percent %>
       failed: <%= $failed_percent %>
       unknown: <%= $unknown_percent %>
+      notchecked: <%= $notchecked_percent %>
   

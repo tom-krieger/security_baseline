@@ -40,6 +40,7 @@ Puppet::Functions.create_function(:'security_baseline::add') do
     tests_ok = ''
     tests_fail = ''
     tests_unknown = ''
+    tests_notchecked = ''
     lines = File.open(file_to_read).readlines
     unless lines.nil? || lines.empty?
       lines.each do |line|
@@ -55,6 +56,12 @@ Puppet::Functions.create_function(:'security_baseline::add') do
             tests_fail = m[:fail]
           end
         end
+        if line =~ %r{^notchecked:}
+          m = line.match(%r{^fail:(?<notchecked>.*)$})
+          unless m.nil?
+            tests_notchecked = m[:notchecked]
+          end
+        end
         next unless line =~ %r{^unknown:}
         m = line.match(%r{^unknown:(?<unknown>.*)$})
         unless m.nil?
@@ -67,6 +74,7 @@ Puppet::Functions.create_function(:'security_baseline::add') do
     data['ok'] = tests_ok
     data['fail'] = tests_fail
     data['unknown'] = tests_unknown
+    data['notchecked'] = tests_notchecked
 
     data
   end

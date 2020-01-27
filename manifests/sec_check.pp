@@ -248,5 +248,7 @@ define security_baseline::sec_check (
         * => $merged_data
       }
 
-    } # rule active and security_baseline fact available
+    } elsif ($active == false) {      # rule active and security_baseline fact available
+      security_baseline::add($title, 'notchecked', "/tmp/security_baseline_summary_${::hostname}.txt")
+    }
 }

@@ -29,6 +29,7 @@ Puppet::Functions.create_function(:'security_baseline::add') do
       data.each do |key, val|
         file.puts("#{key}:#{val}\n")
       end
+      file.flush()
     end
 
     File.chmod(0o666, filename)

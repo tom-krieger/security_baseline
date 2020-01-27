@@ -26,7 +26,7 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
       summary['percent_ok'] = (ok.count.to_f * 100 / all.to_f).round(2)
       summary['percent_fail'] = (failed.count.to_f * 100 / all.to_f).round(2)
       summary['percent_unknown'] = (unknown.count.to_f * 100 / all.to_f).round(2)
-      summary['percent_notchecked'] (notchecked.count.to_f * 100 / all.to_f).round(2)
+      summary['percent_notchecked'] = (notchecked.count.to_f * 100 / all.to_f).round(2)
       summary['count_ok'] = ok.count
       summary['count_fail'] = failed.count
       summary['count_unknown'] = unknown.count

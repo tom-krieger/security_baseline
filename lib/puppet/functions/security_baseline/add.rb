@@ -1,7 +1,7 @@
 
 Puppet::Functions.create_function(:'security_baseline::add') do
   local_types do
-    type 'Stati = Enum[ok, fail, unknown]'
+    type 'Stati = Enum[ok, fail, unknown, notchecked]'
   end
 
   dispatch :add do

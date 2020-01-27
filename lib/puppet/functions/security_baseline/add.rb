@@ -2,6 +2,7 @@
 Puppet::Functions.create_function(:'security_baseline::add') do
   local_types do
     type 'Stati = Enum[ok, fail, unknown]'
+    optional_param 'Boolean', :debug
   end
 
   dispatch :add do
@@ -10,8 +11,8 @@ Puppet::Functions.create_function(:'security_baseline::add') do
     optional_param 'String', :filename
   end
 
-  def add(rule_nr, status, filename = '/tmp/security_baseline_summary.txt')
-    call_function('info', "add called with #{rule_nr} and #{status}")
+  def add(rule_nr, status, filename = '/tmp/security_baseline_summary.txt', debug = false)
+    call_function('info', "add called with #{rule_nr} and #{status}") if debug
     data = if File.exist?(filename)
              get_file_content(filename)
            else

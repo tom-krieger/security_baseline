@@ -103,6 +103,7 @@ class security_baseline (
     update_postrun_command => $update_postrun_command,
     fact_upload_command    => $fact_upload_command,
     reporting_type         => $reporting_type,
+    before                 => Class['security_baseline::summary_init'],
   }
 
   class {'security_baseline::auditd_suid_rules_cron':
@@ -146,36 +147,19 @@ class security_baseline (
     }
   }
 
-  security_baseline::init("/tmp/security_baseline_summary_${::hostname}.txt")
-  -> create_resources('::security_baseline::sec_check', $rules)
-  -> if($reports == 'both' or $reports == 'summary') {
-    $summary = security_baseline::summary("/tmp/security_baseline_summary_${::hostname}.txt", true)
+  class { 'security_baseline::summary_init':
+    reports => $reports,
+    before  => Class['security_baseline::run_checks'],
+  }
 
-    if empty($summary) {
-      echo { 'no-summary-data':
-        message  => 'no summary data',
-        loglevel => 'warning',
-        withpath => false,
-      }
-    } else {
-      file { $summary_report:
-        ensure  => file,
-        content => epp('security_baseline/summary_report.epp', {
-          compliant         => $summary['ok'],
-          failed            => $summary['fail'],
-          unknown           => $summary['unknown'],
-          compliant_count   => $summary['summary']['count_ok'],
-          failed_count      => $summary['summary']['count_fail'],
-          unknown_count     => $summary['summary']['count_unknown'],
-          compliant_percent => $summary['summary']['percent_ok'],
-          failed_percent    => $summary['summary']['percent_fail'],
-          unknown_percent   => $summary['summary']['percent_unknown'],
-        }),
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-      }
-    }
+  class { 'security_baseline::run_checks':
+    rules  => $rules,
+    before => Class['security_baseline::summary_result'],
+  }
+
+  class { 'security_baseline::summary_result':
+    reports        => $reports,
+    summary_report => $summary_report,
   }
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }

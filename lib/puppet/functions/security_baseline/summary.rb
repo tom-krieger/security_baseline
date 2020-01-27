@@ -72,7 +72,7 @@ Puppet::Functions.create_function(:'security_baseline::summary') do
           end
         end
         if line =~ %r{^notchecked:}
-          m = line.match(%r{^fail:(?<notchecked>.*)$})
+          m = line.match(%r{^notchecked:(?<notchecked>.*)$})
           unless m.nil?
             tests_notchecked = m[:notchecked]
           end

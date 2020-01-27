@@ -15,5 +15,11 @@ class security_baseline::summary_init (
 ) {
   if($reports == 'both' or $reports == 'summary') {
     security_baseline::init("/tmp/security_baseline_summary_${::hostname}.txt")
+  } else {
+    echo { 'summary-no-init':
+      message  => 'summary not initialized',
+      loglevel => 'warning',
+      withpath => false,
+    }
   }
 }

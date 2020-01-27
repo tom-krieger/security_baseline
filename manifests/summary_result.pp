@@ -48,5 +48,11 @@ class security_baseline::summary_result (
         mode    => '0644',
       }
     }
+  } else {
+    echo { 'no-summary':
+      message  => 'no summary requested',
+      loglevel => 'info',
+      withpath => false,
+    }
   }
 }

@@ -151,13 +151,11 @@ class security_baseline (
     reports => $reports,
     before  => Class['security_baseline::run_checks'],
   }
-
-  class { 'security_baseline::run_checks':
+  -> class { 'security_baseline::run_checks':
     rules  => $rules,
     before => Class['security_baseline::summary_result'],
   }
-
-  class { 'security_baseline::summary_result':
+  -> class { 'security_baseline::summary_result':
     reports        => $reports,
     summary_report => $summary_report,
   }

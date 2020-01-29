@@ -18,7 +18,8 @@ class security_baseline::summary_result (
   String $summary_report                      = '/opt/puppetlabs/facter/facts.d/security_baseline_summary.yaml',
 ) {
   if($reports == 'both' or $reports == 'summary') {
-    $summary = security_baseline::summary("/tmp/security_baseline_summary_${::hostname}.txt", false, true)
+    $summary = Deferred('security_baseline::summary', ["/tmp/security_baseline_summary_${::hostname}.txt", false, true])
+    # $summary = security_baseline::summary("/tmp/security_baseline_summary_${::hostname}.txt", false, true)
 
     if empty($summary) {
       echo { 'no-summary-data':

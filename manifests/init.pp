@@ -87,6 +87,12 @@ class security_baseline (
   Boolean $reboot                             = false,
   Integer $reboot_timeout                     = 60,
 ) {
+  stage { 'first': before => Stage['main'] }
+  stage { 'last': require => Stage['main'] }
+
+  class { 'security_baseline::summary_init': stage => 'first' }
+  class { 'security_baseline::summary_result': stage => 'last' }
+
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
   include ::security_baseline::world_writeable_files_cron

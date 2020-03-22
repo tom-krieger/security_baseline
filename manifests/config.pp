@@ -172,14 +172,6 @@ class security_baseline::config(
       mode    => '0700',
     }
 
-    file { '/usr/share/security_baseline/bin/fact_upload.sh':
-      ensure  => present,
-      content => epp('security_baseline/fact_upload.sh.epp', {infile => $logfile, outfile => $summary}),
-      owner   => 'root',
-      group   => 'root',
-      mode    => '0700',
-    }
-
     file { '/usr/share/security_baseline/bin/check_user_home_dirs.sh':
       ensure  => present,
       content => epp('security_baseline/check_user_home_dirs.sh.epp', {nologin => $nologin}),
@@ -187,6 +179,14 @@ class security_baseline::config(
       group   => 'root',
       mode    => '0700',
     }
+  }
+
+  file { '/usr/share/security_baseline/bin/fact_upload.sh':
+    ensure  => present,
+    content => epp('security_baseline/fact_upload.sh.epp', {infile => $logfile, outfile => $summary}),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0700',
   }
 
   file { '/usr/share/security_baseline/bin/root_path_integrity.sh':

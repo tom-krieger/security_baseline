@@ -83,16 +83,10 @@ class security_baseline (
   String $suid_fact_file                      = '/opt/puppetlabs/facter/facts.d/security_baseline_suid_programs.yaml',
   String $sgid_fact_file                      = '/opt/puppetlabs/facter/facts.d/security_baseline_sgid_programs.yaml',
   Boolean $update_postrun_command             = true,
-  String $fact_upload_command                 = '/usr/local/bin/puppet facts upload',
+  String $fact_upload_command                 = '/usr/share/security_baseline/bin/fact_upload.sh',
   Boolean $reboot                             = false,
   Integer $reboot_timeout                     = 60,
 ) {
-  stage { 'first': before => Stage['main'] }
-  stage { 'last': require => Stage['main'] }
-
-  class { 'security_baseline::summary_init': stage => 'first' }
-  class { 'security_baseline::summary_result': stage => 'last' }
-
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
   include ::security_baseline::world_writeable_files_cron
@@ -109,6 +103,8 @@ class security_baseline (
     update_postrun_command => $update_postrun_command,
     fact_upload_command    => $fact_upload_command,
     reporting_type         => $reporting_type,
+    logfile                => $logfile,
+    summary                => $summary_report,
     before                 => Class['security_baseline::summary_init'],
   }
 
@@ -151,19 +147,6 @@ class security_baseline (
     file { $logfile:
       ensure => absent,
     }
-  }
-
-  class { 'security_baseline::summary_init':
-    reports => $reports,
-    before  => Class['security_baseline::run_checks'],
-  }
-  -> class { 'security_baseline::run_checks':
-    rules  => $rules,
-    before => Class['security_baseline::summary_result'],
-  }
-  -> class { 'security_baseline::summary_result':
-    reports        => $reports,
-    summary_report => $summary_report,
   }
 
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }

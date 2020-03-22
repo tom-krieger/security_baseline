@@ -128,9 +128,6 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'compliant',
               }
-              if($scored) {
-                security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt", true)
-              }
             } else {
               if($::security_baseline::debug) {
                 echo { "Rule ${title}. Fact ${fact_name} should have value '${fact_value}' but has current value '${current_value}'":
@@ -143,9 +140,6 @@ define security_baseline::sec_check (
                 log_level => $log_level,
                 msg       => $message,
                 rulestate => 'not compliant',
-              }
-              if($scored) {
-                security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt", true)
               }
             }
           } else {
@@ -162,9 +156,6 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'not compliant',
               }
-              if($scored) {
-                security_baseline::add($title, 'fail', "/tmp/security_baseline_summary_${::hostname}.txt", true)
-              }
             } else {
 
               # fact contains expected value
@@ -172,9 +163,6 @@ define security_baseline::sec_check (
                 log_level => 'ok',
                 msg       => $message,
                 rulestate => 'compliant',
-              }
-              if($scored) {
-                security_baseline::add($title, 'ok', "/tmp/security_baseline_summary_${::hostname}.txt", true)
               }
             }
           }
@@ -185,9 +173,6 @@ define security_baseline::sec_check (
             log_level => 'ok',
             msg       => $message,
             rulestate => 'compliant (no value)',
-          }
-          if($scored) {
-            security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt", true)
           }
 
           if($fact_name.is_a(Array)) {
@@ -209,9 +194,6 @@ define security_baseline::sec_check (
           log_level => 'ok',
           msg       => $message,
           rulestate => 'compliant (no value)',
-        }
-        if($scored) {
-          security_baseline::add($title, 'unknown', "/tmp/security_baseline_summary_${::hostname}.txt", true)
         }
       }
 
@@ -248,7 +230,5 @@ define security_baseline::sec_check (
         * => $merged_data
       }
 
-    } elsif ($active == false) {
-      security_baseline::add($title, 'notchecked', "/tmp/security_baseline_summary_${::hostname}.txt", true)
     }
 }

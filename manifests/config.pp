@@ -18,6 +18,8 @@ class security_baseline::config(
   Boolean $update_postrun_command          = true,
   String $fact_upload_command              = '/usr/local/bin/puppet facts upload',
   Enum['fact', 'csv_file'] $reporting_type = 'fact',
+  String $logfile                          = '',
+  String $summary                          = '',
 ) {
   file { '/usr/share/security_baseline':
     ensure => directory,
@@ -165,6 +167,14 @@ class security_baseline::config(
     file { '/usr/share/security_baseline/bin/check_rhosts_files.sh':
       ensure  => present,
       content => epp('security_baseline/check_rhosts_files.sh.epp', {nologin => $nologin}),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0700',
+    }
+
+    file { '/usr/share/security_baseline/bin/fact_upload.sh':
+      ensure  => file,
+      content => epp('security_baseline/fact_uload.sh.epp', {infile => $logfile, outfile => $summary}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',

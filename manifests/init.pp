@@ -148,10 +148,12 @@ class security_baseline (
     }
   }
 
-  $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and $data['reboot'] == true }
+  $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and ($data['reboot'] == true) }
 
   $classes = $reboot_classes.map |$key, $value| {
-    capitalize($value['class'].split('::')).join('::')
+    if(defined(Class[$value['class']])) {
+      capitalize($value['class'].split('::')).join('::')
+    }
   }
 
   if($reports == 'both' or $reports == 'details') {

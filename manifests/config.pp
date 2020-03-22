@@ -173,8 +173,8 @@ class security_baseline::config(
     }
 
     file { '/usr/share/security_baseline/bin/fact_upload.sh':
-      ensure  => file,
-      content => epp('security_baseline/fact_uload.sh.epp', {infile => $logfile, outfile => $summary}),
+      ensure  => present,
+      content => epp('security_baseline/fact_upload.sh.epp', {infile => $logfile, outfile => $summary}),
       owner   => 'root',
       group   => 'root',
       mode    => '0700',
@@ -232,6 +232,14 @@ class security_baseline::config(
   file { '/usr/share/security_baseline/bin/update_pam_pw_hash_sha512_config.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/update_pam_pw_hash_sha512_config.sh',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0700',
+  }
+
+  file { '/usr/share/security_baseline/bin/summary.rb':
+    ensure => present,
+    source => 'puppet:///modules/security_baseline/summary.rb',
     owner  => 'root',
     group  => 'root',
     mode   => '0700',

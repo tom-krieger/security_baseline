@@ -105,7 +105,6 @@ class security_baseline (
     reporting_type         => $reporting_type,
     logfile                => $logfile,
     summary                => $summary_report,
-    before                 => Class['security_baseline::summary_init'],
   }
 
   class {'security_baseline::auditd_suid_rules_cron':

@@ -14,7 +14,7 @@ describe 'security_baseline::config' do
         {
           'update_postrun_command' => true,
           'reporting_type' => 'fact',
-          'fact_upload_command' => '/usr/local/bin/puppet facts upload',
+          'fact_upload_command' => '/usr/share/security_baseline/bin/fact_upload.sh',
         }
       end
 
@@ -22,16 +22,16 @@ describe 'security_baseline::config' do
       it do
         is_expected.to contain_exec('set puppet agent postrun agent')
           .with(
-            'command' => 'puppet config --section agent set postrun_command "/usr/local/bin/puppet facts upload"',
+            'command' => 'puppet config --section agent set postrun_command "/usr/share/security_baseline/bin/fact_upload.sh"',
             'path'    => ['/bin', '/usr/bin', '/usr/local/bin'],
-            'onlyif'  => 'test -z "$(puppet config print | grep -E "postrun_command\\s*=\\s*/usr/local/bin/puppet facts upload")"',
+            'onlyif'  => 'test -z "$(puppet config print | grep -E "postrun_command\\s*=\\s*/usr/share/security_baseline/bin/fact_upload.sh")"',
           )
 
         is_expected.to contain_exec('set puppet agent postrun main')
           .with(
-            'command' => 'puppet config --section main set postrun_command "/usr/local/bin/puppet facts upload"',
+            'command' => 'puppet config --section main set postrun_command "/usr/share/security_baseline/bin/fact_upload.sh"',
             'path'    => ['/bin', '/usr/bin', '/usr/local/bin'],
-            'onlyif'  => 'test -z "$(puppet config print | grep -E "postrun_command\\s*=\\s*/usr/local/bin/puppet facts upload")"',
+            'onlyif'  => 'test -z "$(puppet config print | grep -E "postrun_command\\s*=\\s*/usr/share/security_baseline/bin/fact_upload.sh")"',
           )
 
         is_expected.to contain_file('/usr/share/security_baseline/')
@@ -179,6 +179,22 @@ describe 'security_baseline::config' do
           )
 
         is_expected.to contain_file('/usr/share/security_baseline/bin/update_pam_pw_hash_sha512_config.sh')
+          .with(
+            'ensure' => 'present',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/share/security_baseline/bin/fact_upload.sh')
+          .with(
+            'ensure' => 'present',
+            'owner'  => 'root',
+            'group'  => 'root',
+            'mode'   => '0700',
+          )
+
+        is_expected.to contain_file('/usr/share/security_baseline/bin/summary.rb')
           .with(
             'ensure' => 'present',
             'owner'  => 'root',

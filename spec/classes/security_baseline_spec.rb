@@ -42,9 +42,6 @@ describe 'security_baseline' do
         is_expected.to create_class('security_baseline::world_writeable_files_cron')
         is_expected.to create_class('security_baseline::unowned_files_cron')
         is_expected.to create_class('security_baseline::auditd_suid_rules_cron')
-        is_expected.to create_class('security_baseline::summary_init')
-        is_expected.to create_class('security_baseline::run_checks')
-        is_expected.to create_class('security_baseline::summary_result')
         is_expected.to contain_concat('/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml')
           .with(
             'ensure' => 'present',

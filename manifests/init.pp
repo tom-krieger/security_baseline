@@ -148,6 +148,14 @@ class security_baseline (
     }
   }
 
+  create_resources('::security_baseline::sec_check', $rules)
+
+  # $rules.each |$rule_title, $rule_data| {
+  #  ::security_baseline::sec_check { $rule_title:
+  #    * => $rule_data,
+  #  }
+  # }
+
   $reboot_classes = $rules.filter |$name, $data| {has_key($data, 'reboot') and ($data['reboot'] == true) }
 
   $classes = $reboot_classes.map |$key, $value| {

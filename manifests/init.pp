@@ -86,6 +86,7 @@ class security_baseline (
   String $fact_upload_command                 = '/usr/share/security_baseline/bin/fact_upload.sh',
   Boolean $reboot                             = false,
   Integer $reboot_timeout                     = 60,
+  String $ruby_binary                         = '/opt/puppetlabs/puppet/bin/ruby',
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
@@ -105,6 +106,7 @@ class security_baseline (
     reporting_type         => $reporting_type,
     logfile                => $logfile,
     summary                => $summary_report,
+    ruby_binary            => $ruby_binary,
   }
 
   class {'security_baseline::auditd_suid_rules_cron':

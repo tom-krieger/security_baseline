@@ -12,6 +12,15 @@
 # @param reporting_type
 #    Selects the report type to be written
 #
+# @param logfile
+#    Facts log file to use for summary
+#
+# @param summary
+#    Facts file to write with summary data
+#
+# @param ruby_binary
+#    The ruby binary to use
+#
 # @example
 #   include security_baseline::config
 class security_baseline::config(
@@ -20,6 +29,7 @@ class security_baseline::config(
   Enum['fact', 'csv_file'] $reporting_type = 'fact',
   String $logfile                          = '',
   String $summary                          = '',
+  String $ruby_binary                      = '/opt/puppetlabs/puppet/bin/ruby'
 ) {
   file { '/usr/share/security_baseline':
     ensure => directory,
@@ -183,7 +193,11 @@ class security_baseline::config(
 
   file { '/usr/share/security_baseline/bin/fact_upload.sh':
     ensure  => present,
-    content => epp('security_baseline/fact_upload.sh.epp', {infile => $logfile, outfile => $summary}),
+    content => epp('security_baseline/fact_upload.sh.epp', {
+      infile  => $logfile,
+      outfile => $summary,
+      ruby    => $ruby_binary
+    }),
     owner   => 'root',
     group   => 'root',
     mode    => '0700',

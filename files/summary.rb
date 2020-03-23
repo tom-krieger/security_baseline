@@ -22,13 +22,12 @@ counters['fail'] = 0
 counters['not_scored'] = 0
 counters['unknown'] = 0
 counters['unknown_state'] = 0
-allTests = 0
-allScored = 0
+all_tests = 0
 
 data = YAML.load_file(file)
 
 data['security_baseline_findings'].each do |rule_name, rule_data|
-  alltests += 1
+  all_tests += 1
   if rule_data['scored'] == 'true'
     if rule_data['status'] == 'compliant (no value)'
       counters['unknown'] += 1
@@ -45,15 +44,15 @@ data['security_baseline_findings'].each do |rule_name, rule_data|
   end
 end
 
-counters['num_tests'] = allTests
-counters['num_scored'] = allTests - counters['not_scored']
+counters['num_tests'] = all_tests
+counters['num_scored'] = all_tests - counters['not_scored']
 
-if allTests > 0
-  percent['unknown'] = round(counters['unknown'] * 100 / allTests, 2)
-  percent['fail'] = round(conters['fail'] * 100 / allTests, 2)
-  percent['ok'] = round(counters['ok'] * 100 / allTests, 2)
-  percent['unknown_state'] = round(counters['unknown_state'] * 100 / allTests, 2)
-  percent['not_scored'] = round(counter['not_scored'] * 100 / allTests, 2)
+if all_tests > 0
+  percent['unknown'] = round(counters['unknown'] * 100 / all_tests, 2)
+  percent['fail'] = round(conters['fail'] * 100 / all_tests, 2)
+  percent['ok'] = round(counters['ok'] * 100 / all_tests, 2)
+  percent['unknown_state'] = round(counters['unknown_state'] * 100 / all_tests, 2)
+  percent['not_scored'] = round(counter['not_scored'] * 100 / all_tests, 2)
 else
   percent['unknown'] = 'n/a'
   percent['fail'] = 'n/a'

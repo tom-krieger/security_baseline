@@ -48,11 +48,11 @@ counters['num_tests'] = all_tests
 counters['num_scored'] = all_tests - counters['not_scored']
 
 if all_tests > 0
-  percent['unknown'] = round(counters['unknown'] * 100 / all_tests, 2)
-  percent['fail'] = round(conters['fail'] * 100 / all_tests, 2)
-  percent['ok'] = round(counters['ok'] * 100 / all_tests, 2)
-  percent['unknown_state'] = round(counters['unknown_state'] * 100 / all_tests, 2)
-  percent['not_scored'] = round(counter['not_scored'] * 100 / all_tests, 2)
+  percent['unknown'] = (counters['unknown'] * 100 / all_tests).round(2)
+  percent['fail'] = (conters['fail'] * 100 / all_tests).round(2)
+  percent['ok'] = (counters['ok'] * 100 / all_tests).round(2)
+  percent['unknown_state'] = (counters['unknown_state'] * 100 / all_tests).round(2)
+  percent['not_scored'] = (counter['not_scored'] * 100 / all_tests).round(2)
 else
   percent['unknown'] = 'n/a'
   percent['fail'] = 'n/a'

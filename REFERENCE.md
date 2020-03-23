@@ -432,11 +432,6 @@ _Private Classes_
 * [`security_baseline::sec_check`](#security_baselinesec_check): Check a security rule.
 * [`security_baseline::set_mount_options`](#security_baselineset_mount_options): Change mount options
 
-**Functions**
-
-* [`security_baseline::add`](#security_baselineadd): 
-* [`security_baseline::summary`](#security_baselinesummary): 
-
 ## Classes
 
 ### security_baseline
@@ -583,7 +578,7 @@ Data type: `String`
 
 Command to use to upload facts to Puppet master
 
-Default value: '/usr/local/bin/puppet facts upload'
+Default value: '/usr/share/security_baseline/bin/fact_upload.sh'
 
 ##### `reboot`
 
@@ -601,6 +596,14 @@ Data type: `Integer`
 Timeout until reboot will take place
 
 Default value: 60
+
+##### `ruby_binary`
+
+Data type: `String`
+
+Ruby binary to run the summary Ruby script
+
+Default value: '/opt/puppetlabs/puppet/bin/ruby'
 
 ### security_baseline::auditd_suid_rules_cron
 
@@ -697,6 +700,30 @@ Data type: `Enum['fact', 'csv_file']`
 Selects the report type to be written
 
 Default value: 'fact'
+
+##### `logfile`
+
+Data type: `String`
+
+Facts log file to use for summary
+
+Default value: ''
+
+##### `summary`
+
+Data type: `String`
+
+Facts file to write with summary data
+
+Default value: ''
+
+##### `ruby_binary`
+
+Data type: `String`
+
+The ruby binary to use
+
+Default value: '/opt/puppetlabs/puppet/bin/ruby'
 
 ### security_baseline::services
 
@@ -974,60 +1001,4 @@ Mountpoint to work on
 Data type: `String`
 
 Options to set
-
-## Functions
-
-### security_baseline::add
-
-Type: Ruby 4.x API
-
-The security_baseline::add function.
-
-#### `security_baseline::add(String $rule_nr, Stati $status, Optional[String] $filename)`
-
-The security_baseline::add function.
-
-Returns: `Any`
-
-##### `rule_nr`
-
-Data type: `String`
-
-
-
-##### `status`
-
-Data type: `Stati`
-
-
-
-##### `filename`
-
-Data type: `Optional[String]`
-
-
-
-### security_baseline::summary
-
-Type: Ruby 4.x API
-
-The security_baseline::summary function.
-
-#### `security_baseline::summary(Optional[String] $filename, Optional[Boolean] $cleanup)`
-
-The security_baseline::summary function.
-
-Returns: `Hash`
-
-##### `filename`
-
-Data type: `Optional[String]`
-
-
-
-##### `cleanup`
-
-Data type: `Optional[Boolean]`
-
-
 

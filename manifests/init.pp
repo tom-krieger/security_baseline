@@ -64,6 +64,9 @@
 # @param reboot_timeout
 #    Timeout until reboot will take place
 #
+# @param ruby_binary
+#    Ruby binary to run the summary Ruby script
+#
 # @example
 #   include security_baseline
 #

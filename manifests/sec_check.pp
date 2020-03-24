@@ -156,7 +156,6 @@ define security_baseline::sec_check (
                 msg       => $message,
                 rulestate => 'not compliant',
               }
-
             } else {
 
               # fact contains expected value
@@ -194,7 +193,7 @@ define security_baseline::sec_check (
         $logentry_data = {
           log_level => 'ok',
           msg       => $message,
-          rulestate => 'compliant',
+          rulestate => 'compliant (no value)',
         }
       }
 
@@ -219,9 +218,11 @@ define security_baseline::sec_check (
 
       }
 
-      $logentry = $logentry_default + $logentry_data
-      ::security_baseline::logging { $title:
-        * => $logentry,
+      if ($::security_baseline::reports == 'both' or $::security_baseline::reports == 'details') {
+        $logentry = $logentry_default + $logentry_data
+        ::security_baseline::logging { $title:
+          * => $logentry,
+        }
       }
 
       $merged_data = merge($data, $config_data)
@@ -229,5 +230,5 @@ define security_baseline::sec_check (
         * => $merged_data
       }
 
-    } # rule active and security_baseline fact available
+    }
 }

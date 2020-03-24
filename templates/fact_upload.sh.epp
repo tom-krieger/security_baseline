@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# create summary fact and upload acts
+
+<%= $ruby %> /usr/share/security_baseline/bin/summary.rb <%= $infile %> <%= $outfile %>
+
+/usr/local/bin/puppet facts upload
+
+exit 0

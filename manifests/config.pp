@@ -12,12 +12,24 @@
 # @param reporting_type
 #    Selects the report type to be written
 #
+# @param logfile
+#    Facts log file to use for summary
+#
+# @param summary
+#    Facts file to write with summary data
+#
+# @param ruby_binary
+#    The ruby binary to use
+#
 # @example
 #   include security_baseline::config
 class security_baseline::config(
   Boolean $update_postrun_command          = true,
   String $fact_upload_command              = '/usr/local/bin/puppet facts upload',
   Enum['fact', 'csv_file'] $reporting_type = 'fact',
+  String $logfile                          = '',
+  String $summary                          = '',
+  String $ruby_binary                      = '/opt/puppetlabs/puppet/bin/ruby'
 ) {
   file { '/usr/share/security_baseline':
     ensure => directory,
@@ -179,6 +191,18 @@ class security_baseline::config(
     }
   }
 
+  file { '/usr/share/security_baseline/bin/fact_upload.sh':
+    ensure  => present,
+    content => epp('security_baseline/fact_upload.sh.epp', {
+      infile  => $logfile,
+      outfile => $summary,
+      ruby    => $ruby_binary
+    }),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0700',
+  }
+
   file { '/usr/share/security_baseline/bin/root_path_integrity.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/root_path_integrity.sh',
@@ -222,6 +246,14 @@ class security_baseline::config(
   file { '/usr/share/security_baseline/bin/update_pam_pw_hash_sha512_config.sh':
     ensure => present,
     source => 'puppet:///modules/security_baseline/update_pam_pw_hash_sha512_config.sh',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0700',
+  }
+
+  file { '/usr/share/security_baseline/bin/summary.rb':
+    ensure => present,
+    source => 'puppet:///modules/security_baseline/summary.rb',
     owner  => 'root',
     group  => 'root',
     mode   => '0700',

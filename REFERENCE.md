@@ -492,6 +492,14 @@ Logfile to write messages to
 
 Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml'
 
+##### `summary_report`
+
+Data type: `String`
+
+File to write a summary report yaml report
+
+Default value: '/opt/puppetlabs/facter/facts.d/security_baseline_summary.yaml'
+
 ##### `auditd_suid_include`
 
 Data type: `Array`
@@ -523,6 +531,14 @@ Data type: `Enum['fact', 'csv_file']`
 Select to type of reporting. ca currently be set to csv or fact.
 
 Default value: 'fact'
+
+##### `reports`
+
+Data type: `Enum['summary', 'details', 'both']`
+
+Select which reports to produce.
+
+Default value: 'both'
 
 ##### `auditd_rules_fact_file`
 
@@ -562,7 +578,7 @@ Data type: `String`
 
 Command to use to upload facts to Puppet master
 
-Default value: '/usr/local/bin/puppet facts upload'
+Default value: '/usr/share/security_baseline/bin/fact_upload.sh'
 
 ##### `reboot`
 
@@ -580,6 +596,14 @@ Data type: `Integer`
 Timeout until reboot will take place
 
 Default value: 60
+
+##### `ruby_binary`
+
+Data type: `String`
+
+Ruby binary to run the summary Ruby script
+
+Default value: '/opt/puppetlabs/puppet/bin/ruby'
 
 ### security_baseline::auditd_suid_rules_cron
 
@@ -676,6 +700,30 @@ Data type: `Enum['fact', 'csv_file']`
 Selects the report type to be written
 
 Default value: 'fact'
+
+##### `logfile`
+
+Data type: `String`
+
+Facts log file to use for summary
+
+Default value: ''
+
+##### `summary`
+
+Data type: `String`
+
+Facts file to write with summary data
+
+Default value: ''
+
+##### `ruby_binary`
+
+Data type: `String`
+
+The ruby binary to use
+
+Default value: '/opt/puppetlabs/puppet/bin/ruby'
 
 ### security_baseline::services
 

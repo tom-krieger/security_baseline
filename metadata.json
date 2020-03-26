@@ -10,11 +10,11 @@
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",
-      "version_requirement": ">= 4.6.0 < 7.0.0"
+      "version_requirement": ">= 4.0.0 < 7.0.0"
     },
     {
       "name": "puppetlabs-concat",
-      "version_requirement": ">= 6.1.0 < 7.0.0"
+      "version_requirement": ">= 5.0.0 < 7.0.0"
     },
     {
       "name": "camptocamp-kmod",
@@ -42,11 +42,11 @@
     },
     {
       "name": "herculesteam-augeasproviders_grub",
-      "version_requirement": ">= 3.0.0 < 4.0.0"
+      "version_requirement": "3.1.0"
     },
     {
       "name": "herculesteam/augeasproviders_shellvar",
-      "version_requirement": ">= 3.0.0 < 4.0.0"
+      "version_requirement": "3.1.0"
     },
     {
       "name": "herculesteam/augeasproviders_mounttab",
@@ -128,7 +128,7 @@
   "requirements": [
     {
       "name": "puppet",
-      "version_requirement": ">= 4.10.0 < 7.0.0"
+      "version_requirement": ">= 5.5.8 < 7.0.0"
     }
   ],
   "pdk-version": "1.17.0",

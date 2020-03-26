@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 0.9.2
+
+Added Litmus acceptance testing
+
 ## Release 0.9.1
 
 Added summary report fact.

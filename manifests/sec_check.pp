@@ -230,5 +230,5 @@ define security_baseline::sec_check (
         * => $merged_data
       }
 
-    }
+    } # not active rule or no security baseline facts available
 }

@@ -75,6 +75,7 @@ Style/TrailingCommaInLiteral:
 Style/SymbolArray:
   Description: Using percent style obscures symbolic intent of array's contents.
   EnforcedStyle: brackets
+inherit_from: ".rubocop_todo.yml"
 RSpec/MessageSpies:
   EnforcedStyle: receive
 Style/Documentation:
@@ -115,9 +116,6 @@ Metrics/ParameterLists:
   Enabled: false
 Metrics/PerceivedComplexity:
   Enabled: false
-Metrics/BlockNesting:
-  CountBlocks: false
-  Max: 4
 RSpec/DescribeClass:
   Enabled: false
 RSpec/ExampleLength:

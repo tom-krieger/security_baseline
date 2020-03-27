@@ -111,7 +111,7 @@ define security_baseline::sec_check (
         }
 
         if($::security_baseline::debug) {
-          echo { "current value ${fact_name} -> ${current_value}":
+          echo { "current value ${fact_name} -> ${current_value} (${rulename})":
             loglevel => 'info',
             withpath => false,
           }

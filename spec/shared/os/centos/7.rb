@@ -1,5 +1,5 @@
-shared_examples 'os::ubuntu::18.04' do
-  puts 'Ubuntu 18.04 tests'
+shared_examples 'os::centos::7' do
+  puts 'CentOS 7 tests'
   include_examples 'common::1.1.1.1'
   include_examples 'common::1.1.1.2'
   include_examples 'common::1.1.1.3'

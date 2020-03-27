@@ -17,12 +17,16 @@ pdk bundle exec bolt command run '[ -f /usr/local/bin/puppet ] || ln -s /opt/pup
 # install Puppet module to test
 pdk bundle exec rake litmus:install_module
 
-# for f in `ls data/`; do
-#    fn=`basename ${f}`
-#    bolt file upload data/${f} /etc/puppetlabs/code/environments/production/data/${fn} -i inventory.yaml --targets ssh_nodes
-# done
+pdk bundle exec bolt command run 'rm -f /etc/puppetlabs/code/environments/production/modules/security_baseline/data/*' -i inventory.yaml --targets ssh_nodes
 
-# bolt file upload hiera-acc-test.yaml /etc/puppetlabs/code/environments/production/hiera.yaml -i inventory.yaml --targets ssh_nodes
+for f in `ls spec/fixtures/hiera/data/`; do
+   fn=`basename ${f}`
+   echo "uploading spec/fixtures/hiera/data/${f} to /etc/puppetlabs/code/environments/production/modules/security_baseline/data/${fn}"
+   bolt file upload spec/fixtures/hiera/data/${f} /etc/puppetlabs/code/environments/production/modules/security_baseline/data/${fn} -i inventory.yaml --targets ssh_nodes
+done
+
+
+pdk bundle exec bolt file upload spec/fixtures/hiera/hiera.yaml /etc/puppetlabs/code/environments/production/modules/security_baseline/hiera.yaml -i inventory.yaml --targets ssh_nodes
 
 # run tests in parallel with less output
 # pdk bundle exec rake litmus:acceptance:parallel
@@ -31,9 +35,9 @@ pdk bundle exec rake litmus:install_module
 #TARGET_HOST=localhost:2222 pdk bundle exec rspec ./spec/acceptance --format d
 #TARGET_HOST=localhost:2223 pdk bundle exec rspec ./spec/acceptance --format d
 
-# TARGET_HOST=127.0.0.1:2222 pdk bundle exec rspec ./spec/acceptance --format d
+TARGET_HOST=127.0.0.1:2222 pdk bundle exec rspec ./spec/acceptance --format d
 
 # tear down the test environment
-# pdk bundle exec rake litmus:tear_down
+pdk bundle exec rake litmus:tear_down
 
 exit 0

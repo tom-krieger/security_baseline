@@ -1,4 +1,5 @@
-{
+{ 
+  "security_baseline": {
     "access_control" : "none",
     "accounts" : {
       "no_shell_nologin" : [ ],
@@ -727,3 +728,4 @@
       "srv_time-udp" : false
     }
   }
+}

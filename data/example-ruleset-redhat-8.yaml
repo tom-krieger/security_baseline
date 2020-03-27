@@ -365,7 +365,7 @@ security_baseline::rules:
     message: 'Rule 1.1.17. /dev/shm should be mounted with noexec option.'
     log_level: 'warning'
   '1.1.18':
-    rulename: 'removable_noexec'
+    rulename: 'removable_nodev'
     active: true
     scored: false
     level: 1
@@ -2869,7 +2869,7 @@ security_baseline::rules:
     config_data:
       allow_users:
         - root
-        - kriegeth
+        - vagrant
         - centos
         - ec2-user
         - ubuntu

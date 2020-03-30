@@ -1101,7 +1101,7 @@ security_baseline::rules:
     level: 1
     description: 'dovecot is an open source IMAP and POP3 server for Linux based systems.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_exim4'
+    class: '::security_baseline::rules::debian::sec_exim4'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -2987,7 +2987,6 @@ security_baseline::rules:
       allow_users:
         - root
         - vagrant
-        - centos
         - ec2-user
         - ubuntu
   '5.2.19':

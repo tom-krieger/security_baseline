@@ -2838,7 +2838,6 @@ security_baseline::rules:
       allow_users:
         - root
         - vagrant
-        - centos
         - ec2-user
         - ubuntu
   '5.2.3':
@@ -3463,7 +3462,7 @@ security_baseline::rules:
     config_data:
       wheel_users:
         - root
-        - centos
+        - vagrant
   '6.1.1':
     rulename: system-file-perms
     active: true

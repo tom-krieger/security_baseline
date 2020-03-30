@@ -2870,7 +2870,6 @@ security_baseline::rules:
       allow_users:
         - root
         - vagrant
-        - centos
         - ec2-user
         - ubuntu
   '5.2.3':

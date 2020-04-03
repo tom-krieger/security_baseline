@@ -68,17 +68,27 @@ when 'redhat'
   case release
   when '6'
     describe 'Security baseline RedHat 6' do
+      include_examples 'os::redhat::6'
     end
   when '7'
     describe 'Security baseline RedHat 7' do
+      include_examples 'os::redhat::7'
     end
   when '8'
     describe 'Security baseline RedHat 8' do
+      include_examples 'os::redhat::8'
     end
+  else
+    puts "unknown os: #{osfamily}-#{release}"
   end
 
 when 'suse'
-  describe 'Security baseline Suse SLES 12' do
+  case release
+  when '12'
+    describe 'Security baseline Suse SLES 12' do
+    end
+  else
+    puts "unknown os: #{osfamily}-#{release}"
   end
 else
   puts "unknown os: #{osfamily}"

@@ -2,7 +2,8 @@
 
 ## Release 0.9.1
 
-Added summary report fact.
+- Added summary report fact
+- Bug fix: fixed sed commands for Redhat/CentOS 8
 
 ## Release 0.9.0
 

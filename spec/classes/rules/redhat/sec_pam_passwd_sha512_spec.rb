@@ -82,7 +82,7 @@ describe 'security_baseline::rules::redhat::sec_pam_passwd_sha512' do
         if enforce
           is_expected.to contain_exec('update authselect config for sha512 system-auth')
             .with(
-              'command' => "sed - ri 's/^\\s*(password\\s+sufficient\\s+pam_unix.so\\s+)(.*)$/\\1\\2 sha512/' /etc/authselect/custom/testprofile/system-auth",
+              'command' => "sed -ri 's/^\\s*(password\\s+sufficient\\s+pam_unix.so\\s+)(.*)$/\\1\\2 sha512/' /etc/authselect/custom/testprofile/system-auth",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
               'unless'  => "test -z \"$(grep -E '^\\s*password\\s+sufficient\\s+pam_unix.so\\s+.*sha512\\s*.*$' /etc/authselect/custom/testprofile/system-auth)\"",
             )
@@ -90,7 +90,7 @@ describe 'security_baseline::rules::redhat::sec_pam_passwd_sha512' do
 
           is_expected.to contain_exec('update authselect config for sha512 password-auth')
             .with(
-              'command' => "sed - ri 's/^\\s*(password\\s+sufficient\\s+pam_unix.so\\s+)(.*)$/\\1\\2 sha512/' /etc/authselect/custom/testprofile/password-auth",
+              'command' => "sed -ri 's/^\\s*(password\\s+sufficient\\s+pam_unix.so\\s+)(.*)$/\\1\\2 sha512/' /etc/authselect/custom/testprofile/password-auth",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
               'unless'  => "test -z \"$(grep -E '^\\s*password\\s+sufficient\\s+pam_unix.so\\s+.*sha512\\s*.*$' /etc/authselect/custom/testprofile/password-auth)\"",
             )

@@ -173,7 +173,7 @@ def security_baseline_sles(os, _distid, _release)
   security_baseline[:zypper] = zypper
 
   x11 = {}
-  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11* | grep -v xorg-x11-fonts')
   x11['installed'] = if pkgs.nil? || pkgs.empty?
                        false
                      else

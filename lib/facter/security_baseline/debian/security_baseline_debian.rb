@@ -349,16 +349,7 @@ grep -v active) ]] && echo "NX Protection is not active"')
                          'not used'
                        end
   ntpdata.merge(check_ntp('/etc/ntp.conf', '/etc/init.d/ntp'))
-  ntpdata['ntp_status'] = ntpdata['ntp_restrict'] != 'none' && ntpdata['ntp_server'] != 'none' && ntpdata['ntp_options'] == 'none'
-
-  if File.exist?('/etc/chrony/chrony.conf')
-    val = Facter::Core::Execution.exec('grep -h "^(server|pool)" /etc/chrony/chrony.conf')
-    ntpdata['chrony_server'] = check_value_string(val, 'none')
-  else
-    ntpdata['chrony_server'] = 'none'
-  end
   ntpdata.merge(check_chrony('/etc/chrony/chrony.conf', ''))
-  ntpdata['chrony_status'] = ntpdata['chrony_server'] != 'none' && ntpdata['chrony_options'] != 'none'
   security_baseline['ntp'] = ntpdata
 
   security_baseline['sshd'] = read_sshd_config

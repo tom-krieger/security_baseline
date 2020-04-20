@@ -16,5 +16,7 @@ def check_ntp(conf, job)
     data['ntp_options'] = 'none'
   end
 
+  data['ntp_status'] = data['ntp_restrict'] != 'none' && data['ntp_server'] != 'none'
+
   data
 end

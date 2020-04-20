@@ -306,9 +306,7 @@ def security_baseline_sles(os, _distid, _release)
                          'not used'
                        end
   ntpdata.merge(check_ntp('/etc/ntp.conf', '/etc/sysconfig/ntp'))
-  ntpdata['ntp_status'] = ntpdata['ntp_restrict'] != 'none' && ntpdata['ntp_server'] != 'none' && ntpdata['ntp_options'] == 'none'
   ntpdata.merge(check_chrony('/etc/chrony.conf', '/etc/sysconfig/chronyd'))
-  ntpdata['chrony_status'] = ntpdata['chrony_server'] != 'none' && ntpdata['chrony_options'] != 'none'
   security_baseline['ntp'] = ntpdata
 
   security_baseline['sshd'] = read_sshd_config

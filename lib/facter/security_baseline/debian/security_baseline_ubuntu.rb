@@ -351,7 +351,6 @@ grep -v active) ]] && echo "NX Protection is not active"')
                          'not used'
                        end
   ntpdata.merge(check_ntp('/etc/ntp.conf', '/etc/init.d/ntp'))
-  ntpdata['ntp_status'] = ntpdata['ntp_restrict'] != 'none' && ntpdata['ntp_server'] != 'none' && ntpdata['ntp_options'] == 'none'
   ntpdata.merge(check_chrony('/etc/chrony/chrony.conf', ''))
   ntpdata['chrony_status'] = ntpdata['chrony_server'] != 'none' && ntpdata['chrony_options'] != 'none'
   security_baseline['ntp'] = ntpdata

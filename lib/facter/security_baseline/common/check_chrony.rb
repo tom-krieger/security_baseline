@@ -11,5 +11,7 @@ def check_chrony(conf, job)
     data['chrony_options'] = check_value_string(val, 'none')
   end
 
+  data['chrony_status'] = data['chrony_server'] != 'none' && data['chrony_options'] != 'none'
+
   data
 end

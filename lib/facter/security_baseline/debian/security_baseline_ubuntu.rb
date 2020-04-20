@@ -24,6 +24,8 @@ require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'facter/security_baseline/common/read_sshd_config'
 require 'facter/security_baseline/debian/read_services'
 require 'facter/security_baseline/common/check_cron_restrict'
+require 'facter/security_baseline/common/check_ntp'
+require 'facter/security_baseline/common/check_chrony'
 require 'pp'
 
 def security_baseline_ubuntu(os, _distid, _release)
@@ -241,7 +243,7 @@ def security_baseline_ubuntu(os, _distid, _release)
     val1 = check_value_string(Facter::Core::Execution.exec('grep "[org/gnome/login-screen]" /etc/gdm3/greeter.dconf-defaults'), 'none')
     val2 = check_value_string(Facter::Core::Execution.exec('grep "banner-message-enable=true" /etc/gdm3/greeter.dconf-defaults'), 'none')
     val3 = check_value_string(Facter::Core::Execution.exec('grep "banner-message-text=" /etc/gdm3/greeter.dconf-defaults'), 'none')
-    security_baseline[:gnome_gdm_conf] = if val1 == 'none' || val2 == 'none' || val3 == 'none'
+    security_baseline[:gnome_gdm_conf] = if (val1 == 'none' || val2 == 'none' || val3 == 'none') && security_baseline[:gnome_gdm]
                                            false
                                          else
                                            true
@@ -348,29 +350,9 @@ grep -v active) ]] && echo "NX Protection is not active"')
                        else
                          'not used'
                        end
-  if File.exist?('/etc/ntp.conf')
-    val = Facter::Core::Execution.exec('grep -h "^restrict" /etc/ntp.conf')
-    ntpdata['ntp_restrict'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec('grep -h "^(server|pool)" /etc/ntp.conf')
-    ntpdata['ntp_server'] = check_value_string(val, 'none')
-  else
-    ntpdata['ntp_restrict'] = 'none'
-    ntpdata['ntp_server'] = 'none'
-  end
-  if File.exist?('/etc/init.d/ntp')
-    val = Facter::Core::Execution.exec('grep -h "RUNASUSER" /etc/init.d/ntp')
-    ntpdata['ntp_options'] = check_value_string(val, 'none')
-  else
-    ntpdata['ntp_options'] = 'none'
-  end
+  ntpdata.merge(check_ntp('/etc/ntp.conf', '/etc/init.d/ntp'))
   ntpdata['ntp_status'] = ntpdata['ntp_restrict'] != 'none' && ntpdata['ntp_server'] != 'none' && ntpdata['ntp_options'] == 'none'
-
-  if File.exist?('/etc/chrony/chrony.conf')
-    val = Facter::Core::Execution.exec('grep -h "^(server|pool)" /etc/chrony/chrony.conf')
-    ntpdata['chrony_server'] = check_value_string(val, 'none')
-  else
-    ntpdata['chrony_server'] = 'none'
-  end
+  ntpdata.merge(check_chrony('/etc/chrony/chrony.conf', ''))
   ntpdata['chrony_status'] = ntpdata['chrony_server'] != 'none' && ntpdata['chrony_options'] != 'none'
   security_baseline['ntp'] = ntpdata
 

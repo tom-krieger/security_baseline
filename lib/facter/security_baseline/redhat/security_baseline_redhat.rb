@@ -329,7 +329,9 @@ def security_baseline_redhat(os, _distid, release)
                        else
                          'not used'
                        end
-  ntpdata.merge(check_ntp('/etc/ntp.conf', '/etc/sysconfig/ntp'))
+  data = check_ntp('/etc/ntp.conf', '/etc/sysconfig/ntp')
+  pp data
+  ntpdata.merge(data)
   ntpdata['ntp_status'] = ntpdata['ntp_restrict'] != 'none' && ntpdata['ntp_server'] != 'none' && ntpdata['ntp_options'] == 'none'
   ntpdata.merge(check_chrony('/etc/chrony.conf', '/etc/sysconfig/chronyd'))
   ntpdata['chrony_status'] = ntpdata['chrony_server'] != 'none' && ntpdata['chrony_options'] != 'none'

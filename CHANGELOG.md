@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.9.2
+
+- fixed some check rules
+- moved fact for cron restrictions into a function to remove duplicated code
+
 ## Release 0.9.1
 
 - Added summary report fact

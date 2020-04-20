@@ -23,6 +23,7 @@ require 'facter/security_baseline/common/read_iptables_rules'
 require 'facter/security_baseline/common/read_nftables_rules'
 require 'facter/security_baseline/common/read_sshd_config'
 require 'facter/security_baseline/redhat/read_firewalld_zone_iface'
+require 'facter/security_baseline/common/check_cron_restrict'
 require 'pp'
 
 # frozen_string_literal: true
@@ -308,22 +309,7 @@ def security_baseline_redhat(os, _distid, release)
   cron['/etc/at.allow'] = read_file_stats('/etc/at.allow')
   cron['/etc/at.deny'] = read_file_stats('/etc/at.deny')
 
-  cron['restrict'] = if (cron['/etc/cron.allow']['uid'] != 0) ||
-                        (cron['/etc/cron.allow']['gid'] != 0) ||
-                        (cron['/etc/cron.allow']['mode'] != 384) ||
-                        (cron['/etc/cron.deny']['uid'] != 0) ||
-                        (cron['/etc/cron.deny']['gid'] != 0) ||
-                        (cron['/etc/cron.deny']['mode'] != 384) ||
-                        (cron['/etc/at.allow']['uid'] != 0) ||
-                        (cron['/etc/at.allow']['gid'] != 0) ||
-                        (cron['/etc/at.allow']['mode'] != 384) ||
-                        (cron['/etc/at.deny']['uid'] != 0) ||
-                        (cron['/etc/at.deny']['gid'] != 0) ||
-                        (cron['/etc/at.deny']['mode'] != 384)
-                       false
-                     else
-                       true
-                     end
+  cron['restrict'] = check_cron_restrict(cron)
   security_baseline['cron'] = cron
 
   val = Facter::Core::Execution.exec('dmesg | grep NX')

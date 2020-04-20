@@ -23,6 +23,7 @@ require 'facter/security_baseline/common/trim_string'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'facter/security_baseline/common/check_values_expected'
 require 'facter/security_baseline/common/read_sshd_config'
+require 'facter/security_baseline/common/check_cron_restrict'
 require 'pp'
 
 def security_baseline_sles(os, _distid, _release)
@@ -284,22 +285,7 @@ def security_baseline_sles(os, _distid, _release)
   cron['/etc/at.allow'] = read_file_stats('/etc/at.allow')
   cron['/etc/at.deny'] = read_file_stats('/etc/at.deny')
 
-  cron['restrict'] = if (cron['/etc/cron.allow']['uid'] != 0) ||
-                        (cron['/etc/cron.allow']['gid'] != 0) ||
-                        (cron['/etc/cron.allow']['mode'] != 384) ||
-                        (cron['/etc/cron.deny']['uid'] != 0) ||
-                        (cron['/etc/cron.deny']['gid'] != 0) ||
-                        (cron['/etc/cron.deny']['mode'] != 384) ||
-                        (cron['/etc/at.allow']['uid'] != 0) ||
-                        (cron['/etc/at.allow']['gid'] != 0) ||
-                        (cron['/etc/at.allow']['mode'] != 384) ||
-                        (cron['/etc/at.deny']['uid'] != 0) ||
-                        (cron['/etc/at.deny']['gid'] != 0) ||
-                        (cron['/etc/at.deny']['mode'] != 384)
-                       false
-                     else
-                       true
-                     end
+  cron['restrict'] = check_cron_restrict(cron)
   security_baseline['cron'] = cron
 
   val = Facter::Core::Execution.exec('dmesg | grep NX')

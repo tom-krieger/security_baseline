@@ -35,14 +35,14 @@ describe 'security_baseline::rules::redhat::sec_single_user_mode' do
           is_expected.to contain_file_line('su-rescue')
             .with(
               'path'  => '/usr/lib/systemd/system/rescue.service',
-              'line'  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
+              'line'  => 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"',
               'match' => '^ExecStart=',
             )
 
           is_expected.to contain_file_line('su-emergency')
             .with(
               'path'  => '/usr/lib/systemd/system/emergency.service',
-              'line'  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
+              'line'  => 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"',
               'match' => '^ExecStart=',
             )
 

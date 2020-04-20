@@ -36,10 +36,7 @@ describe 'security_baseline::rules::common::sec_cron_restrict' do
 
             is_expected.to contain_file('/etc/cron.deny')
               .with(
-                'ensure' => 'present',
-                'owner'  => 'root',
-                'group'  => 'root',
-                'mode'   => '0600',
+                'ensure' => 'absent',
               )
 
             is_expected.to contain_file('/etc/at.allow')
@@ -52,10 +49,7 @@ describe 'security_baseline::rules::common::sec_cron_restrict' do
 
             is_expected.to contain_file('/etc/at.deny')
               .with(
-                'ensure' => 'present',
-                'owner'  => 'root',
-                'group'  => 'root',
-                'mode'   => '0600',
+                'ensure' => 'absent',
               )
 
             is_expected.not_to contain_echo('cron-restrict')

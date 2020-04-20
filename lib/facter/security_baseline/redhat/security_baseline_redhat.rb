@@ -293,7 +293,7 @@ def security_baseline_redhat(os, _distid, release)
                         end
   security_baseline[:coredumps] = coredumps
 
-  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11* [ grep -v xorg-x11-font')
   security_baseline['x11-packages'] = if pkgs.nil? || pkgs.empty?
                                         []
                                       else

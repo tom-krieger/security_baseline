@@ -23,6 +23,9 @@ require 'facter/security_baseline/common/trim_string'
 require 'facter/security_baseline/common/check_puppet_postrun_command'
 require 'facter/security_baseline/common/check_values_expected'
 require 'facter/security_baseline/common/read_sshd_config'
+require 'facter/security_baseline/common/check_cron_restrict'
+require 'facter/security_baseline/common/check_ntp'
+require 'facter/security_baseline/common/check_chrony'
 require 'pp'
 
 def security_baseline_sles(os, _distid, _release)
@@ -170,7 +173,7 @@ def security_baseline_sles(os, _distid, _release)
   security_baseline[:zypper] = zypper
 
   x11 = {}
-  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11* | grep -v xorg-x11-fonts')
   x11['installed'] = if pkgs.nil? || pkgs.empty?
                        false
                      else
@@ -220,7 +223,7 @@ def security_baseline_sles(os, _distid, _release)
   val1 = check_value_string(Facter::Core::Execution.exec('grep "user-db:user" /etc/dconf/profile/gdm'), 'none')
   val2 = check_value_string(Facter::Core::Execution.exec('grep "system-db:gdm" /etc/dconf/profile/gdm'), 'none')
   val3 = check_value_string(Facter::Core::Execution.exec('grep "file-db:/usr/share/gdm/greeter-dconf-defaults" /etc/dconf/profile/gdm'), 'none')
-  security_baseline[:gnome_gdm_conf] = if val1 == 'none' || val2 == 'none' || val3 == 'none'
+  security_baseline[:gnome_gdm_conf] = if (val1 == 'none' || val2 == 'none' || val3 == 'none') && security_baseline[:gnome_gdm]
                                          false
                                        else
                                          true
@@ -265,7 +268,7 @@ def security_baseline_sles(os, _distid, _release)
                         end
   security_baseline[:coredumps] = coredumps
 
-  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11* | grep -v xorg-x11-font')
   security_baseline['x11-packages'] = if pkgs.nil? || pkgs.empty?
                                         []
                                       else
@@ -284,22 +287,7 @@ def security_baseline_sles(os, _distid, _release)
   cron['/etc/at.allow'] = read_file_stats('/etc/at.allow')
   cron['/etc/at.deny'] = read_file_stats('/etc/at.deny')
 
-  cron['restrict'] = if (cron['/etc/cron.allow']['uid'] != 0) ||
-                        (cron['/etc/cron.allow']['gid'] != 0) ||
-                        (cron['/etc/cron.allow']['mode'] != 384) ||
-                        (cron['/etc/cron.deny']['uid'] != 0) ||
-                        (cron['/etc/cron.deny']['gid'] != 0) ||
-                        (cron['/etc/cron.deny']['mode'] != 384) ||
-                        (cron['/etc/at.allow']['uid'] != 0) ||
-                        (cron['/etc/at.allow']['gid'] != 0) ||
-                        (cron['/etc/at.allow']['mode'] != 384) ||
-                        (cron['/etc/at.deny']['uid'] != 0) ||
-                        (cron['/etc/at.deny']['gid'] != 0) ||
-                        (cron['/etc/at.deny']['mode'] != 384)
-                       false
-                     else
-                       true
-                     end
+  cron['restrict'] = check_cron_restrict(cron)
   security_baseline['cron'] = cron
 
   val = Facter::Core::Execution.exec('dmesg | grep NX')
@@ -317,34 +305,8 @@ def security_baseline_sles(os, _distid, _release)
                        else
                          'not used'
                        end
-  if File.exist?('/etc/ntp.conf')
-    val = Facter::Core::Execution.exec('grep -h "^restrict" /etc/ntp.conf')
-    ntpdata['ntp_restrict'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec('grep -h "^(server|pool)" /etc/ntp.conf')
-    ntpdata['ntp_server'] = check_value_string(val, 'none')
-  else
-    ntpdata['ntp_restrict'] = 'none'
-    ntpdata['ntp_server'] = 'none'
-  end
-  if File.exist?('/etc/sysconfig/ntp')
-    val = Facter::Core::Execution.exec('grep -h "^NTPD_OPTIONS" /etc/sysconfig/ntp')
-    ntpdata['ntp_options'] = check_value_string(val, 'none')
-  else
-    ntpdata['ntp_options'] = 'none'
-  end
-  ntpdata['ntp_status'] = ntpdata['ntp_restrict'] != 'none' && ntpdata['ntp_server'] != 'none' && ntpdata['ntp_options'] == 'none'
-
-  if File.exist?('/etc/chrony.conf')
-    val = Facter::Core::Execution.exec('grep -h "^(server|pool)" /etc/chrony.conf')
-    ntpdata['chrony_server'] = check_value_string(val, 'none')
-  else
-    ntpdata['chrony_server'] = 'none'
-  end
-  if File.exist?('/etc/sysconfig/chronyd')
-    val = Facter::Core::Execution.exec('grep -h ^OPTIONS /etc/sysconfig/chronyd')
-    ntpdata['chrony_options'] = check_value_string(val, 'none')
-  end
-  ntpdata['chrony_status'] = ntpdata['chrony_server'] != 'none' && ntpdata['chrony_options'] != 'none'
+  ntpdata.merge!(check_ntp('/etc/ntp.conf', '/etc/sysconfig/ntp'))
+  ntpdata.merge!(check_chrony('/etc/chrony.conf', '/etc/sysconfig/chronyd'))
   security_baseline['ntp'] = ntpdata
 
   security_baseline['sshd'] = read_sshd_config

@@ -45,10 +45,7 @@ class security_baseline::rules::common::sec_cron_restrict (
     }
 
     file { '/etc/cron.deny':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0600',
+      ensure => absent,
     }
 
     file { '/etc/at.allow':
@@ -59,10 +56,7 @@ class security_baseline::rules::common::sec_cron_restrict (
     }
 
     file { '/etc/at.deny':
-      ensure => present,
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0600',
+      ensure => absent,
     }
 
   } else {

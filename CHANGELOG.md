@@ -6,7 +6,10 @@ Added Litmus acceptance testing
 
 ## Release 0.9.1
 
-Added summary report fact.
+- Added summary report fact
+- Bug fix: fixed sed commands for Redhat/CentOS 8
+- fixed some check rules
+- moved fact for cron restrictions into a function to remove duplicated code
 
 ## Release 0.9.0
 

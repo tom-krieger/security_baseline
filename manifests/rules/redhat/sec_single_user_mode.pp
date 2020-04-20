@@ -34,12 +34,12 @@ class security_baseline::rules::redhat::sec_single_user_mode (
     if($facts['operatingsystemmajrelease'] > '6') {
       file_line { 'su-rescue':
         path  => '/usr/lib/systemd/system/rescue.service',
-        line  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
+        line  => 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"',
         match => '^ExecStart=',
       }
       file_line { 'su-emergency':
         path  => '/usr/lib/systemd/system/emergency.service',
-        line  => 'ExecStart=-/bin/sh -c \"/sbin/sulogin; /usr/bin/systemctl --fail --no-block default\"',
+        line  => 'ExecStart=-/bin/sh -c "/sbin/sulogin; /usr/bin/systemctl --fail --no-block default"',
         match => '^ExecStart=',
       }
     } elsif($facts['operatingsystemmajrelease'] == '6') {

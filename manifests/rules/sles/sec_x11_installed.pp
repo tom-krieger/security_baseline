@@ -27,14 +27,18 @@
 #
 # @api private
 class security_baseline::rules::sles::sec_x11_installed (
-  Boolean $enforce = true,
-  String $message = '',
+  Boolean $enforce  = true,
+  String $message   = '',
   String $log_level = ''
 ) {
   if($facts['security_baseline']['x11']['installed']) {
     if($enforce) {
-      package { $facts['security_baseline']['x11-packages']:
-        ensure => 'absent',
+      $facts['security_baseline']['x11-packages'].each |$pkg| {
+        unless $pkg =~ /^xorg-x11-font/ {
+          package { $pkg:
+            ensure => absent,
+          }
+        }
       }
     } else {
         echo { 'x11-installed':

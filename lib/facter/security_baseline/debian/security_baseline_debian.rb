@@ -348,8 +348,8 @@ grep -v active) ]] && echo "NX Protection is not active"')
                        else
                          'not used'
                        end
-  ntpdata.merge(check_ntp('/etc/ntp.conf', '/etc/init.d/ntp'))
-  ntpdata.merge(check_chrony('/etc/chrony/chrony.conf', ''))
+  ntpdata.merge!(check_ntp('/etc/ntp.conf', '/etc/init.d/ntp'))
+  ntpdata.merge!(check_chrony('/etc/chrony/chrony.conf', ''))
   security_baseline['ntp'] = ntpdata
 
   security_baseline['sshd'] = read_sshd_config

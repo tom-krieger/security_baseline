@@ -305,8 +305,8 @@ def security_baseline_sles(os, _distid, _release)
                        else
                          'not used'
                        end
-  ntpdata.merge(check_ntp('/etc/ntp.conf', '/etc/sysconfig/ntp'))
-  ntpdata.merge(check_chrony('/etc/chrony.conf', '/etc/sysconfig/chronyd'))
+  ntpdata.merge!(check_ntp('/etc/ntp.conf', '/etc/sysconfig/ntp'))
+  ntpdata.merge!(check_chrony('/etc/chrony.conf', '/etc/sysconfig/chronyd'))
   security_baseline['ntp'] = ntpdata
 
   security_baseline['sshd'] = read_sshd_config

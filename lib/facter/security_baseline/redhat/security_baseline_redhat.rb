@@ -161,7 +161,8 @@ def security_baseline_redhat(os, _distid, release)
   security_baseline[:yum] = yum
 
   x11 = {}
-  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11*')
+  # do not consider xorg-x11-fonts packages as these are necessary for java
+  pkgs = Facter::Core::Execution.exec('rpm -qa xorg-x11* | grep -v xorg-x11-fonts')
   x11['installed'] = if pkgs.nil? || pkgs.empty?
                        false
                      else

@@ -790,7 +790,7 @@ security_baseline::logging { '1.1.1.1':
   desc      => 'What ever description you like',
   level     => 'warning',
   msg       => 'A suitable message',
-  rulestate => 'not compliant'
+  rulestate => 'fail'
 }
 ```
 
@@ -832,7 +832,7 @@ The log message
 
 Data type: `Any`
 
-Status of the rule, e. g. compliant or not compliant
+Status of the rule, e. g. compliant or fail
 
 ##### `level`
 

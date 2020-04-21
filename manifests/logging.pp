@@ -19,7 +19,7 @@
 #    The log message
 #
 # @param rulestate 
-#    Status of the rule, e. g. compliant or not compliant 
+#    Status of the rule, e. g. compliant or fail
 #
 # @param level
 #    The level from the CIS benchmark
@@ -37,7 +37,7 @@
 #     desc      => 'What ever description you like',
 #     level     => 'warning',
 #     msg       => 'A suitable message',
-#     rulestate => 'not compliant'
+#     rulestate => 'fail'
 #   }
 define security_baseline::logging (
   $rulenr,

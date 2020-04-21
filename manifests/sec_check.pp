@@ -139,7 +139,7 @@ define security_baseline::sec_check (
               $logentry_data = {
                 log_level => $log_level,
                 msg       => $message,
-                rulestate => 'not compliant',
+                rulestate => 'fail',
               }
             }
           } else {
@@ -154,7 +154,7 @@ define security_baseline::sec_check (
               $logentry_data = {
                 log_level => $log_level,
                 msg       => $message,
-                rulestate => 'not compliant',
+                rulestate => 'fail',
               }
             } else {
 
@@ -168,11 +168,11 @@ define security_baseline::sec_check (
           }
         } else {
 
-          # if no current value is available assume test is compliant
+          # if no current value is available assume test result is unknown
           $logentry_data = {
             log_level => 'ok',
             msg       => $message,
-            rulestate => 'compliant (no value)',
+            rulestate => 'unknown',
           }
 
           if($fact_name.is_a(Array)) {
@@ -189,11 +189,11 @@ define security_baseline::sec_check (
 
       } else {
 
-        # if no fact name is available assume test is compliant
+        # if no fact name is available assume test result is unknown
         $logentry_data = {
           log_level => 'ok',
           msg       => $message,
-          rulestate => 'compliant (no value)',
+          rulestate => 'unknown',
         }
       }
 

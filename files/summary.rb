@@ -29,9 +29,9 @@ data = YAML.load_file(file)
 data['security_baseline_findings'].each do |rule_name, rule_data|
   all_tests += 1
   if rule_data['scored'] == 'true'
-    if rule_data['status'] == 'compliant (no value)'
+    if rule_data['status'] == 'unknown'
       counters['unknown'] += 1
-    elsif rule_data['status'] == 'not compliant'
+    elsif rule_data['status'] == 'fail'
       counters['fail'] += 1
     elsif rule_data['status'] == 'compliant'
       counters['ok'] += 1

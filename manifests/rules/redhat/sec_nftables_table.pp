@@ -33,7 +33,7 @@ class security_baseline::rules::redhat::sec_nftables_table (
     if(has_key($facts['security_baseline'], 'nftables')) {
       if(!($nftables_default_table in $facts['security_baseline']['nftables']['tables'])) {
         if(!defined(Package['nftables'])) {
-          package { 'nftables':
+          Package { 'nftables':
             ensure => installed,
             before => Exec["create nft table ${nftables_default_table}"],        }
         }

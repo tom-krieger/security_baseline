@@ -33,7 +33,7 @@ class security_baseline::rules::sles::sec_rsh_client (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'rsh':
+    Package { 'rsh':
       ensure => 'absent',
     }
   } else {

@@ -31,7 +31,7 @@ class security_baseline::rules::redhat::sec_openldap_client (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'openldap-clients':
+    Package { 'openldap-clients':
       ensure => 'purged',
     }
   } else {

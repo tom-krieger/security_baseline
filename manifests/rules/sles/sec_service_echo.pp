@@ -32,12 +32,12 @@ class security_baseline::rules::sles::sec_service_echo (
 ) {
   if($enforce) {
 
-    service { 'echo':
+    Service { 'echo':
       ensure => stopped,
       enable => false,
     }
 
-    service { 'echo-udp':
+    Service { 'echo-udp':
       ensure => stopped,
       enable => false,
     }

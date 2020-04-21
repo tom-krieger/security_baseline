@@ -37,10 +37,10 @@ class security_baseline::rules::debian::sec_rsyslog_remote_logs (
 ) {
   if($enforce) {
     if(!defined(Package['rsyslog'])) {
-      package { 'rsyslog':
+      Package { 'rsyslog':
         ensure => installed,
       }
-      package { 'syslog-ng':
+      Package { 'syslog-ng':
         ensure => absent,
       }
     }

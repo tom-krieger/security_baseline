@@ -39,7 +39,7 @@ class security_baseline::rules::common::sec_sudo_package (
 ) {
   if ($enforce) {
     if(!defined(Package['sudo'])) {
-      package { 'sudo':
+      Package { 'sudo':
         ensure => installed,
       }
     }

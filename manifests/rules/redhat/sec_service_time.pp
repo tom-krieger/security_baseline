@@ -32,12 +32,12 @@ class security_baseline::rules::redhat::sec_service_time (
 ) {
   if($enforce) {
 
-    service { 'time-dgram':
+    Service { 'time-dgram':
       ensure => stopped,
       enable => false,
     }
 
-    service { 'time-stream':
+    Service { 'time-stream':
       ensure => stopped,
       enable => false,
     }

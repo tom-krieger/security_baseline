@@ -30,11 +30,11 @@ class security_baseline::rules::sles::sec_auditd_service (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'audit':
+    Package { 'audit':
       ensure => installed,
     }
 
-    service { 'auditd':
+    Service { 'auditd':
       ensure  => running,
       enable  => true,
       require => Package['audit']

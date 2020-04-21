@@ -30,7 +30,7 @@ class security_baseline::rules::redhat::sec_selinux (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'libselinux':
+    Package { 'libselinux':
       ensure => present,
     }
   } else {

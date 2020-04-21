@@ -31,12 +31,12 @@ class security_baseline::rules::sles::sec_service_daytime (
 ) {
   if($enforce) {
 
-    service { 'daytime':
+    Service { 'daytime':
       ensure => stopped,
       enable => false,
     }
 
-    service { 'daytime-udp':
+    Service { 'daytime-udp':
       ensure => stopped,
       enable => false,
     }

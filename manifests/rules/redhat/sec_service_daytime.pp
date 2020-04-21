@@ -31,12 +31,12 @@ class security_baseline::rules::redhat::sec_service_daytime (
 ) {
   if($enforce) {
 
-    service { 'daytime-dgram':
+    Service { 'daytime-dgram':
       ensure => stopped,
       enable => false,
     }
 
-    service { 'daytime-stream':
+    Service { 'daytime-stream':
       ensure => stopped,
       enable => false,
     }

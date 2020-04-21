@@ -34,7 +34,7 @@ class security_baseline::rules::debian::sec_nis_client(
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'nis':
+    Package { 'nis':
       ensure => 'absent',
     }
   } else {

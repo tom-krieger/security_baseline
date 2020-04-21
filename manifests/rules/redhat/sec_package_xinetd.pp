@@ -31,7 +31,7 @@ class security_baseline::rules::redhat::sec_package_xinetd (
   String $log_level = ''
 ) {
   if ($enforce) {
-    package { 'xinetd':
+    Package { 'xinetd':
       ensure => absent,
     }
   } else {

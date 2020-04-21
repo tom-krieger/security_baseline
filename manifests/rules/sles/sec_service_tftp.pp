@@ -34,12 +34,12 @@ class security_baseline::rules::sles::sec_service_tftp (
 ) {
   if($enforce) {
 
-    service { 'tftp':
+    Service { 'tftp':
       ensure => stopped,
       enable => false,
     }
 
-    service { 'tftp-udp':
+    Service { 'tftp-udp':
       ensure => stopped,
       enable => false,
     }

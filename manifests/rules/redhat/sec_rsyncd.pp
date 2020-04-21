@@ -30,12 +30,12 @@ class security_baseline::rules::redhat::sec_rsyncd (
 ) {
   if($enforce) {
     if($facts['operatingsystemmajrelease'] > '6') {
-      service {'rsyncd':
+      Service {'rsyncd':
         ensure => 'stopped',
         enable => false,
       }
     } else {
-        service {'rsync':
+        Service {'rsync':
         ensure => 'stopped',
         enable => false,
       }

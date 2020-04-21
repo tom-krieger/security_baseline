@@ -33,7 +33,7 @@ class security_baseline::rules::redhat::sec_firewalld_nftables_service (
 ) {
   if ($enforce) {
     if(!defined(Service['nftables'])) {
-      service { 'nftables':
+      Service { 'nftables':
         ensure => stopped,
         enable => false,
       }

@@ -25,7 +25,7 @@ class security_baseline::rules::debian::sec_exim4 (
   String $log_level = ''
 ) {
   if ($enforce) {
-    package { 'exim4':
+    Package { 'exim4':
       ensure => absent,
     }
   } else {

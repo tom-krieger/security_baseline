@@ -31,7 +31,7 @@ class security_baseline::rules::sles::sec_mcstrans (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'mcstrans':
+    Package { 'mcstrans':
       ensure => 'absent',
     }
   } else {

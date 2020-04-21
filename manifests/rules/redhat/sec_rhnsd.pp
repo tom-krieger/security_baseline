@@ -34,7 +34,7 @@ class security_baseline::rules::redhat::sec_rhnsd (
 ) {
   if( $enforce) {
 
-    service { 'rhnsd':
+    Service { 'rhnsd':
       ensure => stopped,
       enable => false,
     }

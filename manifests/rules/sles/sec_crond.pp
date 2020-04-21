@@ -30,7 +30,7 @@ class security_baseline::rules::sles::sec_crond (
   String $log_level = ''
 ) {
   if($enforce) {
-    service { 'cron':
+    Service { 'cron':
       ensure => 'running',
       enable => true
     }

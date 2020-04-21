@@ -32,12 +32,12 @@ class security_baseline::rules::redhat::sec_service_discard (
 ) {
   if($enforce) {
 
-    service { 'discard-dgram':
+    Service { 'discard-dgram':
       ensure => stopped,
       enable => false,
     }
 
-    service { 'discard-stream':
+    Service { 'discard-stream':
       ensure => stopped,
       enable => false,
     }

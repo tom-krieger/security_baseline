@@ -34,7 +34,7 @@ class security_baseline::rules::sles::sec_nis_client(
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'ypbind':
+    Package { 'ypbind':
       ensure => 'absent',
     }
   } else {

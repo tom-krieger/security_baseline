@@ -32,12 +32,12 @@ class security_baseline::rules::debian::sec_auditd_package (
 ) {
   if ($enforce) {
     if(!defined(Package['auditd'])) {
-      package { 'auditd':
+      Package { 'auditd':
         ensure => installed,
       }
     }
     if(!defined(Package['audispd-plugins'])) {
-      package { 'audispd-plugins':
+      Package { 'audispd-plugins':
         ensure => installed,
       }
     }

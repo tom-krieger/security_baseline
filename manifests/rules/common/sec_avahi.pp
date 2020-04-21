@@ -34,7 +34,7 @@ class security_baseline::rules::common::sec_avahi (
 ) {
   if($enforce) {
 
-    service {'avahi-daemon':
+    Service {'avahi-daemon':
       ensure => 'stopped',
       enable => false,
     }

@@ -31,7 +31,7 @@ class security_baseline::rules::redhat::sec_talk_client (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'talk':
+    Package { 'talk':
       ensure => 'purged',
     }
   } else {

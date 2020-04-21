@@ -33,7 +33,7 @@ class security_baseline::rules::redhat::sec_firewalld_service (
 ) {
   if ($enforce) {
     if(!defined(Service['firewalld'])) {
-      service { 'firewalld':
+      Service { 'firewalld':
         ensure => running,
         enable => true,
       }

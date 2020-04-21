@@ -31,7 +31,7 @@ class security_baseline::rules::debian::sec_service_openbsd_inetd (
 ) {
   if($enforce) {
     if!(defined(Package['openbsd-inetd'])) {
-      package { 'openbsd-inetd':
+      Package { 'openbsd-inetd':
         ensure => absent,
       }
     }

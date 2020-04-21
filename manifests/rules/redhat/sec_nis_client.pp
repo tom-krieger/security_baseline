@@ -34,7 +34,7 @@ class security_baseline::rules::redhat::sec_nis_client(
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'ypbind':
+    Package { 'ypbind':
       ensure => 'purged',
     }
   } else {

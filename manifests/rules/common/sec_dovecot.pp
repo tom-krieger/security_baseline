@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_dovecot (
 ) {
   if($enforce) {
 
-    service {'dovecot':
+    Service {'dovecot':
       ensure => 'stopped',
       enable => false
     }

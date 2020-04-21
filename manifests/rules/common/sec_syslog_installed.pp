@@ -39,19 +39,19 @@ class security_baseline::rules::common::sec_syslog_installed (
   if($enforce) {
     if($syslog_daemon == 'rsyslog') {
       if(!defined(Package['rsyslog'])) {
-        package { 'rsyslog':
+        Package { 'rsyslog':
           ensure => installed,
         }
-        package { 'syslog-ng':
+        Package { 'syslog-ng':
           ensure => absent,
         }
       }
     } elsif ($syslog_daemon == 'syslog-ng') {
       if(!defined(Package['syslog-ng'])) {
-        package { 'syslog-ng':
+        Package { 'syslog-ng':
           ensure => installed,
         }
-        package { 'rsyslog':
+        Package { 'rsyslog':
           ensure => absent,
         }
       }

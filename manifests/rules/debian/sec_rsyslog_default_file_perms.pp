@@ -32,10 +32,10 @@ class security_baseline::rules::debian::sec_rsyslog_default_file_perms (
 ) {
   if($enforce) {
     if(!defined(Package['rsyslog'])) {
-      package { 'rsyslog':
+      Package { 'rsyslog':
         ensure => installed,
       }
-      package { 'syslog-ng':
+      Package { 'syslog-ng':
         ensure => absent,
       }
     }

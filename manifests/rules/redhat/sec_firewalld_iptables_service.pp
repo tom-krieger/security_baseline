@@ -33,7 +33,7 @@ class security_baseline::rules::redhat::sec_firewalld_iptables_service (
 ) {
   if ($enforce) {
     if(!defined(Service['iptables'])) {
-      service { 'iptables':
+      Service { 'iptables':
         ensure => stopped,
         enable => false,
       }

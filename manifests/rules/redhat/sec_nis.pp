@@ -35,7 +35,7 @@ class security_baseline::rules::redhat::sec_nis (
 ) {
   if($enforce) {
 
-    service {'ypserv':
+    Service {'ypserv':
       ensure => 'stopped',
       enable => false
       }

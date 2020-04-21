@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_squid (
 ) {
   if($enforce) {
 
-    service {'squid':
+    Service {'squid':
       ensure => 'stopped',
       enable => false
     }

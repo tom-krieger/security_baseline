@@ -30,7 +30,7 @@ class security_baseline::rules::redhat::sec_crond (
   String $log_level = ''
 ) {
   if($enforce) {
-    service { 'crond':
+    Service { 'crond':
       ensure => 'running',
       enable => true
     }

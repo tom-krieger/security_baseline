@@ -32,12 +32,12 @@ class security_baseline::rules::redhat::sec_service_chargen (
 ) {
   if($enforce) {
 
-    service { 'chargen-dgram':
+    Service { 'chargen-dgram':
       ensure => stopped,
       enable => false,
     }
 
-    service { 'chargen-stream':
+    Service { 'chargen-stream':
       ensure => stopped,
       enable => false,
     }

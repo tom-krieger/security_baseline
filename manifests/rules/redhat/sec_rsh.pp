@@ -36,7 +36,7 @@ class security_baseline::rules::redhat::sec_rsh (
       $srvs = ['rsh', 'rlogin', 'rexec']
     }
     $srvs.each |$srv| {
-      service { $srv:
+      Service { $srv:
         ensure => 'stopped',
         enable => false,
       }

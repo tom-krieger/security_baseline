@@ -31,7 +31,7 @@ class security_baseline::rules::redhat::sec_nftables_service (
 ) {
   if($enforce) {
     if(!defined(Service['nftables'])) {
-      service {'nftables':
+      Service {'nftables':
         ensure => running,
         enable => true,
       }

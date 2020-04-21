@@ -34,7 +34,7 @@ class security_baseline::rules::sles::sec_prelink (
 ) {
   if($enforce) {
     if($facts['security_baseline']['packages_installed']['prelink']) {
-      package { 'prelink':
+      Package { 'prelink':
         ensure => 'absent',
       }
       exec { 'reset prelink':

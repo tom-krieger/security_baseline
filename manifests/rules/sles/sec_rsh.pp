@@ -31,17 +31,17 @@ class security_baseline::rules::sles::sec_rsh (
 ) {
   if($enforce) {
 
-    service { 'rsh.socket':
+    Service { 'rsh.socket':
       ensure => 'stopped',
       enable => false,
     }
 
-    service { 'rlogin.socket':
+    Service { 'rlogin.socket':
       ensure => 'stopped',
       enable => false,
     }
 
-    service { 'rexec.socket':
+    Service { 'rexec.socket':
       ensure => 'stopped',
       enable => false,
     }

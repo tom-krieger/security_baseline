@@ -32,12 +32,12 @@ class security_baseline::rules::redhat::sec_service_echo (
 ) {
   if($enforce) {
 
-    service { 'echo-dgram':
+    Service { 'echo-dgram':
       ensure => stopped,
       enable => false,
     }
 
-    service { 'echo-stream':
+    Service { 'echo-stream':
       ensure => stopped,
       enable => false,
     }

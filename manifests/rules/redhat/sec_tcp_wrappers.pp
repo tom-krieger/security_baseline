@@ -33,7 +33,7 @@ class security_baseline::rules::redhat::sec_tcp_wrappers (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'tcp_wrappers':
+    Package { 'tcp_wrappers':
       ensure => installed,
     }
   } else {

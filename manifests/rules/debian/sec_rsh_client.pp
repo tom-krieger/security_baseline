@@ -34,12 +34,12 @@ class security_baseline::rules::debian::sec_rsh_client (
 ) {
   if($enforce) {
     if($facts['security_baseline']['packages_installed']['rsh-client']) {
-      package { 'rsh-client':
+      Package { 'rsh-client':
         ensure => 'absent',
       }
     }
     if($facts['security_baseline']['packages_installed']['rsh-redone-client']) {
-      package { 'rsh-redone-client':
+      Package { 'rsh-redone-client':
         ensure => 'absent',
       }
     }

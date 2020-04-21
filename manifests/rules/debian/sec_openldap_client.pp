@@ -31,7 +31,7 @@ class security_baseline::rules::debian::sec_openldap_client (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'ldap-utils':
+    Package { 'ldap-utils':
       ensure => 'absent',
     }
   } else {

@@ -32,7 +32,7 @@ class security_baseline::rules::common::sec_dns (
 ) {
   if($enforce) {
 
-    service {'named':
+    Service {'named':
       ensure => 'stopped',
       enable => false
     }

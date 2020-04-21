@@ -33,7 +33,7 @@ class security_baseline::rules::sles::sec_tcp_wrappers (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'tcpd':
+    Package { 'tcpd':
       ensure => installed,
     }
   } else {

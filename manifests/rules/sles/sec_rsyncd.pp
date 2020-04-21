@@ -30,7 +30,7 @@ class security_baseline::rules::sles::sec_rsyncd (
 ) {
   if($enforce) {
 
-    service {'rsyncd':
+    Service {'rsyncd':
       ensure => 'stopped',
       enable => false,
     }

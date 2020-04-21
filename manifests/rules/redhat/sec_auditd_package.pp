@@ -32,12 +32,12 @@ class security_baseline::rules::redhat::sec_auditd_package (
 ) {
   if ($enforce) {
     if(!defined(Package['audit'])) {
-      package { 'audit':
+      Package { 'audit':
         ensure => installed,
       }
     }
     if(!defined(Package['audit-libs'])) {
-      package { 'audit-libs':
+      Package { 'audit-libs':
         ensure => installed,
       }
     }

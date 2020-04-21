@@ -33,7 +33,7 @@ class security_baseline::rules::common::sec_cups (
 ) {
   if($enforce) {
 
-    service {'cups':
+    Service {'cups':
       ensure => 'stopped',
       enable => false
       }

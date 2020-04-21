@@ -31,12 +31,12 @@ class security_baseline::rules::debian::sec_auditd_service (
 ) {
   if($enforce) {
     if(!defined(Package['auditd'])) {
-      package { 'auditd':
+      Package { 'auditd':
         ensure => installed,
       }
     }
 
-    service { 'auditd':
+    Service { 'auditd':
       ensure  => running,
       enable  => true,
       require => Package['auditd']

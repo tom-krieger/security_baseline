@@ -34,7 +34,7 @@ class security_baseline::rules::redhat::sec_aide (
 
   if($enforce) {
 
-    package { 'aide':
+    Package { 'aide':
       ensure => installed,
       notify => Exec['aidedb'],
     }

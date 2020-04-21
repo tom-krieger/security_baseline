@@ -35,7 +35,7 @@ class security_baseline::rules::redhat::sec_prelink (
   if($enforce) {
 
     if($facts['security_baseline']['packages_installed']['prelink']) {
-      package { 'prelink':
+      Package { 'prelink':
         ensure => 'purged',
       }
       exec { 'reset prelink':

@@ -31,7 +31,7 @@ class security_baseline::rules::sles::sec_setroubleshoot (
   String $log_level = ''
 ) {
   if($enforce) {
-    package { 'setroubleshoot':
+    Package { 'setroubleshoot':
       ensure => 'absent',
     }
   } else {

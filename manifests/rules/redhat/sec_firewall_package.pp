@@ -45,12 +45,12 @@ class security_baseline::rules::redhat::sec_firewall_package (
         }
       }
       'firewalld': {
-        package { 'firewalld':
+        Package { 'firewalld':
           ensure => installed,
         }
       }
       'nftables': {
-        package { 'nftables':
+        Package { 'nftables':
           ensure => installed,
         }
       }

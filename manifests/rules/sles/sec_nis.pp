@@ -35,7 +35,7 @@ class security_baseline::rules::sles::sec_nis (
 ) {
   if($enforce) {
 
-    service {'ypserv':
+    Service {'ypserv':
       ensure => 'stopped',
       enable => false
       }

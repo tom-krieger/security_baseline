@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_ntalk (
 ) {
   if($enforce) {
 
-    service {'ntalk':
+    Service {'ntalk':
       ensure => 'stopped',
       enable => false
     }

@@ -38,12 +38,12 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
         withpath => false,
       }
       if(!defined(Package['selinux-basics'])) {
-        package { 'selinux-basics':
+        Package { 'selinux-basics':
           ensure => installed,
         }
       }
       if(!defined(Package['selinux-policy-default'])){
-        package { 'selinux-policy-default':
+        Package { 'selinux-policy-default':
           ensure => installed,
         }
       }

@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_service_xinetd (
   String $log_level = ''
 ) {
   if($enforce) {
-    service { 'xinetd':
+    Service { 'xinetd':
       ensure => stopped,
       enable => false,
     }

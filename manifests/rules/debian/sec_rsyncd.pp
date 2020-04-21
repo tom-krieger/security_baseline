@@ -29,7 +29,7 @@ class security_baseline::rules::debian::sec_rsyncd (
   String $log_level = ''
 ) {
   if($enforce) {
-    service {'rsync':
+    Service {'rsync':
       ensure => 'stopped',
       enable => false,
     }

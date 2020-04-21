@@ -32,12 +32,12 @@ class security_baseline::rules::sles::sec_service_discard (
 ) {
   if($enforce) {
 
-    service { 'discard':
+    Service { 'discard':
       ensure => stopped,
       enable => false,
     }
 
-    service { 'discard-udp':
+    Service { 'discard-udp':
       ensure => stopped,
       enable => false,
     }

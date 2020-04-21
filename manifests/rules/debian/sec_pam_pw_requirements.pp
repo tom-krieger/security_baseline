@@ -68,7 +68,7 @@ class security_baseline::rules::debian::sec_pam_pw_requirements (
 
   if($enforce) {
     if(!defined(Package['libpam-pwquality'])) {
-      package { 'libpam-pwquality':
+      Package { 'libpam-pwquality':
         ensure => installed,
       }
     }

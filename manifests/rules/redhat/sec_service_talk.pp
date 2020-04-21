@@ -31,7 +31,7 @@ class security_baseline::rules::redhat::sec_service_talk (
 ) {
   if($enforce) {
 
-    service { 'talk':
+    Service { 'talk':
       ensure => stopped,
       enable => false,
     }

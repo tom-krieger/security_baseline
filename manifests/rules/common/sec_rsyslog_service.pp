@@ -30,15 +30,15 @@ class security_baseline::rules::common::sec_rsyslog_service (
 ) {
   if($enforce) {
     if(!defined(Package['rsyslog'])) {
-      package { 'rsyslog':
+      Package { 'rsyslog':
         ensure => installed,
       }
-      package { 'syslog-ng':
+      Package { 'syslog-ng':
         ensure => absent,
       }
     }
     if(!defined(Service['rsyslog'])) {
-      service { 'rsyslog':
+      Service { 'rsyslog':
         ensure  => running,
         enable  => true,
         require => Package['rsyslog'],

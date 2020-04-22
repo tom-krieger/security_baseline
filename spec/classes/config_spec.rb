@@ -7,6 +7,7 @@ describe 'security_baseline::config' do
         os_facts.merge(
           'security_baseline' => {
             'puppet_agent_postrun' => 'postrun_command =',
+            'configure_logstash' => false,
           },
         )
       end
@@ -201,6 +202,10 @@ describe 'security_baseline::config' do
             'group'  => 'root',
             'mode'   => '0700',
           )
+
+        is_expected.not_to contain_file('/etc/puppetlabs/puppet/security_baseline.yaml')
+        is_expected.not_to contain_file('/etc/puppetlabs/puppet/security_baseline_routes.yaml')
+        is_expected.not_to contain_ini_setting('enable security_baseline_routes.yaml')
       end
     end
   end

@@ -1,0 +1,4 @@
+---
+:host: <%= $host %>
+:port: <%= $port %>
+:timeout: <%= $timeout %>

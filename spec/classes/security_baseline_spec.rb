@@ -11,6 +11,7 @@ describe 'security_baseline' do
           'reboot_timeout' => 120,
           'debug' => true,
           'log_info' => true,
+          'dry_run' => false,
           'rules' => {
             '1.1.1.1' => {
               'rulename' => 'cramfs',
@@ -28,7 +29,6 @@ describe 'security_baseline' do
               'message' => 'Test message unit test',
               'log_level' => 'warning,',
               'reboot' => false,
-              'dry_run' => false,
             },
           },
         }

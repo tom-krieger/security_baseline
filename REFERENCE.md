@@ -605,6 +605,14 @@ Ruby binary to run the summary Ruby script
 
 Default value: '/opt/puppetlabs/puppet/bin/ruby'
 
+##### `dry_run`
+
+Data type: `Boolean`
+
+All rules run not in enforcement mode if set to true.
+
+Default value: `false`
+
 ### security_baseline::auditd_suid_rules_cron
 
 Create a fact with all auditd rules needed to monitor the usage of s-bit programs.

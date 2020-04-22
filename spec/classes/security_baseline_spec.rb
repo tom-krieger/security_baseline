@@ -28,6 +28,7 @@ describe 'security_baseline' do
               'message' => 'Test message unit test',
               'log_level' => 'warning,',
               'reboot' => false,
+              'dry_run' => false,
             },
           },
         }

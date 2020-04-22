@@ -67,6 +67,9 @@
 # @param ruby_binary
 #    Ruby binary to run the summary Ruby script
 #
+# @param dry_run
+#    All rules run not in enforcement mode if set to true.
+#
 # @example
 #   include security_baseline
 #
@@ -180,7 +183,7 @@ class security_baseline (
     }
   }
 
-  if($reboot) {
+  if($reboot and $dry_run == false) {
     reboot { 'after_run':
       timeout   => $reboot_timeout,
       message   => 'forced reboot by Puppet',

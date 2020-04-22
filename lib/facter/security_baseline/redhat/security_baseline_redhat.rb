@@ -557,7 +557,7 @@ def security_baseline_redhat(os, _distid, release)
   if File.exist?('/usr/share/security_baseline/data/unowned_files_user.txt')
     text = File.open('/usr/share/security_baseline/data/unowned_files_user.txt').read
     text.gsub!(%r{\r\n?}, "\n")
-    files = text.split("‘\n")
+    files = text.split("\n")
   end
   file_permissions['unowned'] = files
   file_permissions['unowned_count'] = files.count
@@ -566,7 +566,7 @@ def security_baseline_redhat(os, _distid, release)
   if File.exist?('/usr/share/security_baseline/data/unowned_files_group.txt')
     text = File.open('/usr/share/security_baseline/data/unowned_files_group.txt').read
     text.gsub!(%r{\r\n?}, "\n")
-    files = text.split("‘\n")
+    files = text.split("\n")
   end
   file_permissions['ungrouped'] = files
   file_permissions['ungrouped_count'] = files.count

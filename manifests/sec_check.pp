@@ -74,6 +74,12 @@ define security_baseline::sec_check (
 
     $reporting_type = $::security_baseline::reporting_type
 
+    if $::security_baseline::dry_run {
+      $real_enforce = false
+    } else {
+      $real_enforce = $enforce
+    }
+
     if($active) and (has_key($facts, 'security_baseline')) {
 
       $logentry_default = {
@@ -202,7 +208,7 @@ define security_baseline::sec_check (
       if($class =~ /^::security_baseline::rules::/) or ($class =~ /^security_baseline::rules::/) {
 
         $data = {
-          'enforce'   => $enforce,
+          'enforce'   => $real_enforce,
           'message'   => $message,
           'log_level' => $log_level,
         }
@@ -210,7 +216,7 @@ define security_baseline::sec_check (
       } else {
 
         $data = {
-          'enforce'   => $enforce,
+          'enforce'   => $real_enforce,
           'message'   => $message,
           'log_level' => $log_level,
           'logfile'   => $::security_baseline::logfile,

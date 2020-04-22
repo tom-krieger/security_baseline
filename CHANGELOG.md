@@ -1,5 +1,10 @@
 # Changelog
 
+## Release 0.9.2
+
+- changed value names in summary report
+- introduced dry run mode which overwrites the enforcing settings of each rule. If dry run ist set to true no rule will be enforced.
+
 ## Release 0.9.1
 
 - Added summary report fact

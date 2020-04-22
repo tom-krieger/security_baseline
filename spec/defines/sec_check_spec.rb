@@ -14,6 +14,7 @@ describe 'security_baseline::sec_check' do
           auditd_rules_file => '/etc/audit/rules.d/sec_baseline_auditd.rules',
           reporting_type  => 'fact',
           debug => true,
+          dry_run => false,
         }
         EOF
       end

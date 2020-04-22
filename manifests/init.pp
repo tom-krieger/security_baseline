@@ -90,6 +90,7 @@ class security_baseline (
   Boolean $reboot                             = false,
   Integer $reboot_timeout                     = 60,
   String $ruby_binary                         = '/opt/puppetlabs/puppet/bin/ruby',
+  Boolean $dry_run                            = false,
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron

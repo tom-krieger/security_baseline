@@ -133,7 +133,7 @@ class security_baseline::rules::debian::sec_pam_pw_requirements (
         ]
       }
     }
-    pam { 'pam_pwquality common-password':
+    Pam { 'pam_pwquality common-password':
       * => $data,
     }
   } else {

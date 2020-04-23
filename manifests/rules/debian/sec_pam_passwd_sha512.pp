@@ -53,7 +53,7 @@ class security_baseline::rules::debian::sec_pam_passwd_sha512 (
         arguments => ['sha512'],
         }
     }
-    pam { 'pam-common-sha512':
+    Pam { 'pam-common-sha512':
       * => $data,
     }
   } else {

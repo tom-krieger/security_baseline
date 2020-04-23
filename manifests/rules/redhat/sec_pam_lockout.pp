@@ -79,7 +79,7 @@ class security_baseline::rules::redhat::sec_pam_lockout (
 
       } else {
 
-        pam { "pam_unix ${service}":
+        Pam { "pam_unix ${service}":
           ensure           => present,
           service          => $service,
           type             => 'auth',
@@ -89,7 +89,7 @@ class security_baseline::rules::redhat::sec_pam_lockout (
           arguments        => [],
         }
 
-        pam { "pam_faillock preauth ${service}":
+        Pam { "pam_faillock preauth ${service}":
           ensure           => present,
           service          => $service,
           type             => 'auth',
@@ -106,7 +106,7 @@ class security_baseline::rules::redhat::sec_pam_lockout (
           position         => 'before *[type="auth" and module="pam_unix.so"]',
         }
 
-        pam { "pam_faillock authfail ${service}":
+        Pam { "pam_faillock authfail ${service}":
           ensure           => present,
           service          => $service,
           type             => 'auth',
@@ -122,7 +122,7 @@ class security_baseline::rules::redhat::sec_pam_lockout (
           position         => 'after *[type="auth" and module="pam_unix.so"]',
         }
 
-        pam { "pam_faillock authsucc ${service}":
+        Pam { "pam_faillock authsucc ${service}":
           ensure           => present,
           service          => $service,
           type             => 'auth',

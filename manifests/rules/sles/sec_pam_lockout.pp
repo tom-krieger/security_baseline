@@ -44,7 +44,7 @@ class security_baseline::rules::sles::sec_pam_lockout (
 ) {
   if($enforce) {
 
-    pam { 'pam_tally2 auth common-auth':
+    Pam { 'pam_tally2 auth common-auth':
       ensure    => present,
       service   => 'common-auth',
       type      => 'auth',
@@ -59,7 +59,7 @@ class security_baseline::rules::sles::sec_pam_lockout (
       ],
     }
 
-    pam { 'pam_tally2 auth common-account':
+    Pam { 'pam_tally2 auth common-account':
       ensure  => present,
       service => 'common-account',
       type    => 'account',

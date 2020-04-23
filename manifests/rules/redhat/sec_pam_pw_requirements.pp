@@ -159,7 +159,7 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
         }
 
       } elsif($facts['operatingsystemmajrelease'] == '7') {
-        pam { "pam-${service}-requisite":
+        Pam { "pam-${service}-requisite":
           ensure    => present,
           service   => $service,
           type      => 'password',
@@ -168,7 +168,7 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
           arguments => ['try_first_pass', 'retry=3']
         }
       } else {
-        pam { "pam-${service}-requisite":
+        Pam { "pam-${service}-requisite":
           ensure    => present,
           service   => $service,
           type      => 'password',

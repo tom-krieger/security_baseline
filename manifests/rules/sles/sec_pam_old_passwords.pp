@@ -37,7 +37,7 @@ class security_baseline::rules::sles::sec_pam_old_passwords (
   Integer $oldpasswords = 5,
 ) {
   if($enforce) {
-    pam { 'pam-common-pw-history':
+    Pam { 'pam-common-pw-history':
       ensure    => present,
       service   => 'common-password',
       type      => 'password',

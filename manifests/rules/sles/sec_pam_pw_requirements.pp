@@ -108,7 +108,7 @@ class security_baseline::rules::sles::sec_pam_pw_requirements (
       match  => '^#?lcredit',
     }
 
-    pam { 'pam_cracklib common-password':
+    Pam { 'pam_cracklib common-password':
       ensure    => present,
       service   => 'common-password',
       type      => 'password',

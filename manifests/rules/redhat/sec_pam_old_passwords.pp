@@ -74,7 +74,7 @@ class security_baseline::rules::redhat::sec_pam_old_passwords (
           $arguments = ["remember=${oldpasswords}", 'shadow', 'try_first_pass', 'use_authtok']
         }
 
-        pam { "pam-${service}-sufficient":
+        Pam { "pam-${service}-sufficient":
           ensure    => present,
           service   => $service,
           type      => 'password',

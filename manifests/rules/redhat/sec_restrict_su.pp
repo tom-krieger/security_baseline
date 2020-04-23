@@ -39,7 +39,7 @@ class security_baseline::rules::redhat::sec_restrict_su (
   Array $wheel_users          = ['root'],
 ) {
   if($enforce) {
-    pam { 'pam-su-restrict':
+    Pam { 'pam-su-restrict':
         ensure    => present,
         service   => 'su',
         type      => 'auth',

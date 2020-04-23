@@ -43,7 +43,7 @@ class security_baseline::rules::debian::sec_pam_lockout (
   Integer $lockouttime = 900,
 ) {
   if($enforce) {
-    pam { 'pam_tally2 auth common-auth':
+    Pam { 'pam_tally2 auth common-auth':
       ensure    => present,
       service   => 'common-auth',
       type      => 'auth',

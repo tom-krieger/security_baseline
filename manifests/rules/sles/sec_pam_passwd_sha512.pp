@@ -34,7 +34,7 @@ class security_baseline::rules::sles::sec_pam_passwd_sha512 (
 ) {
 
   if($enforce) {
-    pam { 'pam-common-sha512':
+    Pam { 'pam-common-sha512':
       ensure    => present,
       service   => 'common-password',
       type      => 'password',

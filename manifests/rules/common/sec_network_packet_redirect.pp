@@ -33,11 +33,11 @@ class security_baseline::rules::common::sec_network_packet_redirect (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.all.send_redirects':
         value => 0;
     }
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.default.send_redirects':
         value => 0;
     }

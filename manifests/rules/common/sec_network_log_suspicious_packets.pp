@@ -34,11 +34,11 @@ class security_baseline::rules::common::sec_network_log_suspicious_packets (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.all.log_martians':
         value => 1;
     }
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.default.log_martians':
         value => 1;
     }

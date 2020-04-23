@@ -40,7 +40,7 @@ class security_baseline::rules::common::sec_network_tcp_syn_cookies (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.tcp_syncookies':
         value => 1
     }

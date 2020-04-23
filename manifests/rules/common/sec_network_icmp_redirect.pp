@@ -35,7 +35,7 @@ class security_baseline::rules::common::sec_network_icmp_redirect (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.all.accept_redirects':
         value => 0;
       'net.ipv4.conf.default.accept_redirects':

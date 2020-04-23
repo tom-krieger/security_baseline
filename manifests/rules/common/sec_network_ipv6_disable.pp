@@ -30,11 +30,11 @@ class security_baseline::rules::common::sec_network_ipv6_disable (
 ) {
   if($enforce) {
     if($facts['security_baseline']['grub_ipv6_disabled'] == false) {
-      sysctl {
+      Sysctl {
         'net.ipv6.conf.all.disable_ipv6':
           value => 1;
       }
-      sysctl {
+      Sysctl {
         'net.ipv6.conf.default.disable_ipv6':
           value => 1;
       }

@@ -40,7 +40,7 @@ class security_baseline::rules::common::sec_core_dump (
       line => '* hard core 0',
     }
 
-    sysctl { 'fs.suid_dumpable':
+    Sysctl { 'fs.suid_dumpable':
       value => 0,
     }
   } else {

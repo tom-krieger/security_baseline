@@ -41,11 +41,11 @@ class security_baseline::rules::common::sec_network_source_route (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.all.accept_source_route':
         value => 0;
     }
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.default.accept_source_route':
         value => 0;
     }

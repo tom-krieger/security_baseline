@@ -31,7 +31,7 @@ class security_baseline::rules::common::sec_network_ip_forward (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.ip_forward':
         value => 0
     }

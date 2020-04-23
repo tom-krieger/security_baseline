@@ -38,11 +38,11 @@ class security_baseline::rules::common::sec_network_reverse_path_filtering (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.all.rp_filter':
         value => 1;
     }
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.default.rp_filter':
         value => 1;
     }

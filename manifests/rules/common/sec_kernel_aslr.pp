@@ -32,7 +32,7 @@ class security_baseline::rules::common::sec_kernel_aslr (
 ) {
   if($enforce) {
 
-    sysctl { 'kernel.randomize_va_space':
+    Sysctl { 'kernel.randomize_va_space':
       value => 2,
     }
 

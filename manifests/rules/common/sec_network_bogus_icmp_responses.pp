@@ -33,7 +33,7 @@ class security_baseline::rules::common::sec_network_bogus_icmp_responses (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.icmp_ignore_bogus_error_responses':
         value => 1
     }

@@ -36,7 +36,7 @@ class security_baseline::rules::common::sec_network_broadcast_icmp_requests (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.icmp_echo_ignore_broadcasts':
         value => 1
     }

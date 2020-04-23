@@ -34,11 +34,11 @@ class security_baseline::rules::common::sec_network_secure_icmp_redirect (
 ) {
   if($enforce) {
 
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.all.secure_redirects':
         value => 0;
     }
-    sysctl {
+    Sysctl {
       'net.ipv4.conf.default.secure_redirects':
         value => 0;
     }

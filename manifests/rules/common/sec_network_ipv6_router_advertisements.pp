@@ -32,11 +32,11 @@ class security_baseline::rules::common::sec_network_ipv6_router_advertisements (
 ) {
   if($enforce) {
     if($facts['security_baseline']['grub_ipv6_disabled'] == false) {
-      sysctl {
+      Sysctl {
         'net.ipv6.conf.all.accept_ra':
           value => 0;
       }
-      sysctl {
+      Sysctl {
         'net.ipv6.conf.default.accept_ra':
           value => 0;
       }

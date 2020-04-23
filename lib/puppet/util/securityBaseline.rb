@@ -71,9 +71,9 @@ module Puppet::Util::SecurityBaseline
                        end
     data.merge!(facts.values['security_baseline_summary'])
     data.delete('_@timestamp')
-    server = security_baseline_fact_server()
-    port = security_baseline_fact_server_port()
-    timeout = security_baseline_fact_timeout()
+    server = security_baseline_fact_server
+    port = security_baseline_fact_server_port
+    timeout = security_baseline_fact_timeout
 
     Puppet.info "sending security_baseline facts to Logstash at #{server}:#{port} for #{request.key}"
 

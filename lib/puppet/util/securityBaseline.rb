@@ -47,14 +47,15 @@ module Puppet::Util::SecurityBaseline
     # out the packages custom fact '_puppet_inventory_1'
     facts = request.instance.dup
     facts.values = facts.values.dup
+
+    return unless facts.values.key?('security_baseline_summary')
+
     facts.values[:trusted] = get_trusted_info(request.node)
 
     # Puppet.info "Facts of security_baseline: #{facts.values[:trusted].to_json} |"
 
     facts.values.delete('_puppet_inventory_1')
     facts.values = facts.values.dup
-
-    return unless facts.values.key?('security_baseline_summary')
 
     data = {}
     data['@timestamp'] = time
@@ -70,9 +71,9 @@ module Puppet::Util::SecurityBaseline
                        end
     data.merge!(facts.values['security_baseline_summary'])
     data.delete('_@timestamp')
-    server = security_baseline_fact_server
-    port = security_baseline_fact_server_port
-    timeout = security_baseline_fact_timeout
+    server = security_baseline_fact_server()
+    port = security_baseline_fact_server_port()
+    timeout = security_baseline_fact_timeout()
 
     Puppet.info "sending security_baseline facts to Logstash at #{server}:#{port} for #{request.key}"
 

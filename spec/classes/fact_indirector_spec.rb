@@ -27,7 +27,7 @@ describe 'security_baseline::fact_indirector' do
         EOF
       end
 
-      it { 
+      it {
         is_expected.to compile
         is_expected.to contain_file('/etc/puppetlabs/puppet/security_baseline.yaml')
           .with(

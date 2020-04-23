@@ -31,8 +31,8 @@ class Puppet::Node::Facts::SecurityBaseline < Puppet::Node::Facts::Yaml
     profile('security_baseline_facts#save', [:security_baseline, :facts, :save, request.key]) do
       begin
         # Puppet.info "Submitting facts to Logstash #{request.to_json} |"
-        # current_time = Time.now
-        send_facts(request, Time.now.strftime('%b %-d, %Y @ %H:%M:%S.%L'))
+        current_time = Time.now
+        send_facts(request, current_time.clone.utc)
       rescue StandardError => e
         Puppet.err "Could not send security_baseline facts to Logstash: #{e}\n#{e.backtrace}"
       end

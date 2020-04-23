@@ -58,7 +58,7 @@ module Puppet::Util::SecurityBaseline
     facts.values = facts.values.dup
 
     data = {}
-    data['@timestamp_fact'] = time
+    data['time_utc'] = time
     data['key'] = request.key
     data['environment'] = request.options[:environment] || request.environment.to_s
     data['tags'] = ['security_baseline', 'compliance']

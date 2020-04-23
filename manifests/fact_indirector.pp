@@ -27,7 +27,7 @@ class security_baseline::fact_indirector (
     fail('Logstash host missing.')
   }
 
-  if $configure_logstash and $::is_pe {
+  if $configure_logstash {
     file { '/etc/puppetlabs/puppet/security_baseline.yaml':
       ensure  => file,
       owner   => 'pe-puppet',

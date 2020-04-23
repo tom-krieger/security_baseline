@@ -21,18 +21,6 @@
 # @param ruby_binary
 #    The ruby binary to use
 #
-# @param configure_logstash
-#    If set to true the facts indirevtor to logstash will be configured. This requires Puppet Enterprise
-#
-# @param logstash_host
-#    The logstash host to send facts to
-#
-# @param logstash_port
-#    The port logstash is listening
-#
-# @param logstash_timeout
-#    The timeout for sendding facts to logstash.
-#
 # @example
 #   include security_baseline::config
 class security_baseline::config(
@@ -42,10 +30,6 @@ class security_baseline::config(
   String $logfile                          = '',
   String $summary                          = '',
   String $ruby_binary                      = '/opt/puppetlabs/puppet/bin/ruby',
-  Boolean $configure_logstash              = false,
-  String $logstash_host                    = '127.0.0.1',
-  Integer $logstash_port                   = 5999,
-  Integer $logstash_timeout                = 1000,
 ) {
   file { '/usr/share/security_baseline':
     ensure => directory,
@@ -289,42 +273,6 @@ class security_baseline::config(
           onlyif  => "test -z \"$(puppet config print | grep -E \"postrun_command\\s*=\\s*${fact_upload_command}\")\"",
         }
       }
-    }
-  }
-
-  if $configure_logstash and $::is_pe {
-    file { '/etc/puppetlabs/puppet/security_baseline.yaml':
-      ensure  => file,
-      owner   => 'pe-puppet',
-      group   => 'pe-puppet',
-      mode    => '0644',
-      content => epp('security_baseline/security_baseline.yaml.epp', {
-        host    => $logstash_host,
-        port    => $logstash_port,
-        timeout => $logstash_timeout,
-      }),
-    }
-
-    file { '/etc/puppetlabs/puppet/security_baseline_routes.yaml':
-      ensure  => file,
-      owner   => pe-puppet,
-      group   => pe-puppet,
-      mode    => '0640',
-      content => epp('security_baseline/security_baseline_routes.yaml.epp', {
-        facts_terminus       => 'puppetdb',
-        facts_cache_terminus => 'security_baseline'
-      }),
-      notify  => Service['pe-puppetserver'],
-    }
-
-    ini_setting { 'enable security_baseline_routes.yaml':
-      ensure  => present,
-      path    => '/etc/puppetlabs/puppet/puppet.conf',
-      section => 'master',
-      setting => 'route_file',
-      value   => '/etc/puppetlabs/puppet/security_baseline_routes.yaml',
-      require => File['/etc/puppetlabs/puppet/security_baseline_routes.yaml'],
-      notify  => Service['pe-puppetserver'],
     }
   }
 }

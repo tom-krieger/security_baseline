@@ -44,7 +44,7 @@ class security_baseline::rules::common::sec_selinux_state (
       multiple => true,
     }
   } else {
-    if($::selinux_config_mode != 'enforcing') {
+    if($facts['selinux_config_mode'] != 'enforcing') {
 
       echo { 'selinux_enforce':
         message  => $message,

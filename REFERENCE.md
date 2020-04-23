@@ -10,6 +10,7 @@ _Public Classes_
 * [`security_baseline`](#security_baseline): Security baseline enforcement and monitoring
 * [`security_baseline::auditd_suid_rules_cron`](#security_baselineauditd_suid_rules_cron): Create a cron job to search binaries with s-bit
 * [`security_baseline::config`](#security_baselineconfig): Configuration stuff
+* [`security_baseline::fact_indirector`](#security_baselinefact_indirector): Configure sending facts to logstash
 * [`security_baseline::services`](#security_baselineservices): Additional services
 * [`security_baseline::system_file_permissions_cron`](#security_baselinesystem_file_permissions_cron): A short summary of the purpose of this class
 * [`security_baseline::unowned_files_cron`](#security_baselineunowned_files_cron): A short summary of the purpose of this class
@@ -613,38 +614,6 @@ All rules run not in enforcement mode if set to true.
 
 Default value: `false`
 
-##### `configure_logstash`
-
-Data type: `Boolean`
-
-If set to true the facts indirevtor to logstash will be configured. This requires Puppet Enterprise
-
-Default value: `false`
-
-##### `logstash_host`
-
-Data type: `String`
-
-The logstash host to send facts to
-
-Default value: '127.0.0.1'
-
-##### `logstash_port`
-
-Data type: `Integer`
-
-The port logstash is listening
-
-Default value: 5999
-
-##### `logstash_timeout`
-
-Data type: `Integer`
-
-The timeout for sendding facts to logstash.
-
-Default value: 1000
-
 ### security_baseline::auditd_suid_rules_cron
 
 Create a fact with all auditd rules needed to monitor the usage of s-bit programs.
@@ -765,6 +734,22 @@ The ruby binary to use
 
 Default value: '/opt/puppetlabs/puppet/bin/ruby'
 
+### security_baseline::fact_indirector
+
+Setup sending summary facts from secutity_baseline to logstash
+
+#### Examples
+
+##### 
+
+```puppet
+include security_baseline::fact_indirector
+```
+
+#### Parameters
+
+The following parameters are available in the `security_baseline::fact_indirector` class.
+
 ##### `configure_logstash`
 
 Data type: `Boolean`
@@ -778,8 +763,6 @@ Default value: `false`
 Data type: `String`
 
 The logstash host to send facts to
-
-Default value: '127.0.0.1'
 
 ##### `logstash_port`
 

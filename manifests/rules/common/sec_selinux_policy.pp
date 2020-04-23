@@ -49,7 +49,9 @@ class security_baseline::rules::common::sec_selinux_policy (
       match => '^SELINUXTYPE=',
     }
   } else {
-    if(($::selinux_config_policy != 'targeted') and ($::selinux_config_policy != $selinux_policy) and ($::selinux_config_policy != 'mls')) {
+    if(($facts['selinux_config_policy'] != 'targeted') and
+      ($facts['selinux_config_policy'] != $selinux_policy) and
+      ($facts['selinux_config_policy'] != 'mls')) {
       echo { 'selinux':
         message  => $message,
         loglevel => $log_level,

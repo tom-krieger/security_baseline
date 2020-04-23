@@ -70,18 +70,6 @@
 # @param dry_run
 #    All rules run not in enforcement mode if set to true.
 #
-# @param configure_logstash
-#    If set to true the facts indirevtor to logstash will be configured. This requires Puppet Enterprise
-#
-# @param logstash_host
-#    The logstash host to send facts to
-#
-# @param logstash_port
-#    The port logstash is listening
-#
-# @param logstash_timeout
-#    The timeout for sendding facts to logstash.
-#
 # @example
 #   include security_baseline
 #
@@ -106,10 +94,6 @@ class security_baseline (
   Integer $reboot_timeout                     = 60,
   String $ruby_binary                         = '/opt/puppetlabs/puppet/bin/ruby',
   Boolean $dry_run                            = false,
-  Boolean $configure_logstash                 = false,
-  String $logstash_host                       = '127.0.0.1',
-  Integer $logstash_port                      = 5999,
-  Integer $logstash_timeout                   = 1000,
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
@@ -137,10 +121,6 @@ class security_baseline (
     logfile                => $logfile,
     summary                => $summary_report,
     ruby_binary            => $ruby_binary,
-    configure_logstash     => $configure_logstash,
-    logstash_host          => $logstash_host,
-    logstash_port          => $logstash_port,
-    logstash_timeout       => $logstash_timeout,
   }
 
   class {'security_baseline::auditd_suid_rules_cron':

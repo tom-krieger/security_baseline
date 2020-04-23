@@ -24,11 +24,15 @@ module Puppet::Util::SecurityBaseline
   end
 
   def security_baseline_fact_server
-    settings[:factshost]
+    settings[:host]
   end
 
   def security_baseline_fact_server_port
-    settings[:factsport]
+    settings[:port]
+  end
+
+  def security_baseline_fact_timeout
+    settings[:timeout]
   end
 
   def get_trusted_info(node)
@@ -68,10 +72,11 @@ module Puppet::Util::SecurityBaseline
     data.delete('_@timestamp')
     server = security_baseline_fact_server
     port = security_baseline_fact_server_port
+    timeout = security_baseline_fact_timeout
 
     Puppet.info "sending security_baseline facts to Logstash at #{server}:#{port} for #{request.key}"
 
-    Timeout.timeout(1000) do
+    Timeout.timeout(timeout) do
       json = data.to_json
       ls = TCPSocket.new server, port
       ls.puts json

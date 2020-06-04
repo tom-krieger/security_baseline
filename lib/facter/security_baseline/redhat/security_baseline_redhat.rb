@@ -1133,7 +1133,7 @@ def security_baseline_redhat(os, _distid, release)
 
   wlan = []
   if File.exist?('/usr/bin/nmcli')
-    val = Facter::Core::Execution.exec('/usr/bin/nmcli radio all | grep -v WIFI')
+    val = Facter::Core::Execution.exec('/usr/bin/nmcli radio all 2>&1 | grep -v WIFI')
     if val.nil? || val.empty?
       status = 'none'
     elsif val == 'Error: NetworkManager is not running.'

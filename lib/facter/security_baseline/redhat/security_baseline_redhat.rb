@@ -1136,6 +1136,8 @@ def security_baseline_redhat(os, _distid, release)
     val = Facter::Core::Execution.exec('/usr/bin/nmcli radio all | grep -v WIFI')
     if val.nil? || val.empty?
       status = 'none'
+    elsif val == 'Error: NetworkManager is not running.'
+      status = 'none'
     else
       m = val.match(%r{^(enabled|disabled)\s*(?<wifi>\w*)\s*(enabled|disabled)})
       status = if m.nil?

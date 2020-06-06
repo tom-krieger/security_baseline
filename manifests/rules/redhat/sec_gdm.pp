@@ -40,6 +40,13 @@ class security_baseline::rules::redhat::sec_gdm (
         content => "user-db:user\nsystem-db:gdm\nfile-db:/usr/share/gdm/greeter-dconf-defaults",
       }
 
+      file { '/etc/dconf/db/gdm.d':
+        ensure => directory,
+        owner  => 'root',
+        group  => 'root',
+        mode   => '0755',
+      }
+
       file { 'banner-login':
         ensure  => present,
         path    => '/etc/dconf/db/gdm.d/01-banner-message',

@@ -614,6 +614,38 @@ All rules run not in enforcement mode if set to true.
 
 Default value: `false`
 
+##### `configure_logstash`
+
+Data type: `Boolean`
+
+If set to true the facts indirevtor to logstash will be configured. This requires Puppet Enterprise
+
+Default value: `false`
+
+##### `logstash_host`
+
+Data type: `String`
+
+The logstash host to send facts to
+
+Default value: ''
+
+##### `logstash_port`
+
+Data type: `Integer`
+
+The port logstash is listening
+
+Default value: 5999
+
+##### `logstash_timeout`
+
+Data type: `Integer`
+
+The timeout for sendding facts to logstash.
+
+Default value: 1000
+
 ### security_baseline::auditd_suid_rules_cron
 
 Create a fact with all auditd rules needed to monitor the usage of s-bit programs.

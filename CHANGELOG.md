@@ -6,7 +6,7 @@
 - introduced dry run mode which overwrites the enforcing settings of each rule. If dry run ist set to true no rule will be enforced.
 - use resource defaults for packages and services
 - added facts indirector to send summary facts to logstash
-- added Litmus acceptance testing
+- added some Litmus acceptance testing
 
 ## Release 0.9.1
 

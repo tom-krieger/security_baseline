@@ -86,6 +86,7 @@ when 'suse'
   case release
   when '12'
     describe 'Security baseline Suse SLES 12' do
+      include_examples 'os::suse::12'
     end
   else
     puts "unknown os: #{osfamily}-#{release}"

@@ -12,6 +12,7 @@
     * [Passing additional data to rules](#passing-additional-data-to-rules)
     * [Cronjobs](#cronjobs)
     * [Reporting](#reporting)
+    * [Facts indirector and Logstash](#facts-indirector-and-logstash)
     * [Example Hiera files](#example-hiera-files)
 3. [Checking facts](#checking-facts)
 3. [Extend the security baseline](#extend-the-security-baseline)
@@ -199,9 +200,39 @@ class { 'security_baseline':
 }
 ```
 
+### Facts indirector and Logstash
+
+This module has a facts indirector includes which can send security baseline result facts to Logstash.  The indirector grabs the security baseline summary facts data and send this data to logstash to build an index from that data. This enables you to create Kibana reportings above the data from your security baseline results.
+
+The Logstash input could look like this:
+
+```logstash
+input {
+  tcp {
+    type => "puppet-report"
+    port => 5997
+    codec => json
+  }
+}
+```
+
+You do not need a filter for the security baseline data.
+
+The output could look like this:
+
+```logstash
+output {
+  elasticsearch {
+    action    => 'index'
+    index     => "security-baseline-%{+YYYY.MM.dd}"
+    hosts     => ["<elastic_host1>:<elastic_port>","<elastic_host2>:<elastic_port>"]
+  }
+}
+```
+
 ### Example Hiera files
 
-The `data` directory contains example Hiera data for various operating systems. Please do not use these files without reviewing them *carefully*. The configuration in these files may or may not fit your needs or can even crash your systems. 
+The `data` directory contains example Hiera data for various operating systems. Please do not use these files without reviewing them *carefully*. The configuration in these files may or may not fit your needs or can even crash your systems.
 > *You are strongly advised to review the files before using them and adapt them to your needs.*
 
 ## Checking facts

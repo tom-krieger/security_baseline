@@ -7,7 +7,7 @@ def read_facts_aide(os)
   cronentry = Facter::Core::Execution.exec('crontab -u root -l | grep aide')
   fileentry = Facter::Core::Execution.exec('grep -rh aide /etc/cron.* /etc/crontab')
 
-  if cronentry.empty? && fileentry.empty?
+  if (cronentry.nil? || cronentry.empty?) && (fileentry.nil? || fileentry.empty?)
     aide['cron'] = 'none'
   else
     unless cronentry.empty?

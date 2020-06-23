@@ -44,22 +44,6 @@ security_baseline::rules:
       fact_value: false
     message: 'Rule 1.1.1.2. Vfat kernel module should not be available.'
     log_level: 'warning'
-  '1.1.1.2':
-    rulename: 'freevxfs'
-    active: true
-    scored: true
-    level: 1
-    description: 'The freevxfs filesystem type is a free version of the Veritas type filesystem. This is the primary filesystem type for HP-UX operating systems.'
-    enforce: true
-    class: '::security_baseline::rules::common::sec_freevxfs'
-    check:
-      fact_hash: security_baseline
-      fact_name: 
-        - kernel_modules
-        - freevxfs
-      fact_value: false
-    message: 'Rule 1.1.1.2. Freevxfs kernel module should not be available.'
-    log_level: 'warning'
   '1.1.1.3':
     rulename: 'squashfs'
     active: true
@@ -365,7 +349,7 @@ security_baseline::rules:
     message: 'Rule 1.1.17. /dev/shm should be mounted with noexec option.'
     log_level: 'warning'
   '1.1.18':
-    rulename: 'removable_noexec'
+    rulename: 'removable_nodev'
     active: true
     scored: false
     level: 1
@@ -2869,7 +2853,7 @@ security_baseline::rules:
     config_data:
       allow_users:
         - root
-        - kriegeth
+        - vagrant
         - centos
         - ec2-user
         - ubuntu
@@ -3402,7 +3386,7 @@ security_baseline::rules:
       fact_value: 0
     message: 'Rule 5.5.2. No special accounts should have a shell different from /sbin/nologin.'
     log_level: warning
-  '5.4.3':
+  '5.5.3':
     rulename: timeout-setting
     active: true
     scored: true
@@ -3415,11 +3399,11 @@ security_baseline::rules:
       fact_name:
         - timeout
       fact_value: false
-    message: 'Rule 5.4.3. Default user shell timeout should be 900 seconds or less.'
+    message: 'Rule 5.5.3. Default user shell timeout should be 900 seconds or less.'
     log_level: warning
     config_data:
       default_timeout: 900
-  '5.4.4':
+  '5.5.4':
     rulename: root-gid
     active: true
     scored: true
@@ -3433,9 +3417,9 @@ security_baseline::rules:
         - accounts
         - root_gid
       fact_value: '0'
-    message: 'Rule 5.4.4. Root account should have gid 0.'
+    message: 'Rule 5.5.4. Root account should have gid 0.'
     log_level: warning
-  '5.4.5':
+  '5.5.5':
     rulename: umask-setting
     active: true
     scored: true
@@ -3448,7 +3432,7 @@ security_baseline::rules:
       fact_name:
         - umask
       fact_value: false
-    message: 'Rule 5.5.4. Default user umask should be 027 or more restrictive.'
+    message: 'Rule 5.5.5. Default user umask should be 027 or more restrictive.'
     log_level: warning
     config_data:
       default_umask: '077'

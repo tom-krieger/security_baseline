@@ -4,40 +4,47 @@
 fixtures:
   symlinks:
     security_baseline: "#{source_dir}"
+  repositories:
+    provision: 
+      repo: 'git@github.com:tom-krieger/provision.git'
+      branch: 'sudo_secure_path_patch'
   forge_modules:
     stdlib:
       repo: "puppetlabs/stdlib"
-      ref: "6.0.0"
+      ref: "6.0"
     concat:
       repo: "puppetlabs/concat"
-      ref: "6.1.0"
+      ref: "5.3.0"
     kmod:
       repo: "camptocamp/kmod"
       ref: "2.3.1"
     augeas:
       repo: "camptocamp/augeas"
       ref: "1.8.0"
-    sysctl:
-      repo: "herculesteam/augeasproviders_sysctl"
-      ref: "2.3.1"
-    augeasproviders:
-      repo: "herculesteam/augeasproviders"
-      ref: "2.2.1"
-    augeasprovider_core:
-      repo: "herculesteam/augeasproviders_core"
-      ref: "2.4.0"
-    augeasprovider_pam:
-      repo: "herculesteam/augeasproviders_pam"
-      ref: "2.2.1"
-    augeasprovider_grub:
-      repo: "herculesteam/augeasproviders_grub"
-      ref: "3.1.0"
-    autofs:
-      repo: "puppet/autofs"
-      ref: "5.0.1"
     echo:
       repo: "ipcrm/echo"
       ref: "0.1.6"
+    augeasproviders:
+      repo: "herculesteam/augeasproviders"
+      ref: "2.2.1"
+    augeasprovider_pam:
+      repo: "herculesteam/augeasproviders_pam"
+      ref: "2.2.1"
+    augeasprovider_core:
+      repo: "herculesteam/augeasproviders_core"
+      ref: "2.5.0"
+    sysctl:
+      repo: "herculesteam/augeasproviders_sysctl"
+      ref: "2.3.1"
+    augeasprovider_grub:
+      repo: "herculesteam/augeasproviders_grub"
+      ref: "3.1.0"
+    augeasprovider_shellvar:
+      repo: "herculesteam/augeasproviders_shellvar"
+      ref: "3.1.0"
+    augeasprovider_mounttab:
+      repo: "herculesteam/augeasproviders_mounttab"
+      ref: "2.1.1"
     syslogng:
       repo: "purplehazech/syslogng"
       ref: "0.7.1"
@@ -59,6 +66,31 @@ fixtures:
     firewall:
       repo: "puppetlabs/firewall"
       ref: "2.2.0"
+    mount_providers:
+      repo: "puppetlabs/mount_providers"
+      ref: "2.0.1"
     reboot:
       repo: "puppetlabs/reboot"
       ref: "2.3.0"
+    puppet_agent:
+      repo: "puppetlabs/puppet_agent"
+      ref: "3.0.2"
+    facts:
+      repo: "puppetlabs/facts"
+      ref: "1.0.0"
+    inifile:
+      repo: "puppetlabs/inifile"
+      ref: "4.1.0"
+    apt:
+      repo: "puppetlabs/apt"
+      ref: "7.3.0"
+    translate:
+      repo: "puppetlabs/translate"
+      ref: "2.1.0"
+    registry:
+      repo: "puppetlabs/registry"
+      ref: "3.1.0"
+    autofs:
+      repo: "puppet/autofs"
+      ref: "5.0.1"
+

@@ -29,7 +29,7 @@ class security_baseline::rules::redhat::sec_yum_repolist (
   String $message   = '',
   String $log_level = ''
 ) {
-  if($facts['security_baseline']['yum']['repolist_config'] == false) {
+  if(has_key($facts['security_baseline'], 'yum') and $facts['security_baseline']['yum']['repolist_config'] == false) {
     echo { 'package-repo-config':
       message  => $message,
       loglevel => $log_level,

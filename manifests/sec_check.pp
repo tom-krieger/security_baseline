@@ -117,7 +117,7 @@ define security_baseline::sec_check (
         }
 
         if($::security_baseline::debug) {
-          echo { "current value ${fact_name} -> ${current_value}":
+          echo { "current value ${fact_name} -> ${current_value} (${rulename})":
             loglevel => 'info',
             withpath => false,
           }
@@ -236,5 +236,5 @@ define security_baseline::sec_check (
         * => $merged_data
       }
 
-    }
+    } # not active rule or no security baseline facts available
 }

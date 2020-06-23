@@ -1,0 +1,14 @@
+---
+security_baseline::baseline_version: '9.9.9'
+security_baseline::debug: false
+security_baseline::log_info: true
+security_baseline::auditd_suid_include:
+  - /usr
+security_baseline::update_postrun_command: true
+security_baseline::reporting_type: fact
+security_baseline::logfile: /opt/puppetlabs/facter/facts.d/security_baseline_findings.yaml
+security_baseline::auditd_rules_file: /etc/audit/rules.d/sec_baseline_auditd.rules
+security_baseline::auditd_rules_fact_file: /opt/puppetlabs/facter/facts.d/security_baseline_auditd.yaml
+security_baseline::reboot: false
+security_baseline::reboot_timeout: 60
+security_baseline::rules: {}

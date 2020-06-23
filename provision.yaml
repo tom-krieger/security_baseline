@@ -1,0 +1,28 @@
+---
+default:
+  provisioner: docker 
+  images: ['waffleimage/centos7']
+dev:
+  provisioner: docker
+  images: ['centos:7', 'ubuntu:18.04']
+dev_vagrant:
+  provisioner: vagrant
+  images: ['centos/7', 'generic/ubuntu1804']
+dev_sles_12:
+  provisioner: vagrant
+  images: ['suse/sles12sp2']
+dev_debian:
+  provisioner: vagrant
+  images: ['debian/stretch64']
+dev_centos:
+  provisioner: vagrant
+  images: ['centos/6', 'centos/7', 'centos/8']
+dev_ubuntu:
+  provisioner: vagrant
+  images: ['generic/ubuntu1804']
+dev_vagrant_all:
+  provisioner: vagrant
+  images: ['centos/6', 'centos/7', 'centos/8', 'debian/stretch64', 'generic/ubuntu1804']
+
+# images: ['centos/6', 'centos/7', 'centos/8', 'debian/stretch64', 'generic/ubuntu1804', 'suse/sles12sp2']
+# 'suse/sles12sp2'

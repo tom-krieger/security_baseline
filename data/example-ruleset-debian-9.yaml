@@ -363,7 +363,7 @@ security_baseline::rules:
     message: 'Rule 1.1.17. /dev/shm should be mounted with noexec option.'
     log_level: 'warning'
   '1.1.18':
-    rulename: 'removable_noexec'
+    rulename: 'removable_nodev'
     active: true
     scored: false
     level: 1
@@ -1100,7 +1100,7 @@ security_baseline::rules:
     level: 1
     description: 'dovecot is an open source IMAP and POP3 server for Linux based systems.'
     enforce: true
-    class: '::security_baseline::rules::common::sec_exim4'
+    class: '::security_baseline::rules::debian::sec_exim4'
     check:
       fact_hash: security_baseline
       fact_name: 
@@ -2985,7 +2985,7 @@ security_baseline::rules:
     config_data:
       allow_users:
         - root
-        - kriegeth
+        - vagrant
         - centos
         - ec2-user
         - ubuntu
@@ -3297,7 +3297,7 @@ security_baseline::rules:
     config_data:
       wheel_users:
         - root
-        - kriegeth
+        - vagrant
   '6.1.1':
     rulename: system-file-perms
     active: true

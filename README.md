@@ -1,11 +1,11 @@
 # security_baseline
 
-#### Table of Contents
+## Table of Contents
 
 1. [Description](#description)
 2. [Security baseline](#security-baseline)
-2. [CIS Benchmark Reference](#CIS-Benchmark-Reference)
-2. [Setup - The basics of getting started with security_baseline](#setup)
+3. [CIS Benchmark Reference](#CIS-Benchmark-Reference)
+4. [Setup - The basics of getting started with security_baseline](#setup)
     * [What security_baseline affects](#what-security_baseline-affects)
     * [Setup requirements](#setup-requirements)
     * [Beginning with security_baseline](#beginning-with-security_baseline)
@@ -14,19 +14,19 @@
     * [Reporting](#reporting)
     * [Facts indirector and Logstash](#facts-indirector-and-logstash)
     * [Example Hiera files](#example-hiera-files)
-3. [Checking facts](#checking-facts)
-3. [Extend the security baseline](#extend-the-security-baseline)
-4. [Usage](#usage)
-5. [Reference](#reference)
-6. [Limitations](#limitations)
+5. [Checking facts](#checking-facts)
+6. [Extend the security baseline](#extend-the-security-baseline)
+7. [Usage](#usage)
+8. [Reference](#reference)
+9. [Limitations](#limitations)
     * [Auditd](#auditd)
     * [SELinux and Apparmor](#selinux-and-apparmor)
     * [Automatic reboot](#automatic-reboot)
-7. [Credits](#credits)
-7. [Development](#development)
-8. [Changelog](#changelog)
-9. [Contributors](#contributors)
-10. [Warranty](#warranty)
+10. [Credits](#credits)
+11. [Development](#development)
+12. [Changelog](#changelog)
+13. [Contributors](#contributors)
+14. [Warranty](#warranty)
 
 ## Description
 
@@ -38,9 +38,9 @@ This module also has the ability to create compliance reports. The reports can b
 
 ## Security baseline
 
-A security baseline describes how servers in your environment are setup with a secure configuration. The baseline may be different each server class like database servers, application or web servers. 
+A security baseline describes how servers in your environment are setup with a secure configuration. The baseline may be different each server class like database servers, application or web servers.
 
-A security baseline can be based on a CIS benchmark but can include more rules specific to your environment. But depending on server classes not all rules of a CIS benchmark will be used. Sometimes the benchmarks contain different ways to achieve a goal, e.g. with RedHat 8 you can use firewalld, iptables or nftables to setup a firewall. Surely it makes no sense to have all of them running in parallel. So it is your task to define a security baseline to define which tool to use or which settings to use. 
+A security baseline can be based on a CIS benchmark but can include more rules specific to your environment. But depending on server classes not all rules of a CIS benchmark will be used. Sometimes the benchmarks contain different ways to achieve a goal, e.g. with RedHat 8 you can use firewalld, iptables or nftables to setup a firewall. Surely it makes no sense to have all of them running in parallel. So it is your task to define a security baseline to define which tool to use or which settings to use.
 
 > For this module level 1 and level 2 server tests from the CIS benchmarks below are taken into account.
 
@@ -68,7 +68,7 @@ It is highly recommended to have the complete security baseline definition writt
 
 ### What security_baseline affects
 
-The *security_baseline* module has a parameter `enforce` for each rule. If this parameter is set to true all necessary changes are made to make a server compliant to the security baseline rules. This can have severe impacts to the machines, especially if security settings are defined in a wrong way. 
+The *security_baseline* module has a parameter `enforce` for each rule. If this parameter is set to true all necessary changes are made to make a server compliant to the security baseline rules. This can have severe impacts to the machines, especially if security settings are defined in a wrong way.
 > Please test your settings before rolling out to production environments.
 
 The module needs a base directory. The base directory `/usr/share/security_baseline` is created by the module during the fist run. Some data is collected with cron jobs once a day as collecting this data is somewhat expensive and time consuming depending on the server size, e. g. searching als s-bit programs . Under the base directory there will be a directory `bin` where all scripts for gathering information are located.
@@ -119,7 +119,7 @@ Sometimes rules need additional data, especially if the security benchmark requi
     message: 'Rule 2.2.1.2. NTP should be configured propperly.'
     log_level: 'warning'
     config_data:
-      ntp_servers: 
+      ntp_servers:
         - 0.de.pool.ntp.org
         - 1.de.pool.ntp.org
         - 2.de.pool.ntp.org
@@ -174,7 +174,7 @@ Search for s-uid programs to create auditd rules for those binaries.
 
 ### Reporting
 
-This module has two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a CSV report which will be stored on the server and can be collected afterwards with some collecting job. 
+This module has two possible methods of reporting. First you can create a Puppet fact with the reporting results and upload this fact to the Puppet Master. Or you choose to create a CSV report which will be stored on the server and can be collected afterwards with some collecting job.
 
 A summary report can be created as well. This report gives you an overview which checks are successful, which are not and which have an unknown result. You also get some numbers arround the tests.
 
@@ -251,7 +251,7 @@ For reporting purposes it is necessary that the security settings required by a 
     class: '::security_baseline::rules::common::sec_cramfs'
     check:
       fact_hash: security_baseline
-      fact_name: 
+      fact_name:
         - kernel_modules
         - cramfs
       fact_value: false
@@ -270,7 +270,7 @@ For reporting purposes it is necessary that the security settings required by a 
       fact_name:
         - sshd
         - macs
-      fact_value: 
+      fact_value:
         - hmac-sha2-512
         - hmac-sha2-256
     message: 'Rule 5.2.11. The sshd parameter MACs should be configured with strong MAC algorithms.'
@@ -307,7 +307,7 @@ To extend the security baseline module you can write your own Puppet modules. Th
 class your_class_name (
   Boolean $enforce            = true,
   String $message             = '',
-  String $log_level           = '', 
+  String $log_level           = '',
   String $logfile             = '',
   Optional[Hash] $config_data = {}
 ) {
@@ -318,7 +318,7 @@ class your_class_name (
 > Please keep in mind that the classes you want to use for your security baseline have to be available in the Puppet catalog. Otherwise the catalog compliation will fail.
 
 ### Parameter `enforce`
- 
+
 This parameter controls if the security settings should be monitored only or if the system should be changed. Setting enforce to `true` will normaly change your system to be compliant to the security settings. A value of `false` just prints messages if the system is not compliant to the rules.
 
 ### Parameter `message`
@@ -427,7 +427,7 @@ class your_class_name (
   loglevel: 'warning'
   config_data:
     ntp_daemon: 'ntp'
-    ntp_servers: 
+    ntp_servers:
       - 0.de.pool.ntp.org
       - 1.de.pool.ntp.org
       - 2.de.pool.ntp.org
@@ -441,7 +441,7 @@ See [REFERENCE.md](https://github.com/tom-krieger/security_baseline/blob/master/
 
 Currently the module is tested with RedHat 6, 7, 8, CentOS 6, 7, 8, Suse SLES 12, Debian 9 (partly tested) and Ubuntu 18.04 (partially tested). Other OSes may work but there's no guarantee. If you need your own rules please create Puppet modules and call them from the security baseline module. See [extend the security baseline](#extend-the-security-baseline).
 
-More testing is needed as for every supported OS there are different setups in the wild and some of them might not be covered. 
+More testing is needed as for every supported OS there are different setups in the wild and some of them might not be covered.
 
 ### Auditd
 
@@ -474,7 +474,7 @@ security_baseline::rules:
     class: 'security_baseline::rules::redhat::sec_selinux_bootloader'
     check:
       fact_hash: security_baseline
-      fact_name: 
+      fact_name:
         - selinux
         - bootloader
       fact_value: true
@@ -485,7 +485,7 @@ security_baseline::rules:
 
 ## Credits
 
-This project is highly inspired by the [fervid/secure_linux_cis](https://forge.puppet.com/fervid/secure_linux_cis) module from Puppet Forge. 
+This project is highly inspired by the [fervid/secure_linux_cis](https://forge.puppet.com/fervid/secure_linux_cis) module from Puppet Forge.
 
 ## Development
 

@@ -61,7 +61,7 @@ class security_baseline::rules::redhat::sec_pam_passwd_sha512 (
         exec { "update authselect config for sha512 ${service}":
           command => "sed -ri 's/^\\s*(password\\s+sufficient\\s+pam_unix.so\\s+)(.*)$/\\1\\2 sha512/' ${pf_file}",
           path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          onlyif  => "test -z \"$(grep -E '^\\s*password\\s+sufficient\\s+pam_unix.so\\s+.*sha512\\s*.*$' ${pf_file})\"",
+          onlyif  => "test -z \"\$(grep -E '^\\s*password\\s+sufficient\\s+pam_unix.so\\s+.*sha512\\s*.*\$' ${pf_file})\"",
           notify  => Exec['authselect-apply-changes'],
         }
 

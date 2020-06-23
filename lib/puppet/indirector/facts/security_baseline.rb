@@ -1,6 +1,6 @@
 require 'puppet/indirector/facts/yaml'
 require 'puppet/util/profiler'
-require 'puppet/util/securityBaseline'
+require 'puppet/util/security_baseline'
 require 'json'
 require 'time'
 

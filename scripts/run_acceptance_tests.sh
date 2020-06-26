@@ -8,7 +8,8 @@ pdk bundle install --quiet
 # bundle exec rake 'litmus:provision[docker, ubuntu:18.04]'
 # pdk bundle exec rake 'litmus:provision[vagrant, centos/7]'
 # pdk bundle exec rake 'litmus:provision_list[dev_vagrant_all]'
-pdk bundle exec rake 'litmus:provision_list[dev_vagrant]'
+# pdk bundle exec rake 'litmus:provision_list[dev_vagrant]'
+pdk bundle exec rake 'litmus:provision[vagrant, centos/8]'
 
 # install Puppet agent
 pdk bundle exec rake litmus:install_agent
@@ -29,6 +30,6 @@ pdk bundle exec rake litmus:acceptance:parallel
 # TARGET_HOST=127.0.0.1:2222 pdk bundle exec rspec ./spec/acceptance --format d
 
 # tear down the test environment
-pdk bundle exec rake litmus:tear_down
+# pdk bundle exec rake litmus:tear_down
 
 exit 0

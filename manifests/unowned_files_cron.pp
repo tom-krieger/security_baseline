@@ -15,7 +15,7 @@ class security_baseline::unowned_files_cron (
     content => epp('security_baseline/unowned-files.epp', {
       unowned_user   => $unowned_user,
       unowned_group  => $unowned_group,
-      dirs_to_eclude => $dirs_to_exclude,
+      dirs_to_exlude => $dirs_to_exclude,
     }),
     owner   => 'root',
     group   => 'root',

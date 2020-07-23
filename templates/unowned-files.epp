@@ -1,12 +1,12 @@
 #!/bin/bash
 
 TMPFILE=/tmp/unowned.$$
+rm -f $TMPFILE
 
-echo "
 <% $dirs_to_exclude.each |$dir| { -%>
-<%= $dir %>
+echo "<%= $dir %>" >> TMPFILE
 <% } -%>
-" > TMPFILE
+
 
 df --local -P | awk {'if (NR!=1) print $6'} | grep -v -f ${TMPFILE} | xargs -I '{}' find '{}' -xdev -nouser > <%= $unowned_user %>
 df --local -P | awk {'if (NR!=1) print $6'} | grep -v -f ${TMPFILE} | xargs -I '{}' find '{}' -xdev -nogroup > <%= $unowned_group %>

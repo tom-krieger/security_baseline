@@ -4,7 +4,7 @@ TMPFILE=/tmp/unowned.$$
 rm -f $TMPFILE
 
 <% $dirs_to_exclude.each |$dir| { -%>
-echo "<%= $dir %>" >> TMPFILE
+echo "<%= $dir %>" >> $TMPFILE
 <% } -%>
 
 

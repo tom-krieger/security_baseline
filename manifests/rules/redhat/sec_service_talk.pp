@@ -31,10 +31,10 @@ class security_baseline::rules::redhat::sec_service_talk (
 ) {
   if($enforce) {
 
-    Service { 'talk':
+    ensure_resource('service', ['talk'], {
       ensure => stopped,
       enable => false,
-    }
+    })
 
   } else {
 

@@ -35,10 +35,10 @@ class security_baseline::rules::common::sec_snmpd (
 ) {
   if($enforce) {
 
-    Service {'snmpd':
+    ensure_resource('service', ['snmpd'], {
       ensure => 'stopped',
       enable => false
-    }
+    })
 
   } else {
 

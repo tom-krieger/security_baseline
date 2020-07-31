@@ -34,10 +34,10 @@ class security_baseline::rules::sles::sec_aide (
 
   if($enforce) {
 
-    Package { 'aide':
+    ensure_packages(['aide'], {
       ensure => installed,
       notify => Exec['aidedb'],
-    }
+    })
 
     exec { 'aidedb':
       command     => 'aide --init',

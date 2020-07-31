@@ -34,9 +34,9 @@ class security_baseline::rules::redhat::sec_nis_client(
   String $log_level = ''
 ) {
   if($enforce) {
-    Package { 'ypbind':
+    ensure_packages(['ypbind'], {
       ensure => 'purged',
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['ypbind']) {
       echo { 'nis-client':

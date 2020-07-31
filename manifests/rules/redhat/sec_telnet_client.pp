@@ -32,9 +32,9 @@ class security_baseline::rules::redhat::sec_telnet_client (
   String $log_level = ''
 ) {
   if($enforce) {
-    Package { 'telnet':
+    ensure_packages(['telnet'], {
       ensure => 'purged',
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['telnet']) {
       echo { 'telnet-client':

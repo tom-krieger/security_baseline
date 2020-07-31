@@ -31,9 +31,9 @@ class security_baseline::rules::redhat::sec_package_xinetd (
   String $log_level = ''
 ) {
   if ($enforce) {
-    Package { 'xinetd':
+    ensure_packages(['xinetd'], {
       ensure => absent,
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['xinetd']) {
       echo { 'xinetd-pkg':

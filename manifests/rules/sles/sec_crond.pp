@@ -30,10 +30,10 @@ class security_baseline::rules::sles::sec_crond (
   String $log_level = ''
 ) {
   if($enforce) {
-    Service { 'cron':
+    ensure_resource('service', ['cron'], {
       ensure => 'running',
       enable => true
-    }
+    })
 
   } else {
 

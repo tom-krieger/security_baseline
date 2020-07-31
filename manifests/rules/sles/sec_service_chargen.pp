@@ -32,15 +32,10 @@ class security_baseline::rules::sles::sec_service_chargen (
 ) {
   if($enforce) {
 
-    Service { 'chargen':
+    ensure_resource('service', ['chargen-udp', 'chargen'], {
       ensure => stopped,
       enable => false,
-    }
-
-    Service { 'chargen-udp':
-      ensure => stopped,
-      enable => false,
-    }
+    })
 
   } else {
 

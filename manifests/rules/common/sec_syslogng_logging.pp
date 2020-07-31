@@ -37,12 +37,14 @@ class security_baseline::rules::common::sec_syslogng_logging (
 ) {
   if($enforce) {
     if(!defined(Package['syslog-ng'])) {
-      Package { 'syslog-ng':
+
+      ensure_packages(['syslog-ng'], {
         ensure => installed,
-      }
-      Package { 'rsyslog':
+      })
+
+      ensure_packages(['rsyslog'], {
         ensure => absent,
-      }
+      })
     }
     $log_config.each | $config | {
       file_line { "syslog-ng logs ${config}":

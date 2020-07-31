@@ -32,16 +32,16 @@ class security_baseline::rules::redhat::sec_auditd_service (
   if($enforce) {
     if($facts['operatingsystemmajrelease'] < '8') {
       if(!defined(Package['audit'])) {
-        Package { 'audit':
+        ensure_packages(['audit'], {
           ensure => installed,
-        }
+        })
       }
     }
 
-    Service { 'auditd':
+    ensure_resource('service', ['auditd'], {
       ensure => running,
       enable => true,
-    }
+    })
 
   } else {
     if($facts['security_baseline']['auditd']['srv_auditd'] == false) {

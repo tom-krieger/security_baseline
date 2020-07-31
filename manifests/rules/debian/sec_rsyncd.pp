@@ -29,10 +29,12 @@ class security_baseline::rules::debian::sec_rsyncd (
   String $log_level = ''
 ) {
   if($enforce) {
-    Service {'rsync':
+
+    ensure_resource('service', ['rsync'], {
       ensure => 'stopped',
       enable => false,
-    }
+    })
+
   } else {
     if($facts['security_baseline']['services_enabled']['srv_rsync'] == 'enabled') {
       echo { 'rsyncd':

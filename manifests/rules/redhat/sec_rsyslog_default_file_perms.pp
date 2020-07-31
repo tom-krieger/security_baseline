@@ -32,12 +32,12 @@ class security_baseline::rules::redhat::sec_rsyslog_default_file_perms (
 ) {
   if($enforce) {
     if(!defined(Package['rsyslog'])) {
-      Package { 'rsyslog':
+      ensure_packages(['rsyslog'], {
         ensure => installed,
-      }
-      Package { 'syslog-ng':
+      })
+      ensure_packages(['syslog-ng'], {
         ensure => absent,
-      }
+      })
     }
     file_line { 'rsyslog-filepermissions':
       ensure  => present,

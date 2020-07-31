@@ -32,12 +32,14 @@ class security_baseline::rules::common::sec_syslogng_default_file_perms (
 ) {
   if($enforce) {
     if(!defined(Package['syslog-ng'])) {
-      Package { 'syslog-ng':
+
+      ensure_packages(['syslog-ng'], {
         ensure => installed,
-      }
-      Package { 'rsyslog':
+      })
+
+      ensure_packages(['rsyslog'], {
         ensure => absent,
-      }
+      })
     }
     file_line { 'syslog-ng permissions':
       ensure  => present,

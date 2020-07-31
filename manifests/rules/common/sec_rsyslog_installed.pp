@@ -34,9 +34,9 @@ class security_baseline::rules::common::sec_rsyslog_installed (
 ) {
   if($enforce) {
     if(!defined(Package['rsyslog'])) {
-      Package { 'rsyslog':
+      ensure_packages(['rsyslog'], {
         ensure => installed,
-      }
+      })
     }
   } else {
     if($facts['security_baseline']['packages_installed']['rsyslog'] == false) {

@@ -34,16 +34,16 @@ class security_baseline::rules::debian::sec_aide (
 
   if($enforce) {
 
-    Package { 'aide':
+    ensure_packages(['aide'], {
       ensure => installed,
       notify => Exec['aidedb'],
-    }
+    })
 
-    Package { 'aide-common':
+    ensure_packages(['aide-common'], {
       ensure  => installed,
       notify  => Exec['aidedb'],
       require => Package['aide'],
-    }
+    })
 
     exec { 'aidedb':
       command     => 'aideinit',

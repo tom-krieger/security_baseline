@@ -36,26 +36,26 @@ class security_baseline::rules::debian::sec_access_control (
   if($enforce) {
     if($access_control_pkg == 'apparmor') {
       if(!defined(Package['apparmor'])) {
-        Package { 'apparmor':
+        ensure_packages(['apparmor'], {
           ensure => installed,
-        }
+        })
       }
       if(!defined(Package['apparmor-utils'])) {
-        Package {'apparmor-utils':
+        ensure_packages(['apparmor-utils'], {
           ensure  => installed,
           require => Package['apparmor'],
-        }
+        })
       }
     } elsif($access_control_pkg == 'selinux') {
       if(!defined(Package['selinux-basics'])) {
-        Package {'selinux-basics':
+        ensure_packages(['selinux-basics'],  {
           ensure => installed,
-        }
+        })
       }
       if(!defined(Package['selinux-policy-default'])){
-        Package {'selinux-policy-default':
+        ensure_packages(['selinux-policy-default'], {
           ensure => installed,
-        }
+        })
       }
     }
   } else {

@@ -25,9 +25,9 @@ class security_baseline::rules::debian::sec_exim4 (
   String $log_level = ''
 ) {
   if ($enforce) {
-    Package { 'exim4':
+    ensure_packages(['exim4'], {
       ensure => absent,
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['exim4'] == true) {
       echo { 'exim4':

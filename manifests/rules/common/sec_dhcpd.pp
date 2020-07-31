@@ -32,10 +32,10 @@ class security_baseline::rules::common::sec_dhcpd (
   if($enforce) {
 
     unless(defined(Service['dhcpd'])) {
-      Service {'dhcpd':
+      ensure_resource('service' ,['dhcpd'], {
         ensure => 'stopped',
         enable => false
-      }
+      })
     }
   } else {
 

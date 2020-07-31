@@ -31,16 +31,20 @@ class security_baseline::rules::debian::sec_auditd_package (
   String $log_level = ''
 ) {
   if ($enforce) {
-    if(!defined(Package['auditd'])) {
-      Package { 'auditd':
-        ensure => installed,
-      }
-    }
-    if(!defined(Package['audispd-plugins'])) {
-      Package { 'audispd-plugins':
-        ensure => installed,
-      }
-    }
+    #if(!defined(Package['auditd'])) {
+    #  Package { 'auditd':
+    #    ensure => installed,
+    #  }
+    #}
+    #if(!defined(Package['audispd-plugins'])) {
+    #  Package { 'audispd-plugins':
+    #    ensure => installed,
+    #  }
+    #}
+
+    ensure_packages(['auditd', 'audispd-plugins'], {
+      ensure => installed
+    })
   } else {
     if(
       ($facts['security_baseline']['packages_installed']['auditd'] == false) or

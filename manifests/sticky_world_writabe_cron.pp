@@ -3,15 +3,15 @@
 # A description of what this class does
 #
 # @example
-#   include security_baseline::world_writeable_files_cron
-class security_baseline::world_writeable_files_cron (
+#   include security_baseline::sticky_world_writabe_cron
+class security_baseline::sticky_world_writabe_cron (
   Array $dirs_to_exclude = [],
 ) {
   $filename = '/root/world-writable-files.txt'
 
-  file { '/usr/share/security_baseline/bin/world-writable-files.sh':
+  file { '/usr/share/security_baseline/bin/sticy-world-writable.sh':
     ensure  => present,
-    content => epp('security_baseline/world-writeable-files.epp', {
+    content => epp('security_baseline/sticky-world-writeable.epp', {
       filename        => $filename,
       dirs_to_exclude => $dirs_to_exclude
     }),
@@ -20,9 +20,9 @@ class security_baseline::world_writeable_files_cron (
     mode    => '0700',
   }
 
-  file { '/etc/cron.d/world-writebale-files.cron':
+  file { '/etc/cron.d/sticky-world-writebale.cron':
     ensure => present,
-    source => 'puppet:///modules/security_baseline/world-writeable-files.cron',
+    source => 'puppet:///modules/security_baseline/sticky-world-writeable.cron',
     owner  => 'root',
     group  => 'root',
     mode   => '0644',

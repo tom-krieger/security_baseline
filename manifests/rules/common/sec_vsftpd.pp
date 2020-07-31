@@ -33,10 +33,10 @@ class security_baseline::rules::common::sec_vsftpd (
 ) {
   if($enforce) {
 
-    Service {'vsftpd':
+    ensure_resource('service', ['vsftpd'], {
       ensure => 'stopped',
       enable => false,
-    }
+    })
 
   } else {
 

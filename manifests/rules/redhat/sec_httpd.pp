@@ -31,10 +31,10 @@ class security_baseline::rules::redhat::sec_httpd (
 ) {
   if($enforce) {
 
-    Service {'httpd':
+    ensure_resource('service', ['httpd'], {
       ensure => 'stopped',
       enable => false
-      }
+    })
 
   } else {
 

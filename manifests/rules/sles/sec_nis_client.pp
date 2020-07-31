@@ -34,9 +34,9 @@ class security_baseline::rules::sles::sec_nis_client(
   String $log_level = ''
 ) {
   if($enforce) {
-    Package { 'ypbind':
+    ensure_packages(['ypbind'], {
       ensure => 'absent',
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['ypbind']) {
       echo { 'nis-client':

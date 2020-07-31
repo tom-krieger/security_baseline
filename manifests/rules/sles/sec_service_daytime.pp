@@ -31,15 +31,10 @@ class security_baseline::rules::sles::sec_service_daytime (
 ) {
   if($enforce) {
 
-    Service { 'daytime':
+    ensure_resource('service', ['daytime', 'daytime-udp'], {
       ensure => stopped,
       enable => false,
-    }
-
-    Service { 'daytime-udp':
-      ensure => stopped,
-      enable => false,
-    }
+    })
 
   } else {
 

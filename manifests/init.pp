@@ -110,15 +110,12 @@ class security_baseline (
   Boolean $configure_logstash                 = false,
   Integer $logstash_port                      = 5999,
   Integer $logstash_timeout                   = 1000,
-  Array $dirs_to_exclude                      = [],
+  Array $exclude_dirs_unowned_files           = [],
+  Array $exclude_dirs_world_writeable         = [],
+  Array $exclude_dirs_sticky_ww               = [],
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
-  include ::security_baseline::world_writeable_files_cron
-
-  class { '::security_baseline::unowned_files_cron':
-    dirs_to_exclude => $dirs_to_exclude,
-  }
 
   if($debug) {
     echo { "Applying security baseline version: ${baseline_version}":
@@ -132,6 +129,14 @@ class security_baseline (
       loglevel => 'info',
       withpath => false,
     }
+  }
+
+  class { '::security_baseline::world_writeable_files_cron':
+    dirs_to_exclude => $exclude_dirs_world_writeable,
+  }
+
+  class { '::security_baseline::unowned_files_cron':
+    dirs_to_exclude => $exclude_dirs_unowned_files,
   }
 
   class { '::security_baseline::config':

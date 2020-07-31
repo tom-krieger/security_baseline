@@ -33,9 +33,9 @@ class security_baseline::rules::redhat::sec_tcp_wrappers (
   String $log_level = ''
 ) {
   if($enforce) {
-    Package { 'tcp_wrappers':
+    ensure_packages(['tcp_wrappers'], {
       ensure => installed,
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['tcp_wrappers'] == false) {
       echo { 'tcp_wrappers':

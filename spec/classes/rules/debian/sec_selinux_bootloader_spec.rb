@@ -139,11 +139,13 @@ describe 'security_baseline::rules::debian::sec_selinux_bootloader' do
                   'loglevel' => 'warning',
                   'withpath' => false,
                 )
-              is_expected.to contain_package('selinux-basics').with('ensure' => 'installed')
-              is_expected.to contain_package('selinux-policy-default').with('ensure' => 'installed')
+              #is_expected.to contain_package('selinux-basics').with('ensure' => 'installed')
+              #is_expected.to contain_package('selinux-policy-default').with('ensure' => 'installed')
+              is_expected.to contain_ensure_packages(['selinux-basics', 'selinux-policy-default']).with('ensure' => 'installed')
             else
-              is_expected.not_to contain_package('selinux-basics').with('ensure' => 'installed')
-              is_expected.not_to contain_package('selinux-policy-default').with('ensure' => 'installed')
+              #is_expected.not_to contain_package('selinux-basics').with('ensure' => 'installed')
+              #is_expected.not_to contain_package('selinux-policy-default').with('ensure' => 'installed')
+              #is_expected.not_to contain_ensure_packages("[selinux-basics, selinux-policy-default]")
               is_expected.to contain_echo('bootloader-selinux-not-activates')
                 .with(
                   'message'  => 'Not running selinux-activate',

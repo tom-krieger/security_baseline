@@ -5,7 +5,7 @@
 # The purpose of the module is to give the ability to setup complete security baseline which not necessarily have to stick 
 # to an industry security guide like the CIS benchmarks.  
 # One main purpose is to ensure the module can be extended by further security settings and monitorings without changing the code of
-# this module.
+# this module. (Test)
 #
 # The easiest way to use the module is to put all rule data into a hiera file. For more information please coinsult the README file.
 #

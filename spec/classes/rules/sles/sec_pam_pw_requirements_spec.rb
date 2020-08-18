@@ -37,7 +37,7 @@ describe 'security_baseline::rules::sles::sec_pam_pw_requirements' do
         if enforce
           is_expected.to contain_package('libpwquality1')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
           is_expected.to contain_file_line('pam minlen')
             .with(

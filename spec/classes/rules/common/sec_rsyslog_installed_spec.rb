@@ -31,7 +31,7 @@ describe 'security_baseline::rules::common::sec_rsyslog_installed' do
           if enforce
             is_expected.to contain_package('rsyslog')
               .with(
-                'ensure' => 'installed',
+                'ensure' => 'present',
               )
             is_expected.not_to contain_echo('rsyslog-installed')
           else

@@ -30,7 +30,7 @@ describe 'security_baseline::rules::sles::sec_tcp_wrappers' do
         if enforce
           is_expected.to contain_package('tcpd')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
 
           is_expected.not_to contain_echo('tcpd')

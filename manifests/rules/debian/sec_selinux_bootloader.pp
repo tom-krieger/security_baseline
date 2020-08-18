@@ -38,18 +38,7 @@ class security_baseline::rules::debian::sec_selinux_bootloader (
         withpath => false,
       }
 
-      #if(!defined(Package['selinux-basics'])) {
-      #  Package { 'selinux-basics':
-      #    ensure => installed,
-      #  }
-      #}
-      #if(!defined(Package['selinux-policy-default'])){
-      #  Package { 'selinux-policy-default':
-      #    ensure => installed,
-      #  }
-      #}
-
-      ensure_packages(['selinux-basics', 'selinux-policy-default'], {ensure => installed})
+      ensure_packages(['selinux-basics','selinux-policy-default'], {ensure => installed})
 
       exec { 'activate selinux':
         command => 'selinux-activate',

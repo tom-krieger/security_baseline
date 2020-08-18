@@ -29,7 +29,7 @@ describe 'security_baseline::rules::common::sec_syslog_installed' do
           if enforce
             is_expected.to contain_package('rsyslog')
               .with(
-                'ensure' => 'installed',
+                'ensure' => 'present',
               )
             is_expected.to contain_package('syslog-ng')
               .with(
@@ -74,7 +74,7 @@ describe 'security_baseline::rules::common::sec_syslog_installed' do
           if enforce
             is_expected.to contain_package('syslog-ng')
               .with(
-                'ensure' => 'installed',
+                'ensure' => 'present',
               )
             is_expected.to contain_package('rsyslog')
               .with(

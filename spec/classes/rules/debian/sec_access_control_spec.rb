@@ -32,11 +32,11 @@ describe 'security_baseline::rules::debian::sec_access_control' do
         if enforce
           is_expected.to contain_package('apparmor')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
           is_expected.to contain_package('apparmor-utils')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
 
           is_expected.not_to contain_echo('apparmor-pkg')
@@ -81,11 +81,11 @@ describe 'security_baseline::rules::debian::sec_access_control' do
         if enforce
           is_expected.to contain_package('selinux-basics')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
           is_expected.to contain_package('selinux-policy-default')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
 
           is_expected.not_to contain_echo('apparmor-pkg')

@@ -32,7 +32,7 @@ describe 'security_baseline::rules::common::sec_sudo_package' do
           if enforce
             is_expected.to contain_package('sudo')
               .with(
-                'ensure' => 'installed',
+                'ensure' => 'present',
               )
 
             is_expected.not_to contain_echo('sudo-package')

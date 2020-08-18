@@ -36,7 +36,7 @@ describe 'security_baseline::rules::redhat::sec_firewall_package' do
         if enforce
           is_expected.to contain_package('firewalld')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
           is_expected.not_to contain_echo('firewall-package')
         else
@@ -83,7 +83,7 @@ describe 'security_baseline::rules::redhat::sec_firewall_package' do
         if enforce
           is_expected.to contain_package('nftables')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
           is_expected.not_to contain_echo('firewall-package')
         else

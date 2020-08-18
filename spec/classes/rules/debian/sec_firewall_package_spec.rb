@@ -36,7 +36,7 @@ describe 'security_baseline::rules::debian::sec_firewall_package' do
         if enforce
           is_expected.to contain_package('ufw')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
           is_expected.to contain_package('nftables')
             .with(
@@ -93,7 +93,7 @@ describe 'security_baseline::rules::debian::sec_firewall_package' do
         if enforce
           is_expected.to contain_package('nftables')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
           is_expected.to contain_package('ufw')
             .with(

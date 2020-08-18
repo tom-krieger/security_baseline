@@ -30,7 +30,7 @@ describe 'security_baseline::rules::redhat::sec_tcp_wrappers' do
         if enforce
           is_expected.to contain_package('tcp_wrappers')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
 
           is_expected.not_to contain_echo('tcp_wrappers')

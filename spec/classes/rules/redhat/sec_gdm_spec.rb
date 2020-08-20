@@ -48,11 +48,20 @@ describe 'security_baseline::rules::redhat::sec_gdm' do
                 'refreshonly' => true,
               )
 
+            is_expected.to contain_file('/etc/dconf/db/gdm.d')
+              .with(
+                'ensure' => 'directory',
+                'owner'  => 'root',
+                'group'  => 'root',
+                'mode'   => '0755',
+              )
+
             is_expected.not_to contain_echo('gdm-conf')
           else
             is_expected.not_to contain_file('gdm')
             is_expected.not_to contain_file('banner-login')
             is_expected.not_to contain_exec('dconf-gdm-exec')
+            is_expected.not_to contain_file('/etc/dconf/db/gdm.d')
             is_expected.to contain_echo('gdm-conf')
               .with(
                 'message'  => 'gdm config',

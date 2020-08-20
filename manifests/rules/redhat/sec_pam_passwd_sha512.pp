@@ -64,7 +64,7 @@ class security_baseline::rules::redhat::sec_pam_passwd_sha512 (
         }
       } else {
         echo { 'no custom authselect profile sha512':
-          message  => 'no custom authselect profile available, postpone configuration',
+          message  => 'sha512: no custom authselect profile available, postpone configuration',
           loglevel => $log_level,
           withpath => false,
         }

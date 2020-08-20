@@ -67,8 +67,8 @@ class security_baseline::rules::redhat::sec_pam_old_passwords (
           notify  => Exec['authselect-apply-changes'],
         }
       } else {
-        echo { 'no custom authselect profile old password':
-          message  => 'no custom authselect profile available, postpone configuration',
+        echo { 'old passwords: no custom authselect profile old password':
+          message  => 'old passwords: no custom authselect profile available, postpone configuration',
           loglevel => $log_level,
           withpath => false,
         }

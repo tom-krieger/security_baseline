@@ -159,8 +159,8 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
             notify  => Exec['authselect-apply-changes'],
           }
         } else {
-          echo { 'no custom authselect profile pw requirements':
-            message  => 'no custom authselect profile available, postpone configuration',
+          echo { "${service}: no custom authselect profile pw requirements":
+            message  => "${service}: no custom authselect profile pw requirements",
             loglevel => $log_level,
             withpath => false,
           }

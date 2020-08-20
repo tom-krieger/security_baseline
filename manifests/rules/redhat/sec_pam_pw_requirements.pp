@@ -133,6 +133,7 @@ class security_baseline::rules::redhat::sec_pam_pw_requirements (
     }
 
     $services.each | $service | {
+
       if ($facts['operatingsystemmajrelease'] > '7') {
 
         if $pf_path != '' {

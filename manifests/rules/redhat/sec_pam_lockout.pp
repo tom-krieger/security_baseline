@@ -78,7 +78,7 @@ class security_baseline::rules::redhat::sec_pam_lockout (
             notify  => Exec['authselect-apply-changes'],
           }
         } else {
-          echo { 'no custom authselect profile lockout':
+          echo { "${service}: no custom authselect profile lockout":
             message  => 'no custom authselect profile available, postpone configuration',
             loglevel => $log_level,
             withpath => false,

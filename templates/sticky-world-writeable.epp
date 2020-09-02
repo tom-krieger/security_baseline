@@ -3,6 +3,8 @@
 TMPFILE=/tmp/sticky_ww.$$
 rm -f $TMPFILE
 
+touch $TMPFILE
+
 <% $dirs_to_exclude.each |$dir| { -%>
 echo "<%= $dir %>" >> $TMPFILE
 <% } -%>

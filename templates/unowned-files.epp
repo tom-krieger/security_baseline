@@ -2,6 +2,7 @@
 
 TMPFILE=/tmp/unowned.$$
 rm -f $TMPFILE
+touch $TMPFILE
 
 <% $dirs_to_exclude.each |$dir| { -%>
 echo "<%= $dir %>" >> $TMPFILE

@@ -21,11 +21,13 @@ class security_baseline::system_file_permissions_cron {
     content => epp('security_baseline/system-file-permissions-cron.epp', {cmd => $cmd, filename => $filename})
   }
 
+  $min = fqdn_rand(60, 'msjhbcfsadzkfbzgbzghbqeghbqe w')
+
   file { '/etc/cron.d/system-file-permissions.cron':
-    ensure => present,
-    source => 'puppet:///modules/security_baseline/system-file-permissions.cron',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    ensure  => present,
+    content => epp('security_baseline/system-file-permissions.cron.epp', {min => $min}),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
   }
 }

@@ -1,1 +1,0 @@
-3 5 * * * root /usr/share/security_baseline/bin/system-file-permissions.sh > /dev/null 2>&1

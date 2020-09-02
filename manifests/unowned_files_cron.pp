@@ -22,11 +22,13 @@ class security_baseline::unowned_files_cron (
     mode    => '0700',
   }
 
+  $min = fqdn_rand(60, 'aghfsbcHDFBCWDOFBCQWFQBFGH')
+
   file { '/etc/cron.d/unowned-files.cron':
-    ensure => present,
-    source => 'puppet:///modules/security_baseline/unowned-files.cron',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    ensure  => present,
+    content => eppr('security_baseline/unowned-files.cron.epp', {min => $min}),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
   }
 }

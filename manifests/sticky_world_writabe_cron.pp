@@ -20,11 +20,13 @@ class security_baseline::sticky_world_writabe_cron (
     mode    => '0700',
   }
 
+  $min = fqdn_rand(60, 'ah  ue65^b  gdf^zrbzcê2zf^b w')
+
   file { '/etc/cron.d/sticky-world-writebale.cron':
-    ensure => present,
-    source => 'puppet:///modules/security_baseline/sticky-world-writeable.cron',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    ensure  => present,
+    content => epp('security_baseline/sticky-world-writeable.cron.epp', {min => $min}),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
   }
 }

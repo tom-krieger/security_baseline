@@ -20,11 +20,13 @@ class security_baseline::world_writeable_files_cron (
     mode    => '0700',
   }
 
+  $min = fqdn_rand(60, 'sjdhgfuwdqfbqwjkc wwequ')
+
   file { '/etc/cron.d/world-writebale-files.cron':
-    ensure => present,
-    source => 'puppet:///modules/security_baseline/world-writeable-files.cron',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    ensure  => present,
+    content => epp('security_baseline/world-writeable-files.cron.epp', {min => $min}),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
   }
 }

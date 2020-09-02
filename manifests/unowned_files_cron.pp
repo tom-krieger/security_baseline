@@ -26,7 +26,7 @@ class security_baseline::unowned_files_cron (
 
   file { '/etc/cron.d/unowned-files.cron':
     ensure  => present,
-    content => eppr('security_baseline/unowned-files.cron.epp', {min => $min}),
+    content => epp('security_baseline/unowned-files.cron.epp', {min => $min}),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',

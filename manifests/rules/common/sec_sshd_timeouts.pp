@@ -36,26 +36,31 @@
 #
 # @api private
 class security_baseline::rules::common::sec_sshd_timeouts (
-  Boolean $enforce = true,
-  String $message = '',
-  String $log_level = ''
+  Boolean $enforce               = true,
+  String $message                = '',
+  String $log_level              = '',
+  Integer $client_alive_interval = 900,
+  Inetger $client_alive_cout_max =  0,
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {
+
       file_line { 'sshd-timeouts':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
-        line   => 'ClientAliveInterval 300',
+        line   => "ClientAliveInterval ${client_alive_interval}",
         match  => '^ClientAliveInterval.*',
         notify => Exec['reload-sshd'],
       }
+
       file_line { 'sshd-timeouts-2':
         ensure => present,
         path   => '/etc/ssh/sshd_config',
-        line   => 'ClientAliveCountMax 0',
+        line   => "ClientAliveCountMax ${client_alive_cout_max}",
         match  => '^ClientAliveCountMax.*',
         notify => Exec['reload-sshd'],
       }
+
     } else {
       if(
         ($facts['security_baseline']['sshd']['clientaliveinterval'] != '300') or

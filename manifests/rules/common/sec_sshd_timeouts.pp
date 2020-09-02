@@ -27,6 +27,12 @@
 # @param log_level
 #    The log_level for the above message
 #
+# @param client_alive_interval
+#    The client alive imterval
+#
+# @param client_alive_cout_max
+# The client alive cout max
+#
 # @example
 #   class security_baseline::rules::common::sec_sshd_timeouts {
 #       enforce => true,
@@ -39,8 +45,8 @@ class security_baseline::rules::common::sec_sshd_timeouts (
   Boolean $enforce               = true,
   String $message                = '',
   String $log_level              = '',
-  Integer $client_alive_interval = 900,
-  Inetger $client_alive_cout_max =  0,
+  Integer $client_alive_interval = 300,
+  Integer $client_alive_cout_max =  0,
 ) {
   if($facts['security_baseline']['sshd']['package']) {
     if($enforce) {

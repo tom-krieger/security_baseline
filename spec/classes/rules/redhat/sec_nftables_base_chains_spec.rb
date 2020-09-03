@@ -47,7 +47,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_base_chains' do
             .with(
               'command' => 'nft create chain inet filter input { type filter hook input priority 0 \; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'type filter hook input priority 0\')"',
+              'onlyif'  => 'test -z "$(nft -n list ruleset inet | grep \'type filter hook input priority 0\')"',
             )
             .that_notifies('Exec[dump nftables ruleset]')
 
@@ -55,7 +55,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_base_chains' do
             .with(
               'command' => 'nft create chain inet filter forward { type filter hook forward priority 0 \; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'type filter hook forward priority 0\')"',
+              'onlyif'  => 'test -z "$(nft -n list ruleset inet | grep \'type filter hook forward priority 0\')"',
             )
             .that_notifies('Exec[dump nftables ruleset]')
 
@@ -63,7 +63,7 @@ describe 'security_baseline::rules::redhat::sec_nftables_base_chains' do
             .with(
               'command' => 'nft create chain inet filter output { type filter hook output priority 0 \; }',
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'onlyif'  => 'test -z "$(nft list ruleset inet | grep \'type filter hook output priority 0\')"',
+              'onlyif'  => 'test -z "$(nft -n list ruleset inet | grep \'type filter hook output priority 0\')"',
 
             )
             .that_notifies('Exec[dump nftables ruleset]')

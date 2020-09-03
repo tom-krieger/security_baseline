@@ -20,7 +20,6 @@ describe 'security_baseline::sticky_world_writabe_cron' do
         is_expected.to contain_file('/etc/cron.d/sticky-world-writebale.cron')
           .with(
             'ensure' => 'present',
-            'source' => 'puppet:///modules/security_baseline/sticky-world-writeable.cron',
             'owner'  => 'root',
             'group'  => 'root',
             'mode'   => '0644',

@@ -10,6 +10,10 @@ def check_package_installed(pkg, opts = '-q')
   if (os == 'RedHat') || (os == 'Suse')
     val = Facter::Core::Execution.exec("rpm #{opts} #{pkg}")
   elsif os == 'Debian'
+    if opts == '-q'
+      opts = ''
+    end
+    opts = "#{opts} -l"
     val = Facter::Core::Execution.exec("dpkg #{opts} #{pkg}")
   end
   if val.nil? || val.empty? || val =~ %r{not installed}

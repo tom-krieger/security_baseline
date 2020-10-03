@@ -913,6 +913,7 @@ security_baseline::rules:
       fact_value: 'FUTURE'
     message: 'Rule 1.11. Crypto policy should be FUTURE.'
     log_level: 'warning'
+    reboot: true
     config_data:
       crypto_policy: FUTURE
   '2.1.1':

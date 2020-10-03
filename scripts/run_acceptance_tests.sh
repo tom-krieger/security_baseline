@@ -30,6 +30,6 @@ pdk bundle exec rake litmus:acceptance:parallel
 # TARGET_HOST=127.0.0.1:2222 pdk bundle exec rspec ./spec/acceptance --format d
 
 # tear down the test environment
-# pdk bundle exec rake litmus:tear_down
+pdk bundle exec rake litmus:tear_down
 
 exit 0

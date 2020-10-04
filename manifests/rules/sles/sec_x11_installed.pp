@@ -34,7 +34,7 @@ class security_baseline::rules::sles::sec_x11_installed (
   if($facts['security_baseline']['x11']['installed']) {
     if($enforce) {
       $facts['security_baseline']['x11-packages'].each |$pkg| {
-        unless $pkg =~ /^xorg-x11-font/ and $pkg =~ /^xorg-x11-server-utils/ {
+        of $pkg !~ /^xorg-x11-font/ and $pkg !~ /^xorg-x11-server-utils/ {
           ensure_packages([$pkg], {
             ensure => absent,
           })

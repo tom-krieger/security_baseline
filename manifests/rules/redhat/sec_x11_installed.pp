@@ -34,7 +34,8 @@ class security_baseline::rules::redhat::sec_x11_installed (
   if($facts['security_baseline']['x11']['installed']) {
     if($enforce) {
       $facts['security_baseline']['x11-packages'].each |$pkg| {
-        unless $pkg =~ /^xorg-x11-font/ {
+        # do not install there packages due to dependances needed on the system
+        unless $pkg =~ /^xorg-x11-font/ and $pkg =~ /^xorg-x11-server-utils/ {
           ensure_packages([$pkg], {
             ensure => purged,
           })

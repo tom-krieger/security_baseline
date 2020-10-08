@@ -1,6 +1,10 @@
-# @summary A short summary of the purpose of this class
+# @summary 
+#    Cron to run search for unowned files
 #
-# A description of what this class does
+# Create a cron job to run a search for unowned files.
+#
+# @param dirs_to_exclude
+#    Array of directories to exclude from search.
 #
 # @example
 #   include security_baseline::unowned_files_cron

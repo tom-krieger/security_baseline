@@ -1,6 +1,7 @@
-# @summary A short summary of the purpose of this class
+# @summary 
+#    Create cron job for system file permissions
 #
-# A description of what this class does
+# Create a cron job for sytem file permissions
 #
 # @example
 #   include security_baseline::system_file_permissions_cron

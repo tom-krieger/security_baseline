@@ -1,6 +1,10 @@
-# @summary A short summary of the purpose of this class
+# @summary 
+#    Create cron job for searching world writable dir3ctories with sticky bit
 #
-# A description of what this class does
+# Create a cron ob for the search for world writable directories with sticky bit set.
+#
+# @param dirs_to_exclude
+#    Array of directories to exclude from search.
 #
 # @example
 #   include security_baseline::sticky_world_writabe_cron

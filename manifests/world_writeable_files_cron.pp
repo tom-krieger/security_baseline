@@ -1,6 +1,10 @@
-# @summary A short summary of the purpose of this class
+# @summary 
+#   Create cron for world writable files search
 #
-# A description of what this class does
+# Create a cron job for world writable files search.
+#
+# @param dirs_to_exclude
+#    Array of directories to exclude from search.
 #
 # @example
 #   include security_baseline::world_writeable_files_cron

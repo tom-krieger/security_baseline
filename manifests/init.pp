@@ -82,6 +82,15 @@
 # @param logstash_timeout
 #    The timeout for sendding facts to logstash.
 #
+# @param exclude_dirs_unowned_files
+#    Array of directories to exclude from the search for onowned files
+#
+# @param exclude_dirs_world_writeable
+#     Array of directories to exclude from the search for world writable files
+#
+# @param exclude_dirs_sticky_ww
+#    Araay of directories to exclude from the search for world writable directories with sticky bit
+#
 # @example
 #   include security_baseline
 #

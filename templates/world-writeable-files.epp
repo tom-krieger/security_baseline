@@ -1,5 +1,15 @@
 #!/bin/bash
 
-df --local -P | awk {'if (NR!=1) print $6'} | xargs -I '{}' find '{}' -xdev -type f -perm -0002 > <%= $filename %>
+TMPFILE=/tmp/world-writable.$$
+rm -f $TMPFILE
+touch $TMPFILE
+
+<% $dirs_to_exclude.each |$dir| { -%>
+echo "<%= $dir %>" >> $TMPFILE
+<% } -%>
+
+df --local -P | awk {'if (NR!=1) print $6'} | grep -v -f ${TMPFILE} | xargs -I '{}' find '{}' -xdev -type f -perm -0002 > <%= $filename %>
+
+rm -f $TMPFILE
 
 exit $?

@@ -1,6 +1,7 @@
-# @summary A short summary of the purpose of this class
+# @summary 
+#    Create cron job for system file permissions
 #
-# A description of what this class does
+# Create a cron job for sytem file permissions
 #
 # @example
 #   include security_baseline::system_file_permissions_cron
@@ -21,11 +22,13 @@ class security_baseline::system_file_permissions_cron {
     content => epp('security_baseline/system-file-permissions-cron.epp', {cmd => $cmd, filename => $filename})
   }
 
+  $min = fqdn_rand(60, 'msjhbcfsadzkfbzgbzghbqeghbqe w')
+
   file { '/etc/cron.d/system-file-permissions.cron':
-    ensure => present,
-    source => 'puppet:///modules/security_baseline/system-file-permissions.cron',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644',
+    ensure  => present,
+    content => epp('security_baseline/system-file-permissions.cron.epp', {min => $min}),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
   }
 }

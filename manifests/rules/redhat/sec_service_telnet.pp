@@ -33,10 +33,10 @@ class security_baseline::rules::redhat::sec_service_telnet (
 ) {
   if($enforce) {
 
-    Service { 'telnet':
+    ensure_resource('service', ['telnet'], {
       ensure => stopped,
       enable => false,
-    }
+    })
 
   } else {
 

@@ -51,20 +51,23 @@ class security_baseline::rules::redhat::sec_pam_passwd_sha512 (
         ($facts['security_baseline']['authselect']['profile'] != 'none')
       ) {
         $pf_path = "/etc/authselect/custom/${facts['security_baseline']['authselect']['profile']}"
-      } else {
-        $pf_path = '/etc/authselect'
-      }
 
-      $services.each | $service | {
-        $pf_file = "${pf_path}/${service}"
+        $services.each | $service | {
+          $pf_file = "${pf_path}/${service}"
 
-        exec { "update authselect config for sha512 ${service}":
-          command => "sed -ri 's/^\\s*(password\\s+sufficient\\s+pam_unix.so\\s+)(.*)$/\\1\\2 sha512/' ${pf_file}",
-          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          unless  => "test -z \"$(grep -E '^\\s*password\\s+sufficient\\s+pam_unix.so\\s+.*sha512\\s*.*$' ${pf_file})\"",
-          notify  => Exec['authselect-apply-changes'],
+          exec { "update authselect config for sha512 ${service}":
+            command => "sed -ri 's/^\\s*(password\\s+sufficient\\s+pam_unix.so\\s+)(.*)$/\\1\\2 sha512/' ${pf_file}",
+            path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+            onlyif  => "test -z \"\$(grep -E '^\\s*password\\s+sufficient\\s+pam_unix.so\\s+.*sha512\\s*.*\$' ${pf_file})\"",
+            notify  => Exec['authselect-apply-changes'],
+          }
         }
-
+      } else {
+        echo { 'no custom authselect profile sha512':
+          message  => 'sha512: no custom authselect profile available, postpone configuration',
+          loglevel => $log_level,
+          withpath => false,
+        }
       }
     }
   } else {

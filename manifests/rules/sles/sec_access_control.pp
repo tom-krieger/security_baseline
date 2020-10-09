@@ -36,9 +36,9 @@ class security_baseline::rules::sles::sec_access_control (
 ) {
   if($enforce) {
     if(!defined(Package[$access_control_pkg])) {
-      Package { $access_control_pkg:
+      ensure_packages([$access_control_pkg], {
         ensure => present,
-      }
+      })
     }
   } else {
     if($facts['security_baseline']['access_control'] == 'none') {

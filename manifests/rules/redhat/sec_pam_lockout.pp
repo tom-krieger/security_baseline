@@ -54,7 +54,7 @@ class security_baseline::rules::redhat::sec_pam_lockout (
     ) {
       $pf_path = "/etc/authselect/custom/${facts['security_baseline']['authselect']['profile']}"
     } else {
-      $pf_path = '/etc/authselect'
+      $pf_path = ''
     }
 
     $services.each | $service | {
@@ -63,18 +63,26 @@ class security_baseline::rules::redhat::sec_pam_lockout (
 
       if ($facts['operatingsystemmajrelease'] > '7') {
 
-        exec { "update authselect pam lockout config deny ${service}":
-          command => "sed -ri '/pam_faillock.so/s/deny=\\S+/deny=${attempts}/g' ${pf_file} || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 deny=${attempts} \\3/' ${pf_file}", #lint:ignore:140chars
-          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          unless  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*deny=\\S+\\s*.*$' ${pf_file})\"",
-          notify  => Exec['authselect-apply-changes'],
-        }
+        if $pf_path != '' {
+          exec { "update authselect pam lockout config deny ${service}":
+            command => "sed -ri '/pam_faillock.so/s/deny=\\S+/deny=${attempts}/g' ${pf_file} || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 deny=${attempts} \\3/' ${pf_file}", #lint:ignore:140chars
+            path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+            onlyif  => "test -z \"\$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*deny=\\S+\\s*.*\$' ${pf_file})\"",
+            notify  => Exec['authselect-apply-changes'],
+          }
 
-        exec { "update authselect pam lockout config timeout ${service}":
-          command => "sed -ri '/pam_faillock.so/s/unlock_time=\\S+/unlock_time=${lockouttime}/g' ${pf_file} || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 unlock_time=${lockouttime} \\3/' ${pf_file}", #lint:ignore:140chars
-          path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-          unless  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*unlock_time=\\S+\\s*.*$' ${pf_file})\"",
-          notify  => Exec['authselect-apply-changes'],
+          exec { "update authselect pam lockout config timeout ${service}":
+            command => "sed -ri '/pam_faillock.so/s/unlock_time=\\S+/unlock_time=${lockouttime}/g' ${pf_file} || sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 unlock_time=${lockouttime} \\3/' ${pf_file}", #lint:ignore:140chars
+            path    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
+            onlyif  => "test -z \"\$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*unlock_time=\\S+\\s*.*\$' ${pf_file})\"",
+            notify  => Exec['authselect-apply-changes'],
+          }
+        } else {
+          echo { "${service}: no custom authselect profile lockout":
+            message  => "${service} - lockout: no custom authselect profile available, postpone configuration",
+            loglevel => $log_level,
+            withpath => false,
+          }
         }
 
       } else {

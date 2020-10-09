@@ -7,6 +7,7 @@
 - use resource defaults for packages and services
 - added facts indirector to send summary facts to logstash
 - added some Litmus acceptance testing
+- fixed a bug in package handling in Debian like OS
 
 ## Release 0.9.1
 

@@ -68,9 +68,9 @@ class security_baseline::rules::sles::sec_pam_pw_requirements (
 
   if($enforce) {
     if(!defined(Package['libpwquality1'])) {
-      Package { 'libpwquality1':
+      ensure_packages(['libpwquality1'], {
         ensure => installed,
-      }
+      })
     }
 
     file_line { 'pam minlen':

@@ -69,6 +69,13 @@ describe 'security_baseline' do
           )
 
         is_expected.to contain_security_baseline__sec_check('1.1.1.1')
+
+        is_expected.to contain_reboot('after_run')
+          .with(
+            'timeout'   => '120',
+            'message'   => 'forced reboot by Puppet',
+            'apply'     => 'finished',
+          )
       }
     end
   end

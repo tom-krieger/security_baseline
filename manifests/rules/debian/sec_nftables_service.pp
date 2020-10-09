@@ -31,10 +31,10 @@ class security_baseline::rules::debian::sec_nftables_service (
 ) {
   if($enforce) {
     if(!defined(Service['nftables'])) {
-      Service {'nftables':
+      ensure_resource('service', ['nftables'], {
         ensure => running,
         enable => true,
-      }
+      })
     }
   } else {
     if($facts['security_baseline']['services_enabled']['srv_nftables'] == false) {

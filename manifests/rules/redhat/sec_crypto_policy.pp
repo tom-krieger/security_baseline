@@ -42,14 +42,14 @@
 #
 # @api private
 class security_baseline::rules::redhat::sec_crypto_policy (
-  Boolean $enforce                      = true,
-  String $message                       = '',
-  String $log_level                     = '',
-  Enum['FUTURE', 'FIPS'] $crypto_policy = 'FUTURE',
+  Boolean $enforce                                = true,
+  String $message                                 = '',
+  String $log_level                               = '',
+  Enum['FUTURE', 'FIPS', 'LEGACY'] $crypto_policy = 'FUTURE',
 ) {
   if ($enforce) {
     if ($facts['security_baseline']['crypto_policy']['policy'] != $crypto_policy) {
-      exec { "set crypto policy to ${crypto_policy}":
+      exec { "set crypto policy to ${crypto_policy} (current: ${facts['security_baseline']['crypto_policy']['policy']})":
         command => "update-crypto-policies --set ${crypto_policy}",
         path    => ['/sbin', '/usr/sbin', '/bin', '/usr/bin'],
       }

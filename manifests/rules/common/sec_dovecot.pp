@@ -31,10 +31,10 @@ class security_baseline::rules::common::sec_dovecot (
 ) {
   if($enforce) {
 
-    Service {'dovecot':
+    ensure_resource('service', ['dovecot'], {
       ensure => 'stopped',
       enable => false
-    }
+    })
 
   } else {
 

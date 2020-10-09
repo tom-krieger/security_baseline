@@ -32,10 +32,10 @@ class security_baseline::rules::common::sec_ldap (
 ) {
   if($enforce) {
 
-    Service {'slapd':
+    ensure_resource('service', ['slapd'], {
       ensure => 'stopped',
       enable => false
-    }
+    })
 
   } else {
 

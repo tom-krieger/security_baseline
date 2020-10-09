@@ -33,16 +33,18 @@ class security_baseline::rules::debian::sec_rsh_client (
   String $log_level = ''
 ) {
   if($enforce) {
-    if($facts['security_baseline']['packages_installed']['rsh-client']) {
-      Package { 'rsh-client':
-        ensure => 'absent',
-      }
+    if (
+      $facts['security_baseline']['packages_installed']['rsh-client']
+    ) {
+      ensure_packages(['rsh-client'], {ensure => absent})
     }
-    if($facts['security_baseline']['packages_installed']['rsh-redone-client']) {
-      Package { 'rsh-redone-client':
-        ensure => 'absent',
-      }
+
+    if (
+      $facts['security_baseline']['packages_installed']['rsh-redone-client']
+    ) {
+      ensure_packages(['rsh-redone-client'], {ensure => absent})
     }
+
   } else {
     if (
       $facts['security_baseline']['packages_installed']['rsh-client'] or

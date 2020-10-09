@@ -33,9 +33,9 @@ class security_baseline::rules::debian::sec_x11_installed (
 ) {
   if($facts['security_baseline']['x11']['installed']) {
     if($enforce) {
-      Package { $facts['security_baseline']['x11-packages']:
+      ensure_packages($facts['security_baseline']['x11-packages'], {
         ensure => 'absent',
-      }
+      })
     } else {
         echo { 'x11-installed':
           message  => $message,

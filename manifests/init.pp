@@ -82,6 +82,15 @@
 # @param logstash_timeout
 #    The timeout for sendding facts to logstash.
 #
+# @param exclude_dirs_unowned_files
+#    Array of directories to exclude from the search for onowned files
+#
+# @param exclude_dirs_world_writeable
+#     Array of directories to exclude from the search for world writable files
+#
+# @param exclude_dirs_sticky_ww
+#    Araay of directories to exclude from the search for world writable directories with sticky bit
+#
 # @example
 #   include security_baseline
 #
@@ -110,11 +119,12 @@ class security_baseline (
   Boolean $configure_logstash                 = false,
   Integer $logstash_port                      = 5999,
   Integer $logstash_timeout                   = 1000,
+  Array $exclude_dirs_unowned_files           = [],
+  Array $exclude_dirs_world_writeable         = [],
+  Array $exclude_dirs_sticky_ww               = [],
 ) {
   include ::security_baseline::services
   include ::security_baseline::system_file_permissions_cron
-  include ::security_baseline::world_writeable_files_cron
-  include ::security_baseline::unowned_files_cron
 
   if($debug) {
     echo { "Applying security baseline version: ${baseline_version}":
@@ -128,6 +138,14 @@ class security_baseline (
       loglevel => 'info',
       withpath => false,
     }
+  }
+
+  class { '::security_baseline::world_writeable_files_cron':
+    dirs_to_exclude => $exclude_dirs_world_writeable,
+  }
+
+  class { '::security_baseline::unowned_files_cron':
+    dirs_to_exclude => $exclude_dirs_unowned_files,
   }
 
   class { '::security_baseline::config':

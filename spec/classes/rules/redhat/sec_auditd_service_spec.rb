@@ -45,7 +45,7 @@ describe 'security_baseline::rules::redhat::sec_auditd_service' do
       it { is_expected.to compile }
       it {
         if enforce
-          is_expected.to contain_package('audit').with('ensure' => 'installed')
+          is_expected.to contain_package('audit').with('ensure' => 'present')
           is_expected.to contain_service('auditd')
             .with(
               'ensure'  => 'running',

@@ -31,10 +31,10 @@ class security_baseline::rules::sles::sec_httpd (
 ) {
   if($enforce) {
 
-    Service {'apache2':
+    ensure_resource('service', ['apache2'], {
       ensure => 'stopped',
       enable => false
-      }
+    })
 
   } else {
 

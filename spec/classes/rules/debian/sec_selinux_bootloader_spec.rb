@@ -139,8 +139,8 @@ describe 'security_baseline::rules::debian::sec_selinux_bootloader' do
                   'loglevel' => 'warning',
                   'withpath' => false,
                 )
-              is_expected.to contain_package('selinux-basics').with('ensure' => 'installed')
-              is_expected.to contain_package('selinux-policy-default').with('ensure' => 'installed')
+              is_expected.to contain_package('selinux-basics').with('ensure' => 'present')
+              is_expected.to contain_package('selinux-policy-default').with('ensure' => 'present')
             else
               is_expected.not_to contain_package('selinux-basics').with('ensure' => 'installed')
               is_expected.not_to contain_package('selinux-policy-default').with('ensure' => 'installed')

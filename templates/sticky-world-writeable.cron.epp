@@ -1,0 +1,1 @@
+<%= $min %> 4 * * * root /usr/share/security_baseline/bin/sticky-world-writable.sh > /dev/null 2>&1

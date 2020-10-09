@@ -225,7 +225,7 @@ describe 'security_baseline::rules::redhat::sec_pam_lockout' do
               'command' => "sed -ri '/pam_faillock.so/s/deny=\\S+/deny=3/g' /etc/authselect/custom/testprofile/system-auth || \
 sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 deny=3 \\3/' /etc/authselect/custom/testprofile/system-auth",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'unless'  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*deny=\\S+\\s*.*$' /etc/authselect/custom/testprofile/system-auth)\"",
+              'onlyif'  => "test -z \"\$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*deny=\\S+\\s*.*\$' /etc/authselect/custom/testprofile/system-auth)\"",
             )
             .that_notifies('Exec[authselect-apply-changes]')
 
@@ -234,7 +234,7 @@ sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$
               'command' => "sed -ri '/pam_faillock.so/s/deny=\\S+/deny=3/g' /etc/authselect/custom/testprofile/password-auth || \
 sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 deny=3 \\3/' /etc/authselect/custom/testprofile/password-auth",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'unless'  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*deny=\\S+\\s*.*$' /etc/authselect/custom/testprofile/password-auth)\"",
+              'onlyif'  => "test -z \"\$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*deny=\\S+\\s*.*\$' /etc/authselect/custom/testprofile/password-auth)\"",
             )
             .that_notifies('Exec[authselect-apply-changes]')
 
@@ -243,7 +243,7 @@ sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$
               'command' => "sed -ri '/pam_faillock.so/s/unlock_time=\\S+/unlock_time=900/g' /etc/authselect/custom/testprofile/password-auth || \
 sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 unlock_time=900 \\3/' /etc/authselect/custom/testprofile/password-auth",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'unless'  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*unlock_time=\\S+\\s*.*$' /etc/authselect/custom/testprofile/password-auth)\"",
+              'onlyif'  => "test -z \"\$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*unlock_time=\\S+\\s*.*\$' /etc/authselect/custom/testprofile/password-auth)\"",
             )
             .that_notifies('Exec[authselect-apply-changes]')
 
@@ -252,7 +252,7 @@ sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$
               'command' => "sed -ri '/pam_faillock.so/s/unlock_time=\\S+/unlock_time=900/g' /etc/authselect/custom/testprofile/system-auth || \
 sed -ri 's/^\\s*(auth\\s+required\\s+pam_faillock\\.so\\s+)(.*[^{}])(\\{.*\\}|)$/\\1\\2 unlock_time=900 \\3/' /etc/authselect/custom/testprofile/system-auth",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'unless'  => "test -n \"$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*unlock_time=\\S+\\s*.*$' /etc/authselect/custom/testprofile/system-auth)\"",
+              'onlyif'  => "test -z \"\$(grep -E '^\\s*auth\\s+required\\s+pam_faillock.so\\s+.*unlock_time=\\S+\\s*.*\$' /etc/authselect/custom/testprofile/system-auth)\"",
             )
             .that_notifies('Exec[authselect-apply-changes]')
 

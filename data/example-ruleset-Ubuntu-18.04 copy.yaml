@@ -3275,7 +3275,8 @@ security_baseline::rules:
         - curve25519-sha256 
         - curve25519-sha256@libssh.org
         - diffie-hellman-group-exchange-sha256 
-        - ecdh-sha2-nistp256 ecdh-sha2-nistp384 
+        - ecdh-sha2-nistp256 
+        - ecdh-sha2-nistp384 
         - ecdh-sha2-nistp521
     message: 'Rule 5.2.15. The sshd should use strong kexalgorithms.'
     log_level: warning
@@ -3284,7 +3285,8 @@ security_baseline::rules:
         - curve25519-sha256 
         - curve25519-sha256@libssh.org
         - diffie-hellman-group-exchange-sha256 
-        - ecdh-sha2-nistp256 ecdh-sha2-nistp384 
+        - ecdh-sha2-nistp256 
+        - ecdh-sha2-nistp384 
         - ecdh-sha2-nistp521
   '5.2.16':
     rulename: sshd-timeouts

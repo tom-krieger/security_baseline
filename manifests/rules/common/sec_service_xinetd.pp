@@ -31,10 +31,12 @@ class security_baseline::rules::common::sec_service_xinetd (
   String $log_level = ''
 ) {
   if($enforce) {
-    Service { 'xinetd':
+
+    ensure_resource('service', ['xinetd'], {
       ensure => stopped,
       enable => false,
-    }
+    })
+
   } else {
     if($facts['security_baseline']['services_enabled']['srv_xinetd'] == 'enabled') {
       echo { 'xinetd':

@@ -40,12 +40,12 @@ class security_baseline::rules::sles::sec_rsyslog_remote_syslog (
 ) {
   if($enforce) {
     if(!defined(Package['rsyslog'])) {
-      Package { 'rsyslog':
+      ensure_packages(['rsyslog'], {
         ensure => installed,
-      }
-      Package { 'syslog-ng':
+      })
+      ensure_packages(['syslog-ng'], {
         ensure => absent,
-      }
+      })
     }
     if($is_loghost) {
       file_line { 'rsyslog.conf add ModLoad':

@@ -33,10 +33,10 @@ class security_baseline::rules::debian::sec_ufw_service (
 ) {
   if($enforce) {
     if(!defined(Service['ufw'])) {
-      Service {'ufw':
+      ensure_resource('service', ['ufw'], {
         ensure => running,
         enable => true,
-      }
+      })
     }
     exec { 'enable-ufw':
       command => 'ufw --force enable',

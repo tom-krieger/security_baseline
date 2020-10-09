@@ -45,14 +45,14 @@ class security_baseline::rules::redhat::sec_firewall_package (
         }
       }
       'firewalld': {
-        Package { 'firewalld':
+        ensure_packages(['firewalld'], {
           ensure => installed,
-        }
+        })
       }
       'nftables': {
-        Package { 'nftables':
+        ensure_packages(['nftables'], {
           ensure => installed,
-        }
+        })
       }
       default: {
         fail("invalid firewall package selected: ${firewall_package}")

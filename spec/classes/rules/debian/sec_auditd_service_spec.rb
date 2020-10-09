@@ -44,7 +44,7 @@ describe 'security_baseline::rules::debian::sec_auditd_service' do
       it { is_expected.to compile }
       it {
         if enforce
-          is_expected.to contain_package('auditd').with('ensure' => 'installed')
+          is_expected.to contain_package('auditd').with('ensure' => 'present')
           is_expected.to contain_service('auditd')
             .with(
               'ensure'  => 'running',

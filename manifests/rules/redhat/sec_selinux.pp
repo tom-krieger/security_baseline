@@ -30,9 +30,9 @@ class security_baseline::rules::redhat::sec_selinux (
   String $log_level = ''
 ) {
   if($enforce) {
-    Package { 'libselinux':
+    ensure_packages(['libselinux'], {
       ensure => present,
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['libselinux'] == false) {
       echo { 'selinux-pkg':

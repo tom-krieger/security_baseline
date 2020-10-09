@@ -31,9 +31,9 @@ class security_baseline::rules::redhat::sec_setroubleshoot (
   String $log_level = ''
 ) {
   if($enforce) {
-    Package { 'setroubleshoot':
+    ensure_packages(['setroubleshoot'], {
       ensure => 'purged',
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['setroubleshoot']) {
       echo { 'setroubleshoot':

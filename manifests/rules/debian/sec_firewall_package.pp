@@ -43,34 +43,23 @@ class security_baseline::rules::debian::sec_firewall_package (
             purge => true,
           }
         }
-        Package { 'ufw':
-          ensure => absent,
-        }
-        Package { 'nftables':
-          ensure => absent,
-        }
+        ensure_packages(['ufw', 'nftables'], {ensure => absent})
       }
       'ufw': {
-        Package { 'ufw':
+        ensure_packages(['ufw'], {
           ensure => installed,
-        }
-        Package { 'nftables':
+        })
+        ensure_packages(['nftables', 'iptables'], {
           ensure => absent,
-        }
-        Package { 'iptables':
-          ensure => absent,
-        }
+        })
       }
       'nftables': {
-        Package { 'nftables':
+        ensure_packages(['nftables'], {
           ensure => installed,
-        }
-        Package { 'ufw':
+        })
+        ensure_packages(['ufw', 'iptables'], {
           ensure => absent,
-        }
-        Package { 'iptables':
-          ensure => absent,
-        }
+        })
       }
       default: {
         fail("invalid firewall package selected: ${firewall_package}")

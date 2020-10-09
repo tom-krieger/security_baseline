@@ -37,12 +37,12 @@ class security_baseline::rules::sles::sec_rsyslog_remote_logs (
 ) {
   if($enforce) {
     if(!defined(Package['rsyslog'])) {
-      Package { 'rsyslog':
+      ensure_packages(['rsyslog'], {
         ensure => installed,
-      }
-      Package { 'syslog-ng':
+      })
+      ensure_packages(['syslog-ng'], {
         ensure => absent,
-      }
+      })
     }
     if ($remote_log_host != '') {
       file_line { 'rsyslog-remote-log-host':

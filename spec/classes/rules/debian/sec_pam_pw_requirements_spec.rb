@@ -37,7 +37,7 @@ describe 'security_baseline::rules::debian::sec_pam_pw_requirements' do
         if enforce
           is_expected.to contain_package('libpam-pwquality')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
           is_expected.to contain_file_line('pam minlen')
             .with(
@@ -144,7 +144,7 @@ describe 'security_baseline::rules::debian::sec_pam_pw_requirements' do
         if enforce
           is_expected.to contain_package('libpam-pwquality')
             .with(
-              'ensure' => 'installed',
+              'ensure' => 'present',
             )
           is_expected.to contain_file_line('pam minlen')
             .with(

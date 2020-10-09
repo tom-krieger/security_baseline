@@ -32,15 +32,10 @@ class security_baseline::rules::sles::sec_service_time (
 ) {
   if($enforce) {
 
-    Service { 'time':
+    ensure_resource('service', ['time', 'time-udp'], {
       ensure => stopped,
       enable => false,
-    }
-
-    Service { 'time-udp':
-      ensure => stopped,
-      enable => false,
-    }
+    })
 
   } else {
 

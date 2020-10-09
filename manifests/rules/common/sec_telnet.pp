@@ -33,10 +33,10 @@ class security_baseline::rules::common::sec_telnet (
 ) {
   if($enforce) {
 
-    Service {'telnet.socket':
+    ensure_resource('service', ['telnet.socket'], {
       ensure => 'stopped',
       enable => false
-      }
+    })
 
   } else {
 

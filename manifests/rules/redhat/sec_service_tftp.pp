@@ -34,20 +34,16 @@ class security_baseline::rules::redhat::sec_service_tftp (
 ) {
   if($enforce) {
     if($facts['operatingsystemmajrelease'] > '6') {
-      Service { 'tftp-dgram':
-        ensure => stopped,
-        enable => false,
-      }
 
-      Service { 'tftp-stream':
+      ensure_resource('service', ['tftp-dgram', 'tftp-stream'], {
         ensure => stopped,
         enable => false,
-      }
+      })
     } else {
-      Service { 'tftp':
+      ensure_resource('service', ['tftp'], {
         ensure => stopped,
         enable => false,
-      }
+      })
     }
   } else {
     if($facts['security_baseline']['xinetd_services']['srv_tftp'] == true) {

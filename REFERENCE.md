@@ -12,9 +12,10 @@ _Public Classes_
 * [`security_baseline::config`](#security_baselineconfig): Configuration stuff
 * [`security_baseline::fact_indirector`](#security_baselinefact_indirector): Configure sending facts to logstash
 * [`security_baseline::services`](#security_baselineservices): Additional services
-* [`security_baseline::system_file_permissions_cron`](#security_baselinesystem_file_permissions_cron): A short summary of the purpose of this class
-* [`security_baseline::unowned_files_cron`](#security_baselineunowned_files_cron): A short summary of the purpose of this class
-* [`security_baseline::world_writeable_files_cron`](#security_baselineworld_writeable_files_cron): A short summary of the purpose of this class
+* [`security_baseline::sticky_world_writabe_cron`](#security_baselinesticky_world_writabe_cron): Create cron job for searching world writable dir3ctories with sticky bit
+* [`security_baseline::system_file_permissions_cron`](#security_baselinesystem_file_permissions_cron): Create cron job for system file permissions
+* [`security_baseline::unowned_files_cron`](#security_baselineunowned_files_cron): Cron to run search for unowned files
+* [`security_baseline::world_writeable_files_cron`](#security_baselineworld_writeable_files_cron): Create cron for world writable files search
 
 _Private Classes_
 
@@ -646,6 +647,30 @@ The timeout for sendding facts to logstash.
 
 Default value: 1000
 
+##### `exclude_dirs_unowned_files`
+
+Data type: `Array`
+
+Array of directories to exclude from the search for onowned files
+
+Default value: []
+
+##### `exclude_dirs_world_writeable`
+
+Data type: `Array`
+
+Array of directories to exclude from the search for world writable files
+
+Default value: []
+
+##### `exclude_dirs_sticky_ww`
+
+Data type: `Array`
+
+Araay of directories to exclude from the search for world writable directories with sticky bit
+
+Default value: []
+
 ### security_baseline::auditd_suid_rules_cron
 
 Create a fact with all auditd rules needed to monitor the usage of s-bit programs.
@@ -824,9 +849,33 @@ Services e. g. reload sshd
 include security_baseline::services
 ```
 
+### security_baseline::sticky_world_writabe_cron
+
+Create a cron ob for the search for world writable directories with sticky bit set.
+
+#### Examples
+
+##### 
+
+```puppet
+include security_baseline::sticky_world_writabe_cron
+```
+
+#### Parameters
+
+The following parameters are available in the `security_baseline::sticky_world_writabe_cron` class.
+
+##### `dirs_to_exclude`
+
+Data type: `Array`
+
+Array of directories to exclude from search.
+
+Default value: []
+
 ### security_baseline::system_file_permissions_cron
 
-A description of what this class does
+Create a cron job for sytem file permissions
 
 #### Examples
 
@@ -838,7 +887,7 @@ include security_baseline::system_file_permissions_cron
 
 ### security_baseline::unowned_files_cron
 
-A description of what this class does
+Create a cron job to run a search for unowned files.
 
 #### Examples
 
@@ -848,9 +897,21 @@ A description of what this class does
 include security_baseline::unowned_files_cron
 ```
 
+#### Parameters
+
+The following parameters are available in the `security_baseline::unowned_files_cron` class.
+
+##### `dirs_to_exclude`
+
+Data type: `Array`
+
+Array of directories to exclude from search.
+
+Default value: []
+
 ### security_baseline::world_writeable_files_cron
 
-A description of what this class does
+Create a cron job for world writable files search.
 
 #### Examples
 
@@ -859,6 +920,18 @@ A description of what this class does
 ```puppet
 include security_baseline::world_writeable_files_cron
 ```
+
+#### Parameters
+
+The following parameters are available in the `security_baseline::world_writeable_files_cron` class.
+
+##### `dirs_to_exclude`
+
+Data type: `Array`
+
+Array of directories to exclude from search.
+
+Default value: []
 
 ## Defined types
 

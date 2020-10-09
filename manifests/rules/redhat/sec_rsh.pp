@@ -35,12 +35,10 @@ class security_baseline::rules::redhat::sec_rsh (
     } else {
       $srvs = ['rsh', 'rlogin', 'rexec']
     }
-    $srvs.each |$srv| {
-      Service { $srv:
-        ensure => 'stopped',
-        enable => false,
-      }
-    }
+    ensure_resource('service', $srvs, {
+      ensure => 'stopped',
+      enable => false,
+    })
 
   } else {
 

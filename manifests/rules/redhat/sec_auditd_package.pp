@@ -31,16 +31,17 @@ class security_baseline::rules::redhat::sec_auditd_package (
   String $log_level = ''
 ) {
   if ($enforce) {
-    if(!defined(Package['audit'])) {
-      Package { 'audit':
-        ensure => installed,
-      }
-    }
-    if(!defined(Package['audit-libs'])) {
-      Package { 'audit-libs':
-        ensure => installed,
-      }
-    }
+    #if(!defined(Package['audit'])) {
+    #  Package { 'audit':
+    #    ensure => installed,
+    #  }
+    #}
+    #if(!defined(Package['audit-libs'])) {
+    #  Package { 'audit-libs':
+    #    ensure => installed,
+    #  }
+    #}
+    ensure_packages(['audit', 'audit-libs'], {ensure => installed,})
   } else {
     if(
       ($facts['security_baseline']['packages_installed']['audit'] == false) or

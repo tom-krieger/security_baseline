@@ -31,9 +31,9 @@ class security_baseline::rules::redhat::sec_talk_client (
   String $log_level = ''
 ) {
   if($enforce) {
-    Package { 'talk':
+    ensure_packages(['talk'], {
       ensure => 'purged',
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['talk']) {
       echo { 'talk-client':

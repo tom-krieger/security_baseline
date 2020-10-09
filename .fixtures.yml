@@ -6,8 +6,8 @@ fixtures:
     security_baseline: "#{source_dir}"
   repositories:
     provision: 
-      repo: 'git@github.com:tom-krieger/provision.git'
-      branch: 'sudo_secure_path_patch'
+      repo: 'https://github.com/puppetlabs/provision.git'
+      branch: 'master'
   forge_modules:
     stdlib:
       repo: "puppetlabs/stdlib"

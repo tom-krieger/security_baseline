@@ -34,10 +34,10 @@ class security_baseline::rules::common::sec_smb (
 ) {
   if($enforce) {
 
-    Service {'smb':
+    ensure_resource('service', ['smb'], {
       ensure => 'stopped',
       enable => false
-    }
+    })
 
   } else {
 

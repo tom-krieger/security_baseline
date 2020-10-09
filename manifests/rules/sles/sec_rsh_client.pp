@@ -33,9 +33,9 @@ class security_baseline::rules::sles::sec_rsh_client (
   String $log_level = ''
 ) {
   if($enforce) {
-    Package { 'rsh':
+    ensure_packages(['rsh'], {
       ensure => 'absent',
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['rsh']) {
       echo { 'rsh-client':

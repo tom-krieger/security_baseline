@@ -31,19 +31,23 @@ class security_baseline::rules::common::sec_syslogng_service (
 ) {
   if($enforce) {
     if(!defined(Package['syslog-ng'])) {
-      Package { 'syslog-ng':
-        ensure => installed,
-      }
-      Package { 'rsyslog':
+
+      ensure_packages(['rsyslog'], {
         ensure => absent,
-      }
+      })
+
+      ensure_packages(['syslog-ng'], {
+        ensure => installed,
+      })
     }
     if(!defined(Service['syslog-ng'])) {
-      Service { 'syslog-ng':
+
+      ensure_resource('service', ['syslog-ng'], {
         ensure  => running,
         enable  => true,
         require => Package['syslog-ng'],
-      }
+      })
+
     }
   }
 }

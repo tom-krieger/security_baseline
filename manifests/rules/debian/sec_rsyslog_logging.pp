@@ -39,12 +39,12 @@ class security_baseline::rules::debian::sec_rsyslog_logging (
 ) {
   if($enforce) {
     if(!defined(Package['rsyslog'])) {
-      Package { 'rsyslog':
+      ensure_packages(['rsyslog'], {
         ensure => installed,
-      }
-      Package { 'syslog-ng':
+      })
+      ensure_packages(['syslog-ng'], {
         ensure => absent,
-      }
+      })
     }
     $log_config.each | $config, $data | {
       $src = $data['src']

@@ -33,9 +33,9 @@ class security_baseline::rules::debian::sec_tcp_wrappers (
   String $log_level = ''
 ) {
   if($enforce) {
-    Package { 'tcpd':
+    ensure_packages(['tcpd'], {
       ensure => installed,
-    }
+    })
   } else {
     if($facts['security_baseline']['packages_installed']['tcpd'] == false) {
       echo { 'tcpd':

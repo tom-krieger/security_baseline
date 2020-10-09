@@ -1,0 +1,1 @@
+<%= $min %> 1 * * * root /usr/share/security_baseline/bin/world-writable-files.sh > /dev/null 2>&1

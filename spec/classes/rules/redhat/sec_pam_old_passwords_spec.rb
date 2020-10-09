@@ -115,7 +115,7 @@ describe 'security_baseline::rules::redhat::sec_pam_old_passwords' do
 remember=5 \\6/' /etc/authselect/custom/testprofile/system-auth || sed -ri 's/^\\s*(password\\s+(requisite|sufficient)\\s+(pam_pwquality\\.so|pam_unix\\.so)\\s+)(.*)$/\\1\\4 \
 remember=5/' /etc/authselect/custom/testprofile/system-auth",
               'path'    => ['/bin', '/usr/bin', '/sbin', '/usr/sbin'],
-              'unless'  => "test -n '$(grep -E '^\\s*password\\s+(sufficient\\s+pam_unix|requi(red|site)\\s+pam_pwhistory).so\\s+ ([^#]+\\s+)*remember=\\S+\s*.*$' \
+              'onlyif'  => "test -z '\$(grep -E '^\\s*password\\s+(sufficient\\s+pam_unix|requi(red|site)\\s+pam_pwhistory).so\\s+ ([^#]+\\s+)*remember=\\S+\s*.*\$' \
 /etc/authselect/custom/testprofile/system-auth)'",
             )
             .that_notifies('Exec[authselect-apply-changes]')

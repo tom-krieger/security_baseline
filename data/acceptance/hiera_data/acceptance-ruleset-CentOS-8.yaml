@@ -914,7 +914,7 @@ security_baseline::rules:
     message: 'Rule 1.11. Crypto policy should be FUTURE.'
     log_level: 'warning'
     config_data:
-      crypto_policy: FUTURE
+      crypto_policy: LEGACY
   '2.1.1':
     rulename: 'xinetd-package'
     active: true

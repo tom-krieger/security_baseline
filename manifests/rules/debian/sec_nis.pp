@@ -35,10 +35,10 @@ class security_baseline::rules::debian::sec_nis (
 ) {
   if($enforce) {
 
-    Service {'nis':
+    ensure_resource('service', ['nis'], {
       ensure => 'stopped',
       enable => false
-      }
+    })
 
   } else {
 

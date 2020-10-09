@@ -1,1 +1,0 @@
-5 23 * * * root /usr/share/security_baseline/bin/unowned_files.sh > /dev/null 2>&1

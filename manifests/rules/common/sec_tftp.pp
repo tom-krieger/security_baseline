@@ -33,10 +33,10 @@ class security_baseline::rules::common::sec_tftp (
 ) {
   if($enforce) {
 
-    Service {'tftp.socket':
+    ensure_resource('service', ['tftp.socket'], {
       ensure => 'stopped',
       enable => false
-      }
+    })
 
   } else {
 

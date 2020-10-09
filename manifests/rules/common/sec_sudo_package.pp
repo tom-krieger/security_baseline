@@ -39,9 +39,9 @@ class security_baseline::rules::common::sec_sudo_package (
 ) {
   if ($enforce) {
     if(!defined(Package['sudo'])) {
-      Package { 'sudo':
+      ensure_packages(['sudo'], {
         ensure => installed,
-      }
+      })
     }
   } else {
     if ($facts['security_baseline']['packages_installed']['sudo'] == false) {

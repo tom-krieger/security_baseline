@@ -32,12 +32,12 @@ describe 'security_baseline::rules::sles::sec_apparmor_profiles' do
           if enforce
             is_expected.to contain_package('apparmor')
               .with(
-                'ensure' => 'installed',
+                'ensure' => 'present',
               )
 
             is_expected.to contain_package('apparmor-utils')
               .with(
-                'ensure' => 'installed',
+                'ensure' => 'present',
               )
               .that_requires('Package[apparmor]')
 

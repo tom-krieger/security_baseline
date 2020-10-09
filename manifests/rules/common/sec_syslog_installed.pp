@@ -39,21 +39,25 @@ class security_baseline::rules::common::sec_syslog_installed (
   if($enforce) {
     if($syslog_daemon == 'rsyslog') {
       if(!defined(Package['rsyslog'])) {
-        Package { 'rsyslog':
+
+        ensure_packages(['rsyslog'], {
           ensure => installed,
-        }
-        Package { 'syslog-ng':
+        })
+
+        ensure_packages(['syslog-ng'], {
           ensure => absent,
-        }
+        })
+
       }
     } elsif ($syslog_daemon == 'syslog-ng') {
       if(!defined(Package['syslog-ng'])) {
-        Package { 'syslog-ng':
-          ensure => installed,
-        }
-        Package { 'rsyslog':
+        ensure_packages(['rsyslog'], {
           ensure => absent,
-        }
+        })
+
+        ensure_packages(['syslog-ng'], {
+          ensure => installed,
+        })
       }
     } else {
       fail("Unknown syslog daemon: ${syslog_daemon}")

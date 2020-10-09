@@ -33,9 +33,9 @@ describe 'security_baseline::rules::debian::sec_auditd_package' do
       it { is_expected.to compile }
       it {
         if enforce
-          is_expected.to contain_package('audispd-plugins').with('ensure' => 'installed')
+          is_expected.to contain_package('audispd-plugins').with('ensure' => 'present')
           is_expected.not_to contain_echo('auditd-packages')
-          is_expected.to contain_package('auditd').with('ensure' => 'installed')
+          is_expected.to contain_package('auditd').with('ensure' => 'present')
         else
           is_expected.not_to contain_package('audispd-plugins')
           is_expected.not_to contain_package('auditd')

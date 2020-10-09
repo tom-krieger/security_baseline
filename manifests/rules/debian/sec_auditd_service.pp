@@ -31,16 +31,16 @@ class security_baseline::rules::debian::sec_auditd_service (
 ) {
   if($enforce) {
     if(!defined(Package['auditd'])) {
-      Package { 'auditd':
+      ensure_packages(['auditd'], {
         ensure => installed,
-      }
+      })
     }
 
-    Service { 'auditd':
+    ensure_resource('service', ['auditd'], {
       ensure  => running,
       enable  => true,
       require => Package['auditd']
-    }
+    })
 
   } else {
     if($facts['security_baseline']['auditd']['srv_auditd'] == false) {

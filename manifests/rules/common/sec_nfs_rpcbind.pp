@@ -33,18 +33,10 @@ class security_baseline::rules::common::sec_nfs_rpcbind (
 ) {
   if($enforce) {
 
-    Service {'nfs':
+    ensure_resource('service', ['nfs', 'nfs-server', 'rpcbind'], {
       ensure => 'stopped',
-      enable => false
-    }
-    Service {'nfs-server':
-      ensure => 'stopped',
-      enable => false
-    }
-    Service {'rpcbind':
-      ensure => 'stopped',
-      enable => false
-    }
+      enable => false,
+    })
 
   } else {
 

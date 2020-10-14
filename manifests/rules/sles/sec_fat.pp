@@ -26,18 +26,28 @@
 #   }
 #
 # @api private
-class security_baseline::rules::common::sec_vfat (
+class security_baseline::rules::sles::sec_fat (
   Boolean $enforce  = true,
   String $message   = '',
   String $log_level = '',
 ) {
   if $enforce {
+    kmod::install { 'fat':
+      command => '/bin/true',
+    }
     kmod::install { 'vfat':
       command => '/bin/true',
     }
+    kmod::install { 'msdos':
+      command => '/bin/true',
+    }
   } else {
-    if($facts['security_baseline']['kernel_modules']['vfat']) {
-      echo { 'vfat':
+    if(
+      $facts['security_baseline']['kernel_modules']['vfat'] or
+      $facts['security_baseline']['kernel_modules']['fat'] or
+      $facts['security_baseline']['kernel_modules']['msdos']
+    ) {
+      echo { 'vfat-kernel-modules':
         message  => $message,
         loglevel => $log_level,
         withpath => false,

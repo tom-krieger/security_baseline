@@ -30,9 +30,9 @@
 #
 # @api private
 class security_baseline::rules::common::sec_tmp_partition (
-  Boolean $enforce = true,
-  String $message = '',
-  String $log_level = ''
+  Boolean $enforce  = true,
+  String $message   = '',
+  String $log_level = '',
 ) {
   if (has_key($facts, 'security_baseline')) and
     ($facts['security_baseline']['partitions']['tmp']['partition'] == undef) {

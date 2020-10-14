@@ -1,5 +1,9 @@
 # Changelog
 
+## Release 0.9.3
+
+- SLES 15 CIS benchmark V1.0.0
+
 ## Release 0.9.2
 
 - changed value names in summary report

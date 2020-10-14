@@ -51,6 +51,7 @@ The code of this security baseline module is based on the following CIS Benchmar
 | OS           | Benchmark version                                            | Version | Date       |
 |--------------|--------------------------------------------------------------|---------|------------|
 | Suse SLES 12 | CIS SUSE Linux Enterprise 12 Benchmark                       | 2.1.0   | 12-28-2017 |
+| Suse SLES 15 | CIS SUSE Linux Enterprise 15 Benchmark                       | 1.0.0   | 06-30-2020 |
 | RedHat 6     | CIS Red Hat Enterprise Linux 6 Benchmark                     | 2.1.0   | 12-27-2017 |
 | RedHat 7     | CIS Red Hat Enterprise Linux 7 Benchmark                     | 2.2.0   | 12-27-2017 |
 | RedHat 8     | CIS Red Hat Enterprise Linux 8 Benchmark                     | 1.0.0   | 09-30-2019 |

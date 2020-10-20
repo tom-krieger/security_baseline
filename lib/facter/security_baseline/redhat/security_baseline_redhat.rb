@@ -1177,7 +1177,7 @@ def security_baseline_redhat(os, _distid, release)
   if File.exist?('/etc/crypto-policies/config')
     val = Facter::Core::Execution.exec("grep -E -h -i '^\s*LEGACY\s*(\s+#.*)?$' /etc/crypto-policies/config")
     crypto_policy['legacy'] = check_value_string(val, 'none')
-    val = Facter::Core::Execution.exec("grep -E -h -i '^\s*(FUTURE|FIPS)\s*(\s+#.*)?$' /etc/crypto-policies/config")
+    val = Facter::Core::Execution.exec("grep -E -h -i '^\s*(FUTURE|FIPS|DEFAULT)\s*(\s+#.*)?$' /etc/crypto-policies/config")
     crypto_policy['policy'] = check_value_string(val, 'none')
   else
     crypto_policy['legacy'] = 'none'

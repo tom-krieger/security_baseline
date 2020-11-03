@@ -58,6 +58,7 @@ class security_baseline::rules::redhat::sec_ntp_daemon_ntp (
   String $ntp_statsdir                    = '',
   Boolean $ntp_disable_monitor            = true,
   Boolean $ntp_burst                      = false,
+  Boolean $ntp_service_manage             = true,
 ) {
   if($enforce) {
     if(empty($ntp_servers)) {
@@ -69,6 +70,7 @@ class security_baseline::rules::redhat::sec_ntp_daemon_ntp (
       statsdir        => $ntp_statsdir,
       disable_monitor => $ntp_disable_monitor,
       iburst_enable   => $ntp_burst,
+      service_manage  => $ntp_service_manage,
     }
 
     if($ntp_driftfile == '') {

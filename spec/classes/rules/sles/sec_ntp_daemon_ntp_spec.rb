@@ -39,6 +39,7 @@ describe 'security_baseline::rules::sles::sec_ntp_daemon_ntp' do
               'statsdir'        => '/var/tmp',
               'disable_monitor' => true,
               'iburst_enable'   => false,
+              'service_manage'  => true,
             )
           is_expected.to contain_file('/etc/sysconfig/ntpd')
             .with(

@@ -49,11 +49,12 @@ class security_baseline::rules::redhat::sec_rsyslog_remote_syslog (
     }
     if($is_loghost) {
       file_line { 'rsyslog.conf add ModLoad':
-        ensure  => present,
-        path    => '/etc/rsyslog.conf',
-        line    => '$ModLoad imtcp',
-        match   => '\$ModLoad',
-        require => Package['rsyslog'],
+        ensure             => present,
+        path               => '/etc/rsyslog.conf',
+        line               => '$ModLoad imtcp',
+        match              => '^#.*\$ModLoad.*imtcp',
+        append_on_no_match => true,
+        require            => Package['rsyslog'],
       }
 
       file_line { 'rsyslog.conf add InputTCPServerRun':
@@ -67,8 +68,8 @@ class security_baseline::rules::redhat::sec_rsyslog_remote_syslog (
       file_line { 'rsyslog.conf remove ModLoad':
         ensure  => present,
         path    => '/etc/rsyslog.conf',
-        line    => '#$ModLoad imtcp',
-        match   => '\$ModLoad',
+        line    => '# $ModLoad imtcp',
+        match   => '^\$ModLoad.*imtcp',
         require => Package['rsyslog'],
       }
 

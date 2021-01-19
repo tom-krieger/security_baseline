@@ -50,7 +50,8 @@ describe 'security_baseline::rules::redhat::sec_rsyslog_remote_syslog' do
                   'ensure' => 'present',
                   'path'   => '/etc/rsyslog.conf',
                   'line'   => '$ModLoad imtcp',
-                  'match'  => '\$ModLoad',
+                  'match'  => '^#.*\$ModLoad.*imtcp',
+                  'append_on_no_match' => true,
                 )
 
               is_expected.to contain_file_line('rsyslog.conf add InputTCPServerRun')
@@ -65,8 +66,8 @@ describe 'security_baseline::rules::redhat::sec_rsyslog_remote_syslog' do
                 .with(
                   'ensure' => 'present',
                   'path'   => '/etc/rsyslog.conf',
-                  'line'   => '#$ModLoad imtcp',
-                  'match'  => '\$ModLoad',
+                  'line'   => '# $ModLoad imtcp',
+                  'match'  => '^\$ModLoad.*imtcp',
                 )
 
               is_expected.to contain_file_line('rsyslog.conf remove InputTCPServerRun')

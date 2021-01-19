@@ -50,7 +50,7 @@ describe 'security_baseline::rules::sles::sec_rsyslog_remote_syslog' do
                   'ensure'             => 'present',
                   'path'               => '/etc/rsyslog.conf',
                   'line'               => '$ModLoad imtcp',
-                  'match'              => '^#\$ModLoad',
+                  'match'              => '^#.*\$ModLoad.*imtcp',
                   'append_on_no_match' => true,
                 )
                 .that_requires('Package[rsyslog]')
@@ -69,8 +69,8 @@ describe 'security_baseline::rules::sles::sec_rsyslog_remote_syslog' do
                 .with(
                   'ensure'  => 'present',
                   'path'    => '/etc/rsyslog.conf',
-                  'line'    => '#$ModLoad imtcp',
-                  'match'   => '\$ModLoad imtcp',
+                  'line'    => '# $ModLoad imtcp',
+                  'match'   => '^\$ModLoad.*imtcp',
                 )
                 .that_requires('Package[rsyslog]')
 

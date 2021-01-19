@@ -52,7 +52,7 @@ class security_baseline::rules::sles::sec_rsyslog_remote_syslog (
         ensure             => present,
         path               => '/etc/rsyslog.conf',
         line               => '$ModLoad imtcp',
-        match              => '^#\$ModLoad',
+        match              => '^#.*\$ModLoad.*imtcp',
         append_on_no_match => true,
         require            => Package['rsyslog'],
       }
@@ -69,8 +69,8 @@ class security_baseline::rules::sles::sec_rsyslog_remote_syslog (
       file_line { 'rsyslog.conf remove ModLoad':
         ensure  => present,
         path    => '/etc/rsyslog.conf',
-        line    => '#$ModLoad imtcp',
-        match   => '\$ModLoad imtcp',
+        line    => '# $ModLoad imtcp',
+        match   => '^\$ModLoad.*imtcp',
         require => Package['rsyslog'],
       }
 

@@ -84,9 +84,6 @@ fixtures:
     apt:
       repo: "puppetlabs/apt"
       ref: "7.3.0"
-    translate:
-      repo: "puppetlabs/translate"
-      ref: "2.1.0"
     registry:
       repo: "puppetlabs/registry"
       ref: "3.1.0"

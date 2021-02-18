@@ -24,12 +24,12 @@
 # @example
 #   include security_baseline::config
 class security_baseline::config(
-  Boolean $update_postrun_command          = true,
-  String $fact_upload_command              = '/usr/local/bin/puppet facts upload',
-  Enum['fact', 'csv_file'] $reporting_type = 'fact',
-  String $logfile                          = '',
-  String $summary                          = '',
-  String $ruby_binary                      = '/opt/puppetlabs/puppet/bin/ruby',
+  Boolean $update_postrun_command                  = true,
+  String $fact_upload_command                      = '/usr/local/bin/puppet facts upload',
+  Enum['fact', 'csv_file', 'none'] $reporting_type = 'fact',
+  String $logfile                                  = '',
+  String $summary                                  = '',
+  String $ruby_binary                              = '/opt/puppetlabs/puppet/bin/ruby',
 ) {
   file { '/usr/share/security_baseline':
     ensure => directory,

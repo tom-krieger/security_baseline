@@ -48,7 +48,7 @@ define security_baseline::logging (
   $rulestate,
   $level,
   $scored,
-  Enum['fact', 'csv_file'] $reporting_type = 'fact',
+  Enum['fact', 'csv_file', 'none'] $reporting_type = 'fact',
 ) {
   if($reporting_type == 'fact') {
       concat::fragment { $rulenr:
